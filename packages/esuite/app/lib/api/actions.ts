@@ -1,10 +1,10 @@
 import type { ComposerSend } from '@/components/composer/Composer'
+import { api } from '@corale/api/convex/_generated/api'
 import { useTimeoutEffect } from '@react-hookz/web'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
-import { api } from '../../../convex-api.ts.js'
 
 const runTimeout = 2500
 
