@@ -1,13 +1,12 @@
-import { useRef, useState } from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
+import { cn } from '@/app/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Card, IconButton, Inset } from '@radix-ui/themes'
 import AudioMotionAnalyzer from 'audiomotion-analyzer'
 import { Howler } from 'howler'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRef, useState } from 'react'
 import { Play, useHowl } from 'rehowl'
-
 import MeshBg from './AudiPlayerMeshBg.svg'
 
 export default function AudioPlayer({ url, titleText }: { url: string; titleText: string }) {
@@ -102,7 +101,7 @@ export default function AudioPlayer({ url, titleText }: { url: string; titleText
               if (!audioMotion) createAudioMotion()
               setPlaying(true)
             }}
-            className="outline-grayA-3 hover:outline-grayA-5 outline brightness-110"
+            className="outline outline-grayA-3 brightness-110 hover:outline-grayA-5"
           >
             {playing ? <Icons.Stop className="size-6" /> : <Icons.Play className="size-6" />}
           </IconButton>

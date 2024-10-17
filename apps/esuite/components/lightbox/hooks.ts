@@ -1,8 +1,6 @@
+import type { NextJsSlide } from '@/components/lightbox/atoms'
 import { useSetAtom } from 'jotai'
-
 import { lightboxOpenAtom, lightboxSlidesAtom } from './atoms'
-
-import type { NextJsSlide } from '@corale/esuite/components/lightbox/atoms'
 
 export const useLightbox = () => {
   const setLightboxOpen = useSetAtom(lightboxOpenAtom)

@@ -1,5 +1,4 @@
-import { PromptsNavPanel } from '@corale/esuite/components/prompts/PromptsNavPanel'
-
+import { PromptsNavPanel } from '@/components/prompts/PromptsNavPanel'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

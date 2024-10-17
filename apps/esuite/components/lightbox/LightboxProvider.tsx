@@ -1,6 +1,6 @@
 'use client'
 
-import { lightboxOpenAtom, lightboxSlidesAtom } from '@corale/esuite/components/lightbox/atoms'
+import { lightboxOpenAtom, lightboxSlidesAtom } from '@/components/lightbox/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import dynamic from 'next/dynamic'
 

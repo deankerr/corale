@@ -1,12 +1,12 @@
 'use client'
 
-import { useAudio } from '@corale/esuite/app/lib/api/audio'
-import { Panel } from '@corale/esuite/components/ui/Panel'
-import { SkeletonPulse } from '@corale/esuite/components/ui/Skeleton'
+import { useAudio } from '@/app/lib/api/audio'
+import { Panel } from '@/components/ui/Panel'
+import { SkeletonPulse } from '@/components/ui/Skeleton'
 import { Card } from '@radix-ui/themes'
 import dynamic from 'next/dynamic'
 
-const AudioPlayer = dynamic(() => import('@corale/esuite/components/audio/AudioPlayer'), {
+const AudioPlayer = dynamic(() => import('@/components/audio/AudioPlayer'), {
   loading: () => (
     <Card className="mx-auto aspect-[8/5] w-80">
       <SkeletonPulse className="absolute inset-0" />

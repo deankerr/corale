@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { useThread } from '@corale/esuite/app/lib/api/threads'
-import { DeleteThreadDialog, EditThreadTitleDialog } from '@corale/esuite/components/chat/dialogs'
-import { DotsThreeFillX } from '@corale/esuite/components/icons/DotsThreeFillX'
-import { IconButton } from '@corale/esuite/components/ui/Button'
+import { useThread } from '@/app/lib/api/threads'
+import { DeleteThreadDialog, EditThreadTitleDialog } from '@/components/chat/dialogs'
+import { DotsThreeFillX } from '@/components/icons/DotsThreeFillX'
+import { IconButton } from '@/components/ui/Button'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
+import { useState } from 'react'
 
 export const ChatMenu = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)

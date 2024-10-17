@@ -1,15 +1,15 @@
 'use client'
 
+import { useMessageFeedQuery } from '@/app/lib/api/messages'
+import { useThread } from '@/app/lib/api/threads'
+import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { EmptyPage } from '@/components/pages/EmptyPage'
+import { Button } from '@/components/ui/Button'
+import { Loader } from '@/components/ui/Loader'
+import { Panel, PanelHeader, PanelLoading, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useMemo } from 'react'
-import { useMessageFeedQuery } from '@corale/esuite/app/lib/api/messages'
-import { useThread } from '@corale/esuite/app/lib/api/threads'
-import { SVGRenderer } from '@corale/esuite/components/artifacts/SVGRenderer'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { EmptyPage } from '@corale/esuite/components/pages/EmptyPage'
-import { Button } from '@corale/esuite/components/ui/Button'
-import { Loader } from '@corale/esuite/components/ui/Loader'
-import { Panel, PanelHeader, PanelLoading, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
 
 export default function Page({ params }: { params: { threadId: string } }) {
   const thread = useThread(params.threadId)

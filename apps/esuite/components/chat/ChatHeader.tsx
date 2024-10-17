@@ -1,8 +1,7 @@
-import { useState } from 'react'
-import { useThread } from '@corale/esuite/app/lib/api/threads'
-import { PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
+import { useThread } from '@/app/lib/api/threads'
+import { PanelHeader, PanelTitle } from '@/components/ui/Panel'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
-
+import { useState } from 'react'
 import { NavigationButton } from '../navigation/NavigationSheet'
 import { IconButton } from '../ui/Button'
 import { ChatMenu } from './ChatMenu'

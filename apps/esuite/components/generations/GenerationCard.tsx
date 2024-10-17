@@ -1,15 +1,14 @@
+import { ImageCardNext } from '@/components/images/ImageCardNext'
+import { ImageGeneratingEffect } from '@/components/images/ImageGeneratingEffect'
+import { useLightbox } from '@/components/lightbox/hooks'
 import { api } from '@corale/api/convex/_generated/api'
-import { ImageCardNext } from '@corale/esuite/components/images/ImageCardNext'
-import { ImageGeneratingEffect } from '@corale/esuite/components/images/ImageGeneratingEffect'
-import { useLightbox } from '@corale/esuite/components/lightbox/hooks'
+import type { RunConfigTextToImageV2 } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import * as Accordion from '@radix-ui/react-accordion'
 import { Badge } from '@radix-ui/themes'
 import { UsePaginatedQueryReturnType } from 'convex/react'
 import { ms } from 'itty-time'
 import Link from 'next/link'
-
-import type { RunConfigTextToImageV2 } from '@corale/api/convex/types'
 
 const statusColor = {
   queued: 'yellow',
@@ -36,7 +35,7 @@ export const GenerationCard = ({
   const openLightbox = useLightbox()
 
   return (
-    <div key={generation._id} className="bg-gray-1 divide-y rounded border">
+    <div key={generation._id} className="divide-y rounded border bg-gray-1">
       {/* > header */}
       <div className="flex-start h-10 gap-2 px-1 pl-2 text-sm">
         <Badge color={statusColor[generation.status]} size="2">
@@ -46,7 +45,7 @@ export const GenerationCard = ({
 
         <Link
           href={`/generations/${generation._id}`}
-          className="text-gray-11 text-xs hover:underline"
+          className="text-xs text-gray-11 hover:underline"
         >
           {new Date(generation._creationTime).toLocaleString()}
         </Link>
@@ -106,7 +105,7 @@ export const GenerationCard = ({
         {generation.errors?.map((error, index) => (
           <pre
             key={index}
-            className="border-red-7 bg-red-4 text-red-12 h-fit text-wrap rounded border p-2 text-xs"
+            className="h-fit text-wrap rounded border border-red-7 bg-red-4 p-2 text-xs text-red-12"
           >
             {typeof error === 'string' ? error : JSON.stringify(error, null, 2)}
           </pre>
@@ -119,15 +118,15 @@ export const GenerationCard = ({
         collapsible
         defaultValue={defaultOpen ? 'gen-details' : undefined}
       >
-        <Accordion.Item value="gen-details" className="divide-gray-4 divide-y">
-          <Accordion.Trigger className="flex-between text-gray-11 outline-accentA-8 hover:text-gray-12 group w-full p-2 text-sm font-medium transition-colors">
+        <Accordion.Item value="gen-details" className="divide-y divide-gray-4">
+          <Accordion.Trigger className="group flex-between w-full p-2 text-sm font-medium text-gray-11 outline-accentA-8 transition-colors hover:text-gray-12">
             Details
             <Icons.CaretDown
               size={18}
               className="transition-transform duration-300 group-data-[state=open]:rotate-180"
             />
           </Accordion.Trigger>
-          <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
+          <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
             <div className="p-2">
               <pre className="max-h-64 overflow-y-auto text-wrap font-mono text-xs">
                 {JSON.stringify({ ...generation, images: undefined }, null, 2)}

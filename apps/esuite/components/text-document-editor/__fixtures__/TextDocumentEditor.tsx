@@ -1,6 +1,6 @@
 'use client'
 
-import { TextDocumentEditor } from '@corale/esuite/components/text-document-editor/TextDocumentEditor'
+import { TextDocumentEditor } from '@/components/text-document-editor/TextDocumentEditor'
 
 export default function Fixture() {
   return (

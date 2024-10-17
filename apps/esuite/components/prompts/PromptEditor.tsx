@@ -1,14 +1,12 @@
-import { useRef, useState } from 'react'
-import { twx } from '@corale/esuite/app/lib/utils'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { Button, IconButton } from '@corale/esuite/components/ui/Button'
-import { Panel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
+import { twx } from '@/app/lib/utils'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { Button, IconButton } from '@/components/ui/Button'
+import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
-
+import { useRef, useState } from 'react'
 import { MDXEditor } from '../mdx-editor/MDXEditor'
-
-import type { MDXEditorMethods } from '@mdxeditor/editor'
 
 const TextFieldGhost = twx.input`flex outline-none disabled:cursor-not-allowed disabled:opacity-50 w-full text-base 
   font-normal text-gray-12 placeholder:text-grayA-10 sm:text-sm`
@@ -37,7 +35,7 @@ export const PromptEditor = ({
         <PanelTitle href="/prompts" className="shrink-0">
           Prompt Editor
         </PanelTitle>
-        <Icons.CaretRight size={18} className="text-grayA-10 mx-1 shrink-0" />
+        <Icons.CaretRight size={18} className="mx-1 shrink-0 text-grayA-10" />
 
         <TextFieldGhost
           placeholder="Untitled Prompt"

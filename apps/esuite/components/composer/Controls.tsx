@@ -1,5 +1,5 @@
-import { RectangleHorizontal } from '@corale/esuite/components/icons/RectangleHorizontal'
-import { RectangleVertical } from '@corale/esuite/components/icons/RectangleVertical'
+import { RectangleHorizontal } from '@/components/icons/RectangleHorizontal'
+import { RectangleVertical } from '@/components/icons/RectangleVertical'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Select } from '@radix-ui/themes'
 

@@ -1,14 +1,13 @@
 'use client'
 
-import { memo, useState } from 'react'
-import { useThreadActions } from '@corale/esuite/app/lib/api/actions'
-import { useThread } from '@corale/esuite/app/lib/api/threads'
-import { ModelPickerCmd } from '@corale/esuite/components/command/ModelPickerCmd'
-import { ModelButton } from '@corale/esuite/components/composer/ModelButton'
-import { Button, IconButton } from '@corale/esuite/components/ui/Button'
+import { useThreadActions } from '@/app/lib/api/actions'
+import { useThread } from '@/app/lib/api/threads'
+import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
+import { ModelButton } from '@/components/composer/ModelButton'
+import { Button, IconButton } from '@/components/ui/Button'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
+import { memo, useState } from 'react'
 import ReactTextareaAutosize from 'react-textarea-autosize'
-
 import { TextField } from '../ui/TextField'
 import { AdminOnlyUi } from '../util/AdminOnlyUi'
 
@@ -51,7 +50,7 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
   }
 
   return (
-    <div className="border-gray-5 flex w-full shrink-0 flex-col overflow-hidden border-t [&>div]:shrink-0">
+    <div className="flex w-full shrink-0 flex-col overflow-hidden border-t border-gray-5 [&>div]:shrink-0">
       <div className="flex">
         <Textarea
           minRows={2}
@@ -63,12 +62,12 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
         />
       </div>
 
-      <div className="border-grayA-3 flex gap-2 overflow-hidden border-t p-2">
+      <div className="flex gap-2 overflow-hidden border-t border-grayA-3 p-2">
         <ModelPickerCmd value={modelId} onValueChange={setModelId}>
           <ModelButton modelId={modelId} />
         </ModelPickerCmd>
 
-        <div className="bg-grayA-2 text-gray-10 my-auto hidden h-fit items-center rounded p-1 font-mono text-xs sm:flex">
+        <div className="my-auto hidden h-fit items-center rounded bg-grayA-2 p-1 font-mono text-xs text-gray-10 sm:flex">
           {modelId}
         </div>
 
@@ -114,7 +113,7 @@ const Textarea = ({
           onSend?.()
         }
       }}
-      className="text-gray-12 placeholder:text-grayA-9 w-full resize-none bg-transparent p-2 text-base outline-none"
+      className="w-full resize-none bg-transparent p-2 text-base text-gray-12 outline-none placeholder:text-grayA-9"
     />
   )
 }
@@ -138,7 +137,7 @@ const SendButton = (props: Partial<React.ComponentProps<typeof Button>>) => {
 
 const CommandEnter = () => {
   return (
-    <div className="bg-grayA-5 flex rounded p-0.5">
+    <div className="flex rounded bg-grayA-5 p-0.5">
       <Icons.Command />
       <Icons.ArrowElbowDownLeft />
     </div>

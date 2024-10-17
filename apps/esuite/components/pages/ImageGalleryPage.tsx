@@ -1,12 +1,11 @@
 'use client'
 
-import { cn } from '@corale/esuite/app/lib/utils'
-import { IImage } from '@corale/esuite/components/images/IImage'
-import { ImageCardNext } from '@corale/esuite/components/images/ImageCardNext'
+import { cn } from '@/app/lib/utils'
+import { IImage } from '@/components/images/IImage'
+import { ImageCardNext } from '@/components/images/ImageCardNext'
+import type { EImage } from '@corale/api/convex/types'
 import { Card, DataList } from '@radix-ui/themes'
 import Link from 'next/link'
-
-import type { EImage } from '@corale/api/convex/types'
 
 export const ImageGalleryPage = ({
   imageId,
@@ -35,7 +34,7 @@ export const ImageGalleryPage = ({
                 href={`${basePath}/${image.id}`}
                 key={image.id}
                 className={cn(
-                  'flex-col-center border-gray-4 bg-grayA-1 aspect-square h-full max-h-28 w-full max-w-28 overflow-hidden rounded-md border-2',
+                  'flex-col-center aspect-square h-full max-h-28 w-full max-w-28 overflow-hidden rounded-md border-2 border-gray-4 bg-grayA-1',
                   image.id === imageId && 'border-accent-9',
                 )}
               >
@@ -114,7 +113,7 @@ const ImageCaptionOCRV1Cards = ({ metadata }: { metadata: any[] }) => {
           </p>
         ))}
         <p className="text-xs">
-          caption by <span className="text-gray-11 font-mono text-[0.95em]">{data.modelId}</span>
+          caption by <span className="font-mono text-[0.95em] text-gray-11">{data.modelId}</span>
         </p>
       </Card>
 
@@ -123,7 +122,7 @@ const ImageCaptionOCRV1Cards = ({ metadata }: { metadata: any[] }) => {
           <div className="pb-px text-sm font-medium">OCR</div>
           <p className="text-sm">{data.ocr_texts.join('\n')}</p>
           <p className="text-xs">
-            ocr by <span className="text-gray-11 font-mono text-[0.95em]">{data.modelId}</span>
+            ocr by <span className="font-mono text-[0.95em] text-gray-11">{data.modelId}</span>
           </p>
         </Card>
       )}
@@ -142,7 +141,7 @@ const ImageCaptionOCRV0Cards = ({ metadata }: { metadata: any[] }) => {
         <p className="text-sm">{data.captionDescription}</p>
         <p className="text-xs">
           caption by{' '}
-          <span className="text-gray-11 font-mono text-[0.95em]">{data.captionModelId}</span>
+          <span className="font-mono text-[0.95em] text-gray-11">{data.captionModelId}</span>
         </p>
       </Card>
 
@@ -152,7 +151,7 @@ const ImageCaptionOCRV0Cards = ({ metadata }: { metadata: any[] }) => {
           <p className="text-sm">{data.captionOCR}</p>
           <p className="text-xs">
             ocr by{' '}
-            <span className="text-gray-11 font-mono text-[0.95em]">{data.captionModelId}</span>
+            <span className="font-mono text-[0.95em] text-gray-11">{data.captionModelId}</span>
           </p>
         </Card>
       )}

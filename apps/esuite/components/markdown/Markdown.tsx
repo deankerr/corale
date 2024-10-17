@@ -1,5 +1,5 @@
+import { LinkBadge } from '@/components/message/LinkBadge'
 import { memo } from 'react'
-import { LinkBadge } from '@corale/esuite/components/message/LinkBadge'
 import ReactMarkdown from 'react-markdown'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'

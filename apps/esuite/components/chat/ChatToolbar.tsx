@@ -1,9 +1,9 @@
 'use client'
 
-import { useThread } from '@corale/esuite/app/lib/api/threads'
-import { TextEditorDialog } from '@corale/esuite/components/text-document-editor/TextEditorDialog'
-import { Button } from '@corale/esuite/components/ui/Button'
-import { PanelToolbar } from '@corale/esuite/components/ui/Panel'
+import { useThread } from '@/app/lib/api/threads'
+import { TextEditorDialog } from '@/components/text-document-editor/TextEditorDialog'
+import { Button } from '@/components/ui/Button'
+import { PanelToolbar } from '@/components/ui/Panel'
 
 export const ChatToolbar = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId ?? '')
@@ -20,7 +20,7 @@ export const ChatToolbar = ({ threadId }: { threadId: string }) => {
 
       <div className="grow" />
 
-      <div className="divide-gray-7 text-xxs flex divide-x text-right font-mono">
+      <div className="flex divide-x divide-gray-7 text-right font-mono text-xxs">
         {kv.map(([key, value]) => (
           <div key={key} className="px-2">
             <div className="text-gold-12">{key}</div>

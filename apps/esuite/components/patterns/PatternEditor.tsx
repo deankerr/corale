@@ -1,31 +1,28 @@
 'use client'
 
-import { useState } from 'react'
 import {
   useCreatePattern,
   useDeletePattern,
   usePattern,
   useUpdatePattern,
-} from '@corale/esuite/app/lib/api/patterns'
-import { orderedListReducer, useOrderedList } from '@corale/esuite/app/lib/useOrderedList'
-import { ModelPickerCmd } from '@corale/esuite/components/command/ModelPickerCmd'
-import { ModelButton } from '@corale/esuite/components/composer/ModelButton'
-import { Button, IconButton } from '@corale/esuite/components/ui/Button'
-import { Label } from '@corale/esuite/components/ui/Label'
-import { Panel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
-import { TextField } from '@corale/esuite/components/ui/TextField'
+} from '@/app/lib/api/patterns'
+import { orderedListReducer, useOrderedList } from '@/app/lib/useOrderedList'
+import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
+import { ModelButton } from '@/components/composer/ModelButton'
+import { Button, IconButton } from '@/components/ui/Button'
+import { Label } from '@/components/ui/Label'
+import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
+import { TextField } from '@/components/ui/TextField'
+import type { EMessage, EPattern } from '@corale/api/convex/types'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
-import { Code } from '@radix-ui/themes'
+import { Code, type ButtonProps } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import ReactTextareaAutosize from 'react-textarea-autosize'
 import { toast } from 'sonner'
-
 import { LoadingPage } from '../pages/LoadingPage'
-
-import type { EMessage, EPattern } from '@corale/api/convex/types'
-import type { ButtonProps } from '@radix-ui/themes'
 
 type PatternMessage = EPattern['initialMessages'][number] & { __key: string }
 
@@ -106,7 +103,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
               <div className="flex gap-3 p-4">
                 {/* > avatar */}
                 <div className="shrink-0">
-                  <div className="bg-blackA-1 h-32 w-32 overflow-hidden rounded border">
+                  <div className="h-32 w-32 overflow-hidden rounded border bg-blackA-1">
                     {/* {patternState._id && <SamplePatternAvatar4 className="h-full w-full" />} */}
                   </div>
                 </div>
@@ -135,7 +132,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
                   minRows={4}
                   rows={4}
                   maxRows={4}
-                  className="border-grayA-7 bg-blackA-3 placeholder:text-grayA-8 flex w-full resize-none rounded border p-2 outline-none"
+                  className="flex w-full resize-none rounded border border-grayA-7 bg-blackA-3 p-2 outline-none placeholder:text-grayA-8"
                   value={patternState.description}
                   onChange={(e) => updateField('description', e.target.value)}
                 />
@@ -184,7 +181,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
                 <ReactTextareaAutosize
                   minRows={6}
                   rows={6}
-                  className="border-grayA-7 bg-blackA-3 placeholder:text-grayA-8 flex w-full resize-none rounded border p-4 outline-none"
+                  className="flex w-full resize-none rounded border border-grayA-7 bg-blackA-3 p-4 outline-none placeholder:text-grayA-8"
                   placeholder="You are a really very average assistant."
                   value={patternState.instructions}
                   onChange={(e) => updateField('instructions', e.target.value)}
@@ -239,10 +236,10 @@ function PatternMessagesEditor({
             style={{ contain: 'paint' }}
             data-message-role={message.role}
             data-message-channel={message.channel}
-            className="bg-gray-2 group flex shrink-0 flex-col overflow-hidden rounded border data-[message-channel=hidden]:opacity-60"
+            className="group flex shrink-0 flex-col overflow-hidden rounded border bg-gray-2 data-[message-channel=hidden]:opacity-60"
           >
             {/* > header */}
-            <div className="flex-between border-grayA-3 bg-grayA-2 shrink-0 items-center gap-1 border-b px-2 py-0.5">
+            <div className="flex-between shrink-0 items-center gap-1 border-b border-grayA-3 bg-grayA-2 px-2 py-0.5">
               <div className="flex-start w-20 gap-2">
                 <RoleToggleButton
                   role={message.role}
@@ -321,7 +318,7 @@ function PatternMessagesEditor({
             <ReactTextareaAutosize
               minRows={1}
               rows={1}
-              className="bg-blackA-1 placeholder:text-grayA-8 flex w-full resize-none rounded p-2 outline-none"
+              className="flex w-full resize-none rounded bg-blackA-1 p-2 outline-none placeholder:text-grayA-8"
               placeholder="(blank message)"
               value={message.text}
               onChange={(e) =>

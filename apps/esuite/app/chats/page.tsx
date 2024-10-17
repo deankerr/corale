@@ -1,4 +1,4 @@
-import { Chat } from '@corale/esuite/components/chat/Chat'
+import { Chat } from '@/components/chat/Chat'
 
 export default function Page() {
   return (

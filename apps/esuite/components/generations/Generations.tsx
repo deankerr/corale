@@ -1,8 +1,7 @@
 'use client'
 
-import { useGenerations } from '@corale/esuite/app/lib/api/generations'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
-
+import { useGenerations } from '@/app/lib/api/generations'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import { GenerationCard } from './GenerationCard'
 
 export const Generations = () => {

@@ -1,9 +1,9 @@
-import { memo } from 'react'
-import { htmlTextAtom } from '@corale/esuite/components/artifacts/atoms'
-import { IconButton } from '@corale/esuite/components/ui/Button'
-import { AdminOnlyUi } from '@corale/esuite/components/util/AdminOnlyUi'
+import { htmlTextAtom } from '@/components/artifacts/atoms'
+import { IconButton } from '@/components/ui/Button'
+import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useSetAtom } from 'jotai'
+import { memo } from 'react'
 
 export const Pre = memo(({ children, ...props }: React.ComponentProps<'pre'>) => {
   let text = ''
@@ -17,7 +17,7 @@ export const Pre = memo(({ children, ...props }: React.ComponentProps<'pre'>) =>
   return (
     <pre
       {...props}
-      className="bg-grayA-2 group overflow-auto rounded-md p-2 has-[code]:overflow-hidden [&>code]:block"
+      className="group overflow-auto rounded-md bg-grayA-2 p-2 has-[code]:overflow-hidden [&>code]:block"
     >
       {children}
       <div className="absolute right-2 top-2 hidden space-x-2 group-has-[code]:block">

@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { ImageCardNext } from '@/components/images/ImageCardNext'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { Button } from '@/components/ui/Button'
+import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
+import { TextField } from '@/components/ui/TextField'
 import { api } from '@corale/api/convex/_generated/api'
-import { ImageCardNext } from '@corale/esuite/components/images/ImageCardNext'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { Button } from '@corale/esuite/components/ui/Button'
-import { Panel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
-import { TextField } from '@corale/esuite/components/ui/TextField'
 import { useMutation, usePaginatedQuery } from 'convex/react'
+import { useState } from 'react'
 
 export default function Page() {
   const images = usePaginatedQuery(

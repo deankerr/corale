@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useIsClient } from '@corale/esuite/app/lib/useIsClient'
+import { useIsClient } from '@/app/lib/useIsClient'
 import { Tooltip } from '@radix-ui/themes'
+import { useEffect, useState } from 'react'
 
 export const TimeSince = ({ time }: { time: number }) => {
   const isClient = useIsClient()

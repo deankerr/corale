@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
+import { cn } from '@/app/lib/utils'
 import { Theme } from '@radix-ui/themes'
+import * as React from 'react'
 import { Drawer as DrawerPrimitive } from 'vaul'
 
 const Drawer = ({
@@ -41,12 +41,12 @@ const DrawerContent = React.forwardRef<
       <DrawerPrimitive.Content
         ref={ref}
         className={cn(
-          'border-gray-5 bg-gray-1 fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border',
+          'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border border-gray-5 bg-gray-1',
           className,
         )}
         {...props}
       >
-        <div className="bg-muted mx-auto mt-4 h-2 w-[100px] rounded-full" />
+        <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
         {children}
       </DrawerPrimitive.Content>
     </Theme>
@@ -82,7 +82,7 @@ const DrawerDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn('text-gray-11 text-sm', className)}
+    className={cn('text-sm text-gray-11', className)}
     {...props}
   />
 ))

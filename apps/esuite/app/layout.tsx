@@ -1,20 +1,18 @@
 import './globals.css'
-
+import { cn, environment } from '@/app/lib/utils'
+import { AppShell } from '@/components/layout/AppShell'
+import { LightboxProvider } from '@/components/lightbox/LightboxProvider'
+import { ClientProviders } from '@/components/util/ClientProviders'
+import { TailwindBreakpointIndicator } from '@/components/util/TailwindBreakpointIndicator'
+import { appConfig } from '@/config/config'
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
-import { cn, environment } from '@corale/esuite/app/lib/utils'
-import { AppShell } from '@corale/esuite/components/layout/AppShell'
-import { LightboxProvider } from '@corale/esuite/components/lightbox/LightboxProvider'
-import { ClientProviders } from '@corale/esuite/components/util/ClientProviders'
-import { TailwindBreakpointIndicator } from '@corale/esuite/components/util/TailwindBreakpointIndicator'
-import { appConfig } from '@corale/esuite/config/config'
 import { OpenPanelComponent } from '@openpanel/nextjs'
 import { Theme } from '@radix-ui/themes'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { Toaster } from 'sonner'
-
-import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
   title: {

@@ -1,9 +1,9 @@
 // 'use client'
 
-// import { useListThreadRuns } from '@corale/esuite/app/lib/api/threads'
-// import { PanelBody } from '@corale/esuite/components/ui/Panel'
-// import { RunStatusBadge } from '@corale/esuite/components/ui/RunStatusBadge'
-// import { getErrorMessage, parseJson } from '@corale/esuite/convex/shared/utils'
+// import { useListThreadRuns } from '@/app/lib/api/threads'
+// import { PanelBody } from '@/components/ui/Panel'
+// import { RunStatusBadge } from '@/components/ui/RunStatusBadge'
+// import { getErrorMessage, parseJson } from '@/convex/shared/utils'
 
 export const RunsPanel = ({ threadId, show = false }: { threadId: string; show?: boolean }) => {
   //   const runs = useListThreadRuns(threadId)

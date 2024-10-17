@@ -1,13 +1,11 @@
-import { useMessageTextStream } from '@corale/esuite/app/lib/api/threads'
-import { cn } from '@corale/esuite/app/lib/utils'
+import { useMessageTextStream } from '@/app/lib/api/threads'
+import { cn } from '@/app/lib/utils'
+import type { EMessage } from '@corale/api/convex/types'
 import { Code } from '@radix-ui/themes'
-
 import { Markdown } from '../markdown/Markdown'
 import { Loader } from '../ui/Loader'
 import { MessageEditor } from './MessageEditor'
 import { useMessageContext } from './MessageProvider'
-
-import type { EMessage } from '@corale/api/convex/types'
 
 export const MessageBody = () => {
   const { message, run, isEditing, showJson, textStyle } = useMessageContext()
@@ -57,7 +55,7 @@ const MessageText = ({
   if (!children) return null
   if (textStyle === 'markdown') return <Markdown>{children}</Markdown>
   return (
-    <div className="text-gray-11 whitespace-pre-wrap font-mono font-[15px] leading-7">
+    <div className="whitespace-pre-wrap font-mono font-[15px] leading-7 text-gray-11">
       {children}
     </div>
   )
@@ -65,7 +63,7 @@ const MessageText = ({
 
 const MessageJson = ({ message }: { message: EMessage }) => {
   return (
-    <pre className="bg-blackA-3 text-gray-11 overflow-x-auto whitespace-pre-wrap p-3.5 leading-6">
+    <pre className="overflow-x-auto whitespace-pre-wrap bg-blackA-3 p-3.5 leading-6 text-gray-11">
       {JSON.stringify(message, null, 2)}
     </pre>
   )

@@ -1,8 +1,8 @@
 'use client'
 
-import { Navigation } from '@corale/esuite/components/navigation/Navigation'
-import { IconButton } from '@corale/esuite/components/ui/Button'
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@corale/esuite/components/ui/Sheet'
+import { Navigation } from '@/components/navigation/Navigation'
+import { IconButton } from '@/components/ui/Button'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/Sheet'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
 export const NavigationSheet = ({ children }: { children: React.ReactNode }) => {

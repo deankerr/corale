@@ -1,12 +1,10 @@
 'use client'
 
-import { forwardRef } from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
-import NextImage from 'next/image'
-
-import imageLoader from './image-loader'
-
+import { cn } from '@/app/lib/utils'
 import type { EImage } from '@corale/api/convex/types'
+import NextImage from 'next/image'
+import { forwardRef } from 'react'
+import imageLoader from './image-loader'
 
 type Props = { image: EImage } & Partial<React.ComponentPropsWithoutRef<typeof NextImage>>
 

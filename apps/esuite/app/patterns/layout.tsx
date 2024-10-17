@@ -1,4 +1,4 @@
-import { PatternsNavPanel } from '@corale/esuite/components/patterns/PatternNavPanel'
+import { PatternsNavPanel } from '@/components/patterns/PatternNavPanel'
 
 export const metadata = {
   title: 'Patterns',

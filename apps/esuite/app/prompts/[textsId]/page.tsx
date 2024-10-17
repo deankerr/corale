@@ -1,14 +1,13 @@
 'use client'
 
+import { usePrompt } from '@/app/lib/api/prompts'
+import { PromptEditor } from '@/components/prompts/PromptEditor'
+import { PanelEmpty, PanelLoading } from '@/components/ui/Panel'
 import { api } from '@corale/api/convex/_generated/api'
-import { usePrompt } from '@corale/esuite/app/lib/api/prompts'
-import { PromptEditor } from '@corale/esuite/components/prompts/PromptEditor'
-import { PanelEmpty, PanelLoading } from '@corale/esuite/components/ui/Panel'
+import type { Id } from '@corale/api/convex/types'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-import type { Id } from '@corale/api/convex/types'
 
 export default function Page({ params }: { params: { textsId: string } }) {
   const router = useRouter()

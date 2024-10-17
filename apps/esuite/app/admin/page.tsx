@@ -1,10 +1,10 @@
 'use client'
 
+import { AdminPageWrapper } from '@/app/admin/AdminPageWrapper'
+import { useCachedQuery } from '@/app/lib/api/helpers'
+import { useChatModels } from '@/app/lib/api/models'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import { api } from '@corale/api/convex/_generated/api'
-import { AdminPageWrapper } from '@corale/esuite/app/admin/AdminPageWrapper'
-import { useCachedQuery } from '@corale/esuite/app/lib/api/helpers'
-import { useChatModels } from '@corale/esuite/app/lib/api/models'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Badge, BadgeProps, Card, Heading } from '@radix-ui/themes'
 import { accentColors } from '@radix-ui/themes/props'
@@ -15,7 +15,7 @@ export default function Page() {
 
   return (
     <AdminPageWrapper className="space-y-4">
-      <div className="bg-grayA-2 flex flex-wrap gap-3 p-2">
+      <div className="flex flex-wrap gap-3 bg-grayA-2 p-2">
         {accentColors.map((color) => (
           <Badge key={color} size="3" color={color}>
             {color}

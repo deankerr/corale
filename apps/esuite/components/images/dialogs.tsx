@@ -1,5 +1,5 @@
-import { useDeleteImage } from '@corale/esuite/app/lib/api/images'
-import { Button } from '@corale/esuite/components/ui/Button'
+import { useDeleteImage } from '@/app/lib/api/images'
+import { Button } from '@/components/ui/Button'
 import { AlertDialog } from '@radix-ui/themes'
 
 export const DeleteImageDialog = ({

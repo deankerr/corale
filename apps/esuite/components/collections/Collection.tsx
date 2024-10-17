@@ -1,29 +1,19 @@
 'use client'
 
-import { useState } from 'react'
-import { useCollection, useCollectionImages } from '@corale/esuite/app/lib/api/collections'
-import {
-  DeleteCollectionDialog,
-  EditCollectionTitleDialog,
-} from '@corale/esuite/components/collections/dialogs'
-import { DotsThreeFillX } from '@corale/esuite/components/icons/DotsThreeFillX'
-import { ImageCardNext } from '@corale/esuite/components/images/ImageCardNext'
-import { useLightbox } from '@corale/esuite/components/lightbox/hooks'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { IconButton } from '@corale/esuite/components/ui/Button'
-import { InfiniteScroll } from '@corale/esuite/components/ui/InfiniteScroll'
-import {
-  Panel,
-  PanelEmpty,
-  PanelHeader,
-  PanelLoading,
-  PanelTitle,
-} from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import { useCollection, useCollectionImages } from '@/app/lib/api/collections'
+import { DeleteCollectionDialog, EditCollectionTitleDialog } from '@/components/collections/dialogs'
+import { DotsThreeFillX } from '@/components/icons/DotsThreeFillX'
+import { ImageCardNext } from '@/components/images/ImageCardNext'
+import { useLightbox } from '@/components/lightbox/hooks'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { IconButton } from '@/components/ui/Button'
+import { InfiniteScroll } from '@/components/ui/InfiniteScroll'
+import { Panel, PanelEmpty, PanelHeader, PanelLoading, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu, Grid } from '@radix-ui/themes'
+import { useState } from 'react'
 import { Masonry } from 'react-plock'
-
 import { Loader } from '../ui/Loader'
 
 export const Collection = ({ collectionId }: { collectionId: string }) => {

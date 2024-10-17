@@ -1,10 +1,10 @@
 'use client'
 
-import { useGenerate } from '@corale/esuite/app/lib/api/generations'
-import { GenerateForm } from '@corale/esuite/components/generations/GenerateForm'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { Panel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import { useGenerate } from '@/app/lib/api/generations'
+import { GenerateForm } from '@/components/generations/GenerateForm'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 
 export const GeneratePanel = () => {
   const generate = useGenerate()

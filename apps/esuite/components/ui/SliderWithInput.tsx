@@ -1,4 +1,4 @@
-import { TextField } from '@corale/esuite/components/ui/TextField'
+import { TextField } from '@/components/ui/TextField'
 import { Slider } from '@radix-ui/themes'
 
 export const SliderWithInput = ({

@@ -1,14 +1,12 @@
 'use client'
 
-import * as React from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { IconButton } from '@corale/esuite/components/ui/Button'
+import { cn } from '@/app/lib/utils'
+import { IconButton } from '@/components/ui/Button'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
 import { Theme } from '@radix-ui/themes'
-import { cva } from 'class-variance-authority'
-
-import type { VariantProps } from 'class-variance-authority'
+import { cva, type VariantProps } from 'class-variance-authority'
+import * as React from 'react'
 
 const Sheet = SheetPrimitive.Root
 
@@ -24,7 +22,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 bg-black/80',
+      'fixed inset-0 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
       className,
     )}
     {...props}
@@ -113,7 +111,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
-    className={cn('text-muted-foreground text-sm', className)}
+    className={cn('text-sm text-muted-foreground', className)}
     {...props}
   />
 ))

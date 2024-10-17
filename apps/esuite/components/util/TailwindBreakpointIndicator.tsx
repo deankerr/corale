@@ -1,7 +1,7 @@
 'use client'
 
-import { cn } from '@corale/esuite/app/lib/utils'
-import { ClientOnly } from '@corale/esuite/components/util/ClientOnly'
+import { cn } from '@/app/lib/utils'
+import { ClientOnly } from '@/components/util/ClientOnly'
 import { useWindowSize } from '@react-hookz/web'
 
 export function TailwindBreakpointIndicator() {

@@ -1,5 +1,4 @@
-import { ChatsNavPanel } from '@corale/esuite/components/chat/ChatsNavPanel'
-
+import { ChatsNavPanel } from '@/components/chat/ChatsNavPanel'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

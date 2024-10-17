@@ -1,19 +1,17 @@
+import { useCollections } from '@/app/lib/api/collections'
+import { CreateCollectionDialog } from '@/components/collections/dialogs'
+import { DotsThreeFillY } from '@/components/icons/DotsThreeFillY'
+import { DeleteImageDialog } from '@/components/images/dialogs'
+import { IconButton } from '@/components/ui/Button'
 import { api } from '@corale/api/convex/_generated/api'
-import { useCollections } from '@corale/esuite/app/lib/api/collections'
-import { CreateCollectionDialog } from '@corale/esuite/components/collections/dialogs'
-import { DotsThreeFillY } from '@corale/esuite/components/icons/DotsThreeFillY'
-import { DeleteImageDialog } from '@corale/esuite/components/images/dialogs'
-import { IconButton } from '@corale/esuite/components/ui/Button'
+import type { EImage } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'
 import NextImage from 'next/image'
 import Link from 'next/link'
 import { toast } from 'sonner'
-
 import imageLoader from './image-loader'
-
-import type { EImage } from '@corale/api/convex/types'
 
 export const ImageCardNext = ({
   image,
@@ -45,7 +43,7 @@ export const ImageCardNext = ({
         className="h-full w-full object-cover"
         loader={imageLoader}
       />
-      <div className="border-grayA-5 absolute inset-0 rounded-lg border-2" />
+      <div className="absolute inset-0 rounded-lg border-2 border-grayA-5" />
       {children}
 
       <DropdownMenu.Root>

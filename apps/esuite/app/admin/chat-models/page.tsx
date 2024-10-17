@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { AdminPageWrapper } from '@corale/esuite/app/admin/AdminPageWrapper'
-import { ModelsTable } from '@corale/esuite/app/admin/chat-models/ModelsTable'
-import { useChatModels } from '@corale/esuite/app/lib/api/models'
-import { ModelLogo } from '@corale/esuite/components/icons/ModelLogo'
-import { SearchField } from '@corale/esuite/components/ui/SearchField'
+import { AdminPageWrapper } from '@/app/admin/AdminPageWrapper'
+import { ModelsTable } from '@/app/admin/chat-models/ModelsTable'
+import { useChatModels } from '@/app/lib/api/models'
+import { ModelLogo } from '@/components/icons/ModelLogo'
+import { SearchField } from '@/components/ui/SearchField'
 import { Card, Tabs } from '@radix-ui/themes'
 import fuzzysort from 'fuzzysort'
+import { useState } from 'react'
 
 export default function Page() {
   const chatModels = useChatModels()
@@ -76,7 +76,7 @@ export default function Page() {
                             </div>
                           </>
                         ) : (
-                          <div className="text-grass-11 row-span-2 place-self-center">free</div>
+                          <div className="row-span-2 place-self-center text-grass-11">free</div>
                         )}
                       </div>
                     </div>

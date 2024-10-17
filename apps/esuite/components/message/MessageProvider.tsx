@@ -1,9 +1,8 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
-import { useRun, useUpdateMessage } from '@corale/esuite/app/lib/api/threads'
-import { useViewer } from '@corale/esuite/app/lib/api/users'
-import { toast } from 'sonner'
-
+import { useRun, useUpdateMessage } from '@/app/lib/api/threads'
+import { useViewer } from '@/app/lib/api/users'
 import type { EMessage, ERun } from '@corale/api/convex/types'
+import React, { createContext, useCallback, useContext, useState } from 'react'
+import { toast } from 'sonner'
 
 type EMessageUpdate = { role: EMessage['role']; name: EMessage['name']; text: EMessage['text'] }
 

@@ -1,13 +1,13 @@
 'use client'
 
+import { useThreadTextSearchResults } from '@/app/lib/api/threads'
+import { cn } from '@/app/lib/utils'
+import { FishFoodIcon } from '@/components/icons/FishFoodIcon'
+import { Message } from '@/components/message/Message'
+import { Loader } from '@/components/ui/Loader'
+import { PanelBody } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useEffect, useState } from 'react'
-import { useThreadTextSearchResults } from '@corale/esuite/app/lib/api/threads'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { FishFoodIcon } from '@corale/esuite/components/icons/FishFoodIcon'
-import { Message } from '@corale/esuite/components/message/Message'
-import { Loader } from '@corale/esuite/components/ui/Loader'
-import { PanelBody } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
 
 export const MessageSearchResults = ({ threadId }: { threadId: string }) => {
   const { results, isLoading, isSkipped } = useThreadTextSearchResults(threadId)
@@ -38,8 +38,8 @@ export const MessageSearchResults = ({ threadId }: { threadId: string }) => {
 
             {results.length === 0 && !isLoading ? (
               <div className="flex-col-center h-full w-full">
-                <FishFoodIcon className="text-gray-10 size-36" />
-                <div className="text-gray-11 text-base font-medium">No results.</div>
+                <FishFoodIcon className="size-36 text-gray-10" />
+                <div className="text-base font-medium text-gray-11">No results.</div>
               </div>
             ) : null}
           </ScrollArea>

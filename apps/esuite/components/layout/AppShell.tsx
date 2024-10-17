@@ -1,4 +1,4 @@
-import { NavigationRail } from '@corale/esuite/components/navigation/NavigationRail'
+import { NavigationRail } from '@/components/navigation/NavigationRail'
 
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
   return (

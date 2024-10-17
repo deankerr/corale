@@ -1,11 +1,11 @@
 'use client'
 
-import { usePrompts } from '@corale/esuite/app/lib/api/prompts'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { Button } from '@corale/esuite/components/ui/Button'
-import { NavPanel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import { usePrompts } from '@/app/lib/api/prompts'
+import { cn } from '@/app/lib/utils'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { Button } from '@/components/ui/Button'
+import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -35,7 +35,7 @@ export const PromptsNavPanel = () => {
               key={prompt._id}
               href={`/prompts/${prompt._id}`}
               className={cn(
-                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
+                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
                 prompt._id === params.textsId && 'bg-gray-3 hover:bg-gray-3',
               )}
             >

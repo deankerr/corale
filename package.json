@@ -7,9 +7,14 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:ws2": "pnpm --filter @corale/ws2 dev",
     "dev:esuite": "pnpm --filter @corale/esuite dev",
+    "typecheck:esuite": "pnpm --filter @corale/esuite typecheck",
     "dev:api": "pnpm --filter @corale/api dev",
+    "typecheck:api": "pnpm --filter @corale/api typecheck",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.6",
+    "typescript": "^5.6.3"
   }
 }

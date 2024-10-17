@@ -1,7 +1,6 @@
-import React, { forwardRef } from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
+import { cn } from '@/app/lib/utils'
 import { Button as RadixButton, IconButton as RadixIconButton } from '@radix-ui/themes'
-
+import React, { forwardRef } from 'react'
 import type { SetRequired } from 'type-fest'
 
 export const IconButton = forwardRef<

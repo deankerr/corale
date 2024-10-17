@@ -1,5 +1,5 @@
-import { GeneratePanel } from '@corale/esuite/components/generations/GeneratePanel'
-import { Generations } from '@corale/esuite/components/generations/Generations'
+import { GeneratePanel } from '@/components/generations/GeneratePanel'
+import { Generations } from '@/components/generations/Generations'
 
 export default function Page() {
   return (

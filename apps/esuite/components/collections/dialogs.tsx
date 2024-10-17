@@ -1,12 +1,11 @@
-import { useState } from 'react'
+import { Button } from '@/components/ui/Button'
 import { api } from '@corale/api/convex/_generated/api'
-import { Button } from '@corale/esuite/components/ui/Button'
+import type { Id } from '@corale/api/convex/types'
 import { AlertDialog, Dialog, TextField } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { toast } from 'sonner'
-
-import type { Id } from '@corale/api/convex/types'
 
 export const CreateCollectionDialog = ({
   imageId,

@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { ModelLogo } from '@corale/esuite/components/icons/ModelLogo'
+import { cn } from '@/app/lib/utils'
+import { ModelLogo } from '@/components/icons/ModelLogo'
+import type { EChatModel } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Table } from '@radix-ui/themes'
-
-import type { EChatModel } from '@corale/api/convex/types'
+import { useState } from 'react'
 
 export const ModelsTable = ({
   models,
@@ -76,7 +75,7 @@ export const ModelsTable = ({
               <Table.Cell maxWidth="360px">{model.provider}</Table.Cell>
               <Table.Cell justify="end">{model.internalScore}</Table.Cell>
               <Table.Cell>
-                {model.tags.join(', ') || <span className="text-gray-10 italic">none</span>}
+                {model.tags.join(', ') || <span className="italic text-gray-10">none</span>}
               </Table.Cell>
               <Table.Cell>{model.creatorName}</Table.Cell>
               <Table.Cell className="font-mono text-xs">{JSON.stringify(model.pricing)}</Table.Cell>

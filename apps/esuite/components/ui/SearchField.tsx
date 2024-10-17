@@ -1,6 +1,6 @@
-import { cn } from '@corale/esuite/app/lib/utils'
-import { IconButton } from '@corale/esuite/components/ui/Button'
-import { TextField, TextFieldSlot } from '@corale/esuite/components/ui/TextField'
+import { cn } from '@/app/lib/utils'
+import { IconButton } from '@/components/ui/Button'
+import { TextField, TextFieldSlot } from '@/components/ui/TextField'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
 export const SearchField = (props: React.ComponentProps<typeof TextField>) => {

@@ -1,15 +1,14 @@
 'use client'
 
-import { memo, useCallback, useRef, useState } from 'react'
-import { useMessageFeedQuery } from '@corale/esuite/app/lib/api/messages'
-import { twx } from '@corale/esuite/app/lib/utils'
-import { Message } from '@corale/esuite/components/message/Message'
-import { Loader } from '@corale/esuite/components/ui/Loader'
-import { PanelBody } from '@corale/esuite/components/ui/Panel'
-import { AdminOnlyUi } from '@corale/esuite/components/util/AdminOnlyUi'
-import { Components, ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
-
+import { useMessageFeedQuery } from '@/app/lib/api/messages'
+import { twx } from '@/app/lib/utils'
+import { Message } from '@/components/message/Message'
+import { Loader } from '@/components/ui/Loader'
+import { PanelBody } from '@/components/ui/Panel'
+import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
 import type { EMessage } from '@corale/api/convex/types'
+import { memo, useCallback, useRef, useState } from 'react'
+import { Components, ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
 export type MessageFeedContext = {
   status: 'LoadingFirstPage' | 'CanLoadMore' | 'LoadingMore' | 'Exhausted'
@@ -105,7 +104,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
       )}
 
       <AdminOnlyUi>
-        <div className="text-gray-9 absolute right-5 top-1 text-right font-mono text-xs">
+        <div className="absolute right-5 top-1 text-right font-mono text-xs text-gray-9">
           {isAtTop ? 'atTop' : ''} {isAtBottom ? 'atBottom' : ''} {-prependedCount} {results.length}
         </div>
       </AdminOnlyUi>
@@ -123,7 +122,7 @@ const MemoizedMessage = memo(({ message }: { message: EMessage }) => {
 MemoizedMessage.displayName = 'MMessage'
 
 const EmptyPlaceholder: Components<any, any>['EmptyPlaceholder'] = ({ context }) => (
-  <div className="flex-center bg-gray-1 h-full w-full">
+  <div className="flex-center h-full w-full bg-gray-1">
     {context.status === 'LoadingFirstPage' && <Loader type="zoomies" />}
   </div>
 )
@@ -132,7 +131,7 @@ const Header: Components<any, any>['Header'] = ({ context }) => {
   return (
     <div className="mx-auto flex max-w-3xl items-center px-1 pb-1.5 pt-3 md:px-6">
       {context.status === 'Exhausted' && (
-        <div className="flex-center text-gray-8 h-12 w-full rounded-md border">
+        <div className="flex-center h-12 w-full rounded-md border text-gray-8">
           <div>This is the start of the chat.</div>
         </div>
       )}

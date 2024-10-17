@@ -1,11 +1,11 @@
 'use client'
 
-import { useCollections } from '@corale/esuite/app/lib/api/collections'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { CreateCollectionDialog } from '@corale/esuite/components/collections/dialogs'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { NavPanel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import { useCollections } from '@/app/lib/api/collections'
+import { cn } from '@/app/lib/utils'
+import { CreateCollectionDialog } from '@/components/collections/dialogs'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@radix-ui/themes'
 import Link from 'next/link'
@@ -37,7 +37,7 @@ export const CollectionsNavPanel = () => {
           <Link
             href={`/collections/all`}
             className={cn(
-              'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
+              'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
               params.collectionId === 'all' && 'bg-gray-3 hover:bg-gray-3',
             )}
           >
@@ -49,7 +49,7 @@ export const CollectionsNavPanel = () => {
               key={collection._id}
               href={`/collections/${collection.id}`}
               className={cn(
-                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
+                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
                 params.collectionId === collection.id && 'bg-gray-3 hover:bg-gray-3',
               )}
             >

@@ -1,4 +1,4 @@
-import { getConvexSiteUrl } from '@corale/esuite/app/lib/utils'
+import { getConvexSiteUrl } from '@/app/lib/utils'
 
 export async function generateMetadata({ params }: { params: { threadId: string } }) {
   const response = await fetch(`${getConvexSiteUrl()}/metadata?route=chats&id=${params.threadId}`)

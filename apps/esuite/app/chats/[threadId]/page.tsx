@@ -1,10 +1,10 @@
 'use client'
 
-import { htmlTextAtom } from '@corale/esuite/components/artifacts/atoms'
-import { HTMLRenderer } from '@corale/esuite/components/artifacts/HTMLRenderer'
-import { Chat } from '@corale/esuite/components/chat/Chat'
-import { IconButton } from '@corale/esuite/components/ui/Button'
-import { Panel, PanelHeader } from '@corale/esuite/components/ui/Panel'
+import { htmlTextAtom } from '@/components/artifacts/atoms'
+import { HTMLRenderer } from '@/components/artifacts/HTMLRenderer'
+import { Chat } from '@/components/chat/Chat'
+import { IconButton } from '@/components/ui/Button'
+import { Panel, PanelHeader } from '@/components/ui/Panel'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useAtom } from 'jotai'
 

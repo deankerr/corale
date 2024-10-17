@@ -1,4 +1,4 @@
-import { cn } from '@corale/esuite/app/lib/utils'
+import { cn } from '@/app/lib/utils'
 import ReactTextareaAutosize from 'react-textarea-autosize'
 
 export const TextareaAutosize = ({
@@ -19,8 +19,8 @@ export const TextareaAutosize = ({
         onChange?.(e)
       }}
       className={cn(
-        'focus-visible:outline-accent-8 flex outline-none -outline-offset-1 focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50',
-        'placeholder:text-grayA-10 w-full resize-none rounded border bg-black/25 p-2 font-normal',
+        'flex outline-none -outline-offset-1 focus-visible:outline-2 focus-visible:outline-accent-8 disabled:cursor-not-allowed disabled:opacity-50',
+        'w-full resize-none rounded border bg-black/25 p-2 font-normal placeholder:text-grayA-10',
         className,
       )}
     />

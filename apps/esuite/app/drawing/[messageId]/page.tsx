@@ -1,12 +1,12 @@
 'use client'
 
+import { useMessageById } from '@/app/lib/api/messages'
+import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
+import { EmptyPage } from '@/components/pages/EmptyPage'
+import { LoadingPage } from '@/components/pages/LoadingPage'
+import { Panel } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useMemo } from 'react'
-import { useMessageById } from '@corale/esuite/app/lib/api/messages'
-import { SVGRenderer } from '@corale/esuite/components/artifacts/SVGRenderer'
-import { EmptyPage } from '@corale/esuite/components/pages/EmptyPage'
-import { LoadingPage } from '@corale/esuite/components/pages/LoadingPage'
-import { Panel } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
 
 const extractSVGCodeblocks = (messageText: string): string[] => {
   const svgRegex = /```svg\n([\s\S]*?)\n```/g

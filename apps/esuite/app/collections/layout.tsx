@@ -1,5 +1,4 @@
-import { CollectionsNavPanel } from '@corale/esuite/components/collections/CollectionsNavPanel'
-
+import { CollectionsNavPanel } from '@/components/collections/CollectionsNavPanel'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

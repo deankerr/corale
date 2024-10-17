@@ -5,16 +5,18 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
     "target": "ES2022",
     "paths": {
-      "@corale/esuite/*": ["./apps/esuite/*"],
       "@corale/api/*": ["./packages/api/*"]
     }
   }

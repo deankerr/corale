@@ -1,14 +1,12 @@
 'use client'
 
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
-import { useThread, useUpdateThread } from '@corale/esuite/app/lib/api/threads'
+import { useThread, useUpdateThread } from '@/app/lib/api/threads'
+import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button, Dialog, IconButton } from '@radix-ui/themes'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { toast } from 'sonner'
-
 import { MDXEditor } from '../mdx-editor/MDXEditor'
-
-import type { MDXEditorMethods } from '@mdxeditor/editor'
 
 export interface TextEditorDialogRef {
   open: () => void
@@ -61,9 +59,9 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
           maxWidth="42rem"
           className="rounded-md p-0"
         >
-          <div className="border-grayA-3 bg-gray-3 grid h-full max-h-[80vh] w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-md border">
+          <div className="grid h-full max-h-[80vh] w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-md border border-grayA-3 bg-gray-3">
             {/* header */}
-            <div className="flex-between border-grayA-3 h-10 border-b px-2 font-medium">
+            <div className="flex-between h-10 border-b border-grayA-3 px-2 font-medium">
               <div className="flex-start shrink-0">
                 <IconButton variant="ghost" color="gray" disabled>
                   <Icons.DotsNine className="size-5" />
@@ -83,7 +81,7 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
 
             {/* text area */}
             <div
-              className="bg-blackA-4 text-gray-12 placeholder:text-grayA-10 min-h-80 overflow-y-auto"
+              className="min-h-80 overflow-y-auto bg-blackA-4 text-gray-12 placeholder:text-grayA-10"
               onClick={() => editorRef.current?.focus()}
             >
               <MDXEditor
@@ -96,7 +94,7 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
             </div>
 
             {/* footer */}
-            <div className="border-grayA-3 flex h-12 items-center border-t px-2 text-sm">
+            <div className="flex h-12 items-center border-t border-grayA-3 px-2 text-sm">
               <Button variant="soft" size="1" color="gray" disabled>
                 {thread?.title ?? 'Untitled Thread'}
               </Button>

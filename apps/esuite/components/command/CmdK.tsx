@@ -1,9 +1,9 @@
 'use client'
 
-import { forwardRef } from 'react'
-import { cn, twx } from '@corale/esuite/app/lib/utils'
+import { cn, twx } from '@/app/lib/utils'
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr'
 import { Command as CommandPrimitive } from 'cmdk'
+import { forwardRef } from 'react'
 
 const Command = twx(
   CommandPrimitive,
@@ -14,14 +14,14 @@ const Input = forwardRef<
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
   <div
-    className={cn('border-grayA-3 flex shrink-0 items-center border-b px-3', className)}
+    className={cn('flex shrink-0 items-center border-b border-grayA-3 px-3', className)}
     cmdk-input-wrapper=""
   >
     <MagnifyingGlass className="mr-2 size-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        'placeholder:text-gray-10 flex h-12 w-full border-none bg-transparent py-3 text-base outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'flex h-12 w-full border-none bg-transparent py-3 text-base outline-none placeholder:text-gray-10 disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}

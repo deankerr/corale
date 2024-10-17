@@ -1,15 +1,13 @@
-import { useDeleteMessage, useUpdateMessage } from '@corale/esuite/app/lib/api/threads'
-import { cn } from '@corale/esuite/app/lib/utils'
+import { useDeleteMessage, useUpdateMessage } from '@/app/lib/api/threads'
+import { cn } from '@/app/lib/utils'
+import type { EMessage } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, DropdownMenu } from '@radix-ui/themes'
 import Link from 'next/link'
 import { toast } from 'sonner'
-
 import { IconButton } from '../ui/Button'
 import { useMessageContext } from './MessageProvider'
 import { TimeSince } from './TimeSince'
-
-import type { EMessage } from '@corale/api/convex/types'
 
 export const MessageHeader = () => {
   const {
@@ -48,7 +46,7 @@ export const MessageHeader = () => {
   return (
     <div
       className={cn(
-        'border-grayA-3 bg-grayA-2 flex h-12 shrink-0 items-center gap-1 border-b p-2.5',
+        'flex h-12 shrink-0 items-center gap-1 border-b border-grayA-3 bg-grayA-2 p-2.5',
         isHidden && 'opacity-60',
       )}
     >
@@ -62,7 +60,7 @@ export const MessageHeader = () => {
         <Code color={color} className="whitespace-pre px-1.5 uppercase" size="3">
           {message.role}
         </Code>
-        <div className="text-gray-11 font-medium">{name}</div>
+        <div className="font-medium text-gray-11">{name}</div>
       </div>
 
       <div className="grow" />
@@ -74,7 +72,7 @@ export const MessageHeader = () => {
         </Link>
       )}
 
-      <div className="flex-center text-gray-10 gap-1 font-mono">
+      <div className="flex-center gap-1 font-mono text-gray-10">
         <TimeSince time={Math.floor(message._creationTime)} />
         <div>⋅</div>
         <div>#{message.series}</div>

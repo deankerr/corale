@@ -1,14 +1,13 @@
 'use client'
 
-import { usePatterns } from '@corale/esuite/app/lib/api/patterns'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { NavPanel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import { usePatterns } from '@/app/lib/api/patterns'
+import { cn } from '@/app/lib/utils'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-
 import { Button } from '../ui/Button'
 
 export const PatternsNavPanel = () => {
@@ -40,7 +39,7 @@ export const PatternsNavPanel = () => {
               key={pattern._id}
               href={`/patterns/${pattern.xid}`}
               className={cn(
-                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
+                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
                 currentXid === pattern.xid && 'bg-gray-3 hover:bg-gray-3',
               )}
             >

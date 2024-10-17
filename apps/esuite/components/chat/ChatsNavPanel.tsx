@@ -1,18 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import { useThreads } from '@corale/esuite/app/lib/api/threads'
-import { cn } from '@corale/esuite/app/lib/utils'
-import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
-import { IconButton } from '@corale/esuite/components/ui/Button'
-import { NavPanel, PanelHeader, PanelTitle } from '@corale/esuite/components/ui/Panel'
-import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import { useThreads } from '@/app/lib/api/threads'
+import { cn } from '@/app/lib/utils'
+import { NavigationButton } from '@/components/navigation/NavigationSheet'
+import { IconButton } from '@/components/ui/Button'
+import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { ScrollArea } from '@/components/ui/ScrollArea'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@radix-ui/themes'
 import fuzzysort from 'fuzzysort'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-
+import { useState } from 'react'
 import { SearchField } from '../ui/SearchField'
 
 export const ChatsNavPanel = () => {
@@ -85,7 +84,7 @@ export const ChatsNavPanel = () => {
               key={thread._id}
               href={`/chats/${thread.slug}`}
               className={cn(
-                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
+                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
                 thread.slug === params.threadId && 'bg-gray-3 hover:bg-gray-3',
                 !!searchText && !('_fuzzysort' in thread) && 'opacity-50',
               )}

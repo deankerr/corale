@@ -1,7 +1,7 @@
 'use client'
 
-import { useThread, useUpdateThread } from '@corale/esuite/app/lib/api/threads'
-import { IconButton } from '@corale/esuite/components/ui/Button'
+import { useThread, useUpdateThread } from '@/app/lib/api/threads'
+import { IconButton } from '@/components/ui/Button'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
 export const FavouriteButton = ({ threadId }: { threadId: string }) => {

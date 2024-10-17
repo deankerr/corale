@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { cn } from '@corale/esuite/app/lib/utils'
+import { cn } from '@/app/lib/utils'
+import type { Icon } from '@phosphor-icons/react/dist/lib/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { IconButton } from '@radix-ui/themes'
+import { useState } from 'react'
 import { Play, useHowl } from 'rehowl'
-
-import type { Icon } from '@phosphor-icons/react/dist/lib/types'
 
 const icon: Record<string, Icon> = {
   playing: Icons.Stop,

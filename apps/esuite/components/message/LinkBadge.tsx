@@ -1,7 +1,6 @@
-import { Badge } from '@corale/esuite/components/ui/Badge'
-import { Link } from '@corale/esuite/components/ui/Link'
+import { Badge } from '@/components/ui/Badge'
+import { Link } from '@/components/ui/Link'
 import { RiExternalLinkLine } from '@remixicon/react'
-
 import type { Url } from 'next/dist/shared/lib/router/router'
 
 export const LinkBadge = ({ href, ...props }: React.ComponentProps<typeof Link>) => {
