@@ -1,74 +1,3 @@
-import * as Colors from '@radix-ui/colors'
-
-// * hex values
-const darkColors = {
-  ...Colors.amberDark,
-  ...Colors.blueDark,
-  ...Colors.bronzeDark,
-  ...Colors.brownDark,
-  ...Colors.crimsonDark,
-  ...Colors.cyanDark,
-  ...Colors.goldDark,
-  ...Colors.grassDark,
-  ...Colors.grayDark,
-  ...Colors.greenDark,
-  ...Colors.indigoDark,
-  ...Colors.irisDark,
-  ...Colors.jadeDark,
-  ...Colors.limeDark,
-  ...Colors.mauveDark,
-  ...Colors.mintDark,
-  ...Colors.oliveDark,
-  ...Colors.orangeDark,
-  ...Colors.pinkDark,
-  ...Colors.plumDark,
-  ...Colors.purpleDark,
-  ...Colors.redDark,
-  ...Colors.rubyDark,
-  ...Colors.sageDark,
-  ...Colors.sandDark,
-  ...Colors.skyDark,
-  ...Colors.slateDark,
-  ...Colors.tealDark,
-  ...Colors.tomatoDark,
-  ...Colors.violetDark,
-  ...Colors.yellowDark,
-}
-
-const darkColorsAlpha = {
-  ...Colors.amberDarkA,
-  ...Colors.blueDarkA,
-  ...Colors.bronzeDarkA,
-  ...Colors.brownDarkA,
-  ...Colors.crimsonDarkA,
-  ...Colors.cyanDarkA,
-  ...Colors.goldDarkA,
-  ...Colors.grassDarkA,
-  ...Colors.grayDarkA,
-  ...Colors.greenDarkA,
-  ...Colors.indigoDarkA,
-  ...Colors.irisDarkA,
-  ...Colors.jadeDarkA,
-  ...Colors.limeDarkA,
-  ...Colors.mauveDarkA,
-  ...Colors.mintDarkA,
-  ...Colors.oliveDarkA,
-  ...Colors.orangeDarkA,
-  ...Colors.pinkDarkA,
-  ...Colors.plumDarkA,
-  ...Colors.purpleDarkA,
-  ...Colors.redDarkA,
-  ...Colors.rubyDarkA,
-  ...Colors.sageDarkA,
-  ...Colors.sandDarkA,
-  ...Colors.skyDarkA,
-  ...Colors.slateDarkA,
-  ...Colors.tealDarkA,
-  ...Colors.tomatoDarkA,
-  ...Colors.violetDarkA,
-  ...Colors.yellowDarkA,
-}
-
 function createFullScale(name: string) {
   const steps = [...Array(12)].map((_, i) => [i + 1, `var(--${name}${i + 1})`])
   const functional = [
@@ -148,10 +77,6 @@ function createRadixColors() {
 }
 
 const colors = {
-  hex: {
-    ...darkColors,
-    ...darkColorsAlpha,
-  },
   css: createRadixColors(),
 }
 

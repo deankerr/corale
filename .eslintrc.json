@@ -4,5 +4,10 @@
     "no-undef": "off",
     "no-unused-vars": "off"
   },
-  "ignorePatterns": ["_generated"]
+  "ignorePatterns": ["_generated"],
+  "settings": {
+    "next": {
+      "rootDir": "packages/esuite/"
+    }
+  }
 }
