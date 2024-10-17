@@ -15,17 +15,81 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
 
-  apps/esuite:
+  packages/api:
+    dependencies:
+      '@ai-sdk/openai':
+        specifier: ^0.0.67
+        version: 0.0.67(zod@3.23.8)
+      '@fal-ai/serverless-client':
+        specifier: ^0.15.0
+        version: 0.15.0
+      ai:
+        specifier: ^3.4.12
+        version: 3.4.12(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.12(typescript@5.6.3))(zod@3.23.8)
+      convex:
+        specifier: ^1.16.5
+        version: 1.16.5(@clerk/clerk-react@5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      convex-ents:
+        specifier: ^0.11.0
+        version: 0.11.0(convex@1.16.5(@clerk/clerk-react@5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      convex-helpers:
+        specifier: ^0.1.60
+        version: 0.1.60(convex@1.16.5(@clerk/clerk-react@5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(zod@3.23.8)
+      deep-object-diff:
+        specifier: ^1.1.9
+        version: 1.1.9
+      fast-content-type-parse:
+        specifier: ^2.0.0
+        version: 2.0.0
+      itty-time:
+        specifier: ^1.0.6
+        version: 1.0.6
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
+      nanoid:
+        specifier: ^5.0.7
+        version: 5.0.7
+      remeda:
+        specifier: ^2.15.0
+        version: 2.15.0
+      sharp:
+        specifier: ^0.33.5
+        version: 0.33.5
+      svix:
+        specifier: ^1.37.0
+        version: 1.37.0
+      ufo:
+        specifier: ^1.5.4
+        version: 1.5.4
+      valibot:
+        specifier: ^0.42.1
+        version: 0.42.1(typescript@5.6.3)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@clerk/nextjs':
+        specifier: ^5.7.3
+        version: 5.7.3(next@14.2.15(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/node':
+        specifier: ^22.7.5
+        version: 22.7.5
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+
+  packages/esuite:
     dependencies:
       '@clerk/nextjs':
         specifier: ^5.7.3
-        version: 5.7.3(next@14.2.15(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.7.3(next@14.2.15(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@clerk/themes':
         specifier: ^2.1.36
         version: 2.1.36
       '@corale/api':
         specifier: workspace:*
-        version: link:../../packages/api
+        version: link:../api
       '@formkit/auto-animate':
         specifier: ^0.8.2
         version: 0.8.2
@@ -230,70 +294,6 @@ importers:
         version: 4.26.1
       typescript:
         specifier: ^5
-        version: 5.6.3
-
-  packages/api:
-    dependencies:
-      '@ai-sdk/openai':
-        specifier: ^0.0.67
-        version: 0.0.67(zod@3.23.8)
-      '@fal-ai/serverless-client':
-        specifier: ^0.15.0
-        version: 0.15.0
-      ai:
-        specifier: ^3.4.12
-        version: 3.4.12(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.12(typescript@5.6.3))(zod@3.23.8)
-      convex:
-        specifier: ^1.16.5
-        version: 1.16.5(@clerk/clerk-react@5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      convex-ents:
-        specifier: ^0.11.0
-        version: 0.11.0(convex@1.16.5(@clerk/clerk-react@5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      convex-helpers:
-        specifier: ^0.1.60
-        version: 0.1.60(convex@1.16.5(@clerk/clerk-react@5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(zod@3.23.8)
-      deep-object-diff:
-        specifier: ^1.1.9
-        version: 1.1.9
-      fast-content-type-parse:
-        specifier: ^2.0.0
-        version: 2.0.0
-      itty-time:
-        specifier: ^1.0.6
-        version: 1.0.6
-      ky:
-        specifier: ^1.7.2
-        version: 1.7.2
-      nanoid:
-        specifier: ^5.0.7
-        version: 5.0.7
-      remeda:
-        specifier: ^2.15.0
-        version: 2.15.0
-      sharp:
-        specifier: ^0.33.5
-        version: 0.33.5
-      svix:
-        specifier: ^1.37.0
-        version: 1.37.0
-      ufo:
-        specifier: ^1.5.4
-        version: 1.5.4
-      valibot:
-        specifier: ^0.42.1
-        version: 0.42.1(typescript@5.6.3)
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-    devDependencies:
-      '@clerk/nextjs':
-        specifier: ^5.7.3
-        version: 5.7.3(next@14.2.15(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/node':
-        specifier: ^22.7.5
-        version: 22.7.5
-      typescript:
-        specifier: ^5.6.3
         version: 5.6.3
 
 packages:
@@ -5066,7 +5066,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.4.1
 
-  '@clerk/nextjs@5.7.3(next@14.2.15(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/nextjs@5.7.3(next@14.2.15(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@clerk/backend': 1.13.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@clerk/clerk-react': 5.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
