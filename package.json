@@ -1,17 +1,17 @@
 {
   "name": "corale",
-  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
+    "build": "pnpm --filter @corale/esuite build",
+    "dev": "pnpm --parallel dev",
     "dev:esuite": "pnpm --filter @corale/esuite dev",
-    "typecheck:esuite": "pnpm --filter @corale/esuite typecheck",
     "dev:api": "pnpm --filter @corale/api dev",
-    "typecheck:api": "pnpm --filter @corale/api typecheck",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pnpm --filter @corale/esuite start",
+    "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
     "@types/node": "^22.7.6",
