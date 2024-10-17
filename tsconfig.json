@@ -15,9 +15,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "target": "ES2022",
-    "paths": {
-      "@corale/api/*": ["./packages/api/*"]
-    }
+    "target": "ES2022"
   }
 }
