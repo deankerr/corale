@@ -1,15 +1,13 @@
 import { asyncMap, omit, pick } from 'convex-helpers'
+import type { WithoutSystemFields } from 'convex/server'
 import { updatedDiff } from 'deep-object-diff'
 import ky from 'ky'
 import { mergeDeep } from 'remeda'
 import { z } from 'zod'
-
 import { internal } from '../_generated/api'
+import type { Doc } from '../_generated/dataModel'
 import { logActionOpsEvent } from '../db/admin/events'
 import { internalAction } from '../functions'
-
-import type { Doc } from '../_generated/dataModel'
-import type { WithoutSystemFields } from 'convex/server'
 
 type ModelDoc = WithoutSystemFields<Doc<'chat_models'>>
 type ModelDocKey = keyof WithoutSystemFields<Doc<'chat_models'>>
@@ -79,9 +77,7 @@ export const updateOpenRouterModels = internalAction({
       }
     })
 
-    const notFound = existingModels.filter(
-      (m) => !processed.find((p) => p?.resourceKey === m.resourceKey),
-    )
+    const notFound = existingModels.filter((m) => !processed.find((p) => p?.resourceKey === m.resourceKey))
     await asyncMap(notFound, async (model) => {
       // * mark as unavailable
       await ctx.runMutation(internal.db.models.updateChatModel, {

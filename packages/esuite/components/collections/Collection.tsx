@@ -22,9 +22,7 @@ export const Collection = ({ collectionId }: { collectionId: string }) => {
   const collection = useCollection(collectionId)
   const collectionImages = useCollectionImages(collection?._id, sort)
   const images =
-    collectionImages?.results && collectionImages.results.length > 0
-      ? collectionImages.results
-      : collection?.images
+    collectionImages?.results && collectionImages.results.length > 0 ? collectionImages.results : collection?.images
 
   const openLightbox = useLightbox()
   const slides = images?.map((image) => ({

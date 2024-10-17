@@ -17,9 +17,7 @@ export const DeleteImageDialog = ({
 
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>Delete Image</AlertDialog.Title>
-        <AlertDialog.Description size="2">
-          Are you sure? This image will be gone forever.
-        </AlertDialog.Description>
+        <AlertDialog.Description size="2">Are you sure? This image will be gone forever.</AlertDialog.Description>
 
         <div className="flex-end mt-4 gap-2">
           <AlertDialog.Cancel>

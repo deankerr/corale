@@ -35,7 +35,7 @@ export const GenerationCard = ({
   const openLightbox = useLightbox()
 
   return (
-    <div key={generation._id} className="divide-y rounded border bg-gray-1">
+    <div key={generation._id} className="bg-gray-1 divide-y rounded border">
       {/* > header */}
       <div className="flex-start h-10 gap-2 px-1 pl-2 text-sm">
         <Badge color={statusColor[generation.status]} size="2">
@@ -43,10 +43,7 @@ export const GenerationCard = ({
           {generation.status}
         </Badge>
 
-        <Link
-          href={`/generations/${generation._id}`}
-          className="text-xs text-gray-11 hover:underline"
-        >
+        <Link href={`/generations/${generation._id}`} className="text-gray-11 text-xs hover:underline">
           {new Date(generation._creationTime).toLocaleString()}
         </Link>
         <div className="grow" />
@@ -94,39 +91,30 @@ export const GenerationCard = ({
 
         {generation.status !== 'failed' &&
           Date.now() - generation.updatedAt < ms('30 seconds') &&
-          [...Array(Math.max(0, (generation.input?.n ?? 0) - generation.images.length))].map(
-            (_, i) => (
-              <div key={i} className="aspect-square w-64 overflow-hidden">
-                <ImageGeneratingEffect />
-              </div>
-            ),
-          )}
+          [...Array(Math.max(0, (generation.input?.n ?? 0) - generation.images.length))].map((_, i) => (
+            <div key={i} className="aspect-square w-64 overflow-hidden">
+              <ImageGeneratingEffect />
+            </div>
+          ))}
 
         {generation.errors?.map((error, index) => (
-          <pre
-            key={index}
-            className="h-fit text-wrap rounded border border-red-7 bg-red-4 p-2 text-xs text-red-12"
-          >
+          <pre key={index} className="border-red-7 bg-red-4 text-red-12 h-fit text-wrap rounded border p-2 text-xs">
             {typeof error === 'string' ? error : JSON.stringify(error, null, 2)}
           </pre>
         ))}
       </div>
 
       {/* > add. details */}
-      <Accordion.Root
-        type="single"
-        collapsible
-        defaultValue={defaultOpen ? 'gen-details' : undefined}
-      >
-        <Accordion.Item value="gen-details" className="divide-y divide-gray-4">
-          <Accordion.Trigger className="group flex-between w-full p-2 text-sm font-medium text-gray-11 outline-accentA-8 transition-colors hover:text-gray-12">
+      <Accordion.Root type="single" collapsible defaultValue={defaultOpen ? 'gen-details' : undefined}>
+        <Accordion.Item value="gen-details" className="divide-gray-4 divide-y">
+          <Accordion.Trigger className="flex-between text-gray-11 outline-accentA-8 hover:text-gray-12 group w-full p-2 text-sm font-medium transition-colors">
             Details
             <Icons.CaretDown
               size={18}
               className="transition-transform duration-300 group-data-[state=open]:rotate-180"
             />
           </Accordion.Trigger>
-          <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+          <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
             <div className="p-2">
               <pre className="max-h-64 overflow-y-auto text-wrap font-mono text-xs">
                 {JSON.stringify({ ...generation, images: undefined }, null, 2)}

@@ -23,9 +23,7 @@ export function updateKvMetadata(current: Record<string, string> = {}, kvUpdater
 
   if (kvUpdater.setUnique) {
     const currentKeys = Object.keys(kvMetadata)
-    const duplicateKeys = Object.keys(kvUpdater.setUnique).filter((key) =>
-      currentKeys.includes(key),
-    )
+    const duplicateKeys = Object.keys(kvUpdater.setUnique).filter((key) => currentKeys.includes(key))
     if (duplicateKeys.length > 0) {
       throw new ConvexError({
         message: `Duplicate key(s) in setUnique: ${duplicateKeys.join(', ')}`,
@@ -38,11 +36,7 @@ export function updateKvMetadata(current: Record<string, string> = {}, kvUpdater
   return kvMetadata
 }
 
-export function createKvMetadata(
-  kvOptional: Record<string, string | undefined>,
-): Record<string, string> {
-  const obj = Object.entries(kvOptional).filter(
-    (entry): entry is [string, string] => entry[1] !== undefined,
-  )
+export function createKvMetadata(kvOptional: Record<string, string | undefined>): Record<string, string> {
+  const obj = Object.entries(kvOptional).filter((entry): entry is [string, string] => entry[1] !== undefined)
   return Object.fromEntries(obj)
 }

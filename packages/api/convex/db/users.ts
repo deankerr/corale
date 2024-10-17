@@ -1,14 +1,11 @@
 import { omit, pick } from 'convex-helpers'
 import { nullable, partial } from 'convex-helpers/validators'
-import { ConvexError, v } from 'convex/values'
-
+import { ConvexError, v, type Infer } from 'convex/values'
+import type { Id } from '../_generated/dataModel'
 import { internalMutation, mutation, query } from '../functions'
 import { generateRandomString } from '../lib/utils'
 import { userFields } from '../schema'
-
-import type { Id } from '../_generated/dataModel'
 import type { QueryCtx } from '../types'
-import type { Infer } from 'convex/values'
 
 export const userReturnFieldsPublic = v.object({
   _id: v.id('users'),
@@ -50,10 +47,7 @@ export const getUserIsViewer = (ctx: QueryCtx, userId: Id<'users'>) => {
   return ctx.viewerId ? ctx.viewerId === userId : false
 }
 
-const getUserBySchema = v.union(
-  v.object({ id: v.id('users') }),
-  v.object({ tokenIdentifier: v.string() }),
-)
+const getUserBySchema = v.union(v.object({ id: v.id('users') }), v.object({ tokenIdentifier: v.string() }))
 
 export const create = internalMutation({
   args: {

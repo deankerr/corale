@@ -1,7 +1,6 @@
 import { v } from 'convex/values'
 import fastContentTypeParse from 'fast-content-type-parse'
 import { nanoid } from 'nanoid/non-secure'
-
 import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
 import { fetch } from '../lib/fetch'
@@ -14,9 +13,7 @@ export const run = internalAction({
   handler: async (ctx, args): Promise<void> => {
     const urlData = await Promise.all(args.urls.map(fetchContentTypeData))
 
-    const imageUrls = urlData
-      .filter((data) => data.type.startsWith('image'))
-      .map((data) => data.url)
+    const imageUrls = urlData.filter((data) => data.type.startsWith('image')).map((data) => data.url)
 
     if (imageUrls.length === 0) return
 

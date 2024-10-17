@@ -1,10 +1,7 @@
 import { omit } from 'convex-helpers'
-import { ConvexError, v } from 'convex/values'
-
-import { getUserPublicX, userReturnFieldsPublic } from '../users'
-
+import { ConvexError, v, type AsObjectValidator, type Infer } from 'convex/values'
 import type { Ent, QueryCtx } from '../../types'
-import type { AsObjectValidator, Infer } from 'convex/values'
+import { getUserPublicX, userReturnFieldsPublic } from '../users'
 
 export const threadReturnFields = {
   // doc
@@ -39,10 +36,7 @@ export const getThreadX = async (ctx: QueryCtx, xid: string) => {
   return thread
 }
 
-export const getThreadEdges = async (
-  ctx: QueryCtx,
-  thread: Ent<'threads'>,
-): Promise<ThreadReturnFields> => {
+export const getThreadEdges = async (ctx: QueryCtx, thread: Ent<'threads'>): Promise<ThreadReturnFields> => {
   return {
     ...thread,
     user: await getUserPublicX(ctx, thread.userId),

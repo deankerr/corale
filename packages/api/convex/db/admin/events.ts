@@ -1,12 +1,9 @@
-import { ConvexError, v } from 'convex/values'
-
+import { ConvexError, v, type Infer } from 'convex/values'
 import { internal } from '../../_generated/api'
+import type { ActionCtx } from '../../_generated/server'
 import { internalMutation, mutation, query } from '../../functions'
 import { operationsEventLogFields } from '../../schema'
-
-import type { ActionCtx } from '../../_generated/server'
 import type { MutationCtx } from '../../types'
-import type { Infer } from 'convex/values'
 
 const createEventArgs = v.object(operationsEventLogFields)
 

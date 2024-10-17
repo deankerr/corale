@@ -30,9 +30,7 @@ export default function Page() {
         <div className="mt-2">
           <div className="space-y-2 py-2">
             <SearchField value={searchValue} onValueChange={setSearchValue} />
-            <div className="px-1 font-mono text-sm">
-              {chatModels && `chat models: ${sortResults.length}`}
-            </div>
+            <div className="px-1 font-mono text-sm">{chatModels && `chat models: ${sortResults.length}`}</div>
           </div>
 
           <Tabs.Content value="badges">
@@ -48,11 +46,7 @@ export default function Page() {
                   <Card key={model._id} className="h-20 w-80 p-2.5">
                     <div className="grid h-full grid-rows-[auto_1fr] items-center gap-y-1">
                       <div className="grid grid-cols-[1.5rem_1fr] items-center gap-2">
-                        <ModelLogo
-                          modelName={model.name}
-                          size={18}
-                          className="justify-self-center"
-                        />
+                        <ModelLogo modelName={model.name} size={18} className="justify-self-center" />
                         <div className="truncate text-sm font-medium">{model.name}</div>
                       </div>
 
@@ -76,7 +70,7 @@ export default function Page() {
                             </div>
                           </>
                         ) : (
-                          <div className="row-span-2 place-self-center text-grass-11">free</div>
+                          <div className="text-grass-11 row-span-2 place-self-center">free</div>
                         )}
                       </div>
                     </div>

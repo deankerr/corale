@@ -81,13 +81,7 @@ export const useThreadActions = (threadId: string) => {
   )
 
   const send = useCallback(
-    async ({
-      text,
-      model,
-      action,
-      patternId,
-      maxCompletionTokens,
-    }: Parameters<ComposerSend>[0]) => {
+    async ({ text, model, action, patternId, maxCompletionTokens }: Parameters<ComposerSend>[0]) => {
       const message = {
         role: 'user' as const,
         text,

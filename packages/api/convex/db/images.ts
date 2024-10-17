@@ -3,14 +3,12 @@ import { literals } from 'convex-helpers/validators'
 import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
 import { getQuery, parseFilename } from 'ufo'
-
 import { internal } from '../_generated/api'
+import type { Id } from '../_generated/dataModel'
 import { httpAction } from '../_generated/server'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, generateTimestampId, paginatedReturnFields } from '../lib/utils'
 import { imagesV2Fields } from '../schema'
-
-import type { Id } from '../_generated/dataModel'
 import type { Ent, QueryCtx } from '../types'
 
 export const imagesReturn = v.object({
@@ -35,9 +33,7 @@ export const imagesReturn = v.object({
 
 export const getImageV2Ent = async (ctx: QueryCtx, imageId: string) => {
   const _id = ctx.unsafeDb.normalizeId('images_v2', imageId)
-  return _id
-    ? await ctx.table('images_v2').get(_id)
-    : await ctx.table('images_v2').get('id', imageId)
+  return _id ? await ctx.table('images_v2').get(_id) : await ctx.table('images_v2').get('id', imageId)
 }
 
 export const getImageV2Edges = async (ctx: QueryCtx, image: Ent<'images_v2'>) => {
@@ -47,15 +43,9 @@ export const getImageV2Edges = async (ctx: QueryCtx, image: Ent<'images_v2'>) =>
   }
 }
 
-export const getImageV2ByOwnerIdSourceUrl = async (
-  ctx: QueryCtx,
-  ownerId: Id<'users'>,
-  sourceUrl: string,
-) => {
+export const getImageV2ByOwnerIdSourceUrl = async (ctx: QueryCtx, ownerId: Id<'users'>, sourceUrl: string) => {
   const image = await ctx
-    .table('images_v2', 'ownerId_sourceUrl', (q) =>
-      q.eq('ownerId', ownerId).eq('sourceUrl', sourceUrl),
-    )
+    .table('images_v2', 'ownerId_sourceUrl', (q) => q.eq('ownerId', ownerId).eq('sourceUrl', sourceUrl))
     .filter((q) => q.eq(q.field('deletionTime'), undefined))
     .first()
   return image ? await getImageV2Edges(ctx, image) : null

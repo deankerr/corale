@@ -1,6 +1,5 @@
-import { useCallback } from 'react'
 import { useSessionStorageValue } from '@react-hookz/web'
-
+import { useCallback } from 'react'
 import { defaultImageModel } from './imageModels'
 
 type GenerateFormState = {
@@ -24,13 +23,10 @@ const defaultValue: GenerateFormState = {
 }
 
 export const useGenerateFormState = (storageKey: string) => {
-  const { set, ...rest } = useSessionStorageValue<GenerateFormState>(
-    `generation-form-state-${storageKey}`,
-    {
-      defaultValue,
-      initializeWithValue: false,
-    },
-  )
+  const { set, ...rest } = useSessionStorageValue<GenerateFormState>(`generation-form-state-${storageKey}`, {
+    defaultValue,
+    initializeWithValue: false,
+  })
 
   const setState = useCallback(
     (state: Partial<GenerateFormState>) => {

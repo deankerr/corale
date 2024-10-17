@@ -5,23 +5,18 @@ import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr'
 import { Command as CommandPrimitive } from 'cmdk'
 import { forwardRef } from 'react'
 
-const Command = twx(
-  CommandPrimitive,
-)`flex h-full w-full flex-col overflow-hidden bg-gray-2 outline-none`
+const Command = twx(CommandPrimitive)`flex h-full w-full flex-col overflow-hidden bg-gray-2 outline-none`
 
 const Input = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div
-    className={cn('flex shrink-0 items-center border-b border-grayA-3 px-3', className)}
-    cmdk-input-wrapper=""
-  >
+  <div className={cn('border-grayA-3 flex shrink-0 items-center border-b px-3', className)} cmdk-input-wrapper="">
     <MagnifyingGlass className="mr-2 size-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        'flex h-12 w-full border-none bg-transparent py-3 text-base outline-none placeholder:text-gray-10 disabled:cursor-not-allowed disabled:opacity-50',
+        'placeholder:text-gray-10 flex h-12 w-full border-none bg-transparent py-3 text-base outline-none disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       {...props}

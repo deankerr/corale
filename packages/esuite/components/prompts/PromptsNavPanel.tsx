@@ -35,7 +35,7 @@ export const PromptsNavPanel = () => {
               key={prompt._id}
               href={`/prompts/${prompt._id}`}
               className={cn(
-                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
+                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
                 prompt._id === params.textsId && 'bg-gray-3 hover:bg-gray-3',
               )}
             >

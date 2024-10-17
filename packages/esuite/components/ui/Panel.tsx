@@ -28,11 +28,9 @@ export const PanelEmpty = () => {
   return (
     <Panel>
       <div className="flex-col-center grow">
-        <Icons.Cat weight="thin" className="size-64 shrink-0 text-accentA-11 opacity-60" />
+        <Icons.Cat weight="thin" className="text-accentA-11 size-64 shrink-0 opacity-60" />
 
-        <div className="my-8 font-mono text-lg">
-          There doesn&apos;t appear to be anything at this address
-        </div>
+        <div className="my-8 font-mono text-lg">There doesn&apos;t appear to be anything at this address</div>
 
         <Link href="/">Home</Link>
       </div>

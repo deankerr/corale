@@ -1,6 +1,4 @@
-import { ConvexError } from 'convex/values'
-
-import type { Value } from 'convex/values'
+import { ConvexError, type Value } from 'convex/values'
 
 export function env(name: string) {
   const value = process.env[name]
@@ -10,32 +8,18 @@ export function env(name: string) {
 
 export function createError(
   message: string,
-  {
-    fatal = false,
-    code = 'unhandled',
-    data,
-  }: { fatal?: boolean; code?: string; data?: Record<string, Value> } = {},
+  { fatal = false, code = 'unhandled', data }: { fatal?: boolean; code?: string; data?: Record<string, Value> } = {},
 ) {
   return new ConvexError({ message, fatal, code, data })
 }
 
-export function insist<T>(
-  condition: T,
-  message: string,
-  data?: Record<string, Value>,
-): asserts condition {
-  if (!condition)
-    throw new ConvexError({ ...data, message: `assertion failed: ${message}`, fatal: true })
+export function insist<T>(condition: T, message: string, data?: Record<string, Value>): asserts condition {
+  if (!condition) throw new ConvexError({ ...data, message: `assertion failed: ${message}`, fatal: true })
 }
 
 export function getErrorMessage(error: unknown) {
   if (typeof error === 'string') return error
-  if (
-    error &&
-    typeof error === 'object' &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
+  if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
     return error.message
   }
   console.error('Unable to get error message for error', error)

@@ -37,7 +37,7 @@ export const CollectionsNavPanel = () => {
           <Link
             href={`/collections/all`}
             className={cn(
-              'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
+              'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
               params.collectionId === 'all' && 'bg-gray-3 hover:bg-gray-3',
             )}
           >
@@ -49,7 +49,7 @@ export const CollectionsNavPanel = () => {
               key={collection._id}
               href={`/collections/${collection.id}`}
               className={cn(
-                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
+                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
                 params.collectionId === collection.id && 'bg-gray-3 hover:bg-gray-3',
               )}
             >

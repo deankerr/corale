@@ -1,8 +1,6 @@
-import { clsx } from 'clsx'
+import { clsx, type ClassValue } from 'clsx'
 import { createTwc } from 'react-twc'
 import { twMerge } from 'tailwind-merge'
-
-import type { ClassValue } from 'clsx'
 
 export type { ClassNameValue } from 'tailwind-merge'
 

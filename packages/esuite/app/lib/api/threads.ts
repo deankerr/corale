@@ -10,25 +10,16 @@ export const useThreads = () => {
   const threads = useCachedQuery(api.db.threads.list, {})
   if (!threads) return threads
 
-  const favourites = threads
-    .filter((thread) => thread.favourite)
-    .sort((a, b) => b.updatedAtTime - a.updatedAtTime)
-  const rest = threads
-    .filter((thread) => !thread.favourite)
-    .sort((a, b) => b.updatedAtTime - a.updatedAtTime)
+  const favourites = threads.filter((thread) => thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
+  const rest = threads.filter((thread) => !thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
 
   return [...favourites, ...rest]
 }
 
 export const useThread = (threadId: string) => {
   const threads = useThreads()
-  const userThread = threads
-    ? (threads?.find((thread) => thread.slug === threadId) ?? null)
-    : undefined
-  const otherThread = useCachedQuery(
-    api.db.threads.get,
-    !userThread ? { slugOrId: threadId } : 'skip',
-  )
+  const userThread = threads ? (threads?.find((thread) => thread.slug === threadId) ?? null) : undefined
+  const otherThread = useCachedQuery(api.db.threads.get, !userThread ? { slugOrId: threadId } : 'skip')
 
   return userThread || otherThread
 }
@@ -52,10 +43,7 @@ export const useThreadTextSearchQueryParams = () => {
   return { search, name }
 }
 
-export const useThreadTextSearch = (
-  args: { threadId: string; name?: string },
-  textSearchValue: string,
-) => {
+export const useThreadTextSearch = (args: { threadId: string; name?: string }, textSearchValue: string) => {
   const [debouncedValue, setDebouncedValue] = useDebounceValue(textSearchValue, 300, {
     maxWait: 1000,
   })

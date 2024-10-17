@@ -24,9 +24,7 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
   const actions = useThreadActions(thread?._id ?? '')
   const loading = actions.state !== 'ready'
 
-  const [modelId, setModelId] = useState(
-    getModelKey(thread?.kvMetadata ?? {}) ?? 'meta-llama/llama-3.1-70b-instruct',
-  )
+  const [modelId, setModelId] = useState(getModelKey(thread?.kvMetadata ?? {}) ?? 'meta-llama/llama-3.1-70b-instruct')
   const [textValue, setTextValue] = useState('')
   const [patternId, setPatternId] = useState(thread?.kvMetadata['esuite:pattern:xid'] ?? '')
   const [maxCompletionTokens, setMaxCompletionTokens] = useState(4096)
@@ -50,7 +48,7 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
   }
 
   return (
-    <div className="flex w-full shrink-0 flex-col overflow-hidden border-t border-gray-5 [&>div]:shrink-0">
+    <div className="border-gray-5 flex w-full shrink-0 flex-col overflow-hidden border-t [&>div]:shrink-0">
       <div className="flex">
         <Textarea
           minRows={2}
@@ -62,12 +60,12 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
         />
       </div>
 
-      <div className="flex gap-2 overflow-hidden border-t border-grayA-3 p-2">
+      <div className="border-grayA-3 flex gap-2 overflow-hidden border-t p-2">
         <ModelPickerCmd value={modelId} onValueChange={setModelId}>
           <ModelButton modelId={modelId} />
         </ModelPickerCmd>
 
-        <div className="my-auto hidden h-fit items-center rounded bg-grayA-2 p-1 font-mono text-xs text-gray-10 sm:flex">
+        <div className="bg-grayA-2 text-gray-10 my-auto hidden h-fit items-center rounded p-1 font-mono text-xs sm:flex">
           {modelId}
         </div>
 
@@ -113,7 +111,7 @@ const Textarea = ({
           onSend?.()
         }
       }}
-      className="w-full resize-none bg-transparent p-2 text-base text-gray-12 outline-none placeholder:text-grayA-9"
+      className="text-gray-12 placeholder:text-grayA-9 w-full resize-none bg-transparent p-2 text-base outline-none"
     />
   )
 }
@@ -137,7 +135,7 @@ const SendButton = (props: Partial<React.ComponentProps<typeof Button>>) => {
 
 const CommandEnter = () => {
   return (
-    <div className="flex rounded bg-grayA-5 p-0.5">
+    <div className="bg-grayA-5 flex rounded p-0.5">
       <Icons.Command />
       <Icons.ArrowElbowDownLeft />
     </div>

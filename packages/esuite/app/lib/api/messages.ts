@@ -1,11 +1,9 @@
-import { useMemo, useRef } from 'react'
 import { api } from '@corale/api/convex/_generated/api'
+import type { Id } from '@corale/api/convex/types'
 import { usePaginatedQuery } from 'convex/react'
-
+import { useMemo, useRef } from 'react'
 import { useCachedQuery } from './helpers'
 import { useThread } from './threads'
-
-import type { Id } from '@corale/api/convex/types'
 
 export const useMessageQuery = (messageId: string) => {
   return useCachedQuery(api.db.messages.get, { messageId })
@@ -41,9 +39,7 @@ export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
   if (!firstLoadedMessageTime.current && results[0]) {
     firstLoadedMessageTime.current = results[0]._creationTime
   }
-  const prependedCount = results.filter(
-    (message) => message._creationTime < firstLoadedMessageTime.current,
-  ).length
+  const prependedCount = results.filter((message) => message._creationTime < firstLoadedMessageTime.current).length
 
   if (!threadId || threadId === 'new') {
     if (messages.status === 'LoadingFirstPage') {

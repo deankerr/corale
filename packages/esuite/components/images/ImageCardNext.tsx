@@ -26,11 +26,7 @@ export const ImageCardNext = ({
   const updateCollection = useMutation(api.db.collections.update)
 
   return (
-    <div
-      key={image.id}
-      style={{ aspectRatio: image.width / image.height }}
-      className="overflow-hidden rounded-lg"
-    >
+    <div key={image.id} style={{ aspectRatio: image.width / image.height }} className="overflow-hidden rounded-lg">
       <NextImage
         alt=""
         key={image.id}
@@ -43,17 +39,12 @@ export const ImageCardNext = ({
         className="h-full w-full object-cover"
         loader={imageLoader}
       />
-      <div className="absolute inset-0 rounded-lg border-2 border-grayA-5" />
+      <div className="border-grayA-5 absolute inset-0 rounded-lg border-2" />
       {children}
 
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <IconButton
-            aria-label="Options menu"
-            variant="ghost"
-            highContrast
-            className="absolute right-1 top-1"
-          >
+          <IconButton aria-label="Options menu" variant="ghost" highContrast className="absolute right-1 top-1">
             <DotsThreeFillY width={28} height={28} />
           </IconButton>
         </DropdownMenu.Trigger>
@@ -73,9 +64,7 @@ export const ImageCardNext = ({
             </DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
               <CreateCollectionDialog imageId={image._id}>
-                <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
-                  Create new…
-                </DropdownMenu.Item>
+                <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>Create new…</DropdownMenu.Item>
               </CreateCollectionDialog>
               <DropdownMenu.Separator />
 

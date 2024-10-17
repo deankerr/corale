@@ -44,9 +44,7 @@ export const ChatsNavPanel = () => {
       all: true,
     })
     .map(({ obj, score }) => ({ ...obj, _fuzzysort: score }))
-  const notMatched = threads.filter(
-    (thread) => sortResults.find((result) => result._id === thread._id) === undefined,
-  )
+  const notMatched = threads.filter((thread) => sortResults.find((result) => result._id === thread._id) === undefined)
   const threadsSorted = [...sortResults, ...notMatched]
 
   return (
@@ -84,7 +82,7 @@ export const ChatsNavPanel = () => {
               key={thread._id}
               href={`/chats/${thread.slug}`}
               className={cn(
-                'truncate rounded-sm px-2 py-3 text-sm font-medium hover:bg-gray-2',
+                'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
                 thread.slug === params.threadId && 'bg-gray-3 hover:bg-gray-3',
                 !!searchText && !('_fuzzysort' in thread) && 'opacity-50',
               )}

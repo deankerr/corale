@@ -38,8 +38,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
   const handleItemsRendered = useCallback(
     (items: ListItem<EMessage>[]) => {
       const lastItemRendered = items.at(-1)
-      const isLastMessage =
-        lastItemRendered && lastItemRendered.originalIndex === results.length - 1
+      const isLastMessage = lastItemRendered && lastItemRendered.originalIndex === results.length - 1
       if (!isLastMessage || !lastItemRendered.data) return
 
       const isSameId = lastItemRendered.data._id === lastMessageData.current._id
@@ -104,7 +103,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
       )}
 
       <AdminOnlyUi>
-        <div className="absolute right-5 top-1 text-right font-mono text-xs text-gray-9">
+        <div className="text-gray-9 absolute right-5 top-1 text-right font-mono text-xs">
           {isAtTop ? 'atTop' : ''} {isAtBottom ? 'atBottom' : ''} {-prependedCount} {results.length}
         </div>
       </AdminOnlyUi>
@@ -122,7 +121,7 @@ const MemoizedMessage = memo(({ message }: { message: EMessage }) => {
 MemoizedMessage.displayName = 'MMessage'
 
 const EmptyPlaceholder: Components<any, any>['EmptyPlaceholder'] = ({ context }) => (
-  <div className="flex-center h-full w-full bg-gray-1">
+  <div className="flex-center bg-gray-1 h-full w-full">
     {context.status === 'LoadingFirstPage' && <Loader type="zoomies" />}
   </div>
 )
@@ -131,7 +130,7 @@ const Header: Components<any, any>['Header'] = ({ context }) => {
   return (
     <div className="mx-auto flex max-w-3xl items-center px-1 pb-1.5 pt-3 md:px-6">
       {context.status === 'Exhausted' && (
-        <div className="flex-center h-12 w-full rounded-md border text-gray-8">
+        <div className="flex-center text-gray-8 h-12 w-full rounded-md border">
           <div>This is the start of the chat.</div>
         </div>
       )}

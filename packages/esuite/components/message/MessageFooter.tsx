@@ -1,5 +1,4 @@
 import * as Icons from '@phosphor-icons/react/dist/ssr'
-
 import { Loader } from '../ui/Loader'
 import { useMessageContext } from './MessageProvider'
 
@@ -28,7 +27,7 @@ export const MessageFooter = () => {
   const timeActive = getDuration(run.timings.startedAt, run.timings.endedAt)
   const topProvider = run.providerMetadata?.provider_name as string | undefined
   return (
-    <div className="flex-end h-8 divide-x divide-grayA-3 overflow-hidden border-t border-grayA-3 px-1 font-mono text-xs text-gray-10 [&>div]:px-2.5">
+    <div className="flex-end divide-grayA-3 border-grayA-3 text-gray-10 h-8 divide-x overflow-hidden border-t px-1 font-mono text-xs [&>div]:px-2.5">
       <div className="grow">
         {run.model.id} {message.kvMetadata['esuite:pattern:xid']}
       </div>
@@ -49,10 +48,10 @@ export const MessageFooter = () => {
         {run.status === 'queued' && <Loader type="ping" size={24} color="var(--gold-11)" />}
         {run.status === 'active' && <Loader type="ripples" size={24} color="var(--gold-11)" />}
 
-        {run.status === 'done' && <Icons.Check className="size-4 text-green-10 saturate-50" />}
+        {run.status === 'done' && <Icons.Check className="text-green-10 size-4 saturate-50" />}
 
         {(run.status === 'failed' || run.usage?.finishReason === 'error') && (
-          <Icons.WarningOctagon className="size-4 text-red-10 saturate-50" />
+          <Icons.WarningOctagon className="text-red-10 size-4 saturate-50" />
         )}
       </div>
     </div>

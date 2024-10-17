@@ -21,11 +21,7 @@ export default function Page({ params }: { params: { audioId: string } }) {
     <Panel>
       <div className="flex-col-center grow">
         {audio && audio.fileUrl ? (
-          <AudioPlayer
-            key={audio._id}
-            url={audio.fileUrl}
-            titleText={audio.generationData.prompt}
-          />
+          <AudioPlayer key={audio._id} url={audio.fileUrl} titleText={audio.generationData.prompt} />
         ) : null}
       </div>
     </Panel>

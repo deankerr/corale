@@ -1,5 +1,4 @@
 import { httpRouter } from 'convex/server'
-
 import { serve, serveUrl } from './db/images'
 import { serveMetadata } from './db/metadata'
 import { handleWebhook } from './lib/clerk'

@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  useCreatePattern,
-  useDeletePattern,
-  usePattern,
-  useUpdatePattern,
-} from '@/app/lib/api/patterns'
+import { useCreatePattern, useDeletePattern, usePattern, useUpdatePattern } from '@/app/lib/api/patterns'
 import { orderedListReducer, useOrderedList } from '@/app/lib/useOrderedList'
 import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
 import { ModelButton } from '@/components/composer/ModelButton'
@@ -103,7 +98,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
               <div className="flex gap-3 p-4">
                 {/* > avatar */}
                 <div className="shrink-0">
-                  <div className="h-32 w-32 overflow-hidden rounded border bg-blackA-1">
+                  <div className="bg-blackA-1 h-32 w-32 overflow-hidden rounded border">
                     {/* {patternState._id && <SamplePatternAvatar4 className="h-full w-full" />} */}
                   </div>
                 </div>
@@ -117,10 +112,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
 
                   <div>
                     <Label>Name</Label>
-                    <TextField
-                      value={patternState.name}
-                      onValueChange={(value) => updateField('name', value)}
-                    />
+                    <TextField value={patternState.name} onValueChange={(value) => updateField('name', value)} />
                   </div>
                 </div>
               </div>
@@ -132,7 +124,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
                   minRows={4}
                   rows={4}
                   maxRows={4}
-                  className="flex w-full resize-none rounded border border-grayA-7 bg-blackA-3 p-2 outline-none placeholder:text-grayA-8"
+                  className="border-grayA-7 bg-blackA-3 placeholder:text-grayA-8 flex w-full resize-none rounded border p-2 outline-none"
                   value={patternState.description}
                   onChange={(e) => updateField('description', e.target.value)}
                 />
@@ -181,7 +173,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
                 <ReactTextareaAutosize
                   minRows={6}
                   rows={6}
-                  className="flex w-full resize-none rounded border border-grayA-7 bg-blackA-3 p-4 outline-none placeholder:text-grayA-8"
+                  className="border-grayA-7 bg-blackA-3 placeholder:text-grayA-8 flex w-full resize-none rounded border p-4 outline-none"
                   placeholder="You are a really very average assistant."
                   value={patternState.instructions}
                   onChange={(e) => updateField('instructions', e.target.value)}
@@ -236,10 +228,10 @@ function PatternMessagesEditor({
             style={{ contain: 'paint' }}
             data-message-role={message.role}
             data-message-channel={message.channel}
-            className="group flex shrink-0 flex-col overflow-hidden rounded border bg-gray-2 data-[message-channel=hidden]:opacity-60"
+            className="bg-gray-2 group flex shrink-0 flex-col overflow-hidden rounded border data-[message-channel=hidden]:opacity-60"
           >
             {/* > header */}
-            <div className="flex-between shrink-0 items-center gap-1 border-b border-grayA-3 bg-grayA-2 px-2 py-0.5">
+            <div className="flex-between border-grayA-3 bg-grayA-2 shrink-0 items-center gap-1 border-b px-2 py-0.5">
               <div className="flex-start w-20 gap-2">
                 <RoleToggleButton
                   role={message.role}
@@ -280,11 +272,7 @@ function PatternMessagesEditor({
                     })
                   }
                 >
-                  {message.channel === 'hidden' ? (
-                    <Icons.EyeClosed size={16} />
-                  ) : (
-                    <Icons.Eye size={16} />
-                  )}
+                  {message.channel === 'hidden' ? <Icons.EyeClosed size={16} /> : <Icons.Eye size={16} />}
                 </IconButton>
                 <IconButton
                   size="1"
@@ -318,7 +306,7 @@ function PatternMessagesEditor({
             <ReactTextareaAutosize
               minRows={1}
               rows={1}
-              className="flex w-full resize-none rounded bg-blackA-1 p-2 outline-none placeholder:text-grayA-8"
+              className="bg-blackA-1 placeholder:text-grayA-8 flex w-full resize-none rounded p-2 outline-none"
               placeholder="(blank message)"
               value={message.text}
               onChange={(e) =>
@@ -340,13 +328,7 @@ function PatternMessagesEditor({
   )
 }
 
-function RoleToggleButton({
-  role,
-  onClick,
-}: {
-  role: EMessage['role']
-  onClick: (newRole: EMessage['role']) => void
-}) {
+function RoleToggleButton({ role, onClick }: { role: EMessage['role']; onClick: (newRole: EMessage['role']) => void }) {
   const colors: Record<string, ButtonProps['color']> = {
     user: 'grass',
     assistant: 'orange',

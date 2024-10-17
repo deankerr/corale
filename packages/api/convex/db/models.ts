@@ -1,15 +1,12 @@
 import { partial } from 'convex-helpers/validators'
 import { v } from 'convex/values'
-
 import { internalMutation, internalQuery, query } from '../functions'
 import { chatModelFields } from '../schema'
 import { QueryCtx } from '../types'
 
 // * chat models
 export const getChatModelByResourceKey = async (ctx: QueryCtx, resourceKey: string) => {
-  const model = await ctx
-    .table('chat_models', 'resourceKey', (q) => q.eq('resourceKey', resourceKey))
-    .unique()
+  const model = await ctx.table('chat_models', 'resourceKey', (q) => q.eq('resourceKey', resourceKey)).unique()
   if (!model) return null
 
   return { ...model, description: '' }

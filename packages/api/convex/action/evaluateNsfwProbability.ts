@@ -1,6 +1,5 @@
 import * as falClient from '@fal-ai/serverless-client'
 import * as vb from 'valibot'
-
 import { ENV } from '../lib/env'
 
 falClient.config({

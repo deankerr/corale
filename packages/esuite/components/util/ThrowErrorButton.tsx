@@ -1,13 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-
 import { Button } from '../ui/Button'
 
-export default function ThrowErrorButton({
-  children = 'Throw',
-  ...props
-}: React.ComponentProps<typeof Button>) {
+export default function ThrowErrorButton({ children = 'Throw', ...props }: React.ComponentProps<typeof Button>) {
   const [raiseError, setRaiseError] = useState(false)
 
   if (raiseError) {

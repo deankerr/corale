@@ -17,7 +17,7 @@ const NavItem = ({ className, ...props }: React.ComponentPropsWithoutRef<typeof 
     <Link
       aria-current={isActive ? 'page' : undefined}
       className={cn(
-        'grid h-10 shrink-0 grid-cols-[2.75rem_13.25rem] items-center transition-all hover:bg-grayA-2 aria-[current=page]:bg-grayA-3',
+        'hover:bg-grayA-2 aria-[current=page]:bg-grayA-3 grid h-10 shrink-0 grid-cols-[2.75rem_13.25rem] items-center transition-all',
         className,
       )}
       {...props}
@@ -25,17 +25,13 @@ const NavItem = ({ className, ...props }: React.ComponentPropsWithoutRef<typeof 
   )
 }
 
-export const Navigation = ({
-  className,
-  children,
-  ...props
-}: React.ComponentPropsWithoutRef<'div'>) => {
+export const Navigation = ({ className, children, ...props }: React.ComponentPropsWithoutRef<'div'>) => {
   return (
-    <div className={cn('h-full overflow-hidden bg-gray-1', className)} {...props}>
+    <div className={cn('bg-gray-1 h-full overflow-hidden', className)} {...props}>
       <div className="-ml-px flex h-full w-60 flex-col text-sm font-medium">
         <div className="h-12">
           <Link href="/" className="grid h-12 w-fit grid-cols-[2.75rem_auto] items-center">
-            <AppLogo className="size-6 place-self-center text-accent-11" />
+            <AppLogo className="text-accent-11 size-6 place-self-center" />
             <div className="text-xl font-semibold leading-none tracking-tight">
               e<span className="text-lg leading-none">⋆</span>suite
             </div>
@@ -45,17 +41,17 @@ export const Navigation = ({
         <Authenticated>
           <div className="space-y-1 py-2">
             <NavItem href={'/chats'}>
-              <Icons.Chat size={20} className="place-self-center text-accent-11" />
+              <Icons.Chat size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Chats</div>
             </NavItem>
 
             <NavItem href={'/generations'}>
-              <Icons.FlowerLotus size={20} className="place-self-center text-accent-11" />
+              <Icons.FlowerLotus size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Generate</div>
             </NavItem>
 
             <NavItem href={'/collections'}>
-              <Icons.FolderStar size={20} className="place-self-center text-accent-11" />
+              <Icons.FolderStar size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Collections</div>
             </NavItem>
           </div>
@@ -64,11 +60,11 @@ export const Navigation = ({
         <AdminOnlyUi>
           <div className="space-y-1 py-2">
             <NavItem href={'/patterns'}>
-              <Icons.Robot size={20} className="place-self-center text-accent-11" />
+              <Icons.Robot size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Patterns</div>
             </NavItem>
             <NavItem href={'/prompts'}>
-              <Icons.NotePencil size={20} className="place-self-center text-accent-11" />
+              <Icons.NotePencil size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Prompts</div>
             </NavItem>
           </div>

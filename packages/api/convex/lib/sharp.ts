@@ -1,13 +1,10 @@
 'use node'
 
 import { ConvexError, v } from 'convex/values'
-import sharp from 'sharp'
-
+import sharp, { type FormatEnum } from 'sharp'
+import type { Id } from '../_generated/dataModel'
 import { internalAction } from '../functions'
 import { fetch } from '../lib/fetch'
-
-import type { Id } from '../_generated/dataModel'
-import type { FormatEnum } from 'sharp'
 
 type StoredImageFileWithBlurData = {
   fileId: Id<'_storage'>
@@ -106,10 +103,7 @@ export async function createBlurData(input: ArrayBuffer | Blob) {
 export async function resizeToWebp(input: ArrayBuffer | Blob, width: number) {
   const inputArrayBuffer = input instanceof Blob ? await input.arrayBuffer() : input
 
-  const { data, info } = await sharp(inputArrayBuffer)
-    .webp()
-    .resize({ width })
-    .toBuffer({ resolveWithObject: true })
+  const { data, info } = await sharp(inputArrayBuffer).webp().resize({ width }).toBuffer({ resolveWithObject: true })
 
   return { data, info }
 }

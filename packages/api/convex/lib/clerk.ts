@@ -1,11 +1,9 @@
+import type { WebhookEvent } from '@clerk/nextjs/server'
 import { ConvexError } from 'convex/values'
 import { Webhook } from 'svix'
-
 import { internal } from '../_generated/api'
 import { httpAction } from '../_generated/server'
 import { ENV } from './env'
-
-import type { WebhookEvent } from '@clerk/nextjs/server'
 
 export const handleWebhook = httpAction(async (ctx, request) => {
   const webhookSecret = ENV.CLERK_WEBHOOK_SECRET

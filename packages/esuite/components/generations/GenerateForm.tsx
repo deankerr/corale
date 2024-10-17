@@ -5,13 +5,7 @@ import { RectangleHorizontal } from '@/components/icons/RectangleHorizontal'
 import { RectangleVertical } from '@/components/icons/RectangleVertical'
 import { Button, IconButton } from '@/components/ui/Button'
 import { Label } from '@/components/ui/Label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/Select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select'
 import { SliderWithInput } from '@/components/ui/SliderWithInput'
 import { TextareaAutosize } from '@/components/ui/TextareaAutosize'
 import { TextField } from '@/components/ui/TextField'
@@ -38,7 +32,7 @@ const Lora = ({
   const [scale, setScale] = useState(value.scale)
 
   return (
-    <div className="flex rounded border border-gray-4">
+    <div className="border-gray-4 flex rounded border">
       <div className="grow space-y-2 p-2 pr-0">
         <Label className="text-sm font-medium">
           Path
@@ -129,18 +123,12 @@ export const GenerateForm = ({
                 <SelectItem key={model.modelId} value={model.modelId}>
                   <div className="flex gap-2">
                     <div className="h-16 w-16 shrink-0">
-                      <Image
-                        src={model.coverImage}
-                        alt={model.name}
-                        fill
-                        className="object-cover"
-                        sizes="4rem"
-                      />
+                      <Image src={model.coverImage} alt={model.name} fill className="object-cover" sizes="4rem" />
                     </div>
 
                     <div className="grow">
                       <p className="font-medium">{model.name}</p>
-                      <p className="text-xs text-gray-11" data-description>
+                      <p className="text-gray-11 text-xs" data-description>
                         {model.description}
                       </p>
                     </div>
@@ -158,9 +146,7 @@ export const GenerateForm = ({
               <Button
                 variant="surface"
                 size="1"
-                onClick={() =>
-                  setState({ loras: [...loras, { id: nanoid(), path: '', scale: 1 }] })
-                }
+                onClick={() => setState({ loras: [...loras, { id: nanoid(), path: '', scale: 1 }] })}
                 className="-mb-1"
               >
                 Add
@@ -189,21 +175,13 @@ export const GenerateForm = ({
         {inputs.negativePrompt && (
           <Label>
             Negative Prompt
-            <TextareaAutosize
-              value={negativePrompt}
-              onValueChange={(v) => setState({ negativePrompt: v })}
-            />
+            <TextareaAutosize value={negativePrompt} onValueChange={(v) => setState({ negativePrompt: v })} />
           </Label>
         )}
 
         <div>
           <Label>Dimensions</Label>
-          <RadioCards.Root
-            columns="3"
-            gap="2"
-            value={dimensions}
-            onValueChange={(v) => setState({ dimensions: v })}
-          >
+          <RadioCards.Root columns="3" gap="2" value={dimensions} onValueChange={(v) => setState({ dimensions: v })}>
             <RadioCards.Item
               value="portrait"
               className="flex-col gap-1"
@@ -211,7 +189,7 @@ export const GenerateForm = ({
             >
               <RectangleVertical className="text-gray-11" />
               <p>Portrait</p>
-              <p className="text-xs text-gray-11">832x1216</p>
+              <p className="text-gray-11 text-xs">832x1216</p>
             </RadioCards.Item>
             <RadioCards.Item
               value="square"
@@ -220,7 +198,7 @@ export const GenerateForm = ({
             >
               <Icons.Square size={24} className="text-gray-11" />
               <p>Square</p>
-              <p className="text-xs text-gray-11">1024x1024</p>
+              <p className="text-gray-11 text-xs">1024x1024</p>
             </RadioCards.Item>
             <RadioCards.Item
               value="landscape"
@@ -229,7 +207,7 @@ export const GenerateForm = ({
             >
               <RectangleHorizontal className="text-gray-11" />
               <p>Landscape</p>
-              <p className="text-xs text-gray-11">1216x832</p>
+              <p className="text-gray-11 text-xs">1216x832</p>
             </RadioCards.Item>
           </RadioCards.Root>
         </div>

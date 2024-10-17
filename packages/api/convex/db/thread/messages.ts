@@ -1,7 +1,6 @@
 import { literals, nullable } from 'convex-helpers/validators'
 import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
-
 import { query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { getMessageEdges, messageReturnFields } from '../helpers/messages'
@@ -17,9 +16,7 @@ export const get = query({
     if (!thread) return null
 
     const message = await ctx
-      .table('messages', 'threadId_series', (q) =>
-        q.eq('threadId', thread._id).eq('series', series),
-      )
+      .table('messages', 'threadId_series', (q) => q.eq('threadId', thread._id).eq('series', series))
       .unique()
 
     if (!message || message.deletionTime) return null
@@ -61,15 +58,7 @@ export const search = query({
   },
   handler: async (
     ctx,
-    {
-      threadId,
-      order = 'desc',
-      role,
-      name,
-      createdAfter = 1,
-      createdBefore = Infinity,
-      paginationOpts,
-    },
+    { threadId, order = 'desc', role, name, createdAfter = 1, createdBefore = Infinity, paginationOpts },
   ) => {
     const thread = await getThread(ctx, threadId)
     if (!thread) return emptyPage()
@@ -103,10 +92,7 @@ export const search = query({
                   .lt('_creationTime', createdBefore),
               )
             : ctx.table('messages', 'threadId', (q) =>
-                q
-                  .eq('threadId', thread._id)
-                  .gt('_creationTime', createdAfter)
-                  .lt('_creationTime', createdBefore),
+                q.eq('threadId', thread._id).gt('_creationTime', createdAfter).lt('_creationTime', createdBefore),
               )
 
     const messages = await query

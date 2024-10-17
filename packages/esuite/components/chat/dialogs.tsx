@@ -69,9 +69,7 @@ export const DeleteThreadDialog = ({
 
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>Delete Thread</AlertDialog.Title>
-        <AlertDialog.Description size="2">
-          Are you sure? This thread will be gone forever.
-        </AlertDialog.Description>
+        <AlertDialog.Description size="2">Are you sure? This thread will be gone forever.</AlertDialog.Description>
 
         <div className="flex-end mt-4 gap-2">
           <AlertDialog.Cancel>

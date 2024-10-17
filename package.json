@@ -10,6 +10,8 @@
     "dev:esuite": "pnpm --filter @corale/esuite dev",
     "dev:api": "pnpm --filter @corale/api dev",
     "start": "pnpm --filter @corale/esuite start",
+    "format": "pnpm prettier --write .",
+    "lint": "pnpm eslint .",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {

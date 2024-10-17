@@ -21,13 +21,7 @@ type MessageContextType = {
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined)
 
-export function MessageProvider({
-  children,
-  message,
-}: {
-  children: React.ReactNode
-  message: EMessage
-}) {
+export function MessageProvider({ children, message }: { children: React.ReactNode; message: EMessage }) {
   const [isEditing, setIsEditing] = useState(false)
   const [showJson, setShowJson] = useState(false)
   const [textStyle, setTextStyle] = useState<'markdown' | 'monospace'>('markdown')

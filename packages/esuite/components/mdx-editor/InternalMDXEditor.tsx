@@ -13,9 +13,9 @@ import {
   quotePlugin,
   tablePlugin,
   thematicBreakPlugin,
+  type MDXEditorMethods,
+  type MDXEditorProps,
 } from '@mdxeditor/editor'
-
-import type { MDXEditorMethods, MDXEditorProps } from '@mdxeditor/editor'
 import type { ForwardedRef } from 'react'
 
 export default function InternalMDXEditor({

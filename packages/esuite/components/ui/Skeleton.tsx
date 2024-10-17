@@ -3,7 +3,7 @@ import { cn, twx } from '@/app/lib/utils'
 export function SkeletonPulse({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('animate-pulse rounded-md border-grayA-3 bg-grayA-2', className)}
+      className={cn('border-grayA-3 bg-grayA-2 animate-pulse rounded-md', className)}
       aria-hidden
       tabIndex={-1}
       {...props}

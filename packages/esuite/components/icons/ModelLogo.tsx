@@ -63,10 +63,7 @@ const brandIcons = [
 const fallback = Icons.Cube
 
 export const ModelLogo = memo(
-  ({
-    modelName,
-    ...props
-  }: { modelName: string } & SVGProps<SVGSVGElement> & { size?: string | number }) => {
+  ({ modelName, ...props }: { modelName: string } & SVGProps<SVGSVGElement> & { size?: string | number }) => {
     const matchingIcon = brandIcons.find((brand) =>
       brand.name.some((name) => modelName.toLowerCase().includes(name.toLowerCase())),
     )

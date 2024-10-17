@@ -2,8 +2,8 @@ import { pick } from 'convex-helpers'
 import { nullable } from 'convex-helpers/validators'
 import { ConvexError, v } from 'convex/values'
 import { z } from 'zod'
-
 import { internal } from '../_generated/api'
+import type { Id } from '../_generated/dataModel'
 import { internalMutation, mutation, query } from '../functions'
 import { runFieldsV2 } from '../schema'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
@@ -11,8 +11,6 @@ import { createMessage, messageCreateFields } from './helpers/messages'
 import { getPattern, getPatternWriterX } from './helpers/patterns'
 import { getChatModel } from './models'
 import { getOrCreateUserThread } from './threads'
-
-import type { Id } from '../_generated/dataModel'
 
 const runCreateFields = {
   threadId: v.string(),
@@ -139,9 +137,7 @@ export const activate = internalMutation({
 
     // * pattern initial messages
     if (pattern) {
-      const initialMessages = pattern.initialMessages
-        .filter((message) => !message.channel)
-        .map(formatMessage)
+      const initialMessages = pattern.initialMessages.filter((message) => !message.channel).map(formatMessage)
       messages.push(...initialMessages)
     }
 
@@ -149,15 +145,10 @@ export const activate = internalMutation({
     const maxMessages = run.options?.maxMessages ?? 50
     const conversation = await ctx.skipRules
       .table('messages', 'threadId_channel', (q) =>
-        q
-          .eq('threadId', run.threadId)
-          .eq('channel', undefined)
-          .lt('_creationTime', responseMessage._creationTime),
+        q.eq('threadId', run.threadId).eq('channel', undefined).lt('_creationTime', responseMessage._creationTime),
       )
       .order('desc')
-      .filter((q) =>
-        q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)),
-      )
+      .filter((q) => q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)))
       .take(maxMessages)
       .map(formatMessage)
     messages.push(...conversation.reverse())
@@ -214,17 +205,7 @@ export const complete = internalMutation({
   },
   handler: async (
     ctx,
-    {
-      runId,
-      messageId,
-      text,
-      firstTokenAt,
-      finishReason,
-      promptTokens,
-      completionTokens,
-      modelId,
-      requestId,
-    },
+    { runId, messageId, text, firstTokenAt, finishReason, promptTokens, completionTokens, modelId, requestId },
   ) => {
     const run = await ctx.skipRules.table('runs').getX(runId)
     if (run.status !== 'active') throw new ConvexError({ message: 'run is not active', runId })
@@ -299,9 +280,7 @@ export const fail = internalMutation({
 
     try {
       const messages = await ctx.skipRules
-        .table('messages', 'runId', (q) =>
-          q.eq('runId', runId).gte('_creationTime', run._creationTime),
-        )
+        .table('messages', 'runId', (q) => q.eq('runId', runId).gte('_creationTime', run._creationTime))
         .order('desc')
 
       for (const message of messages) {
@@ -339,14 +318,7 @@ export const updateProviderMetadata = internalMutation({
 
     const parsed = OpenRouterMetadataSchema.safeParse(providerMetadata)
     if (parsed.success) {
-      const {
-        total_cost,
-        finish_reason,
-        native_tokens_prompt,
-        native_tokens_completion,
-        id,
-        model,
-      } = parsed.data
+      const { total_cost, finish_reason, native_tokens_prompt, native_tokens_completion, id, model } = parsed.data
 
       await run.patch({
         updatedAt: Date.now(),
@@ -382,8 +354,5 @@ function getInferenceCost({
     completionTokens: number
   }
 }) {
-  return (
-    (usage.promptTokens * pricing.tokenInput + usage.completionTokens * pricing.tokenOutput) /
-    1_000_000
-  )
+  return (usage.promptTokens * pricing.tokenInput + usage.completionTokens * pricing.tokenOutput) / 1_000_000
 }

@@ -1,8 +1,6 @@
 import { addEntRules } from 'convex-ents'
-
-import { entDefinitions } from './schema'
-
 import type { Id } from './_generated/dataModel'
+import { entDefinitions } from './schema'
 import type { QueryCtx } from './types'
 
 export function getEntDefinitionsWithRules(ctx: QueryCtx): typeof entDefinitions {

@@ -11,11 +11,7 @@ import { useMutation, usePaginatedQuery } from 'convex/react'
 import { useState } from 'react'
 
 export default function Page() {
-  const images = usePaginatedQuery(
-    api.db.images.listAllImagesNotInCollection,
-    {},
-    { initialNumItems: 100 },
-  )
+  const images = usePaginatedQuery(api.db.images.listAllImagesNotInCollection, {}, { initialNumItems: 100 })
   const updateCollection = useMutation(api.db.collections.update)
   const [id, setId] = useState('')
 

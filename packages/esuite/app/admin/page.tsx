@@ -15,7 +15,7 @@ export default function Page() {
 
   return (
     <AdminPageWrapper className="space-y-4">
-      <div className="flex flex-wrap gap-3 bg-grayA-2 p-2">
+      <div className="bg-grayA-2 flex flex-wrap gap-3 p-2">
         {accentColors.map((color) => (
           <Badge key={color} size="3" color={color}>
             {color}
@@ -58,11 +58,7 @@ export default function Page() {
                 </div>
                 {event.data ? (
                   <pre className="flex-none overflow-x-auto whitespace-pre-wrap p-2 text-xs">
-                    {JSON.stringify(
-                      { before: event.data.before, after: event.data.after },
-                      null,
-                      2,
-                    ).slice(2, -2)}
+                    {JSON.stringify({ before: event.data.before, after: event.data.after }, null, 2).slice(2, -2)}
                   </pre>
                 ) : null}
               </div>

@@ -31,10 +31,7 @@ export const endpointTokens = (endpoint: string) => {
   }
 }
 
-export const EndpointBadge = ({
-  endpoint,
-  ...props
-}: { endpoint: string } & React.ComponentProps<typeof Badge>) => {
+export const EndpointBadge = ({ endpoint, ...props }: { endpoint: string } & React.ComponentProps<typeof Badge>) => {
   return (
     <Badge color={endpointTokens(endpoint).color} {...props}>
       {endpointTokens(endpoint).name}

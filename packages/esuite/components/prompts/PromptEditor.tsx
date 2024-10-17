@@ -35,7 +35,7 @@ export const PromptEditor = ({
         <PanelTitle href="/prompts" className="shrink-0">
           Prompt Editor
         </PanelTitle>
-        <Icons.CaretRight size={18} className="mx-1 shrink-0 text-grayA-10" />
+        <Icons.CaretRight size={18} className="text-grayA-10 mx-1 shrink-0" />
 
         <TextFieldGhost
           placeholder="Untitled Prompt"
@@ -69,13 +69,7 @@ export const PromptEditor = ({
         </Button>
       </PanelHeader>
       <div className="grow">
-        <MDXEditor
-          ref={ref}
-          markdown={textValue}
-          onChange={setTextValue}
-          className="markdown-body"
-          autoFocus
-        />
+        <MDXEditor ref={ref} markdown={textValue} onChange={setTextValue} className="markdown-body" autoFocus />
       </div>
     </Panel>
   )

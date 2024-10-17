@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import type { EMessage } from '@corale/api/convex/types'
 import { Select } from '@radix-ui/themes'
-
+import { useState } from 'react'
 import { Button } from '../ui/Button'
 import { TextareaAutosize } from '../ui/TextareaAutosize'
 import { TextField } from '../ui/TextField'
 import { useMessageContext } from './MessageProvider'
-
-import type { EMessage } from '@corale/api/convex/types'
 
 export const MessageEditor = () => {
   const { message, updateMessage, setIsEditing } = useMessageContext()
@@ -29,12 +27,7 @@ export const MessageEditor = () => {
       />
       <div className="flex-between gap-2 border-t pt-3">
         <div className="flex-between gap-2">
-          <Select.Root
-            size={{ initial: '3', sm: '2' }}
-            name="role"
-            value={roleValue}
-            onValueChange={setRoleValue}
-          >
+          <Select.Root size={{ initial: '3', sm: '2' }} name="role" value={roleValue} onValueChange={setRoleValue}>
             <Select.Trigger className="flex w-40 font-mono" />
             <Select.Content>
               <Select.Group>

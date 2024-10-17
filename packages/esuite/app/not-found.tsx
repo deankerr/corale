@@ -6,12 +6,12 @@ export default function NotFound() {
     <div className="flex-col-center h-dvh w-full gap-4">
       <Icons.Ghost
         weight="thin"
-        className="pointer-events-none fixed aspect-square h-[120vh] w-[120vw] shrink-0 text-grayA-11 opacity-[0.02]"
+        className="text-grayA-11 pointer-events-none fixed aspect-square h-[120vh] w-[120vw] shrink-0 opacity-[0.02]"
       />
 
       <div className="flex-between gap-4">
         <h1 className="text-2xl font-medium">404</h1>
-        <div className="h-16 w-px bg-gray-5" />
+        <div className="bg-gray-5 h-16 w-px" />
         <p className="text-sm font-medium">The page could not be found.</p>
       </div>
 

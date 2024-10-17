@@ -1,6 +1,5 @@
 import { generateText } from 'ai'
 import { v } from 'convex/values'
-
 import { api, internal } from '../_generated/api'
 import { internalAction, internalQuery } from '../functions'
 import { createAi } from '../lib/ai'
@@ -83,9 +82,7 @@ export const getConversation = internalQuery({
         q.eq('threadId', message.threadId).lt('_creationTime', message._creationTime),
       )
       .order('desc')
-      .filter((q) =>
-        q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)),
-      )
+      .filter((q) => q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)))
       .take(limit)
       .map((message) => ({
         role: message.role,

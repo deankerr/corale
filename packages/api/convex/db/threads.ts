@@ -1,18 +1,16 @@
 import { omit, pick } from 'convex-helpers'
 import { nullable } from 'convex-helpers/validators'
 import { ConvexError, v } from 'convex/values'
-
 import { internal } from '../_generated/api'
+import type { Id } from '../_generated/dataModel'
 import { internalMutation, mutation, query } from '../functions'
 import { generateSlug } from '../lib/utils'
 import { threadFields } from '../schema'
+import type { EThread, MutationCtx, QueryCtx } from '../types'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { createMessage, messageCreateFields } from './helpers/messages'
 import { getThread, getThreadEdges, getThreadX, threadReturnFields } from './helpers/threads'
 import { getUserPublic } from './users'
-
-import type { Id } from '../_generated/dataModel'
-import type { EThread, MutationCtx, QueryCtx } from '../types'
 
 // * Helpers
 const getEmptyThread = async (ctx: QueryCtx): Promise<EThread | null> => {

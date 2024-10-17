@@ -23,12 +23,7 @@ export const MessageSearchResults = ({ threadId }: { threadId: string }) => {
       {!isSkipped && (
         <PanelBody>
           <ScrollArea className="bg-gray-1">
-            <div
-              className={cn(
-                '',
-                fadeOut && 'opacity-50 transition-opacity duration-300 ease-in-out',
-              )}
-            >
+            <div className={cn('', fadeOut && 'opacity-50 transition-opacity duration-300 ease-in-out')}>
               {results.map((message) => (
                 <div key={message._id} className="mx-auto max-w-[85ch] py-3">
                   <Message message={message} />
@@ -38,8 +33,8 @@ export const MessageSearchResults = ({ threadId }: { threadId: string }) => {
 
             {results.length === 0 && !isLoading ? (
               <div className="flex-col-center h-full w-full">
-                <FishFoodIcon className="size-36 text-gray-10" />
-                <div className="text-base font-medium text-gray-11">No results.</div>
+                <FishFoodIcon className="text-gray-10 size-36" />
+                <div className="text-gray-11 text-base font-medium">No results.</div>
               </div>
             ) : null}
           </ScrollArea>

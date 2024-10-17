@@ -1,7 +1,6 @@
 import { omit } from 'convex-helpers'
 import { nullable, partial } from 'convex-helpers/validators'
 import { v } from 'convex/values'
-
 import { mutation, query } from '../functions'
 import { prepareUpdate } from '../lib/utils'
 import { patternFields } from '../schema'

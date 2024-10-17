@@ -51,8 +51,7 @@ export default function AudioPlayer({ url, titleText }: { url: string; titleText
     setAudioMotion(null)
   }
 
-  const overlayCn =
-    'rounded-lg bg-black/5 p-1.5 text-sm font-medium text-white h-fit backdrop-blur-2xl'
+  const overlayCn = 'rounded-lg bg-black/5 p-1.5 text-sm font-medium text-white h-fit backdrop-blur-2xl'
 
   return (
     <Card className="mx-auto aspect-[8/5] w-80">
@@ -101,16 +100,14 @@ export default function AudioPlayer({ url, titleText }: { url: string; titleText
               if (!audioMotion) createAudioMotion()
               setPlaying(true)
             }}
-            className="outline outline-grayA-3 brightness-110 hover:outline-grayA-5"
+            className="outline-grayA-3 hover:outline-grayA-5 outline brightness-110"
           >
             {playing ? <Icons.Stop className="size-6" /> : <Icons.Play className="size-6" />}
           </IconButton>
         </div>
 
         <div className="flex-col-end">
-          <div className={cn(overlayCn, 'mx-auto line-clamp-2 text-center text-base')}>
-            {titleText}
-          </div>
+          <div className={cn(overlayCn, 'mx-auto line-clamp-2 text-center text-base')}>{titleText}</div>
         </div>
       </div>
 

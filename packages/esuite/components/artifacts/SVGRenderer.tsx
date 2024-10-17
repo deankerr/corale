@@ -1,15 +1,9 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import DOMPurify from 'dompurify'
+import { useEffect, useRef } from 'react'
 
-export const SVGRenderer = ({
-  svgText,
-  sanitize = true,
-}: {
-  svgText: string
-  sanitize?: boolean
-}) => {
+export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; sanitize?: boolean }) => {
   const svgContainerRef = useRef<HTMLDivElement>(null)
 
   const options = {

@@ -5,8 +5,8 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 
 export const BlankPage = () => {
   return (
-    <div className="flex-col-center h-full w-full bg-gray-1">
-      <AppLogo className="size-48 text-gray-3" />
+    <div className="flex-col-center bg-gray-1 h-full w-full">
+      <AppLogo className="text-gray-3 size-48" />
       <NavigationSheet>
         <IconButton variant="ghost" aria-label="Open navigation sheet" className="md:invisible">
           <Icons.List size={20} />

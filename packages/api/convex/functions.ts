@@ -1,7 +1,6 @@
 import { entsTableFactory, scheduledDeleteFactory } from 'convex-ents'
 import { customCtx, customMutation, customQuery } from 'convex-helpers/server/customFunctions'
 import { ConvexError, v } from 'convex/values'
-
 import {
   action as baseAction,
   internalAction as baseInternalAction,
@@ -9,11 +8,11 @@ import {
   internalQuery as baseInternalQuery,
   mutation as baseMutation,
   query as baseQuery,
+  type MutationCtx as BaseMutationCtx,
+  type QueryCtx as BaseQueryCtx,
 } from './_generated/server'
 import { getEntDefinitionsWithRules, getViewerIdFromApiKey, getViewerIdFromAuth } from './rules'
 import { entDefinitions } from './schema'
-
-import type { MutationCtx as BaseMutationCtx, QueryCtx as BaseQueryCtx } from './_generated/server'
 
 export const scheduledDelete = scheduledDeleteFactory(entDefinitions)
 

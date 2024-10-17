@@ -1,12 +1,9 @@
 import { ConvexError } from 'convex/values'
-
 import type { MutationCtx, QueryCtx } from '../../types'
 
 export async function getPattern(ctx: QueryCtx, id: string) {
   const _id = ctx.table('patterns').normalizeId(id)
-  const pattern = _id
-    ? await ctx.table('patterns').get(_id)
-    : await ctx.table('patterns').get('xid', id)
+  const pattern = _id ? await ctx.table('patterns').get(_id) : await ctx.table('patterns').get('xid', id)
   return pattern && !pattern.deletionTime ? pattern : null
 }
 
@@ -18,9 +15,7 @@ export async function getPatternX(ctx: QueryCtx, id: string) {
 
 export async function getPatternWriter(ctx: MutationCtx, id: string) {
   const _id = ctx.table('patterns').normalizeId(id)
-  const pattern = _id
-    ? await ctx.table('patterns').get(_id)
-    : await ctx.table('patterns').get('xid', id)
+  const pattern = _id ? await ctx.table('patterns').get(_id) : await ctx.table('patterns').get('xid', id)
   return pattern && !pattern.deletionTime ? pattern : null
 }
 

@@ -1,15 +1,13 @@
 import { asyncMap, omit, pruneNull } from 'convex-helpers'
 import { literals } from 'convex-helpers/validators'
+import type { WithoutSystemFields } from 'convex/server'
 import { v } from 'convex/values'
-
 import { internal } from '../../_generated/api'
+import type { Doc } from '../../_generated/dataModel'
 import { messageFields } from '../../schema'
 import { extractValidUrlsFromText } from '../../shared/helpers'
-import { getImageV2ByOwnerIdSourceUrl } from '../images'
-
-import type { Doc } from '../../_generated/dataModel'
 import type { Ent, MutationCtx, QueryCtx } from '../../types'
-import type { WithoutSystemFields } from 'convex/server'
+import { getImageV2ByOwnerIdSourceUrl } from '../images'
 
 export const messageCreateFields = {
   ...omit(messageFields, ['runId']),

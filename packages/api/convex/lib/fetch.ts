@@ -1,12 +1,10 @@
 import ky from 'ky'
-
 import { ENV } from './env'
 
 // Helper function to validate IP addresses
 const isValidIP = (ip: string): boolean => {
   // IPv4 regex pattern
-  const ipv4Pattern =
-    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+  const ipv4Pattern = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 
   // IPv6 regex pattern
   const ipv6Pattern =

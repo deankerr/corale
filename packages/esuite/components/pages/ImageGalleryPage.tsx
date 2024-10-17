@@ -34,7 +34,7 @@ export const ImageGalleryPage = ({
                 href={`${basePath}/${image.id}`}
                 key={image.id}
                 className={cn(
-                  'flex-col-center aspect-square h-full max-h-28 w-full max-w-28 overflow-hidden rounded-md border-2 border-gray-4 bg-grayA-1',
+                  'flex-col-center border-gray-4 bg-grayA-1 aspect-square h-full max-h-28 w-full max-w-28 overflow-hidden rounded-md border-2',
                   image.id === imageId && 'border-accent-9',
                 )}
               >
@@ -61,11 +61,7 @@ export const ImageGalleryPage = ({
 const ImageGenerationDataCard = ({ generation }: { generation: any }) => {
   if (!generation) return null
   const input = generation.input as any
-  const model = input.resourceKey
-    ? input.resourceKey.split('::')[1]
-    : input.modelId
-      ? input.modelId
-      : null
+  const model = input.resourceKey ? input.resourceKey.split('::')[1] : input.modelId ? input.modelId : null
   const endpoint = input.resourceKey ? input.resourceKey.split('::')[0] : null
   return (
     <Card className="space-y-2" size="2">
@@ -99,9 +95,7 @@ const ImageCaptionOCRV1Cards = ({ metadata }: { metadata: any[] }) => {
   const data = metadata.find((m) => m.type === 'captionOCR_V1')
   if (!data) return null
 
-  const paragraphs = data.description
-    .split('. ')
-    .map((p: string) => (p.charAt(p.length - 1) === '.' ? p : p + '.'))
+  const paragraphs = data.description.split('. ').map((p: string) => (p.charAt(p.length - 1) === '.' ? p : p + '.'))
 
   return (
     <>
@@ -113,7 +107,7 @@ const ImageCaptionOCRV1Cards = ({ metadata }: { metadata: any[] }) => {
           </p>
         ))}
         <p className="text-xs">
-          caption by <span className="font-mono text-[0.95em] text-gray-11">{data.modelId}</span>
+          caption by <span className="text-gray-11 font-mono text-[0.95em]">{data.modelId}</span>
         </p>
       </Card>
 
@@ -122,7 +116,7 @@ const ImageCaptionOCRV1Cards = ({ metadata }: { metadata: any[] }) => {
           <div className="pb-px text-sm font-medium">OCR</div>
           <p className="text-sm">{data.ocr_texts.join('\n')}</p>
           <p className="text-xs">
-            ocr by <span className="font-mono text-[0.95em] text-gray-11">{data.modelId}</span>
+            ocr by <span className="text-gray-11 font-mono text-[0.95em]">{data.modelId}</span>
           </p>
         </Card>
       )}
@@ -140,8 +134,7 @@ const ImageCaptionOCRV0Cards = ({ metadata }: { metadata: any[] }) => {
         <div className="pb-px text-base font-semibold">{data.captionTitle}</div>
         <p className="text-sm">{data.captionDescription}</p>
         <p className="text-xs">
-          caption by{' '}
-          <span className="font-mono text-[0.95em] text-gray-11">{data.captionModelId}</span>
+          caption by <span className="text-gray-11 font-mono text-[0.95em]">{data.captionModelId}</span>
         </p>
       </Card>
 
@@ -150,8 +143,7 @@ const ImageCaptionOCRV0Cards = ({ metadata }: { metadata: any[] }) => {
           <div className="pb-px text-sm font-medium">OCR</div>
           <p className="text-sm">{data.captionOCR}</p>
           <p className="text-xs">
-            ocr by{' '}
-            <span className="font-mono text-[0.95em] text-gray-11">{data.captionModelId}</span>
+            ocr by <span className="text-gray-11 font-mono text-[0.95em]">{data.captionModelId}</span>
           </p>
         </Card>
       )}
@@ -193,9 +185,7 @@ const ImageFileDataCard = ({ image }: { image: EImage }) => {
       <DataList.Root orientation="vertical">
         <DataList.Item>
           <DataList.Label>created</DataList.Label>
-          <DataList.Value suppressHydrationWarning>
-            {new Date(image._creationTime).toLocaleString()}
-          </DataList.Value>
+          <DataList.Value suppressHydrationWarning>{new Date(image._creationTime).toLocaleString()}</DataList.Value>
         </DataList.Item>
 
         <DataList.Item>

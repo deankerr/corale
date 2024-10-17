@@ -20,7 +20,7 @@ export const ChatToolbar = ({ threadId }: { threadId: string }) => {
 
       <div className="grow" />
 
-      <div className="flex divide-x divide-gray-7 text-right font-mono text-xxs">
+      <div className="divide-gray-7 text-xxs flex divide-x text-right font-mono">
         {kv.map(([key, value]) => (
           <div key={key} className="px-2">
             <div className="text-gold-12">{key}</div>

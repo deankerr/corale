@@ -1,6 +1,5 @@
 import { nullable } from 'convex-helpers/validators'
 import { ConvexError, v } from 'convex/values'
-
 import { internalMutation, mutation, query } from '../functions'
 
 const textPromptsReturn = v.object({

@@ -10,16 +10,8 @@ import { useMessageContext } from './MessageProvider'
 import { TimeSince } from './TimeSince'
 
 export const MessageHeader = () => {
-  const {
-    message,
-    isEditing,
-    showJson,
-    setShowJson,
-    setIsEditing,
-    viewerCanEdit,
-    textStyle,
-    setTextStyle,
-  } = useMessageContext()
+  const { message, isEditing, showJson, setShowJson, setIsEditing, viewerCanEdit, textStyle, setTextStyle } =
+    useMessageContext()
 
   const deleteMessage = useDeleteMessage()
   const handleDeleteMessage = () => {
@@ -46,7 +38,7 @@ export const MessageHeader = () => {
   return (
     <div
       className={cn(
-        'flex h-12 shrink-0 items-center gap-1 border-b border-grayA-3 bg-grayA-2 p-2.5',
+        'border-grayA-3 bg-grayA-2 flex h-12 shrink-0 items-center gap-1 border-b p-2.5',
         isHidden && 'opacity-60',
       )}
     >
@@ -60,7 +52,7 @@ export const MessageHeader = () => {
         <Code color={color} className="whitespace-pre px-1.5 uppercase" size="3">
           {message.role}
         </Code>
-        <div className="font-medium text-gray-11">{name}</div>
+        <div className="text-gray-11 font-medium">{name}</div>
       </div>
 
       <div className="grow" />
@@ -72,7 +64,7 @@ export const MessageHeader = () => {
         </Link>
       )}
 
-      <div className="flex-center gap-1 font-mono text-gray-10">
+      <div className="flex-center text-gray-10 gap-1 font-mono">
         <TimeSince time={Math.floor(message._creationTime)} />
         <div>⋅</div>
         <div>#{message.series}</div>

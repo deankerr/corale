@@ -1,7 +1,6 @@
 import { literals } from 'convex-helpers/validators'
 import { Infer, v } from 'convex/values'
 import { customAlphabet } from 'nanoid/non-secure'
-
 import type { MutationCtx } from '../types'
 
 // see https://github.com/xixixao/saas-starter/blob/main/convex/utils.ts

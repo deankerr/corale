@@ -1,10 +1,6 @@
 import { SVGProps } from 'react'
 
-export const Gemini = ({
-  size = '1em',
-  style,
-  ...rest
-}: SVGProps<SVGSVGElement> & { size?: string | number }) => {
+export const Gemini = ({ size = '1em', style, ...rest }: SVGProps<SVGSVGElement> & { size?: string | number }) => {
   return (
     <svg
       fill="currentColor"

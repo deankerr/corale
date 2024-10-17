@@ -41,9 +41,7 @@ export default function Page({ params }: { params: { threadId: string } }) {
     <Panel>
       <PanelHeader>
         <NavigationButton />
-        <PanelTitle href={`/drawings/${thread.slug}`}>
-          {thread.title ?? 'Untitled Thread'}
-        </PanelTitle>
+        <PanelTitle href={`/drawings/${thread.slug}`}>{thread.title ?? 'Untitled Thread'}</PanelTitle>
         <div className="grow" />
         {status === 'LoadingMore' && <Loader type="orbit" />}
       </PanelHeader>

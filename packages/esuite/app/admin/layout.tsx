@@ -15,11 +15,11 @@ export const metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Theme className="flex h-dvh flex-col gap-2 px-3">
-      <div className="flex-start h-12 shrink-0 gap-3 rounded-lg border border-grayA-3 bg-grayA-2 px-3">
+      <div className="flex-start border-grayA-3 bg-grayA-2 h-12 shrink-0 gap-3 rounded-lg border px-3">
         <Link href={appConfig.baseUrl} aria-label="Go to home page">
           <AppTitle />
         </Link>
-        <div className="font-semibold text-grayA-11">admin</div>
+        <div className="text-grayA-11 font-semibold">admin</div>
         <nav className="min-w-36">
           <AdminNav />
         </nav>

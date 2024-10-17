@@ -1,20 +1,18 @@
 'use client'
 
-import { useRef } from 'react'
+import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button, IconButton } from '@radix-ui/themes'
-
+import { useRef } from 'react'
 import { MDXEditor } from '../mdx-editor/MDXEditor'
-
-import type { MDXEditorMethods } from '@mdxeditor/editor'
 
 export const TextDocumentEditor = () => {
   const ref = useRef<MDXEditorMethods>(null)
   return (
     <>
-      <div className="grid h-full w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-md border border-grayA-3 bg-gray-3">
+      <div className="border-grayA-3 bg-gray-3 grid h-full w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-md border">
         {/* header */}
-        <div className="flex-between h-10 border-b border-grayA-3 px-2 font-medium">
+        <div className="flex-between border-grayA-3 h-10 border-b px-2 font-medium">
           <div className="flex-start shrink-0">
             <IconButton variant="ghost" color="gray">
               <Icons.DotsNine className="size-5" />
@@ -29,12 +27,12 @@ export const TextDocumentEditor = () => {
         </div>
 
         {/* text area */}
-        <div className="overflow-y-auto bg-blackA-4 text-gray-12 placeholder:text-grayA-10">
+        <div className="bg-blackA-4 text-gray-12 placeholder:text-grayA-10 overflow-y-auto">
           <MDXEditor ref={ref} markdown={sampleText} className="markdown-body" />
         </div>
 
         {/* footer */}
-        <div className="flex h-12 items-center border-t border-grayA-3 px-2 text-sm">
+        <div className="border-grayA-3 flex h-12 items-center border-t px-2 text-sm">
           <Button variant="soft" size="1" color="gray">
             Thread
           </Button>

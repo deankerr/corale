@@ -83,8 +83,7 @@ function createFullScale(name: string) {
 
 // * css variables
 function createRadixColors() {
-  const scale = (key: string) =>
-    Object.fromEntries([...Array(12)].map((_, i) => [i + 1, `var(--${key}${i + 1})`]))
+  const scale = (key: string) => Object.fromEntries([...Array(12)].map((_, i) => [i + 1, `var(--${key}${i + 1})`]))
 
   return {
     blackA: scale('black-a'),

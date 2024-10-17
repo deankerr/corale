@@ -1,12 +1,7 @@
 import { SVGProps } from 'react'
 
 export const AppLogo = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    viewBox="0 0 32 32"
-    xmlns="http://www.w3.org/2000/svg"
-    className="size-48 text-accent-11"
-    {...props}
-  >
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" className="text-accent-11 size-48" {...props}>
     <g
       fill="currentColor"
       transform="matrix(0.030300000682473183, 0, 0, 0.030300000682473183, -2.181915044784546, -2.181670904159546)"

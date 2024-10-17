@@ -1,9 +1,8 @@
 'use client'
 
-import { forwardRef } from 'react'
-import dynamic from 'next/dynamic'
-
 import type { MDXEditorMethods, MDXEditorProps } from '@mdxeditor/editor'
+import dynamic from 'next/dynamic'
+import { forwardRef } from 'react'
 
 const Editor = dynamic(() => import('./InternalMDXEditor'), {
   ssr: false,

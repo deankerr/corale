@@ -34,13 +34,7 @@ const AudioButton = ({
     format: ['mp3'],
   })
 
-  const state = error
-    ? 'error'
-    : howlState === 'loading'
-      ? 'loading'
-      : playing
-        ? 'playing'
-        : 'available'
+  const state = error ? 'error' : howlState === 'loading' ? 'loading' : playing ? 'playing' : 'available'
 
   const Icon = icon[state]
 

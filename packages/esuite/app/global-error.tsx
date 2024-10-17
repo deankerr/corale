@@ -2,12 +2,7 @@
 
 import { useEffect } from 'react'
 
-export default function GlobalError({
-  error,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+export default function GlobalError({ error }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error(error)
   }, [error])

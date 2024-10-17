@@ -1,10 +1,6 @@
 import type { SVGProps } from 'react'
 
-export const Claude = ({
-  size = '1em',
-  style,
-  ...rest
-}: SVGProps<SVGSVGElement> & { size?: string | number }) => (
+export const Claude = ({ size = '1em', style, ...rest }: SVGProps<SVGSVGElement> & { size?: string | number }) => (
   <svg
     fill="currentColor"
     fillRule="evenodd"

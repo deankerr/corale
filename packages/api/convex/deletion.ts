@@ -2,11 +2,9 @@ import { asyncMap } from 'convex-helpers'
 import { v } from 'convex/values'
 import { ms } from 'itty-time'
 import { z } from 'zod'
-
 import { internal } from './_generated/api'
-import { internalMutation } from './functions'
-
 import type { Id, TableNames } from './_generated/dataModel'
+import { internalMutation } from './functions'
 
 const searchTime = ms('2 seconds')
 const timeToDelete = ms('1 day')
@@ -27,15 +25,10 @@ export const scheduleFileDeletion = internalMutation({
   args: {},
   handler: async (ctx) => {
     const items = await ctx.skipRules.table
-      .system('_scheduled_functions', 'by_creation_time', (q) =>
-        q.gte('_creationTime', Date.now() - searchTime),
-      )
+      .system('_scheduled_functions', 'by_creation_time', (q) => q.gte('_creationTime', Date.now() - searchTime))
       .order('desc')
       .filter((q) =>
-        q.and(
-          q.eq(q.field('name'), 'functions.js:scheduledDelete'),
-          q.eq(q.field('state.kind'), 'pending'),
-        ),
+        q.and(q.eq(q.field('name'), 'functions.js:scheduledDelete'), q.eq(q.field('state.kind'), 'pending')),
       )
 
     const toDelete = await asyncMap(items, async (item) => {

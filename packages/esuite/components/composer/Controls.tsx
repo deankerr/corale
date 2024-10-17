@@ -3,10 +3,7 @@ import { RectangleVertical } from '@/components/icons/RectangleVertical'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Select } from '@radix-ui/themes'
 
-export const QuantitySelect = ({
-  max,
-  ...props
-}: { max: number } & React.ComponentProps<typeof Select.Root>) => {
+export const QuantitySelect = ({ max, ...props }: { max: number } & React.ComponentProps<typeof Select.Root>) => {
   return (
     <Select.Root {...props}>
       <Select.Trigger placeholder="Quantity" className="min-w-24" variant="soft" color="gray" />

@@ -10,18 +10,13 @@ export const useCollections = () => {
 export const useCollection = (collectionId: string) => {
   const collections = useCachedQuery(api.db.collections.latest, {})
   const userCollection = collections?.find((c) => c.id === collectionId) ?? null
-  const nonUserCollection = useCachedQuery(
-    api.db.collections.get,
-    !userCollection ? { collectionId } : 'skip',
-  )
+  const nonUserCollection = useCachedQuery(api.db.collections.get, !userCollection ? { collectionId } : 'skip')
   return userCollection || nonUserCollection
 }
 
 export const useCollectionImages = (collectionId?: string, order?: 'asc' | 'desc') => {
-  const images = usePaginatedQuery(
-    api.db.collections.listImages,
-    collectionId ? { collectionId, order } : 'skip',
-    { initialNumItems: 24 },
-  )
+  const images = usePaginatedQuery(api.db.collections.listImages, collectionId ? { collectionId, order } : 'skip', {
+    initialNumItems: 24,
+  })
   return collectionId ? images : undefined
 }

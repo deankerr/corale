@@ -3,14 +3,12 @@ import { nullable } from 'convex-helpers/validators'
 import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
 import { nanoid } from 'nanoid/non-secure'
-
 import { internal } from '../_generated/api'
 import { internalMutation, mutation, query } from '../functions'
 import { paginatedReturnFields } from '../lib/utils'
 import { generationV2Fields } from '../schema'
-import { getImageV2Edges, imagesReturn } from './images'
-
 import type { Ent, QueryCtx, RunConfigTextToImageV2 } from '../types'
+import { getImageV2Edges, imagesReturn } from './images'
 
 export const runConfigTextToImageV2 = v.object({
   type: v.literal('textToImage'),

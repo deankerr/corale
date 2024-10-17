@@ -1,5 +1,4 @@
 import { ConvexError } from 'convex/values'
-
 import type { EMessage } from '../types'
 
 export function getMessageName(message: EMessage) {
@@ -30,18 +29,9 @@ export function extractValidUrlsFromText(text: string): URL[] {
   const matches = text.match(urlRegex) || []
   return matches
     .map(getURLIfValid)
-    .filter(
-      (url): url is URL =>
-        url !== null && !ignoredUrls.some((ignored) => url.href.includes(ignored)),
-    )
+    .filter((url): url is URL => url !== null && !ignoredUrls.some((ignored) => url.href.includes(ignored)))
 }
 
 export function hasDelimiter(text: string) {
-  return (
-    text.includes('\n') ||
-    text.includes('.') ||
-    text.includes('?') ||
-    text.includes('!') ||
-    text.length >= 200
-  )
+  return text.includes('\n') || text.includes('.') || text.includes('?') || text.includes('!') || text.length >= 200
 }

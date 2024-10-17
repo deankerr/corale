@@ -1,10 +1,6 @@
 import type { SVGProps } from 'react'
 
-export const Cohere = ({
-  size = '1em',
-  style,
-  ...rest
-}: SVGProps<SVGSVGElement> & { size?: string | number }) => {
+export const Cohere = ({ size = '1em', style, ...rest }: SVGProps<SVGSVGElement> & { size?: string | number }) => {
   return (
     <svg
       fill="currentColor"

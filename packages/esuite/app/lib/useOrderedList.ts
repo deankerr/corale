@@ -58,9 +58,7 @@ export function orderedListReducer<T>(state: T[], action: Action<T>): T[] {
       return state
     case 'update':
       if (action.index >= 0 && action.index < state.length) {
-        return state.map((item, index) =>
-          index === action.index && item !== undefined ? action.updateFn(item) : item,
-        )
+        return state.map((item, index) => (index === action.index && item !== undefined ? action.updateFn(item) : item))
       }
       return state
     default:

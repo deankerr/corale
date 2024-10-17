@@ -70,8 +70,7 @@ const data = [
   },
   {
     modelId: 'fal-ai/aura-flow',
-    coverImage:
-      'https://v2.fal.media/files/ca17a9704d9f4d6eb1ff0c1c9526e897_b1abc7da53e949698e9c8186963f80c4.png',
+    coverImage: 'https://v2.fal.media/files/ca17a9704d9f4d6eb1ff0c1c9526e897_b1abc7da53e949698e9c8186963f80c4.png',
     name: 'AuraFlow',
     description: 'Fully open flow-based text to image model.',
     creatorName: 'fal.ai',
@@ -109,8 +108,7 @@ const data = [
   },
   {
     modelId: 'fal-ai/fast-lightning-sdxl',
-    coverImage:
-      'https://storage.googleapis.com/falserverless/gallery/stable-diffusion-xl-lightning.webp',
+    coverImage: 'https://storage.googleapis.com/falserverless/gallery/stable-diffusion-xl-lightning.webp',
     coverImageAnimated:
       'https://storage.googleapis.com/falserverless/gallery/stable-diffusion-xl-lightning-animated.webp',
     name: 'SDXL Lightning',
@@ -138,8 +136,7 @@ const data = [
     modelId: 'fal-ai/pixart-sigma',
     coverImage: 'https://storage.googleapis.com/falserverless/gallery/pixart-sigma.jpeg',
     name: 'PixArt-Σ',
-    description:
-      'Weak-to-Strong Training of Diffusion Transformer for 4K Text-to-Image Generation.',
+    description: 'Weak-to-Strong Training of Diffusion Transformer for 4K Text-to-Image Generation.',
     link: 'https://fal.ai/models/pixart-sigma',
     pricing: {
       type: 'perSecond',
