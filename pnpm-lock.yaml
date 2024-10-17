@@ -8,9 +8,21 @@ importers:
 
   .:
     devDependencies:
+      '@ianvs/prettier-plugin-sort-imports':
+        specifier: ^4.3.1
+        version: 4.3.1(@vue/compiler-sfc@3.5.12)(prettier@3.3.3)
       '@types/node':
         specifier: ^22.7.6
         version: 22.7.6
+      eslint:
+        specifier: ^8
+        version: 8.57.1
+      prettier:
+        specifier: 3.3.3
+        version: 3.3.3
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.8
+        version: 0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1(@vue/compiler-sfc@3.5.12)(prettier@3.3.3))(prettier@3.3.3)
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -241,9 +253,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@ianvs/prettier-plugin-sort-imports':
-        specifier: ^4.3.1
-        version: 4.3.1(@vue/compiler-sfc@3.5.12)(prettier@3.3.3)
       '@next/bundle-analyzer':
         specifier: ^14.2.15
         version: 14.2.15
@@ -271,21 +280,12 @@ importers:
       eslint-config-next:
         specifier: 14.2.15
         version: 14.2.15(eslint@8.57.1)(typescript@5.6.3)
-      eslint-config-prettier:
-        specifier: ^9.1.0
-        version: 9.1.0(eslint@8.57.1)
       postcss:
         specifier: ^8
         version: 8.4.47
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.0(postcss@8.4.47)
-      prettier:
-        specifier: 3.3.3
-        version: 3.3.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.8
-        version: 0.6.8(@ianvs/prettier-plugin-sort-imports@4.3.1(@vue/compiler-sfc@3.5.12)(prettier@3.3.3))(prettier@3.3.3)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.14
@@ -2907,12 +2907,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  eslint-config-prettier@9.1.0:
-    resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
-    hasBin: true
-    peerDependencies:
-      eslint: '>=7.0.0'
 
   eslint-import-resolver-node@0.3.9:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
@@ -7981,10 +7975,6 @@ snapshots:
       - eslint-import-resolver-webpack
       - eslint-plugin-import-x
       - supports-color
-
-  eslint-config-prettier@9.1.0(eslint@8.57.1):
-    dependencies:
-      eslint: 8.57.1
 
   eslint-import-resolver-node@0.3.9:
     dependencies:
