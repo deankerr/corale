@@ -1,0 +1,310 @@
+@import 'tailwindcss/base';
+@import '@radix-ui/themes/styles.css';
+@import '@mdxeditor/editor/dist/style.css';
+
+@tailwind components;
+
+.radix-themes {
+  /* fonts */
+  --default-font-family: var(--font-sans);
+  --code-font-family: var(--font-mono);
+
+  /* add pointer cursor to controls */
+  --cursor-button: pointer;
+  --cursor-disabled: default;
+  --cursor-link: pointer;
+  --cursor-menu-item: pointer;
+  --cursor-slider-thumb: pointer;
+  --cursor-slider-thumb-active: pointer;
+  --cursor-switch: pointer;
+}
+
+/* add transitions */
+.rt-BaseButton,
+.rt-TabsTrigger,
+.rt-Link,
+.rt-TextFieldInput,
+.rt-CheckboxButton,
+.rt-BaseMenuItem {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke,
+    opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+@tailwind utilities;
+
+:root {
+  --nav-rail-height: 3rem;
+  --card-1: #1b1d1eb3;
+  --card-1-light: #3f4547b3;
+
+  --card-2: #1e1d1bb3;
+}
+
+.jotai-devtools-trigger-button {
+  width: 0.5rem !important;
+  height: 0.5rem !important;
+  opacity: 0.1;
+}
+
+.colorize-pink {
+  filter: invert(100%) brightness(0.5) sepia(1) hue-rotate(-70deg) saturate(5);
+}
+
+.colorize-orange {
+  filter: invert(100%) brightness(0.5) sepia(1) hue-rotate(-6deg) saturate(5);
+}
+
+.phosphor {
+  display: inline-block;
+  vertical-align: text-top;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.cmdk-animate-list {
+  transition: height 100ms ease;
+}
+
+.shimmer {
+  @apply before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-grayA-3 before:to-transparent;
+}
+
+.shimmer-b {
+  @apply before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:border-t before:border-grayA-3 before:bg-gradient-to-r before:from-transparent before:via-grayA-3 before:to-transparent;
+}
+
+.dark,
+.dark-theme {
+  --orange-1: #15100d;
+  --orange-2: #1e1611;
+  --orange-3: #331d12;
+  --orange-4: #462009;
+  --orange-5: #54290f;
+  --orange-6: #64361d;
+  --orange-7: #7b472b;
+  --orange-8: #9e5b37;
+  --orange-9: #e5712a;
+  --orange-10: #d86518;
+  --orange-11: #ff9f69;
+  --orange-12: #feddcc;
+
+  --orange-a1: #de000005;
+  --orange-a2: #fe6d120e;
+  --orange-a3: #fb631825;
+  --orange-a4: #ff550039;
+  --orange-a5: #ff660a48;
+  --orange-a6: #ff7c3459;
+  --orange-a7: #ff8a4c72;
+  --orange-a8: #fe8d5198;
+  --orange-a9: #fe7c2de4;
+  --orange-a10: #fe7519d6;
+  --orange-a11: #ff9f69;
+  --orange-a12: #ffdecdfe;
+
+  --orange-contrast: #fff;
+  --orange-surface: #2b1b1180;
+  --orange-indicator: #e5712a;
+  --orange-track: #e5712a;
+}
+
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    .dark,
+    .dark-theme {
+      --orange-1: oklch(17.8% 0.01 47.8);
+      --orange-2: oklch(20.7% 0.016 47.8);
+      --orange-3: oklch(25.6% 0.039 47.8);
+      --orange-4: oklch(29.3% 0.068 47.8);
+      --orange-5: oklch(33.4% 0.075 47.8);
+      --orange-6: oklch(38.5% 0.076 47.8);
+      --orange-7: oklch(45.2% 0.083 47.8);
+      --orange-8: oklch(54% 0.101 47.8);
+      --orange-9: oklch(67.4% 0.165 47.8);
+      --orange-10: oklch(63.6% 0.165 47.8);
+      --orange-11: oklch(79.7% 0.14 47.8);
+      --orange-12: oklch(92.1% 0.043 47.8);
+
+      --orange-a1: color(display-p3 0.973 0 0 / 0.013);
+      --orange-a2: color(display-p3 0.992 0.455 0.145 / 0.051);
+      --orange-a3: color(display-p3 0.996 0.459 0.157 / 0.131);
+      --orange-a4: color(display-p3 0.996 0.396 0.012 / 0.202);
+      --orange-a5: color(display-p3 0.996 0.463 0.129 / 0.257);
+      --orange-a6: color(display-p3 1 0.541 0.275 / 0.324);
+      --orange-a7: color(display-p3 1 0.596 0.361 / 0.416);
+      --orange-a8: color(display-p3 0.996 0.608 0.384 / 0.555);
+      --orange-a9: color(display-p3 1 0.549 0.275 / 0.828);
+      --orange-a10: color(display-p3 1 0.525 0.224 / 0.778);
+      --orange-a11: color(display-p3 1 0.671 0.475 / 0.946);
+      --orange-a12: color(display-p3 1 0.894 0.827 / 0.975);
+
+      --orange-contrast: #fff;
+      --orange-surface: color(display-p3 0.157 0.102 0.071 / 0.5);
+      --orange-indicator: oklch(67.4% 0.165 47.8);
+      --orange-track: oklch(67.4% 0.165 47.8);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 20.5 90.2% 48.2%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 20.5 90.2% 48.2%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+}
+
+.markdown-root {
+  @apply overflow-hidden;
+}
+
+.markdown-root h1 {
+  @apply text-4xl font-bold tracking-tight;
+  @apply pb-6 pt-10 first:pt-4;
+}
+
+.markdown-root h2 {
+  @apply text-3xl font-semibold tracking-tight;
+  @apply pb-4 pt-8;
+}
+
+.markdown-root h3 {
+  @apply text-2xl font-semibold tracking-tight;
+  @apply pb-4 pt-6;
+}
+
+.markdown-root h4 {
+  @apply text-xl font-semibold tracking-tight;
+  @apply pb-4 pt-6;
+}
+
+.markdown-root h5 {
+  @apply text-lg font-semibold;
+  @apply pb-3 pt-4;
+}
+
+.markdown-root h6 {
+  @apply font-semibold;
+  @apply pb-3 pt-4;
+}
+
+.markdown-root p {
+  @apply pb-3 pt-3 leading-7 first:pt-0 last:pb-0;
+}
+
+.markdown-root a {
+  @apply font-medium text-gray-12 underline underline-offset-4;
+}
+
+.markdown-root blockquote {
+  @apply border-l-2 pl-6 italic;
+}
+
+.markdown-root ul {
+  @apply ml-6 list-disc pb-2 [&>li]:pt-2;
+}
+
+.markdown-root ol {
+  @apply ml-6 list-decimal pb-2 [&>li]:pt-2;
+}
+
+.markdown-root hr {
+  @apply border-b;
+}
+
+.markdown-root table {
+  @apply w-full border-separate border-spacing-0;
+}
+
+.markdown-root thead {
+  @apply bg-grayA-2;
+}
+
+.markdown-root th {
+  @apply border-y px-4 py-2 text-left font-bold first:rounded-tl-lg first:border-l last:rounded-tr-lg last:border-r [&[align=center]]:text-center [&[align=right]]:text-right;
+}
+
+.markdown-root td {
+  @apply border-b border-l px-4 py-2 text-left last:border-r [&[align=center]]:text-center [&[align=right]]:text-right;
+}
+
+.markdown-root tr {
+  @apply border-b first:border-t [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg;
+}
+
+.markdown-root sup {
+  @apply [&>a]:text-xs [&>a]:no-underline;
+}
+
+.markdown-root pre {
+  @apply overflow-x-auto rounded-md border border-grayA-3 bg-blackA-4 p-3;
+}
+
+.markdown-root code {
+  @apply leading-5 text-grayA-11;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.header-markers h1::before {
+  content: '⋅ ';
+  @apply text-gray-8;
+}
+
+.header-markers h2::before {
+  content: '∶ ';
+  @apply text-gray-8;
+}
+
+.header-markers h3::before {
+  content: '∴ ';
+  @apply text-gray-8;
+}
+
+.header-markers h4::before {
+  content: '∷ ';
+  @apply text-gray-8;
+}
+
+.header-markers h5::before {
+  content: '∵ ';
+  @apply text-gray-8;
+}
+
+.header-markers h6::before {
+  content: '∵ ';
+  @apply text-gray-8;
+}

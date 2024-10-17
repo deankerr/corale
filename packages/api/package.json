@@ -1,7 +1,9 @@
 {
   "name": "@corale/api",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
+    "dev": "convex dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

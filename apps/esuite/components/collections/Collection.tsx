@@ -1,0 +1,145 @@
+'use client'
+
+import { useState } from 'react'
+import { useCollection, useCollectionImages } from '@corale/esuite/app/lib/api/collections'
+import {
+  DeleteCollectionDialog,
+  EditCollectionTitleDialog,
+} from '@corale/esuite/components/collections/dialogs'
+import { DotsThreeFillX } from '@corale/esuite/components/icons/DotsThreeFillX'
+import { ImageCardNext } from '@corale/esuite/components/images/ImageCardNext'
+import { useLightbox } from '@corale/esuite/components/lightbox/hooks'
+import { NavigationButton } from '@corale/esuite/components/navigation/NavigationSheet'
+import { IconButton } from '@corale/esuite/components/ui/Button'
+import { InfiniteScroll } from '@corale/esuite/components/ui/InfiniteScroll'
+import {
+  Panel,
+  PanelEmpty,
+  PanelHeader,
+  PanelLoading,
+  PanelTitle,
+} from '@corale/esuite/components/ui/Panel'
+import { ScrollArea } from '@corale/esuite/components/ui/ScrollArea'
+import * as Icons from '@phosphor-icons/react/dist/ssr'
+import { DropdownMenu, Grid } from '@radix-ui/themes'
+import { Masonry } from 'react-plock'
+
+import { Loader } from '../ui/Loader'
+
+export const Collection = ({ collectionId }: { collectionId: string }) => {
+  const [sort, setSort] = useState<'asc' | 'desc'>('desc')
+
+  const collection = useCollection(collectionId)
+  const collectionImages = useCollectionImages(collection?._id, sort)
+  const images =
+    collectionImages?.results && collectionImages.results.length > 0
+      ? collectionImages.results
+      : collection?.images
+
+  const openLightbox = useLightbox()
+  const slides = images?.map((image) => ({
+    type: 'image' as const,
+    src: `/i/${image.id}`,
+    width: image.width,
+    height: image.height,
+    blurDataURL: image?.blurDataUrl,
+  }))
+
+  if (!collection) return collection === null ? <PanelEmpty /> : <PanelLoading />
+
+  return (
+    <Panel>
+      <PanelHeader className="gap-1">
+        <NavigationButton />
+        <PanelTitle href={`/collections/${collection.id}`}>{collection.title}</PanelTitle>
+
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <IconButton variant="ghost" color="gray" aria-label="More options">
+              <DotsThreeFillX width={20} height={20} />
+            </IconButton>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Content variant="soft">
+            <EditCollectionTitleDialog collectionId={collection.id} currentTitle={collection.title}>
+              <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
+                <Icons.Pencil /> Edit title
+              </DropdownMenu.Item>
+            </EditCollectionTitleDialog>
+
+            <DeleteCollectionDialog collectionId={collection.id}>
+              <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
+                <Icons.Trash /> Delete
+              </DropdownMenu.Item>
+            </DeleteCollectionDialog>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+
+        <div className="grow" />
+        <IconButton
+          variant="ghost"
+          color="gray"
+          aria-label="Sort"
+          onClick={() => setSort(sort === 'asc' ? 'desc' : 'asc')}
+        >
+          {sort === 'desc' ? <Icons.SortAscending size={20} /> : <Icons.SortDescending size={20} />}
+        </IconButton>
+      </PanelHeader>
+
+      <ScrollArea>
+        <Masonry
+          items={images ?? []}
+          config={{
+            columns: [1, 2, 3, 4],
+            gap: [8, 8, 8, 8],
+            media: [520, 768, 1024, 1280],
+          }}
+          render={(image, idx) => (
+            <ImageCardNext
+              key={idx}
+              image={image}
+              sizes="(max-width: 520px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33.33vw, 25vw"
+            >
+              <div
+                className="absolute inset-0 cursor-pointer"
+                onClick={() =>
+                  openLightbox({
+                    slides: slides ?? [],
+                    index: images?.indexOf(image) ?? 0,
+                  })
+                }
+              />
+            </ImageCardNext>
+          )}
+          className="p-2"
+        />
+
+        {collectionImages?.status === 'LoadingFirstPage' ? (
+          <div className="flex-center h-[98%]">
+            <Grid />
+          </div>
+        ) : (
+          <>
+            {images?.length === 0 && <div className="text-gray-11">No images found.</div>}
+            <div className="flex-center h-12">
+              <InfiniteScroll
+                isLoading={collectionImages?.isLoading ?? false}
+                hasMore={collectionImages?.status !== 'Exhausted'}
+                next={() => {
+                  collectionImages?.loadMore(24)
+                  console.log('load more')
+                }}
+              >
+                {collectionImages?.status !== 'Exhausted' && (
+                  <div>
+                    <Loader type="orbit" />
+                  </div>
+                )}
+              </InfiniteScroll>
+            </div>
+          </>
+        )}
+      </ScrollArea>
+    </Panel>
+  )
+}

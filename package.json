@@ -2,7 +2,14 @@
   "name": "corale",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
+    "dev:ws2": "pnpm --filter @corale/ws2 dev",
+    "dev:esuite": "pnpm --filter @corale/esuite dev",
+    "dev:api": "pnpm --filter @corale/api dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
