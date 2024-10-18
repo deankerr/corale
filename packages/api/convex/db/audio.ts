@@ -45,7 +45,7 @@ export const create = internalMutation({
       messageId,
       threadId: message.threadId,
       userId: message.userId,
-      xid: await generateXID(ctx, 'audio'),
+      xid: generateXID(),
     })
 
     return audioId

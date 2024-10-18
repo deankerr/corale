@@ -73,7 +73,7 @@ export const createMessage = async (
 
   const prev = await thread.edge('messages').order('desc').first()
   const series = prev ? prev.series + 1 : 1
-  const xid = await generateXID(ctx, 'messages')
+  const xid = generateXID()
 
   const message = skipRules
     ? await ctx.skipRules

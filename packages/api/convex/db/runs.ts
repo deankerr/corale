@@ -94,7 +94,7 @@ export const create = mutation({
       userId: thread.userId,
 
       updatedAt: Date.now(),
-      xid: await generateXID(ctx, 'runs'),
+      xid: generateXID(),
     })
 
     await ctx.scheduler.runAfter(0, internal.action.run.run, {

@@ -109,7 +109,7 @@ export const create = mutation({
         input: { ...input, configId: nanoid() },
         runId,
         ownerId: viewer._id,
-        xid: await generateXID(ctx, 'generations_v2'),
+        xid: generateXID(),
       })
 
       await ctx.scheduler.runAfter(0, internal.action.generateTextToImage.run, {

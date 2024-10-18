@@ -102,7 +102,7 @@ export const create = mutation({
       ownerId: viewer._id,
       id: generateSlugId(),
       images_v2: imageIds,
-      xid: await generateXID(ctx, 'collections'),
+      xid: generateXID(),
     })
 
     return collectionId

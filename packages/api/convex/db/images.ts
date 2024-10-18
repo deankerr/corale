@@ -91,7 +91,7 @@ export const createImageV2 = internalMutation({
       ...args,
       id,
       createdAt,
-      xid: await generateXID(ctx, 'images_v2'),
+      xid: generateXID(),
     })
 
     // await ctx.scheduler.runAfter(0, internal.action.generateImageVisionData.run, { imageId: id })

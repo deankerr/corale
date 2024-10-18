@@ -63,7 +63,7 @@ export const create = mutation({
   ) => {
     const user = await ctx.viewerX()
 
-    const xid = await generateXID(ctx, 'patterns')
+    const xid = generateXID()
 
     const patternId = await ctx.table('patterns').insert({
       name,

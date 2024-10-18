@@ -43,7 +43,7 @@ export const getOrCreateUserThread = async (ctx: MutationCtx, threadId?: string)
         userId: user._id,
         slug: await generateSlug(ctx),
         updatedAtTime: Date.now(),
-        xid: await generateXID(ctx, 'threads'),
+        xid: generateXID(),
       })
       .get()
 
@@ -121,7 +121,7 @@ export const create = mutation({
       updatedAtTime: Date.now(),
       userId: user._id,
       slug: await generateSlug(ctx),
-      xid: await generateXID(ctx, 'threads'),
+      xid: generateXID(),
     })
 
     return {
