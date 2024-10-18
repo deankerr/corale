@@ -95,7 +95,7 @@ export const get = query({
     messageId: v.string(),
   },
   handler: async (ctx, args) => {
-    const id = ctx.unsafeDb.normalizeId('messages', args.messageId)
+    const id = ctx.table('messages').normalizeId(args.messageId)
     const message = id ? await ctx.table('messages').get(id) : null
 
     return message ? await getMessageEdges(ctx, message) : null

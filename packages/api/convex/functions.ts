@@ -33,13 +33,12 @@ export const internalQuery = customQuery(
 
 async function queryCtx(baseCtx: BaseQueryCtx, apiKey?: string) {
   const ctx = {
-    unsafeDb: baseCtx.db,
-    db: undefined as unknown as typeof baseCtx.db,
+    ...baseCtx,
     skipRules: { table: entsTableFactory(baseCtx, entDefinitions) },
   }
 
-  const authViewerId = await getViewerIdFromAuth({ ...baseCtx, ...ctx })
-  const apiKeyViewerId = await getViewerIdFromApiKey({ ...baseCtx, ...ctx }, apiKey)
+  const authViewerId = await getViewerIdFromAuth(ctx)
+  const apiKeyViewerId = await getViewerIdFromApiKey(ctx, apiKey)
   const viewerId = apiKeyViewerId ?? authViewerId
 
   const entDefinitionsWithRules = getEntDefinitionsWithRules({ ...ctx, viewerId } as any)
@@ -72,13 +71,12 @@ export const internalMutation = customMutation(
 
 async function mutationCtx(baseCtx: BaseMutationCtx, apiKey?: string) {
   const ctx = {
-    unsafeDb: baseCtx.db,
-    db: undefined as unknown as typeof baseCtx.db,
+    ...baseCtx,
     skipRules: { table: entsTableFactory(baseCtx, entDefinitions) },
   }
 
-  const authViewerId = await getViewerIdFromAuth({ ...baseCtx, ...ctx })
-  const apiKeyViewerId = await getViewerIdFromApiKey({ ...baseCtx, ...ctx }, apiKey)
+  const authViewerId = await getViewerIdFromAuth(ctx)
+  const apiKeyViewerId = await getViewerIdFromApiKey(ctx, apiKey)
   const viewerId = apiKeyViewerId ?? authViewerId
 
   const entDefinitionsWithRules = getEntDefinitionsWithRules({ ...ctx, viewerId } as any)

@@ -37,7 +37,7 @@ export const scheduleFileDeletion = internalMutation({
         const { id, table } = args[0].origin
 
         if (fileTables.includes(table)) {
-          const ent = await ctx.unsafeDb.get(id as Id<'images_v2'>)
+          const ent = await ctx.db.get(id as Id<'images_v2'>)
           const fileId = ent?.fileId
           if (!fileId) {
             console.error('no fileId found for', id, table)
@@ -82,7 +82,7 @@ export const deleteFiles = internalMutation({
   },
   handler: async (ctx, { files }) => {
     for (const file of files) {
-      const ent = await ctx.unsafeDb.get(file.entId as Id<'images_v2'>)
+      const ent = await ctx.db.get(file.entId as Id<'images_v2'>)
       if (ent) {
         console.warn('owner of scheduled file deletion still exists')
         continue
