@@ -4,7 +4,7 @@ import { v } from 'convex/values'
 import { query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { getMessageEdges, messageReturnFields } from '../helpers/messages'
-import { getThread } from '../helpers/threads'
+import { getEntity } from '../helpers/xid'
 
 export const get = query({
   args: {
@@ -12,7 +12,7 @@ export const get = query({
     series: v.number(),
   },
   handler: async (ctx, { threadId, series }) => {
-    const thread = await getThread(ctx, threadId)
+    const thread = await getEntity(ctx, 'threads', threadId)
     if (!thread) return null
 
     const message = await ctx
@@ -32,7 +32,7 @@ export const list = query({
     order: v.optional(literals('asc', 'desc')),
   },
   handler: async (ctx, { threadId, limit = 20, order = 'desc' }) => {
-    const thread = await getThread(ctx, threadId)
+    const thread = await getEntity(ctx, 'threads', threadId)
     if (!thread) return null
 
     const messages = await thread
@@ -60,7 +60,7 @@ export const search = query({
     ctx,
     { threadId, order = 'desc', role, name, createdAfter = 1, createdBefore = Infinity, paginationOpts },
   ) => {
-    const thread = await getThread(ctx, threadId)
+    const thread = await getEntity(ctx, 'threads', threadId)
     if (!thread) return emptyPage()
 
     paginationOpts.numItems = Math.min(paginationOpts.numItems, 100)
@@ -118,7 +118,7 @@ export const searchText = query({
     const text = args.text.trimStart()
     if (text.length < 3) return []
 
-    const thread = await getThread(ctx, threadId)
+    const thread = await getEntity(ctx, 'threads', threadId)
     if (!thread) return []
 
     const messages = await ctx

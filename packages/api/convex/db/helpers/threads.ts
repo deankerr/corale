@@ -22,18 +22,6 @@ export const threadReturnFields = {
 
 type ThreadReturnFields = Infer<AsObjectValidator<typeof threadReturnFields>>
 
-export const getThread = async (ctx: QueryCtx, xid: string) => {
-  const id = ctx.table('threads').normalizeId(xid)
-  const thread = id ? await ctx.table('threads').get(id) : await ctx.table('threads').get('xid', xid)
-  return thread && !thread.deletionTime ? thread : null
-}
-
-export const getThreadX = async (ctx: QueryCtx, xid: string) => {
-  const thread = await getThread(ctx, xid)
-  if (!thread) throw new ConvexError({ message: 'invalid thread id', xid })
-  return thread
-}
-
 export const getThreadEdges = async (ctx: QueryCtx, thread: Ent<'threads'>): Promise<ThreadReturnFields> => {
   return {
     ...thread,

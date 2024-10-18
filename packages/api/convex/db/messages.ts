@@ -6,7 +6,7 @@ import { mutation, query } from '../functions'
 import { messageFields } from '../schema'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { createMessage, getMessageEdges, messageCreateFields, messageReturnFields } from './helpers/messages'
-import { getThreadX } from './helpers/threads'
+import { getEntityX } from './helpers/xid'
 
 // * queries
 export const get = query({
@@ -47,7 +47,7 @@ export const create = mutation({
     ...messageCreateFields,
   },
   handler: async (ctx, { threadId, ...fields }) => {
-    const thread = await getThreadX(ctx, threadId)
+    const thread = await getEntityX(ctx, 'threads', threadId)
 
     const message = await createMessage(ctx, {
       ...fields,

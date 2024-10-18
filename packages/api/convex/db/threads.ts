@@ -1,18 +1,46 @@
 import { omit, pick } from 'convex-helpers'
 import { nullable } from 'convex-helpers/validators'
-import { ConvexError, v } from 'convex/values'
+import { ConvexError, v, type AsObjectValidator, type Infer } from 'convex/values'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
-import { internalMutation, mutation, query } from '../functions'
+import { mutation, query } from '../functions'
 import { threadFields } from '../schema'
-import type { EThread, MutationCtx, QueryCtx } from '../types'
+import type { Ent, EThread, MutationCtx, QueryCtx } from '../types'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { createMessage, messageCreateFields } from './helpers/messages'
-import { getThread, getThreadEdges, getThreadX, threadReturnFields } from './helpers/threads'
-import { generateXID } from './helpers/xid'
-import { getUserPublic } from './users'
+import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
+import { getUserPublic, getUserPublicX, userReturnFieldsPublic } from './users'
 
 // * Helpers
+
+export const threadReturnFields = {
+  // doc
+  _id: v.string(),
+  _creationTime: v.number(),
+  title: v.optional(v.string()),
+  instructions: v.optional(v.string()),
+  favourite: v.optional(v.boolean()),
+  kvMetadata: v.record(v.string(), v.string()),
+  updatedAtTime: v.number(),
+  // + fields
+  xid: v.optional(v.string()),
+  userId: v.id('users'),
+
+  // edge
+  user: userReturnFieldsPublic,
+}
+
+export const getThreadEdges = async (
+  ctx: QueryCtx,
+  thread: Ent<'threads'>,
+): Promise<Infer<AsObjectValidator<typeof threadReturnFields>>> => {
+  return {
+    ...thread,
+    user: await getUserPublicX(ctx, thread.userId),
+    kvMetadata: thread.kvMetadata ?? {},
+  }
+}
+
 const getEmptyThread = async (ctx: QueryCtx): Promise<EThread | null> => {
   const viewer = await ctx.viewer()
   const user = viewer ? await getUserPublic(ctx, viewer._id) : null
@@ -66,7 +94,7 @@ export const get = query({
       return emptyThread
     }
 
-    const thread = await getThread(ctx, args.slugOrId)
+    const thread = await getEntity(ctx, 'threads', args.slugOrId)
     if (!thread) return null
 
     return await getThreadEdges(ctx, thread)
@@ -132,7 +160,7 @@ export const update = mutation({
     updateKv: v.optional(updateKvValidator),
   },
   handler: async (ctx, { threadId, updateKv, ...fields }) => {
-    const thread = await getThreadX(ctx, threadId)
+    const thread = await getEntityWriterX(ctx, 'threads', threadId)
     const kvMetadata = updateKvMetadata(thread.kvMetadata, updateKv)
 
     return await ctx
@@ -185,25 +213,4 @@ export const append = mutation({
     messageId: v.id('messages'),
     series: v.number(),
   }),
-})
-
-export const thing = mutation({
-  args: {},
-  handler: async (ctx) => {
-    const ident = await ctx.auth.getUserIdentity()
-    console.log('thing', ident)
-    const res = await ctx.runMutation(internal.db.threads.innerThing, {})
-    console.log('result', res)
-
-    await ctx.scheduler.runAfter(0, internal.db.threads.innerThing, {})
-  },
-})
-
-export const innerThing = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    const ident = await ctx.auth.getUserIdentity()
-    console.log('inner thing', ident)
-    return 'within'
-  },
 })

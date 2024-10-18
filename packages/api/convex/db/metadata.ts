@@ -3,7 +3,7 @@ import { getQuery } from 'ufo'
 import { api } from '../_generated/api'
 import { httpAction } from '../_generated/server'
 import { query } from '../functions'
-import { getThread } from './helpers/threads'
+import { getEntity } from './helpers/xid'
 
 export const getMetadata = query({
   args: {
@@ -12,7 +12,7 @@ export const getMetadata = query({
   },
   handler: async (ctx, args) => {
     if (args.route === 'chats') {
-      const thread = await getThread(ctx, args.id)
+      const thread = await getEntity(ctx, 'threads', args.id)
       if (thread && thread.title) {
         return {
           title: thread.title,
