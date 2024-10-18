@@ -7,5 +7,6 @@ export {
   pretendRequired,
   systemFields,
   withSystemFields,
+  nullable,
 } from 'convex-helpers/validators'
 export { asObjectValidator, ConvexError, v } from 'convex/values'

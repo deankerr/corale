@@ -7,8 +7,8 @@ import { mutation, query } from '../functions'
 import { threadFields } from '../schema'
 import type { Ent, EThread, MutationCtx, QueryCtx } from '../types'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
-import { createMessage, messageCreateFields } from './helpers/messages'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
+import { createMessage, messageCreateFields } from './messages'
 import { getUserPublic, getUserPublicX, userReturnFieldsPublic } from './users'
 
 // * Helpers

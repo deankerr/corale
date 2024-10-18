@@ -4,8 +4,7 @@ import { v } from 'convex/values'
 import { mutation, query } from '../functions'
 import { prepareUpdate } from '../lib/utils'
 import { patternFields } from '../schema'
-import { getPattern, getPatternWriterX } from './helpers/patterns'
-import { generateXID } from './helpers/xid'
+import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 
 export const patternReturnFields = {
   ...patternFields,
@@ -24,7 +23,7 @@ export const get = query({
     id: v.string(),
   },
   handler: async (ctx, { id }) => {
-    return await getPattern(ctx, id).then((pattern) => pattern?.doc() ?? null)
+    return await getEntity(ctx, 'patterns', id)
   },
 })
 
@@ -93,7 +92,7 @@ export const update = mutation({
     ...partial(patternFields),
   },
   handler: async (ctx, { id, ...args }) => {
-    const pattern = await getPatternWriterX(ctx, id)
+    const pattern = await getEntityWriterX(ctx, 'patterns', id)
 
     const defaults = {
       name: '',
@@ -112,7 +111,7 @@ export const remove = mutation({
     id: v.string(),
   },
   handler: async (ctx, { id }) => {
-    const pattern = await getPatternWriterX(ctx, id)
+    const pattern = await getEntityWriterX(ctx, 'patterns', id)
     return await pattern.delete()
   },
 })

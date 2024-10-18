@@ -3,8 +3,8 @@ import { paginationOptsValidator } from 'convex/server'
 import { v } from 'convex/values'
 import { query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
-import { getMessageEdges, messageReturnFields } from '../helpers/messages'
 import { getEntity } from '../helpers/xid'
+import { getMessageEdges, messageReturnFields } from '../messages'
 
 export const get = query({
   args: {

@@ -1,12 +1,93 @@
-import { nullable } from 'convex-helpers/validators'
-import { v } from 'convex/values'
 import { internal } from '../_generated/api'
-import type { Id } from '../_generated/dataModel'
 import { mutation, query } from '../functions'
 import { messageFields } from '../schema'
+import { extractValidUrlsFromText } from '../shared/helpers'
+import type { Doc, Ent, Id, MutationCtx, QueryCtx, WithoutSystemFields } from '../types'
+import { literals, nullable, omit, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
-import { createMessage, getMessageEdges, messageCreateFields, messageReturnFields } from './helpers/messages'
-import { getEntityX } from './helpers/xid'
+import { generateXID, getEntityX } from './helpers/xid'
+
+export const messageCreateFields = {
+  ...omit(messageFields, ['runId']),
+}
+
+export const messageReturnFields = {
+  // doc
+  _id: v.id('messages'),
+  _creationTime: v.number(),
+  role: literals('system', 'assistant', 'user'),
+  name: v.optional(v.string()),
+  text: v.optional(v.string()),
+  channel: v.optional(v.string()),
+  kvMetadata: v.record(v.string(), v.string()),
+  runId: v.optional(v.id('runs')),
+
+  // fields
+  xid: v.optional(v.string()),
+  series: v.number(),
+  threadId: v.string(),
+  userId: v.id('users'),
+}
+
+// * query helpers
+
+export const createMessage = async (
+  ctx: MutationCtx,
+  fields: Omit<WithoutSystemFields<Doc<'messages'>>, 'series' | 'deletionTime' | 'xid'>,
+  options?: {
+    skipRules?: boolean
+    evaluateUrls?: boolean
+    generateThreadTitle?: boolean
+  },
+) => {
+  const skipRules = options?.skipRules ?? false
+  const evaluateUrls = options?.evaluateUrls ?? fields.role === 'user'
+  const generateThreadTitle = options?.generateThreadTitle ?? fields.role === 'assistant'
+
+  const thread = await ctx.skipRules.table('threads').getX(fields.threadId)
+
+  const prev = await thread.edge('messages').order('desc').first()
+  const series = prev ? prev.series + 1 : 1
+  const xid = generateXID()
+
+  const message = skipRules
+    ? await ctx.skipRules
+        .table('messages')
+        .insert({ ...fields, series, xid })
+        .get()
+    : await ctx
+        .table('messages')
+        .insert({ ...fields, series, xid })
+        .get()
+
+  if (evaluateUrls) {
+    if (message.text) {
+      const urls = extractValidUrlsFromText(message.text)
+
+      if (urls.length > 0) {
+        await ctx.scheduler.runAfter(0, internal.action.evaluateMessageUrls.run, {
+          urls: urls.map((url) => url.toString()),
+          ownerId: message.userId,
+        })
+      }
+    }
+  }
+
+  if (generateThreadTitle && !thread.title) {
+    await ctx.scheduler.runAfter(0, internal.action.generateThreadTitle.run, {
+      threadId: thread._id,
+    })
+  }
+
+  return message
+}
+
+export const getMessageEdges = async (ctx: QueryCtx, message: Ent<'messages'>) => {
+  return {
+    ...message.doc(),
+    kvMetadata: message.kvMetadata ?? {},
+  }
+}
 
 // * queries
 export const get = query({

@@ -7,9 +7,8 @@ import type { Id } from '../_generated/dataModel'
 import { internalMutation, mutation, query } from '../functions'
 import { runFieldsV2 } from '../schema'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
-import { createMessage, messageCreateFields } from './helpers/messages'
-import { getPattern, getPatternWriterX } from './helpers/patterns'
-import { generateXID } from './helpers/xid'
+import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
+import { createMessage, messageCreateFields } from './messages'
 import { getChatModel } from './models'
 import { getOrCreateUserThread } from './threads'
 
@@ -48,7 +47,7 @@ export const create = mutation({
     const thread = await getOrCreateUserThread(ctx, args.threadId)
     if (!thread) throw new ConvexError('invalid thread id')
 
-    const pattern = args.patternId ? await getPatternWriterX(ctx, args.patternId) : null
+    const pattern = args.patternId ? await getEntityWriter(ctx, 'patterns', args.patternId) : null
     if (pattern) {
       await pattern.patch({ lastUsedAt: Date.now() })
     }
@@ -116,7 +115,7 @@ export const activate = internalMutation({
     const run = await ctx.skipRules.table('runs').getX(runId)
     if (run.status !== 'queued') throw new ConvexError({ message: 'run is not queued', runId })
 
-    const pattern = run.patternId ? await getPattern(ctx, run.patternId) : null
+    const pattern = run.patternId ? await getEntity(ctx, 'patterns', run.patternId) : null
 
     // * create response message
     const responseMessage = await createMessage(
