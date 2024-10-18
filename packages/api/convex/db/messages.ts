@@ -1,7 +1,7 @@
 import { internal } from '../_generated/api'
 import { mutation, query } from '../functions'
+import { extractValidUrlsFromText } from '../lib/utils'
 import { messageFields } from '../schema'
-import { extractValidUrlsFromText } from '../shared/helpers'
 import type { Doc, Ent, Id, MutationCtx, QueryCtx, WithoutSystemFields } from '../types'
 import { literals, nullable, omit, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'

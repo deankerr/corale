@@ -1,6 +1,6 @@
 import { paginationOptsValidator } from 'convex/server'
 import { query } from '../../functions'
-import { createError } from '../../shared/utils'
+import { createError } from '../../lib/utils'
 import { getImageV2Edges } from '../images'
 
 export const latestImages = query({

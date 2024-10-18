@@ -9,4 +9,4 @@ export {
   withSystemFields,
   nullable,
 } from 'convex-helpers/validators'
-export { asObjectValidator, ConvexError, v } from 'convex/values'
+export { asObjectValidator, ConvexError, v, type Value } from 'convex/values'

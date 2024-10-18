@@ -8,9 +8,8 @@ import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
 import { ENV } from '../lib/env'
-import { defaultSizes } from '../shared/defaults'
-import { imageModels } from '../shared/imageModels'
-import { stringifyValueForError } from '../shared/utils'
+import { stringifyValueForError } from '../lib/utils'
+import { defaultSizes, imageModels } from '../provider/imageModels'
 import type { RunConfigTextToImageV2 } from '../types'
 
 const Response = vb.object({

@@ -49,12 +49,9 @@ import type * as lib_fetch from "../lib/fetch.js";
 import type * as lib_sharp from "../lib/sharp.js";
 import type * as lib_utils from "../lib/utils.js";
 import type * as migrations from "../migrations.js";
+import type * as provider_imageModels from "../provider/imageModels.js";
 import type * as provider_openrouter from "../provider/openrouter.js";
 import type * as rules from "../rules.js";
-import type * as shared_defaults from "../shared/defaults.js";
-import type * as shared_helpers from "../shared/helpers.js";
-import type * as shared_imageModels from "../shared/imageModels.js";
-import type * as shared_utils from "../shared/utils.js";
 import type * as types from "../types.js";
 import type * as values from "../values.js";
 
@@ -101,12 +98,9 @@ declare const fullApi: ApiFromModules<{
   "lib/sharp": typeof lib_sharp;
   "lib/utils": typeof lib_utils;
   migrations: typeof migrations;
+  "provider/imageModels": typeof provider_imageModels;
   "provider/openrouter": typeof provider_openrouter;
   rules: typeof rules;
-  "shared/defaults": typeof shared_defaults;
-  "shared/helpers": typeof shared_helpers;
-  "shared/imageModels": typeof shared_imageModels;
-  "shared/utils": typeof shared_utils;
   types: typeof types;
   values: typeof values;
 }>;

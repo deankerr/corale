@@ -6,8 +6,7 @@ import type { ActionCtx } from '../_generated/server'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
 import { ENV } from '../lib/env'
-import { hasDelimiter } from '../shared/helpers'
-import { getErrorMessage } from '../shared/utils'
+import { getErrorMessage, hasDelimiter } from '../lib/utils'
 
 export const run = internalAction({
   args: {
