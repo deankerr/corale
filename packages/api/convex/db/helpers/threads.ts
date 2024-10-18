@@ -13,7 +13,6 @@ export const threadReturnFields = {
   kvMetadata: v.record(v.string(), v.string()),
   updatedAtTime: v.number(),
   // + fields
-  slug: v.string(),
   userId: v.id('users'),
   xid: v.optional(v.string()),
 
@@ -25,9 +24,7 @@ type ThreadReturnFields = Infer<AsObjectValidator<typeof threadReturnFields>>
 
 export const getThread = async (ctx: QueryCtx, xid: string) => {
   const id = ctx.table('threads').normalizeId(xid)
-  const thread = id
-    ? await ctx.table('threads').get(id)
-    : await ctx.table('threads', 'slug', (q) => q.eq('slug', xid)).unique()
+  const thread = id ? await ctx.table('threads').get(id) : await ctx.table('threads').get('xid', xid)
   return thread && !thread.deletionTime ? thread : null
 }
 

@@ -103,8 +103,7 @@ export const create = mutation({
 
     return {
       runId,
-      threadId: thread._id,
-      threadSlug: thread.slug,
+      threadId: thread.xid,
     }
   },
 })

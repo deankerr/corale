@@ -29,11 +29,8 @@ export const messageReturnFields = {
   // fields
   xid: v.optional(v.string()),
   series: v.number(),
-  threadId: v.id('threads'),
+  threadId: v.string(),
   userId: v.id('users'),
-
-  // edges
-  threadSlug: v.string(),
 }
 
 // * query helpers
@@ -41,7 +38,6 @@ export const getMessageEdges = async (ctx: QueryCtx, message: Ent<'messages'>) =
   const thread = await message.edgeX('thread')
   return {
     ...message.doc(),
-    threadSlug: thread.slug,
     kvMetadata: message.kvMetadata ?? {},
   }
 }

@@ -234,8 +234,7 @@ export const threadFields = {
 }
 const threads = defineEnt(threadFields)
   .deletion('scheduled', { delayMs: timeToDelete })
-  .field('slug', v.string(), { unique: true })
-  .field('xid', v.string(), { index: true })
+  .field('xid', v.string(), { unique: true })
   .edges('messages', { ref: true, deletion: 'soft' })
   .edges('audio', { ref: true, deletion: 'soft' })
   .edges('runs', { ref: true, deletion: 'soft' })

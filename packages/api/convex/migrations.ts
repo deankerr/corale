@@ -10,7 +10,7 @@ export const migration = makeMigration(internalMutation, {
 export const xidThreads = migration({
   table: 'threads',
   migrateOne: async (ctx, doc) => {
-    return { xid: doc.slug }
+    return { ...doc, slug: undefined }
   },
 })
 

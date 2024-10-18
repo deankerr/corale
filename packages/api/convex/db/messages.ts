@@ -1,9 +1,8 @@
-import { omit } from 'convex-helpers'
 import { nullable } from 'convex-helpers/validators'
 import { v } from 'convex/values'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
-import { internalMutation, mutation, query } from '../functions'
+import { mutation, query } from '../functions'
 import { messageFields } from '../schema'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { createMessage, getMessageEdges, messageCreateFields, messageReturnFields } from './helpers/messages'
@@ -38,7 +37,7 @@ export const getDoc = query({
         }
       : null
   },
-  returns: nullable(v.object(omit(messageReturnFields, ['threadSlug']))),
+  returns: nullable(v.object(messageReturnFields)),
 })
 
 // * mutations
@@ -57,15 +56,13 @@ export const create = mutation({
     })
 
     return {
-      threadId: thread._id,
-      slug: thread.slug,
+      threadId: thread.xid,
       id: message._id,
       series: message.series,
     }
   },
   returns: v.object({
-    threadId: v.id('threads'),
-    slug: v.string(),
+    threadId: v.string(),
     id: v.id('messages'),
     series: v.number(),
   }),

@@ -4,7 +4,6 @@ import { ConvexError, v } from 'convex/values'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
 import { internalMutation, mutation, query } from '../functions'
-import { generateSlug } from '../lib/utils'
 import { threadFields } from '../schema'
 import type { EThread, MutationCtx, QueryCtx } from '../types'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
@@ -22,7 +21,7 @@ const getEmptyThread = async (ctx: QueryCtx): Promise<EThread | null> => {
   return {
     _id: 'new' as Id<'threads'>,
     _creationTime: Date.now(),
-    slug: 'new',
+    xid: 'new',
     title: 'New Thread',
 
     updatedAtTime: Date.now(),
@@ -41,7 +40,6 @@ export const getOrCreateUserThread = async (ctx: MutationCtx, threadId?: string)
       .table('threads')
       .insert({
         userId: user._id,
-        slug: await generateSlug(ctx),
         updatedAtTime: Date.now(),
         xid: generateXID(),
       })
@@ -114,22 +112,17 @@ export const create = mutation({
   args: pick(threadFields, ['title', 'instructions', 'favourite', 'kvMetadata']),
   handler: async (ctx, args) => {
     const user = await ctx.viewerX()
-    const slug = await generateSlug(ctx)
-
-    const id = await ctx.table('threads').insert({
+    const xid = generateXID()
+    await ctx.table('threads').insert({
       ...args,
       updatedAtTime: Date.now(),
       userId: user._id,
-      slug: await generateSlug(ctx),
-      xid: generateXID(),
+      xid,
     })
 
-    return {
-      id,
-      slug,
-    }
+    return xid
   },
-  returns: v.object({ id: v.id('threads'), slug: v.string() }),
+  returns: v.string(),
 })
 
 export const update = mutation({
@@ -182,15 +175,13 @@ export const append = mutation({
     })
 
     return {
-      threadId: thread._id,
-      slug: thread.slug,
+      id: thread.xid,
       messageId: message._id,
       series: message.series,
     }
   },
   returns: v.object({
-    threadId: v.id('threads'),
-    slug: v.string(),
+    id: v.string(),
     messageId: v.id('messages'),
     series: v.number(),
   }),

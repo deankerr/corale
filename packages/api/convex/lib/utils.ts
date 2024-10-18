@@ -21,18 +21,6 @@ export const paginatedReturnFields = {
   pageStatus: v.optional(v.union(literals('SplitRequired', 'SplitRecommended'), v.null())),
 }
 
-export const generateSlug = async (ctx: MutationCtx) => {
-  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789')
-
-  async function getAvailableSlug(): Promise<string> {
-    const slug = nanoid(8)
-    const existing = await ctx.table('threads', 'slug', (q) => q.eq('slug', slug)).first()
-    return existing ? await getAvailableSlug() : slug
-  }
-
-  return await getAvailableSlug()
-}
-
 export const generateRandomString = (length: number) => {
   const generate = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
   return generate(length)
