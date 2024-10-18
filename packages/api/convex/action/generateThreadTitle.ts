@@ -2,7 +2,7 @@ import { generateText } from 'ai'
 import { v } from 'convex/values'
 import { internal } from '../_generated/api'
 import { internalAction, internalMutation, internalQuery } from '../functions'
-import { createAi } from '../lib/ai'
+import { createAIProvider } from '../lib/ai'
 
 export const run = internalAction({
   args: {
@@ -14,7 +14,7 @@ export const run = internalAction({
       limit: 4,
     })
 
-    const { model } = createAi('openai::gpt-4o-mini')
+    const model = createAIProvider({ id: 'meta-llama/llama-3.1-70b-instruct' })
     const { text } = await generateText({
       model,
       prompt: prompt.replace(

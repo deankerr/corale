@@ -6,7 +6,7 @@ import * as vb from 'valibot'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
-import { createAi } from '../lib/ai'
+import { createAIProvider } from '../lib/ai'
 import { ENV } from '../lib/env'
 import { defaultSizes } from '../shared/defaults'
 import { imageModels } from '../shared/imageModels'
@@ -51,7 +51,6 @@ export const run = internalAction({
         runConfig.workflow === 'generate_dimensions'
           ? await generateDimensions({
               prompt: runConfig.prompt,
-              resourceKey: 'openai::gpt-4o-mini',
             })
           : runConfig.width && runConfig.height
             ? {
@@ -109,8 +108,8 @@ const getSize = (size: string, modelId: string) => {
   return model?.inputs.sizes.find((s) => s.name === size)
 }
 
-const generateDimensions = async (args: { prompt: string; resourceKey: string }) => {
-  const { model } = createAi(args.resourceKey)
+const generateDimensions = async (args: { prompt: string }) => {
+  const model = createAIProvider({ id: 'anthropic/claude-3-haiku:beta' })
 
   const response = await generateObject({
     model,

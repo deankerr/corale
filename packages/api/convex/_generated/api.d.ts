@@ -48,7 +48,6 @@ import type * as lib_env from "../lib/env.js";
 import type * as lib_fetch from "../lib/fetch.js";
 import type * as lib_sharp from "../lib/sharp.js";
 import type * as lib_utils from "../lib/utils.js";
-import type * as lib_valibot from "../lib/valibot.js";
 import type * as migrations from "../migrations.js";
 import type * as provider_openrouter from "../provider/openrouter.js";
 import type * as rules from "../rules.js";
@@ -101,7 +100,6 @@ declare const fullApi: ApiFromModules<{
   "lib/fetch": typeof lib_fetch;
   "lib/sharp": typeof lib_sharp;
   "lib/utils": typeof lib_utils;
-  "lib/valibot": typeof lib_valibot;
   migrations: typeof migrations;
   "provider/openrouter": typeof provider_openrouter;
   rules: typeof rules;
