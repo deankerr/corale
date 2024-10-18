@@ -6,8 +6,7 @@
   ],
   "scripts": {
     "build": "pnpm --filter @corale/esuite build",
-    "convex-deploy": "pnpm --filter @corale/api convex-deploy",
-    "production-deploy": "pnpm convex-deploy -y && pnpm build",
+    "deploy:api": "pnpm --filter @corale/api convex-deploy",
     "dev": "pnpm --parallel dev",
     "dev:esuite": "pnpm --filter @corale/esuite dev",
     "dev:api": "pnpm --filter @corale/api dev",

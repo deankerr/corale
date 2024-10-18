@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo --port 3333",
-    "build": "next build",
+    "build": "next build && pnpm -w deploy:api -y",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
