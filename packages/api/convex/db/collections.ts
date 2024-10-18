@@ -27,13 +27,15 @@ export const getCollection = async (ctx: QueryCtx, collectionId: string) => {
 }
 
 export const getCollectionEdges = async (ctx: QueryCtx, collection: Ent<'collections'>) => {
+  const images = await collection
+    .edge('images_v2')
+    .order('desc')
+    .take(24)
+    .map(async (image) => getImageV2Edges(ctx, image))
+
   return {
     ...collection.doc(),
-    images: await collection
-      .edge('images_v2')
-      .order('desc')
-      .take(24)
-      .map(async (image) => getImageV2Edges(ctx, image)),
+    images: images.filter((image) => image.deletionTime === undefined),
   }
 }
 

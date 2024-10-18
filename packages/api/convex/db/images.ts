@@ -73,6 +73,7 @@ export const getByRunId = query({
   handler: async (ctx, { runId }) => {
     return await ctx
       .table('images_v2', 'runId', (q) => q.eq('runId', runId))
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .map(async (image) => await getImageV2Edges(ctx, image))
   },
   returns: v.array(imagesReturn),

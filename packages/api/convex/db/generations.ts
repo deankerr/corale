@@ -135,7 +135,7 @@ export const activate = internalMutation({
     generationId: v.id('generations_v2'),
   },
   handler: async (ctx, { generationId }) => {
-    const generation = await ctx.table('generations_v2').getX(generationId)
+    const generation = await ctx.skipRules.table('generations_v2').getX(generationId)
     if (generation.status !== 'queued') {
       throw new Error('Generation is not queued')
     }
@@ -156,7 +156,7 @@ export const complete = internalMutation({
     output: v.any(),
   },
   handler: async (ctx, { generationId, results, output }) => {
-    const generation = await ctx.table('generations_v2').getX(generationId)
+    const generation = await ctx.skipRules.table('generations_v2').getX(generationId)
     if (generation.status !== 'active') {
       throw new Error('Image generation is not active')
     }
