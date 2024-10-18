@@ -18,7 +18,7 @@ export const TextareaAutosize = ({
       }}
       className={cn(
         'focus-visible:outline-accent-8 flex outline-none -outline-offset-1 focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50',
-        'placeholder:text-grayA-10 w-full resize-none rounded border bg-black/25 p-2 font-normal',
+        'placeholder:text-gray-a10 w-full resize-none rounded border bg-black/25 p-2 font-normal',
         className,
       )}
     />

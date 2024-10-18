@@ -15,7 +15,7 @@ export const Pre = memo(({ children, ...props }: React.ComponentProps<'pre'>) =>
   }
 
   return (
-    <pre {...props} className="bg-grayA-2 group overflow-auto rounded-md p-2 has-[code]:overflow-hidden [&>code]:block">
+    <pre {...props} className="bg-gray-a2 group overflow-auto rounded-md p-2 has-[code]:overflow-hidden [&>code]:block">
       {children}
       <div className="absolute right-2 top-2 hidden space-x-2 group-has-[code]:block">
         <AdminOnlyUi>

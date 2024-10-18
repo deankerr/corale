@@ -5,7 +5,7 @@ export const ImageGeneratingEffect = ({ className, ...props }: React.ComponentPr
     <div
       {...props}
       className={cn(
-        'border-grayA-3 pointer-events-none flex aspect-square w-full max-w-full overflow-hidden rounded-xl border',
+        'border-gray-a3 pointer-events-none flex aspect-square w-full max-w-full overflow-hidden rounded-xl border',
         className,
       )}
     >

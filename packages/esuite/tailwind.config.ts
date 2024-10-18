@@ -74,8 +74,7 @@ const config: Config = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      black: '#000000',
-      white: '#ffffff',
+      midnight: '#090909',
 
       // radix themes
       ...radixColors.css,
@@ -83,13 +82,12 @@ const config: Config = {
       overlay: 'var(--color-overlay)',
       'panel-solid': 'var(--color-panel-solid)',
       'panel-translucent': 'var(--color-panel-translucent)',
-      midnight: '#090909',
 
       // shadcn/ui
       border: radixColors.css.gray[5],
       input: radixColors.css.gray[6],
       ring: 'var(--focus-8)',
-      background: radixColors.css.gray[1],
+      background: radixColors.css.gray,
       foreground: radixColors.css.gray[12],
       primary: {
         DEFAULT: radixColors.css.accent[9],

@@ -1,79 +1,46 @@
-function createFullScale(name: string) {
-  const steps = [...Array(12)].map((_, i) => [i + 1, `var(--${name}${i + 1})`])
-  const functional = [
-    ['surface', `var(--${name}surface)`],
-    ['indicator', `var(--${name}indicator)`],
-    ['track', `var(--${name}track)`],
-    ['contrast', `var(--${name}contrast)`],
-  ]
+// prettier-ignore
+const colorNames = ['accent', 'gray', 'mauve', 'slate', 'sage', 'olive', 'sand', 'tomato', 'red', 'ruby', 'crimson', 'pink', 'plum', 'purple', 'violet', 'iris', 'indigo', 'blue', 'cyan', 'teal', 'jade', 'green', 'grass', 'bronze', 'gold', 'brown', 'orange', 'amber', 'yellow', 'lime', 'mint', 'sky'] as const
 
-  return Object.fromEntries([...steps, ...functional])
+type ScaleStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+type SolidColorScale = Record<ScaleStep, string>
+type AlphaColorScale = Record<`a${ScaleStep}`, string>
+type FunctionalScale = Record<'surface' | 'indicator' | 'track' | 'contrast', string>
+
+type PrimaryColor = (typeof colorNames)[number]
+type ColorName = PrimaryColor | 'black' | 'white'
+
+type RadixColors = Record<PrimaryColor, SolidColorScale & AlphaColorScale & FunctionalScale> & {
+  black: AlphaColorScale
+  white: AlphaColorScale
 }
 
-// * css variables
-function createRadixColors() {
-  const scale = (key: string) => Object.fromEntries([...Array(12)].map((_, i) => [i + 1, `var(--${key}${i + 1})`]))
+function createSolidScale(name: ColorName) {
+  return [...Array(12)].map((_, i) => [i + 1, `var(--${name}-${i + 1})`])
+}
 
-  return {
-    blackA: scale('black-a'),
-    whiteA: scale('white-a'),
-    accent: createFullScale('accent-'),
-    accentA: createFullScale('accent-a'),
-    gray: createFullScale('gray-'),
-    grayA: createFullScale('gray-a'),
-    mauve: createFullScale('mauve-'),
-    mauveA: createFullScale('mauve-a'),
-    gold: createFullScale('gold-'),
-    goldA: createFullScale('gold-a'),
-    bronze: createFullScale('bronze-'),
-    bronzeA: createFullScale('bronze-a'),
-    brown: createFullScale('brown-'),
-    brownA: createFullScale('brown-a'),
-    yellow: createFullScale('yellow-'),
-    yellowA: createFullScale('yellow-a'),
-    amber: createFullScale('amber-'),
-    amberA: createFullScale('amber-a'),
-    orange: createFullScale('orange-'),
-    orangeA: createFullScale('orange-a'),
-    tomato: createFullScale('tomato-'),
-    tomatoA: createFullScale('tomato-a'),
-    red: createFullScale('red-'),
-    redA: createFullScale('red-a'),
-    ruby: createFullScale('ruby-'),
-    rubyA: createFullScale('ruby-a'),
-    crimson: createFullScale('crimson-'),
-    crimsonA: createFullScale('crimson-a'),
-    pink: createFullScale('pink-'),
-    pinkA: createFullScale('pink-a'),
-    plum: createFullScale('plum-'),
-    plumA: createFullScale('plum-a'),
-    purple: createFullScale('purple-'),
-    purpleA: createFullScale('purple-a'),
-    violet: createFullScale('violet-'),
-    violetA: createFullScale('violet-a'),
-    iris: createFullScale('iris-'),
-    irisA: createFullScale('iris-a'),
-    indigo: createFullScale('indigo-'),
-    indigoA: createFullScale('indigo-a'),
-    blue: createFullScale('blue-'),
-    blueA: createFullScale('blue-a'),
-    cyan: createFullScale('cyan-'),
-    cyanA: createFullScale('cyan-a'),
-    teal: createFullScale('teal-'),
-    tealA: createFullScale('teal-a'),
-    jade: createFullScale('jade-'),
-    jadeA: createFullScale('jade-a'),
-    green: createFullScale('green-'),
-    greenA: createFullScale('green-a'),
-    grass: createFullScale('grass-'),
-    grassA: createFullScale('grass-a'),
-    lime: createFullScale('lime-'),
-    limeA: createFullScale('lime-a'),
-    mint: createFullScale('mint-'),
-    mintA: createFullScale('mint-a'),
-    sky: createFullScale('sky-'),
-    skyA: createFullScale('sky-a'),
-  }
+function createAlphaScale(name: ColorName) {
+  return [...Array(12)].map((_, i) => [`a${i + 1}`, `var(--${name}-a${i + 1})`])
+}
+
+function createFunctionalSteps(name: ColorName) {
+  return ['surface', 'indicator', 'track', 'contrast'].map((key) => [key, `var(--${name}-${key})`])
+}
+
+function createRadixColors() {
+  const colors = {} as RadixColors
+
+  colorNames.forEach((name) => {
+    colors[name] = Object.fromEntries([
+      ...createSolidScale(name),
+      ...createAlphaScale(name),
+      ...createFunctionalSteps(name),
+    ])
+  })
+
+  colors.black = Object.fromEntries([...createAlphaScale('black'), ['DEFAULT', '#000000']])
+  colors.white = Object.fromEntries([...createAlphaScale('white'), ['DEFAULT', '#FFFFFF']])
+
+  return colors
 }
 
 const colors = {

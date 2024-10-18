@@ -10,7 +10,7 @@ export const RunsPanel = ({ threadId, show = false }: { threadId: string; show?:
   //   if (!show) return null
   //   return (
   //     <PanelBody className="justify-self-end bg-transparent">
-  //       <div className="flex-col-start h-full items-end gap-2 overflow-y-auto overflow-x-hidden bg-blackA-4 p-2">
+  //       <div className="flex-col-start h-full items-end gap-2 overflow-y-auto overflow-x-hidden bg-black-a4 p-2">
   //         {runs?.map((run) => (
   //           <div
   //             key={run._id}

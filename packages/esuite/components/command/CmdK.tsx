@@ -11,7 +11,7 @@ const Input = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className={cn('border-grayA-3 flex shrink-0 items-center border-b px-3', className)} cmdk-input-wrapper="">
+  <div className={cn('border-gray-a3 flex shrink-0 items-center border-b px-3', className)} cmdk-input-wrapper="">
     <MagnifyingGlass className="mr-2 size-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
@@ -35,11 +35,11 @@ const Group = twx(
   CommandPrimitive.Group,
 )`select-none overflow-hidden p-1 [&_[cmdk-group-heading]]:px-1 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-gray-11 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2`
 
-const Separator = twx(CommandPrimitive.Separator)`-mx-1 h-px bg-grayA-3`
+const Separator = twx(CommandPrimitive.Separator)`-mx-1 h-px bg-gray-a3`
 
 const Item = twx(
   CommandPrimitive.Item,
-)`relative flex cursor-pointer select-none items-center gap-4 rounded px-4 py-2.5 text-sm opacity-85 outline-none aria-selected:bg-grayA-4 aria-selected:text-white aria-selected:opacity-100 data-[disabled="false"]:pointer-events-auto data-[disabled="true"]:opacity-50 [&_svg]:size-[1.125rem] [&_svg]:shrink-0`
+)`relative flex cursor-pointer select-none items-center gap-4 rounded px-4 py-2.5 text-sm opacity-85 outline-none aria-selected:bg-gray-a4 aria-selected:text-white aria-selected:opacity-100 data-[disabled="false"]:pointer-events-auto data-[disabled="true"]:opacity-50 [&_svg]:size-[1.125rem] [&_svg]:shrink-0`
 
 const Shortcut = twx.span`ml-auto text-xs tracking-widest text-gray-11`
 

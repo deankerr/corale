@@ -98,7 +98,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
               <div className="flex gap-3 p-4">
                 {/* > avatar */}
                 <div className="shrink-0">
-                  <div className="bg-blackA-1 h-32 w-32 overflow-hidden rounded border">
+                  <div className="h-32 w-32 overflow-hidden rounded border">
                     {/* {patternState._id && <SamplePatternAvatar4 className="h-full w-full" />} */}
                   </div>
                 </div>
@@ -124,7 +124,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
                   minRows={4}
                   rows={4}
                   maxRows={4}
-                  className="border-grayA-7 bg-blackA-3 placeholder:text-grayA-8 flex w-full resize-none rounded border p-2 outline-none"
+                  className="border-gray-a7 bg-black-a3 placeholder:text-gray-a8 flex w-full resize-none rounded border p-2 outline-none"
                   value={patternState.description}
                   onChange={(e) => updateField('description', e.target.value)}
                 />
@@ -173,7 +173,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
                 <ReactTextareaAutosize
                   minRows={6}
                   rows={6}
-                  className="border-grayA-7 bg-blackA-3 placeholder:text-grayA-8 flex w-full resize-none rounded border p-4 outline-none"
+                  className="border-gray-a7 bg-black-a3 placeholder:text-gray-a8 flex w-full resize-none rounded border p-4 outline-none"
                   placeholder="You are a really very average assistant."
                   value={patternState.instructions}
                   onChange={(e) => updateField('instructions', e.target.value)}
@@ -231,7 +231,7 @@ function PatternMessagesEditor({
             className="bg-gray-2 group flex shrink-0 flex-col overflow-hidden rounded border data-[message-channel=hidden]:opacity-60"
           >
             {/* > header */}
-            <div className="flex-between border-grayA-3 bg-grayA-2 shrink-0 items-center gap-1 border-b px-2 py-0.5">
+            <div className="flex-between border-gray-a3 bg-gray-a2 shrink-0 items-center gap-1 border-b px-2 py-0.5">
               <div className="flex-start w-20 gap-2">
                 <RoleToggleButton
                   role={message.role}
@@ -306,7 +306,7 @@ function PatternMessagesEditor({
             <ReactTextareaAutosize
               minRows={1}
               rows={1}
-              className="bg-blackA-1 placeholder:text-grayA-8 flex w-full resize-none rounded p-2 outline-none"
+              className="bg-black-a1 placeholder:text-gray-a8 flex w-full resize-none rounded p-2 outline-none"
               placeholder="(blank message)"
               value={message.text}
               onChange={(e) =>

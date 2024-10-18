@@ -10,9 +10,9 @@ export const TextDocumentEditor = () => {
   const ref = useRef<MDXEditorMethods>(null)
   return (
     <>
-      <div className="border-grayA-3 bg-gray-3 grid h-full w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-md border">
+      <div className="border-gray-a3 bg-gray-3 grid h-full w-full grid-rows-[auto_1fr_auto] overflow-hidden rounded-md border">
         {/* header */}
-        <div className="flex-between border-grayA-3 h-10 border-b px-2 font-medium">
+        <div className="flex-between border-gray-a3 h-10 border-b px-2 font-medium">
           <div className="flex-start shrink-0">
             <IconButton variant="ghost" color="gray">
               <Icons.DotsNine className="size-5" />
@@ -27,12 +27,12 @@ export const TextDocumentEditor = () => {
         </div>
 
         {/* text area */}
-        <div className="bg-blackA-4 text-gray-12 placeholder:text-grayA-10 overflow-y-auto">
+        <div className="bg-black-a4 text-gray-12 placeholder:text-gray-a10 overflow-y-auto">
           <MDXEditor ref={ref} markdown={sampleText} className="markdown-body" />
         </div>
 
         {/* footer */}
-        <div className="border-grayA-3 flex h-12 items-center border-t px-2 text-sm">
+        <div className="border-gray-a3 flex h-12 items-center border-t px-2 text-sm">
           <Button variant="soft" size="1" color="gray">
             Thread
           </Button>

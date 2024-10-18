@@ -9,7 +9,7 @@ import { useRef, useState } from 'react'
 import { MDXEditor } from '../mdx-editor/MDXEditor'
 
 const TextFieldGhost = twx.input`flex outline-none disabled:cursor-not-allowed disabled:opacity-50 w-full text-base 
-  font-normal text-gray-12 placeholder:text-grayA-10 sm:text-sm`
+  font-normal text-gray-12 placeholder:text-gray-a10 sm:text-sm`
 
 export const PromptEditor = ({
   initialTitle,
@@ -35,7 +35,7 @@ export const PromptEditor = ({
         <PanelTitle href="/prompts" className="shrink-0">
           Prompt Editor
         </PanelTitle>
-        <Icons.CaretRight size={18} className="text-grayA-10 mx-1 shrink-0" />
+        <Icons.CaretRight size={18} className="text-gray-a10 mx-1 shrink-0" />
 
         <TextFieldGhost
           placeholder="Untitled Prompt"

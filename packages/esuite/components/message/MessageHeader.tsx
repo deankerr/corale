@@ -38,7 +38,7 @@ export const MessageHeader = () => {
   return (
     <div
       className={cn(
-        'border-grayA-3 bg-grayA-2 flex h-12 shrink-0 items-center gap-1 border-b p-2.5',
+        'border-gray-a3 bg-gray-a2 flex h-12 shrink-0 items-center gap-1 border-b p-2.5',
         isHidden && 'opacity-60',
       )}
     >

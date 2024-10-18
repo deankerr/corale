@@ -100,7 +100,7 @@ export default function AudioPlayer({ url, titleText }: { url: string; titleText
               if (!audioMotion) createAudioMotion()
               setPlaying(true)
             }}
-            className="outline-grayA-3 hover:outline-grayA-5 outline brightness-110"
+            className="outline-gray-a3 hover:outline-gray-a5 outline brightness-110"
           >
             {playing ? <Icons.Stop className="size-6" /> : <Icons.Play className="size-6" />}
           </IconButton>

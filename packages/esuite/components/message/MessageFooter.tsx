@@ -27,7 +27,7 @@ export const MessageFooter = () => {
   const timeActive = getDuration(run.timings.startedAt, run.timings.endedAt)
   const topProvider = run.providerMetadata?.provider_name as string | undefined
   return (
-    <div className="flex-end divide-grayA-3 border-grayA-3 text-gray-10 h-8 divide-x overflow-hidden border-t px-1 font-mono text-xs [&>div]:px-2.5">
+    <div className="flex-end divide-gray-a3 border-gray-a3 text-gray-10 h-8 divide-x overflow-hidden border-t px-1 font-mono text-xs [&>div]:px-2.5">
       <div className="grow">
         {run.model.id} {message.kvMetadata['esuite:pattern:xid']}
       </div>

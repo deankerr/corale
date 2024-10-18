@@ -14,7 +14,7 @@ export const ChatHeader = ({ threadId }: { threadId: string }) => {
 
   if (!thread) return null
   return (
-    <PanelHeader className="bg-grayA-1">
+    <PanelHeader className="bg-gray-a1">
       <NavigationButton />
       <PanelTitle href={`/chats/${thread.slug}`}>{thread.title ?? 'Untitled Thread'}</PanelTitle>
       <ChatMenu threadId={thread.slug} />

@@ -39,7 +39,7 @@ export const ImageCardNext = ({
         className="h-full w-full object-cover"
         loader={imageLoader}
       />
-      <div className="border-grayA-5 absolute inset-0 rounded-lg border-2" />
+      <div className="border-gray-a5 absolute inset-0 rounded-lg border-2" />
       {children}
 
       <DropdownMenu.Root>

@@ -15,7 +15,7 @@ export default function Page() {
 
   return (
     <AdminPageWrapper className="space-y-4">
-      <div className="bg-grayA-2 flex flex-wrap gap-3 p-2">
+      <div className="bg-gray-a2 flex flex-wrap gap-3 p-2">
         {accentColors.map((color) => (
           <Badge key={color} size="3" color={color}>
             {color}

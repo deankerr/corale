@@ -107,7 +107,7 @@ export const GenerationCard = ({
       {/* > add. details */}
       <Accordion.Root type="single" collapsible defaultValue={defaultOpen ? 'gen-details' : undefined}>
         <Accordion.Item value="gen-details" className="divide-gray-4 divide-y">
-          <Accordion.Trigger className="flex-between text-gray-11 outline-accentA-8 hover:text-gray-12 group w-full p-2 text-sm font-medium transition-colors">
+          <Accordion.Trigger className="flex-between text-gray-11 outline-accent-a8 hover:text-gray-12 group w-full p-2 text-sm font-medium transition-colors">
             Details
             <Icons.CaretDown
               size={18}

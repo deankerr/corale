@@ -68,11 +68,11 @@
 }
 
 .shimmer {
-  @apply before:via-grayA-3 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:to-transparent;
+  @apply before:via-gray-a3 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:to-transparent;
 }
 
 .shimmer-b {
-  @apply before:border-grayA-3 before:via-grayA-3 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:border-t before:bg-gradient-to-r before:from-transparent before:to-transparent;
+  @apply before:border-gray-a3 before:via-gray-a3 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:border-t before:bg-gradient-to-r before:from-transparent before:to-transparent;
 }
 
 .dark,
@@ -250,7 +250,7 @@
 }
 
 .markdown-root thead {
-  @apply bg-grayA-2;
+  @apply bg-gray-a2;
 }
 
 .markdown-root th {
@@ -270,11 +270,11 @@
 }
 
 .markdown-root pre {
-  @apply border-grayA-3 bg-blackA-4 overflow-x-auto rounded-md border p-3;
+  @apply border-gray-a3 bg-black-a4 overflow-x-auto rounded-md border p-3;
 }
 
 .markdown-root code {
-  @apply text-grayA-11 leading-5;
+  @apply text-gray-a11 leading-5;
   font-size: 13px;
   line-height: 1.2;
 }

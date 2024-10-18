@@ -6,7 +6,7 @@ export default function NotFound() {
     <div className="flex-col-center h-dvh w-full gap-4">
       <Icons.Ghost
         weight="thin"
-        className="text-grayA-11 pointer-events-none fixed aspect-square h-[120vh] w-[120vw] shrink-0 opacity-[0.02]"
+        className="text-gray-a11 pointer-events-none fixed aspect-square h-[120vh] w-[120vw] shrink-0 opacity-[0.02]"
       />
 
       <div className="flex-between gap-4">

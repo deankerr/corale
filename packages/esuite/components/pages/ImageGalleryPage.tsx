@@ -34,7 +34,7 @@ export const ImageGalleryPage = ({
                 href={`${basePath}/${image.id}`}
                 key={image.id}
                 className={cn(
-                  'flex-col-center border-gray-4 bg-grayA-1 aspect-square h-full max-h-28 w-full max-w-28 overflow-hidden rounded-md border-2',
+                  'flex-col-center border-gray-4 bg-gray-a1 aspect-square h-full max-h-28 w-full max-w-28 overflow-hidden rounded-md border-2',
                   image.id === imageId && 'border-accent-9',
                 )}
               >
