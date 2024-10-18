@@ -1,7 +1,5 @@
 'use client'
 
-import { useMessageFeedQuery } from '@/app/lib/api/messages'
-import { useThread } from '@/app/lib/api/threads'
 import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
 import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { EmptyPage } from '@/components/pages/EmptyPage'
@@ -9,6 +7,8 @@ import { Button } from '@/components/ui/Button'
 import { Loader } from '@/components/ui/Loader'
 import { Panel, PanelHeader, PanelLoading, PanelTitle } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useMessageFeedQuery } from '@/lib/api/messages'
+import { useThread } from '@/lib/api/threads'
 import { useMemo } from 'react'
 
 export default function Page({ params }: { params: { threadId: string } }) {

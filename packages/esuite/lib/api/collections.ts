@@ -1,6 +1,6 @@
-import { useCachedQuery } from '@/app/lib/api/helpers'
 import { api } from '@corale/api/convex/_generated/api'
 import { usePaginatedQuery } from 'convex/react'
+import { useCachedQuery } from './helpers'
 
 export const useCollections = () => {
   const collections = useCachedQuery(api.db.collections.latest, {})

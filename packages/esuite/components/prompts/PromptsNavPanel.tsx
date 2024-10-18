@@ -1,11 +1,11 @@
 'use client'
 
-import { usePrompts } from '@/app/lib/api/prompts'
-import { cn } from '@/app/lib/utils'
 import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { Button } from '@/components/ui/Button'
 import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { usePrompts } from '@/lib/api/prompts'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'

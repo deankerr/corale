@@ -2,9 +2,9 @@
 
 import { AdminPageWrapper } from '@/app/admin/AdminPageWrapper'
 import { ModelsTable } from '@/app/admin/chat-models/ModelsTable'
-import { useChatModels } from '@/app/lib/api/models'
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { SearchField } from '@/components/ui/SearchField'
+import { useChatModels } from '@/lib/api/models'
 import { Card, Tabs } from '@radix-ui/themes'
 import fuzzysort from 'fuzzysort'
 import { useState } from 'react'

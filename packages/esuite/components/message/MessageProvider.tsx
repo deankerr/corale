@@ -1,5 +1,5 @@
-import { useRun, useUpdateMessage } from '@/app/lib/api/threads'
-import { useViewer } from '@/app/lib/api/users'
+import { useRun, useUpdateMessage } from '@/lib/api/threads'
+import { useViewer } from '@/lib/api/users'
 import type { EMessage, ERun } from '@corale/api/convex/types'
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { toast } from 'sonner'

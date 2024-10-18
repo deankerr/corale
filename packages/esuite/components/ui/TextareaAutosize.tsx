@@ -1,4 +1,4 @@
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 import ReactTextareaAutosize from 'react-textarea-autosize'
 
 export const TextareaAutosize = ({

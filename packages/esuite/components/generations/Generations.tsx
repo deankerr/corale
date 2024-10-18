@@ -1,7 +1,7 @@
 'use client'
 
-import { useGenerations } from '@/app/lib/api/generations'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useGenerations } from '@/lib/api/generations'
 import { GenerationCard } from './GenerationCard'
 
 export const Generations = () => {

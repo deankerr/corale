@@ -1,8 +1,8 @@
 'use client'
 
-import { cn } from '@/app/lib/utils'
 import { IImage } from '@/components/images/IImage'
 import { ImageCardNext } from '@/components/images/ImageCardNext'
+import { cn } from '@/lib/utils'
 import type { EImage } from '@corale/api/convex/types'
 import { Card, DataList } from '@radix-ui/themes'
 import Link from 'next/link'

@@ -1,7 +1,7 @@
-import { twx } from '@/app/lib/utils'
 import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { Button, IconButton } from '@/components/ui/Button'
 import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { twx } from '@/lib/utils'
 import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'

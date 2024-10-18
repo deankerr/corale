@@ -1,6 +1,6 @@
 // 'use client'
 
-// import { useListThreadRuns } from '@/app/lib/api/threads'
+// import { useListThreadRuns } from '@/lib/api/threads'
 // import { PanelBody } from '@/components/ui/Panel'
 // import { RunStatusBadge } from '@/components/ui/RunStatusBadge'
 // import { getErrorMessage, parseJson } from '@/convex/shared/utils'

@@ -1,4 +1,4 @@
-import { getConvexSiteUrl } from '@/app/lib/utils'
+import { getConvexSiteUrl } from '@/lib/utils'
 
 export async function generateMetadata({ params }: { params: { threadId: string } }) {
   const response = await fetch(`${getConvexSiteUrl()}/metadata?route=chats&id=${params.threadId}`)

@@ -1,13 +1,13 @@
 'use client'
 
 import { AdminPageWrapper } from '@/app/admin/AdminPageWrapper'
-import { useCachedQuery } from '@/app/lib/api/helpers'
-import { useChatModels } from '@/app/lib/api/models'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useChatModels } from '@/lib/api/models'
 import { api } from '@corale/api/convex/_generated/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Badge, BadgeProps, Card, Heading } from '@radix-ui/themes'
 import { accentColors } from '@radix-ui/themes/props'
+import { useCachedQuery } from './helpers'
 
 export default function Page() {
   const events = useCachedQuery(api.db.admin.events.latest, { limit: 100 })

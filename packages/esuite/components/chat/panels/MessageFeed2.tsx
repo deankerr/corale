@@ -1,11 +1,11 @@
 'use client'
 
-import { useMessageFeedQuery } from '@/app/lib/api/messages'
-import { twx } from '@/app/lib/utils'
 import { Message } from '@/components/message/Message'
 import { Loader } from '@/components/ui/Loader'
 import { PanelBody } from '@/components/ui/Panel'
 import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
+import { useMessageFeedQuery } from '@/lib/api/messages'
+import { twx } from '@/lib/utils'
 import type { EMessage } from '@corale/api/convex/types'
 import { memo, useCallback, useRef, useState } from 'react'
 import { Components, ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso'

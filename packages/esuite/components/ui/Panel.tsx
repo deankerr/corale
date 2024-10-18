@@ -1,5 +1,5 @@
-import { twx } from '@/app/lib/utils'
 import { Link } from '@/components/ui/Link'
+import { twx } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import NextLink from 'next/link'
 import { Loader } from './Loader'

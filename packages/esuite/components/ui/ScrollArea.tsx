@@ -1,4 +1,4 @@
-import { twx } from '@/app/lib/utils'
+import { twx } from '@/lib/utils'
 import { ScrollArea as ScrollAreaPrimitive } from '@radix-ui/themes'
 
 export const ScrollArea = twx(ScrollAreaPrimitive).attrs({

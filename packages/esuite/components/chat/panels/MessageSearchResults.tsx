@@ -1,12 +1,12 @@
 'use client'
 
-import { useThreadTextSearchResults } from '@/app/lib/api/threads'
-import { cn } from '@/app/lib/utils'
 import { FishFoodIcon } from '@/components/icons/FishFoodIcon'
 import { Message } from '@/components/message/Message'
 import { Loader } from '@/components/ui/Loader'
 import { PanelBody } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useThreadTextSearchResults } from '@/lib/api/threads'
+import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 
 export const MessageSearchResults = ({ threadId }: { threadId: string }) => {

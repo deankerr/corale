@@ -1,5 +1,5 @@
-import { useDeleteMessage, useUpdateMessage } from '@/app/lib/api/threads'
-import { cn } from '@/app/lib/utils'
+import { useDeleteMessage, useUpdateMessage } from '@/lib/api/threads'
+import { cn } from '@/lib/utils'
 import type { EMessage } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, DropdownMenu } from '@radix-ui/themes'

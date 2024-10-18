@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 import type { EImage } from '@corale/api/convex/types'
 import NextImage from 'next/image'
 import { forwardRef } from 'react'

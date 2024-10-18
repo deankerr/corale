@@ -1,5 +1,5 @@
-import { useThread } from '@/app/lib/api/threads'
 import { PanelHeader, PanelTitle } from '@/components/ui/Panel'
+import { useThread } from '@/lib/api/threads'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 import { NavigationButton } from '../navigation/NavigationSheet'

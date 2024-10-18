@@ -1,7 +1,7 @@
 'use client'
 
-import { cn } from '@/app/lib/utils'
 import { ClientOnly } from '@/components/util/ClientOnly'
+import { cn } from '@/lib/utils'
 import { useWindowSize } from '@react-hookz/web'
 
 export function TailwindBreakpointIndicator() {

@@ -1,9 +1,9 @@
 'use client'
 
-import { cn } from '@/app/lib/utils'
 import { AppLogo } from '@/components/icons/AppLogo'
 import { UserButtons } from '@/components/layout/UserButtons'
 import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Authenticated } from 'convex/react'
 import Link from 'next/link'

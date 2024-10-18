@@ -1,11 +1,11 @@
 'use client'
 
-import { useThreads } from '@/app/lib/api/threads'
-import { cn } from '@/app/lib/utils'
 import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { IconButton } from '@/components/ui/Button'
 import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useThreads } from '@/lib/api/threads'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@radix-ui/themes'
 import fuzzysort from 'fuzzysort'

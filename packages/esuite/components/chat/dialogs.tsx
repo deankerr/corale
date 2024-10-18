@@ -1,7 +1,7 @@
 'use client'
 
-import { useDeleteThread, useUpdateThread } from '@/app/lib/api/threads'
 import { Button } from '@/components/ui/Button'
+import { useDeleteThread, useUpdateThread } from '@/lib/api/threads'
 import { AlertDialog, Dialog, TextField } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

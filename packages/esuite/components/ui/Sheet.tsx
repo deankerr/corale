@@ -1,7 +1,7 @@
 'use client'
 
-import { cn } from '@/app/lib/utils'
 import { IconButton } from '@/components/ui/Button'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
 import { Theme } from '@radix-ui/themes'

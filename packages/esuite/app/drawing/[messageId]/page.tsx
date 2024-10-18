@@ -1,11 +1,11 @@
 'use client'
 
-import { useMessageById } from '@/app/lib/api/messages'
 import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
 import { EmptyPage } from '@/components/pages/EmptyPage'
 import { LoadingPage } from '@/components/pages/LoadingPage'
 import { Panel } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useMessageById } from '@/lib/api/messages'
 import { useMemo } from 'react'
 
 const extractSVGCodeblocks = (messageText: string): string[] => {

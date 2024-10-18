@@ -1,10 +1,10 @@
 'use client'
 
-import { useGenerate } from '@/app/lib/api/generations'
 import { GenerateForm } from '@/components/generations/GenerateForm'
 import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useGenerate } from '@/lib/api/generations'
 
 export const GeneratePanel = () => {
   const generate = useGenerate()

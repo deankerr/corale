@@ -1,5 +1,5 @@
-import { useCachedQuery } from '@/app/lib/api/helpers'
 import { api } from '@corale/api/convex/_generated/api'
+import { useCachedQuery } from './helpers'
 
 export const usePrompts = () => {
   const prompts = useCachedQuery(api.db.texts.listPrompts, {})

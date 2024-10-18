@@ -1,4 +1,4 @@
-import { useIsClient } from '@/app/lib/useIsClient'
+import { useIsClient } from '@/lib/useIsClient'
 import { Tooltip } from '@radix-ui/themes'
 import { useEffect, useState } from 'react'
 

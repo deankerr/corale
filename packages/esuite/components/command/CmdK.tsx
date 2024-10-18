@@ -1,6 +1,6 @@
 'use client'
 
-import { cn, twx } from '@/app/lib/utils'
+import { cn, twx } from '@/lib/utils'
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr'
 import { Command as CommandPrimitive } from 'cmdk'
 import { forwardRef } from 'react'

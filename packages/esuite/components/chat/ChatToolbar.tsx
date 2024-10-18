@@ -1,9 +1,9 @@
 'use client'
 
-import { useThread } from '@/app/lib/api/threads'
 import { TextEditorDialog } from '@/components/text-document-editor/TextEditorDialog'
 import { Button } from '@/components/ui/Button'
 import { PanelToolbar } from '@/components/ui/Panel'
+import { useThread } from '@/lib/api/threads'
 
 export const ChatToolbar = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId ?? '')

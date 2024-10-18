@@ -1,4 +1,4 @@
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Card, IconButton, Inset } from '@radix-ui/themes'
 import AudioMotionAnalyzer from 'audiomotion-analyzer'

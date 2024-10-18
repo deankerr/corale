@@ -1,9 +1,9 @@
 'use client'
 
-import { useMessage } from '@/app/lib/api/messages'
 import { Message } from '@/components/message/Message'
 import { Panel, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useMessage } from '@/lib/api/messages'
 
 export default function Page({ params }: { params: { threadId: string; msg: string } }) {
   const result = useMessage(params.threadId, params.msg)

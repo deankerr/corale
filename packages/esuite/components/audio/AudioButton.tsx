@@ -1,4 +1,4 @@
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 import type { Icon } from '@phosphor-icons/react/dist/lib/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { IconButton } from '@radix-ui/themes'

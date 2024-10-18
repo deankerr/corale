@@ -1,7 +1,7 @@
 'use client'
 
-import { useGeneration } from '@/app/lib/api/generations'
 import { GenerationCard } from '@/components/generations/GenerationCard'
+import { useGeneration } from '@/lib/api/generations'
 import type { Id } from '@corale/api/convex/types'
 
 export default function Page({ params }: { params: { generationId: Id<'generations_v2'> } }) {

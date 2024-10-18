@@ -1,4 +1,4 @@
-import { useThreadTextSearchQueryParams } from '@/app/lib/api/threads'
+import { useThreadTextSearchQueryParams } from '@/lib/api/threads'
 import { SearchField } from '../ui/SearchField'
 
 export const ChatSearchField = () => {

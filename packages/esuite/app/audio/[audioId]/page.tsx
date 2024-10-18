@@ -1,8 +1,8 @@
 'use client'
 
-import { useAudio } from '@/app/lib/api/audio'
 import { Panel } from '@/components/ui/Panel'
 import { SkeletonPulse } from '@/components/ui/Skeleton'
+import { useAudio } from '@/lib/api/audio'
 import { Card } from '@radix-ui/themes'
 import dynamic from 'next/dynamic'
 

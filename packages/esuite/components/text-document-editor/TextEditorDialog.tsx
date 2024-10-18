@@ -1,6 +1,6 @@
 'use client'
 
-import { useThread, useUpdateThread } from '@/app/lib/api/threads'
+import { useThread, useUpdateThread } from '@/lib/api/threads'
 import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button, Dialog, IconButton } from '@radix-ui/themes'

@@ -1,10 +1,10 @@
-import { useCachedQuery } from '@/app/lib/api/helpers'
 import { api } from '@corale/api/convex/_generated/api'
 import type { Id } from '@corale/api/convex/_generated/dataModel'
 import { useMutation, useQuery } from 'convex/react'
 import { parseAsString, useQueryState } from 'nuqs'
 import { useEffect, useRef } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
+import { useCachedQuery } from './helpers'
 
 export const useThreads = () => {
   const threads = useCachedQuery(api.db.threads.list, {})

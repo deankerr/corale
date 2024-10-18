@@ -1,10 +1,10 @@
 'use client'
 
-import { useThread } from '@/app/lib/api/threads'
 import { ChatToolbar } from '@/components/chat/ChatToolbar'
 import { MessageSearchResults } from '@/components/chat/panels/MessageSearchResults'
 import { Composer } from '@/components/composer/Composer'
 import { Panel, PanelBodyGrid, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
+import { useThread } from '@/lib/api/threads'
 import { ChatHeader } from './ChatHeader'
 import { ChatBackgroundPanel } from './panels/ChatBackgroundPanel'
 import { MessageFeed2 } from './panels/MessageFeed2'

@@ -1,5 +1,5 @@
-import { useChatModels } from '@/app/lib/api/models'
 import { Button } from '@/components/ui/Button'
+import { useChatModels } from '@/lib/api/models'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { forwardRef } from 'react'
 

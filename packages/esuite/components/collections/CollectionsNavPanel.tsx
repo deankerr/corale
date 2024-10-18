@@ -1,11 +1,11 @@
 'use client'
 
-import { useCollections } from '@/app/lib/api/collections'
-import { cn } from '@/app/lib/utils'
 import { CreateCollectionDialog } from '@/components/collections/dialogs'
 import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { NavPanel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useCollections } from '@/lib/api/collections'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@radix-ui/themes'
 import Link from 'next/link'

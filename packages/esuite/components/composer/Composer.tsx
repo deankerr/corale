@@ -1,10 +1,10 @@
 'use client'
 
-import { useThreadActions } from '@/app/lib/api/actions'
-import { useThread } from '@/app/lib/api/threads'
 import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
 import { ModelButton } from '@/components/composer/ModelButton'
 import { Button, IconButton } from '@/components/ui/Button'
+import { useThreadActions } from '@/lib/api/actions'
+import { useThread } from '@/lib/api/threads'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { memo, useState } from 'react'
 import ReactTextareaAutosize from 'react-textarea-autosize'

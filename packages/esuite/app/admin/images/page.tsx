@@ -1,10 +1,10 @@
 'use client'
 
 import { AdminPageWrapper } from '@/app/admin/AdminPageWrapper'
-import { cn } from '@/app/lib/utils'
 import { ImageCardNext } from '@/components/images/ImageCardNext'
 import { InfiniteScroll } from '@/components/ui/InfiniteScroll'
 import { Loader } from '@/components/ui/Loader'
+import { cn } from '@/lib/utils'
 import { api } from '@corale/api/convex/_generated/api'
 import { usePaginatedQuery } from 'convex/react'
 

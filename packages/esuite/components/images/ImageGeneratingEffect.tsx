@@ -1,4 +1,4 @@
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 
 export const ImageGeneratingEffect = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (

@@ -1,5 +1,5 @@
-import { useMessageTextStream } from '@/app/lib/api/threads'
-import { cn } from '@/app/lib/utils'
+import { useMessageTextStream } from '@/lib/api/threads'
+import { cn } from '@/lib/utils'
 import type { EMessage } from '@corale/api/convex/types'
 import { Code } from '@radix-ui/themes'
 import { Markdown } from '../markdown/Markdown'

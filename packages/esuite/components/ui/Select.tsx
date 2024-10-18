@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/app/lib/utils'
+import { cn } from '@/lib/utils'
 import { CaretSortIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Theme } from '@radix-ui/themes'
