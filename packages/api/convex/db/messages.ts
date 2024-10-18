@@ -23,7 +23,7 @@ export const messageReturnFields = {
   runId: v.optional(v.id('runs')),
 
   // fields
-  xid: v.optional(v.string()),
+  xid: v.string(),
   series: v.number(),
   threadId: v.string(),
   userId: v.id('users'),

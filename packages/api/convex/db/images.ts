@@ -29,7 +29,7 @@ export const imagesReturn = v.object({
   runId: v.string(),
   ownerId: v.id('users'),
   collectionIds: v.array(v.id('collections')),
-  xid: v.optional(v.string()),
+  xid: v.string(),
 })
 
 export const getImageV2Ent = async (ctx: QueryCtx, imageId: string) => {

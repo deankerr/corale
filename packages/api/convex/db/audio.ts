@@ -20,7 +20,7 @@ export const audioReturnFields = v.object({
   messageId: v.id('messages'),
   threadId: v.id('threads'),
   userId: v.id('users'),
-  xid: v.optional(v.string()),
+  xid: v.string(),
 })
 
 export const create = internalMutation({

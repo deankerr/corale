@@ -68,7 +68,7 @@ export const GenerationCard = ({
       {/* > images */}
       <div className="flex min-h-32 flex-wrap gap-2 px-2 py-2">
         {generation.images.map((image, index) => (
-          <div key={image.id} className="w-72">
+          <div key={image.xid} className="w-72">
             <ImageCardNext image={image} sizes="25vw">
               <div
                 className="absolute inset-0 cursor-pointer"
@@ -76,7 +76,7 @@ export const GenerationCard = ({
                   openLightbox({
                     slides: generation.images.map((image) => ({
                       type: 'image',
-                      src: `/i/${image.id}`,
+                      src: `/i/${image.xid}`,
                       width: image.width,
                       height: image.height,
                       blurDataURL: image?.blurDataUrl,

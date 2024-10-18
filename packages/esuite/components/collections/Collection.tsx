@@ -27,7 +27,7 @@ export const Collection = ({ collectionId }: { collectionId: string }) => {
   const openLightbox = useLightbox()
   const slides = images?.map((image) => ({
     type: 'image' as const,
-    src: `/i/${image.id}`,
+    src: `/i/${image.xid}`,
     width: image.width,
     height: image.height,
     blurDataURL: image?.blurDataUrl,
@@ -39,7 +39,7 @@ export const Collection = ({ collectionId }: { collectionId: string }) => {
     <Panel>
       <PanelHeader className="gap-1">
         <NavigationButton />
-        <PanelTitle href={`/collections/${collection.id}`}>{collection.title}</PanelTitle>
+        <PanelTitle href={`/collections/${collection.xid}`}>{collection.title}</PanelTitle>
 
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
@@ -49,13 +49,13 @@ export const Collection = ({ collectionId }: { collectionId: string }) => {
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Content variant="soft">
-            <EditCollectionTitleDialog collectionId={collection.id} currentTitle={collection.title}>
+            <EditCollectionTitleDialog collectionId={collection.xid} currentTitle={collection.title}>
               <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
                 <Icons.Pencil /> Edit title
               </DropdownMenu.Item>
             </EditCollectionTitleDialog>
 
-            <DeleteCollectionDialog collectionId={collection.id}>
+            <DeleteCollectionDialog collectionId={collection.xid}>
               <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
                 <Icons.Trash /> Delete
               </DropdownMenu.Item>

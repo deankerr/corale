@@ -137,7 +137,8 @@ export const MessageHeader = () => {
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Content variant="soft">
-          <Link href={`/chats/${message.threadSlug}/${message.series}`}>
+          {/* ! TODO: use xid */}
+          <Link href={`/chats/${message.threadId}/${message.series}`}>
             <DropdownMenu.Item>
               <Icons.Share /> Link
             </DropdownMenu.Item>

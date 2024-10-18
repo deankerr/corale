@@ -18,7 +18,7 @@ export const IImage = forwardRef<HTMLImageElement, Props>(({ image, className, c
     >
       <NextImage
         alt=""
-        src={`/i/${image.id}`}
+        src={`/i/${image.xid}`}
         placeholder={image?.blurDataUrl ? 'blur' : 'empty'}
         blurDataURL={image?.blurDataUrl}
         width={image.width}

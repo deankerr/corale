@@ -80,10 +80,10 @@ export const ChatsNavPanel = () => {
           {threadsSorted.map((thread) => (
             <Link
               key={thread._id}
-              href={`/chats/${thread.slug}`}
+              href={`/chats/${thread.xid}`}
               className={cn(
                 'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
-                thread.slug === params.threadId && 'bg-gray-3 hover:bg-gray-3',
+                thread.xid === params.threadId && 'bg-gray-3 hover:bg-gray-3',
                 !!searchText && !('_fuzzysort' in thread) && 'opacity-50',
               )}
             >

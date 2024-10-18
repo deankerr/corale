@@ -51,7 +51,7 @@ export const generationsReturn = v.object({
     'workflow',
   ]),
   images: v.array(imagesReturn),
-  xid: v.optional(v.string()),
+  xid: v.string(),
 })
 
 export const getGenerationEdges = async (ctx: QueryCtx, generation: Ent<'generations_v2'>) => {

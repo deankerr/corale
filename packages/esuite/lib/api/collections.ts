@@ -9,7 +9,7 @@ export const useCollections = () => {
 
 export const useCollection = (collectionId: string) => {
   const collections = useCachedQuery(api.db.collections.latest, {})
-  const userCollection = collections?.find((c) => c.id === collectionId) ?? null
+  const userCollection = collections?.find((c) => c.xid === collectionId) ?? null
   const nonUserCollection = useCachedQuery(api.db.collections.get, !userCollection ? { collectionId } : 'skip')
   return userCollection || nonUserCollection
 }

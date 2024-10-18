@@ -26,11 +26,11 @@ export const ImageCardNext = ({
   const updateCollection = useMutation(api.db.collections.update)
 
   return (
-    <div key={image.id} style={{ aspectRatio: image.width / image.height }} className="overflow-hidden rounded-lg">
+    <div key={image.xid} style={{ aspectRatio: image.width / image.height }} className="overflow-hidden rounded-lg">
       <NextImage
         alt=""
-        key={image.id}
-        src={`/i/${image.id}`}
+        key={image.xid}
+        src={`/i/${image.xid}`}
         placeholder={image?.blurDataUrl ? 'blur' : 'empty'}
         blurDataURL={image?.blurDataUrl}
         width={image.width}
@@ -50,7 +50,7 @@ export const ImageCardNext = ({
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Content variant="soft">
-          <Link href={`/convex/${image.id}?download`}>
+          <Link href={`/convex/${image.xid}?download`}>
             <DropdownMenu.Item>
               <Icons.DownloadSimple />
               Download
@@ -73,7 +73,7 @@ export const ImageCardNext = ({
 
                 return (
                   <DropdownMenu.CheckboxItem
-                    key={collection.id}
+                    key={collection.xid}
                     checked={isInCollection}
                     onCheckedChange={(checked) => {
                       if (checked) {
@@ -115,7 +115,7 @@ export const ImageCardNext = ({
 
           <DropdownMenu.Separator />
 
-          <DeleteImageDialog id={image.id}>
+          <DeleteImageDialog id={image.xid}>
             <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
               <Icons.Trash />
               Delete

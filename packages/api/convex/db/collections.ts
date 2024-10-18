@@ -14,7 +14,7 @@ const collectionReturnFields = v.object({
   ownerId: v.id('users'),
 
   images: v.array(imagesReturn),
-  xid: v.optional(v.string()),
+  xid: v.string(),
 })
 
 export const getCollection = async (ctx: QueryCtx, collectionId: string) => {

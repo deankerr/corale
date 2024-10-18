@@ -23,7 +23,7 @@ export const threadReturnFields = {
   kvMetadata: v.record(v.string(), v.string()),
   updatedAtTime: v.number(),
   // + fields
-  xid: v.optional(v.string()),
+  xid: v.string(),
   userId: v.id('users'),
 
   // edge

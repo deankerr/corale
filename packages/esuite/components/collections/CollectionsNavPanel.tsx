@@ -47,10 +47,10 @@ export const CollectionsNavPanel = () => {
           {collections?.map((collection) => (
             <Link
               key={collection._id}
-              href={`/collections/${collection.id}`}
+              href={`/collections/${collection.xid}`}
               className={cn(
                 'hover:bg-gray-2 truncate rounded-sm px-2 py-3 text-sm font-medium',
-                params.collectionId === collection.id && 'bg-gray-3 hover:bg-gray-3',
+                params.collectionId === collection.xid && 'bg-gray-3 hover:bg-gray-3',
               )}
             >
               {collection.title}

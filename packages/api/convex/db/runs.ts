@@ -28,7 +28,7 @@ export const runReturnFields = {
   ...runFieldsV2,
   threadId: v.id('threads'),
   userId: v.id('users'),
-  xid: v.optional(v.string()),
+  xid: v.string(),
 }
 
 export const get = query({

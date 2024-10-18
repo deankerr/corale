@@ -16,9 +16,9 @@ export const ChatHeader = ({ threadId }: { threadId: string }) => {
   return (
     <PanelHeader className="bg-gray-a1">
       <NavigationButton />
-      <PanelTitle href={`/chats/${thread.slug}`}>{thread.title ?? 'Untitled Thread'}</PanelTitle>
-      <ChatMenu threadId={thread.slug} />
-      <FavouriteButton threadId={thread.slug} />
+      <PanelTitle href={`/chats/${thread.xid}`}>{thread.title ?? 'Untitled Thread'}</PanelTitle>
+      <ChatMenu threadId={thread.xid} />
+      <FavouriteButton threadId={thread.xid} />
 
       <div className="grow" />
 

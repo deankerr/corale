@@ -19,7 +19,7 @@ export const MyImagesCollection = () => {
   const images = useMyImagesList(sort)
   const slides = images.results.map((image) => ({
     type: 'image' as const,
-    src: `/i/${image.id}`,
+    src: `/i/${image.xid}`,
     width: image.width,
     height: image.height,
     blurDataURL: image?.blurDataUrl,

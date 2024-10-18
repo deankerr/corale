@@ -32,8 +32,8 @@ export const useThreadActions = (threadId: string) => {
         setActionState('rateLimited')
         reset()
 
-        if (result.threadId !== threadId) {
-          router.push(`/chats/${result.slug}`)
+        if (result.id !== threadId) {
+          router.push(`/chats/${result.id}`)
         }
 
         return result
@@ -65,7 +65,7 @@ export const useThreadActions = (threadId: string) => {
         reset()
 
         if (result.threadId !== threadId) {
-          router.push(`/chats/${result.threadSlug}`)
+          router.push(`/chats/${result.threadId}`)
         }
 
         return result
