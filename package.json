@@ -5,7 +5,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "convex deploy --cmd 'pnpm --filter @corale/esuite build'",
+    "build": "pnpm --filter @corale/esuite build",
+    "convex-deploy": "pnpm --filter @corale/api convex-deploy",
+    "production-deploy": "pnpm convex-deploy -y && pnpm build",
     "dev": "pnpm --parallel dev",
     "dev:esuite": "pnpm --filter @corale/esuite dev",
     "dev:api": "pnpm --filter @corale/api dev",

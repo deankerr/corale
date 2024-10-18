@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "convex dev",
+    "convex-deploy": "convex deploy",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
