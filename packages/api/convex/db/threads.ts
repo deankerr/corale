@@ -90,6 +90,23 @@ export const list = query({
   returns: nullable(v.array(v.object(threadReturnFields))),
 })
 
+export const getTextStreams = query({
+  args: {
+    runId: v.id('runs'),
+  },
+  handler: async (ctx, { runId }) => {
+    const run = await ctx.table('runs').get(runId)
+    if (!run) return []
+
+    const texts = await ctx
+      .table('texts', 'runId', (q) => q.eq('runId', run._id))
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .map((text) => ({ content: text.content, _id: text._id }))
+    return texts
+  },
+  returns: v.array(v.object({ content: v.string(), _id: v.id('texts') })),
+})
+
 // * Mutations
 export const create = mutation({
   args: pick(threadFields, ['title', 'instructions', 'favourite', 'kvMetadata']),
@@ -123,24 +140,6 @@ export const update = mutation({
     const kvMetadata = updateKvMetadata(thread.kvMetadata, updateKv)
 
     return await ctx
-      .table('threads')
-      .getX(thread._id)
-      .patch({ ...fields, kvMetadata, updatedAtTime: Date.now() })
-  },
-  returns: v.id('threads'),
-})
-
-export const updateSR = internalMutation({
-  args: {
-    ...omit(threadFields, ['updatedAtTime', 'kvMetadata']),
-    threadId: v.string(),
-    updateKv: v.optional(updateKvValidator),
-  },
-  handler: async (ctx, { threadId, updateKv, ...fields }) => {
-    const thread = await getThreadX(ctx, threadId)
-    const kvMetadata = updateKvMetadata(thread.kvMetadata, updateKv)
-
-    return await ctx.skipRules
       .table('threads')
       .getX(thread._id)
       .patch({ ...fields, kvMetadata, updatedAtTime: Date.now() })
@@ -192,4 +191,25 @@ export const append = mutation({
     messageId: v.id('messages'),
     series: v.number(),
   }),
+})
+
+export const thing = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const ident = await ctx.auth.getUserIdentity()
+    console.log('thing', ident)
+    const res = await ctx.runMutation(internal.db.threads.innerThing, {})
+    console.log('result', res)
+
+    await ctx.scheduler.runAfter(0, internal.db.threads.innerThing, {})
+  },
+})
+
+export const innerThing = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const ident = await ctx.auth.getUserIdentity()
+    console.log('inner thing', ident)
+    return 'within'
+  },
 })

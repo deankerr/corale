@@ -1,7 +1,7 @@
 import { generateText } from 'ai'
 import { v } from 'convex/values'
 import { api, internal } from '../_generated/api'
-import { internalAction, internalQuery } from '../functions'
+import { internalAction, internalMutation, internalQuery } from '../functions'
 import { createAi } from '../lib/ai'
 
 export const run = internalAction({
@@ -40,10 +40,20 @@ export const run = internalAction({
       throw new Error('title is missing')
     }
 
-    await ctx.runMutation(internal.db.threads.updateSR, {
-      threadId: message.threadId,
+    await ctx.runMutation(internal.action.generateThreadTitle.setTitle, {
+      id: message.threadId,
       title,
     })
+  },
+})
+
+export const setTitle = internalMutation({
+  args: {
+    id: v.id('threads'),
+    title: v.string(),
+  },
+  handler: async (ctx, { id, title }) => {
+    return await ctx.skipRules.table('threads').getX(id).patch({ title })
   },
 })
 

@@ -99,32 +99,6 @@ export const update = mutation({
   returns: v.id('messages'),
 })
 
-export const updateSR = internalMutation({
-  args: {
-    messageId: v.id('messages'),
-
-    role: messageFields.role,
-    name: v.optional(v.string()),
-    text: v.optional(v.string()),
-
-    updateKv: v.optional(updateKvValidator),
-  },
-  handler: async (ctx, { messageId, updateKv, ...args }) => {
-    const message = await ctx.skipRules.table('messages').getX(messageId)
-
-    if (args.name === '') args.name = undefined
-    if (args.text === '') args.text = undefined
-
-    const kvMetadata = updateKvMetadata(message.kvMetadata, updateKv)
-
-    return await ctx.skipRules
-      .table('messages')
-      .getX(messageId)
-      .patch({ ...args, kvMetadata })
-  },
-  returns: v.id('messages'),
-})
-
 export const remove = mutation({
   args: {
     messageId: v.string(),
