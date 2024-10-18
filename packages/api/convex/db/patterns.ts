@@ -5,7 +5,7 @@ import { mutation, query } from '../functions'
 import { prepareUpdate } from '../lib/utils'
 import { patternFields } from '../schema'
 import { getPattern, getPatternWriterX } from './helpers/patterns'
-import { generateXid } from './helpers/xid'
+import { generateXID } from './helpers/xid'
 
 export const patternReturnFields = {
   ...patternFields,
@@ -63,7 +63,7 @@ export const create = mutation({
   ) => {
     const user = await ctx.viewerX()
 
-    const patternXid = generateXid('pattern')
+    const xid = await generateXID(ctx, 'patterns')
 
     const patternId = await ctx.table('patterns').insert({
       name,
@@ -73,13 +73,13 @@ export const create = mutation({
       dynamicMessages,
       kvMetadata,
       model,
-      xid: patternXid,
+      xid,
       userId: user._id,
       updatedAt: Date.now(),
       lastUsedAt: 0,
     })
 
-    return { id: patternId, xid: patternXid }
+    return { id: patternId, xid }
   },
   returns: v.object({
     id: v.id('patterns'),
