@@ -13,7 +13,8 @@ import type { userReturnFieldsPublic } from './db/users'
 import type { mutation, query } from './functions'
 import type { entDefinitions } from './schema'
 
-export type { Id } from './_generated/dataModel'
+export type { Id, Doc } from './_generated/dataModel'
+export type { SystemFields, WithOptionalSystemFields, WithoutSystemFields } from 'convex/server'
 
 export type QueryCtx = CustomCtx<typeof query>
 export type MutationCtx = CustomCtx<typeof mutation>
