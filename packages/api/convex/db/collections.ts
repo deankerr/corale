@@ -2,7 +2,7 @@ import { literals, nullable } from 'convex-helpers/validators'
 import { paginationOptsValidator } from 'convex/server'
 import { ConvexError, v } from 'convex/values'
 import { mutation, query } from '../functions'
-import { emptyPage, generateSlugId, paginatedReturnFields } from '../lib/utils'
+import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import type { Ent, QueryCtx } from '../types'
 import { generateXID } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
@@ -10,7 +10,6 @@ import { getImageV2Edges, imagesReturn } from './images'
 const collectionReturnFields = v.object({
   _id: v.id('collections'),
   _creationTime: v.number(),
-  id: v.string(),
   title: v.string(),
   ownerId: v.id('users'),
 
@@ -22,7 +21,7 @@ export const getCollection = async (ctx: QueryCtx, collectionId: string) => {
   const _id = ctx.table('collections').normalizeId(collectionId)
   const collection = _id
     ? await ctx.table('collections').get(_id)
-    : await ctx.table('collections').get('id', collectionId)
+    : await ctx.table('collections').get('xid', collectionId)
 
   return collection && collection.deletionTime === undefined ? collection : null
 }
@@ -46,7 +45,7 @@ export const get = query({
     const collection = await getCollection(ctx, collectionId)
     return collection ? await getCollectionEdges(ctx, collection) : null
   },
-  returns: v.union(collectionReturnFields, v.null()),
+  returns: nullable(collectionReturnFields),
 })
 
 export const latest = query({
@@ -100,7 +99,6 @@ export const create = mutation({
     const collectionId = await ctx.table('collections').insert({
       title,
       ownerId: viewer._id,
-      id: generateSlugId(),
       images_v2: imageIds,
       xid: generateXID(),
     })

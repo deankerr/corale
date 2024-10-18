@@ -48,8 +48,7 @@ export const collectionFields = {
 }
 const collections = defineEnt(collectionFields)
   .deletion('scheduled', { delayMs: timeToDelete })
-  .field('id', v.string(), { unique: true })
-  .field('xid', v.string(), { index: true })
+  .field('xid', v.string(), { unique: true })
   .edge('user', { field: 'ownerId' })
   .edges('images_v2')
 
@@ -71,8 +70,7 @@ export const imagesV2Fields = {
 }
 const images_v2 = defineEnt(imagesV2Fields)
   .deletion('scheduled', { delayMs: timeToDelete })
-  .field('id', v.string(), { unique: true })
-  .field('xid', v.string(), { index: true })
+  .field('xid', v.string(), { unique: true })
   .index('generationId', ['generationId'])
   .index('ownerId', ['ownerId'])
   .index('ownerId_sourceUrl', ['ownerId', 'sourceUrl'])
@@ -144,7 +142,7 @@ export const generationV2Fields = {
   ownerId: v.id('users'),
 }
 const generations_v2 = defineEnt(generationV2Fields)
-  .field('xid', v.string(), { index: true })
+  .field('xid', v.string(), { unique: true })
   .index('status', ['status'])
   .index('runId', ['runId'])
   .index('ownerId', ['ownerId'])
@@ -163,7 +161,7 @@ export const audioFields = {
 }
 const audio = defineEnt(audioFields)
   .deletion('scheduled', { delayMs: timeToDelete })
-  .field('xid', v.string(), { index: true })
+  .field('xid', v.string(), { unique: true })
   .edge('message')
   .edge('thread')
   .edge('user')
@@ -321,7 +319,7 @@ export const runFieldsV2 = {
 }
 const runs = defineEnt(runFieldsV2)
   .deletion('soft')
-  .field('xid', v.string(), { index: true })
+  .field('xid', v.string(), { unique: true })
   .edge('thread')
   .edge('user')
 
