@@ -27,6 +27,10 @@ const nextConfig = {
       destination: `${getBackendUrl()}/i/:slug`,
     },
   ],
+
+  experimental: {
+    optimizePackageImports: ['@phosphor-icons/react', '@remixicon/react'],
+  },
 }
 
 export default process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig
