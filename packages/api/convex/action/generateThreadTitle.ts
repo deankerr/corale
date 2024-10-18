@@ -1,23 +1,16 @@
 import { generateText } from 'ai'
 import { v } from 'convex/values'
-import { api, internal } from '../_generated/api'
-import { internalAction, internalQuery } from '../functions'
+import { internal } from '../_generated/api'
+import { internalAction, internalMutation, internalQuery } from '../functions'
 import { createAi } from '../lib/ai'
 
 export const run = internalAction({
   args: {
-    messageId: v.id('messages'),
+    threadId: v.id('threads'),
   },
-  handler: async (ctx, { messageId }): Promise<void> => {
-    const message = await ctx.runQuery(api.db.messages.get, {
-      messageId,
-    })
-    if (!message) {
-      throw new Error('message not found')
-    }
-
-    const messages = await ctx.runQuery(internal.action.generateThreadTitle.getConversation, {
-      messageId,
+  handler: async (ctx, { threadId }): Promise<void> => {
+    const messages = await ctx.runQuery(internal.action.generateThreadTitle.getRecentMessages, {
+      threadId,
       limit: 4,
     })
 
@@ -27,8 +20,7 @@ export const run = internalAction({
       prompt: prompt.replace(
         '%%%',
         messages
-          .filter((message) => message.role !== 'system')
-          .map((message) => `${message.role}: ${message.content}`)
+          .map((message) => message.text)
           .join('\n')
           .slice(0, 800),
       ),
@@ -40,10 +32,20 @@ export const run = internalAction({
       throw new Error('title is missing')
     }
 
-    await ctx.runMutation(internal.db.threads.updateSR, {
-      threadId: message.threadId,
+    await ctx.runMutation(internal.action.generateThreadTitle.setTitle, {
+      id: threadId,
       title,
     })
+  },
+})
+
+export const setTitle = internalMutation({
+  args: {
+    id: v.id('threads'),
+    title: v.string(),
+  },
+  handler: async (ctx, { id, title }) => {
+    return await ctx.skipRules.table('threads').getX(id).patch({ title })
   },
 })
 
@@ -68,39 +70,25 @@ Your response should be in this format:
 (your title here)
 `
 
-export const getConversation = internalQuery({
+export const getRecentMessages = internalQuery({
   args: {
-    messageId: v.id('messages'),
+    threadId: v.id('threads'),
     limit: v.optional(v.number()),
-    prependNamesToContent: v.optional(v.boolean()),
   },
-  handler: async (ctx, { messageId, limit = 20, prependNamesToContent = false }) => {
-    const message = await ctx.table('messages').getX(messageId)
+  handler: async (ctx, { threadId, limit = 4 }) => {
+    const thread = await ctx.skipRules.table('threads').getX(threadId)
 
-    const messages = await ctx
-      .table('messages', 'threadId', (q) =>
-        q.eq('threadId', message.threadId).lt('_creationTime', message._creationTime),
-      )
+    const messages = await thread
+      .edge('messages')
       .order('desc')
-      .filter((q) => q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)))
+      .filter((q) =>
+        q.and(
+          q.eq(q.field('deletionTime'), undefined),
+          q.neq(q.field('text'), undefined),
+          q.neq(q.field('role'), 'system'),
+        ),
+      )
       .take(limit)
-      .map((message) => ({
-        role: message.role,
-        name: prependNamesToContent ? undefined : message.name,
-        content:
-          prependNamesToContent && message.role === 'user' && message.name !== undefined
-            ? `${message.name}: ${message.text}`
-            : message.text || '',
-      }))
-
-    const thread = await ctx.skipRules.table('threads').getX(message.threadId)
-    if (thread.instructions) {
-      messages.push({
-        role: 'system',
-        content: thread.instructions.replace('{{date}}', new Date().toISOString()),
-        name: undefined,
-      })
-    }
 
     return messages.reverse()
   },

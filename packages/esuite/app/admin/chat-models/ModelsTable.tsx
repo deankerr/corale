@@ -61,7 +61,7 @@ export const ModelsTable = ({
                 <ModelLogo modelName={model.name} size={20} />
               </Table.Cell>
               <Table.Cell maxWidth="240px" className="break-all font-mono text-xs">
-                {model.resourceKey}
+                {model.modelId}
               </Table.Cell>
 
               <Table.Cell maxWidth="360px">{model.name}</Table.Cell>

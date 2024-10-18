@@ -32,7 +32,7 @@ export const imagesReturn = v.object({
 })
 
 export const getImageV2Ent = async (ctx: QueryCtx, imageId: string) => {
-  const _id = ctx.unsafeDb.normalizeId('images_v2', imageId)
+  const _id = ctx.table('images_v2').normalizeId(imageId)
   return _id ? await ctx.table('images_v2').get(_id) : await ctx.table('images_v2').get('id', imageId)
 }
 

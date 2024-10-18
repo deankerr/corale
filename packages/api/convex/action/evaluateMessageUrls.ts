@@ -20,7 +20,7 @@ export const run = internalAction({
     const runId = nanoid()
 
     for (const url of imageUrls) {
-      await ctx.scheduler.runAfter(0, internal.action.ingestImageUrl.runV2, {
+      await ctx.scheduler.runAfter(0, internal.action.ingestImageUrl.run, {
         sourceUrl: url,
         sourceType: 'message-url',
         ownerId: args.ownerId,

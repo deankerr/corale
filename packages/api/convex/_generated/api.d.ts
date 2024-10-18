@@ -16,8 +16,6 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as action_evaluateMessageUrls from "../action/evaluateMessageUrls.js";
-import type * as action_evaluateNsfwProbability from "../action/evaluateNsfwProbability.js";
-import type * as action_generateImageVisionData from "../action/generateImageVisionData.js";
 import type * as action_generateTextToImage from "../action/generateTextToImage.js";
 import type * as action_generateThreadTitle from "../action/generateThreadTitle.js";
 import type * as action_ingestImageUrl from "../action/ingestImageUrl.js";
@@ -43,7 +41,6 @@ import type * as db_patterns from "../db/patterns.js";
 import type * as db_runs from "../db/runs.js";
 import type * as db_texts from "../db/texts.js";
 import type * as db_thread_messages from "../db/thread/messages.js";
-import type * as db_thread_runs from "../db/thread/runs.js";
 import type * as db_threads from "../db/threads.js";
 import type * as db_users from "../db/users.js";
 import type * as deletion from "../deletion.js";
@@ -64,6 +61,7 @@ import type * as shared_helpers from "../shared/helpers.js";
 import type * as shared_imageModels from "../shared/imageModels.js";
 import type * as shared_utils from "../shared/utils.js";
 import type * as types from "../types.js";
+import type * as values from "../values.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -75,8 +73,6 @@ import type * as types from "../types.js";
  */
 declare const fullApi: ApiFromModules<{
   "action/evaluateMessageUrls": typeof action_evaluateMessageUrls;
-  "action/evaluateNsfwProbability": typeof action_evaluateNsfwProbability;
-  "action/generateImageVisionData": typeof action_generateImageVisionData;
   "action/generateTextToImage": typeof action_generateTextToImage;
   "action/generateThreadTitle": typeof action_generateThreadTitle;
   "action/ingestImageUrl": typeof action_ingestImageUrl;
@@ -102,7 +98,6 @@ declare const fullApi: ApiFromModules<{
   "db/runs": typeof db_runs;
   "db/texts": typeof db_texts;
   "db/thread/messages": typeof db_thread_messages;
-  "db/thread/runs": typeof db_thread_runs;
   "db/threads": typeof db_threads;
   "db/users": typeof db_users;
   deletion: typeof deletion;
@@ -123,6 +118,7 @@ declare const fullApi: ApiFromModules<{
   "shared/imageModels": typeof shared_imageModels;
   "shared/utils": typeof shared_utils;
   types: typeof types;
+  values: typeof values;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

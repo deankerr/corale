@@ -3,14 +3,12 @@ import { v } from 'convex/values'
 import { internalMutation, internalQuery, query } from '../functions'
 import { chatModelFields } from '../schema'
 import { QueryCtx } from '../types'
+import { withSystemFields } from '../values'
 
-// * chat models
-export const getChatModelByResourceKey = async (ctx: QueryCtx, resourceKey: string) => {
-  const model = await ctx.table('chat_models', 'resourceKey', (q) => q.eq('resourceKey', resourceKey)).unique()
-  if (!model) return null
-
-  return { ...model, description: '' }
-}
+export const chatModelReturn = v.object({
+  ...withSystemFields('chat_models', chatModelFields),
+  resourceKey: v.string(),
+})
 
 export const getChatModel = async (ctx: QueryCtx, modelId: string) => {
   const model = await ctx
@@ -30,6 +28,7 @@ export const listChatModels = query({
 
     return models.sort((a, b) => a.name.localeCompare(b.name))
   },
+  returns: v.array(chatModelReturn),
 })
 
 export const listAll = internalQuery({

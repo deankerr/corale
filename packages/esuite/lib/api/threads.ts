@@ -33,7 +33,7 @@ export const useRun = (runId: string | undefined) => {
 // }
 
 export const useMessageTextStream = (runId: Id<'runs'> | undefined) => {
-  const textStreams = useQuery(api.db.thread.runs.getTextStreams, runId ? { runId } : 'skip')
+  const textStreams = useQuery(api.db.threads.getTextStreams, runId ? { runId } : 'skip')
   return textStreams?.[0]?.content
 }
 
