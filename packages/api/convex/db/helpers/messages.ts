@@ -97,7 +97,7 @@ export const createMessage = async (
 
   if (generateThreadTitle && !thread.title) {
     await ctx.scheduler.runAfter(0, internal.action.generateThreadTitle.run, {
-      messageId: message._id,
+      threadId: thread._id,
     })
   }
 

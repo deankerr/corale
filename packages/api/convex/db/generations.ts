@@ -166,7 +166,7 @@ export const complete = internalMutation({
     })
 
     for (const result of results) {
-      await ctx.scheduler.runAfter(0, internal.action.ingestImageUrl.runV2, {
+      await ctx.scheduler.runAfter(0, internal.action.ingestImageUrl.run, {
         sourceType: 'generation',
         sourceUrl: result.url,
         generationId,

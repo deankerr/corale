@@ -5,7 +5,7 @@ import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
 import { imagesV2Fields } from '../schema'
 
-export const runV2 = internalAction({
+export const run = internalAction({
   args: {
     ...pick(imagesV2Fields, ['sourceUrl', 'sourceType', 'generationId', 'ownerId']),
     runId: v.optional(v.string()),

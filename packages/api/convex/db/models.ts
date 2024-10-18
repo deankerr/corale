@@ -5,7 +5,10 @@ import { chatModelFields } from '../schema'
 import { QueryCtx } from '../types'
 import { withSystemFields } from '../values'
 
-export const chatModelReturn = v.object(withSystemFields('chat_models', chatModelFields))
+export const chatModelReturn = v.object({
+  ...withSystemFields('chat_models', chatModelFields),
+  resourceKey: v.string(),
+})
 
 export const getChatModel = async (ctx: QueryCtx, modelId: string) => {
   const model = await ctx
