@@ -49,6 +49,7 @@ export const collectionFields = {
 const collections = defineEnt(collectionFields)
   .deletion('scheduled', { delayMs: timeToDelete })
   .field('id', v.string(), { unique: true })
+  .field('xid', v.optional(v.string()), { index: true })
   .edge('user', { field: 'ownerId' })
   .edges('images_v2')
 
@@ -71,6 +72,7 @@ export const imagesV2Fields = {
 const images_v2 = defineEnt(imagesV2Fields)
   .deletion('scheduled', { delayMs: timeToDelete })
   .field('id', v.string(), { unique: true })
+  .field('xid', v.optional(v.string()), { index: true })
   .index('generationId', ['generationId'])
   .index('ownerId', ['ownerId'])
   .index('ownerId_sourceUrl', ['ownerId', 'sourceUrl'])
@@ -142,6 +144,7 @@ export const generationV2Fields = {
   ownerId: v.id('users'),
 }
 const generations_v2 = defineEnt(generationV2Fields)
+  .field('xid', v.optional(v.string()), { index: true })
   .index('status', ['status'])
   .index('runId', ['runId'])
   .index('ownerId', ['ownerId'])
@@ -160,6 +163,7 @@ export const audioFields = {
 }
 const audio = defineEnt(audioFields)
   .deletion('scheduled', { delayMs: timeToDelete })
+  .field('xid', v.optional(v.string()), { index: true })
   .edge('message')
   .edge('thread')
   .edge('user')
@@ -204,6 +208,7 @@ export const messageFields = {
 const messages = defineEnt(messageFields)
   .deletion('scheduled', { delayMs: timeToDelete })
   .field('series', v.number(), { index: true })
+  .field('xid', v.optional(v.string()), { index: true })
   .edge('thread')
   .edge('user')
   .edges('audio', { ref: true, deletion: 'soft' })
@@ -230,6 +235,7 @@ export const threadFields = {
 const threads = defineEnt(threadFields)
   .deletion('scheduled', { delayMs: timeToDelete })
   .field('slug', v.string(), { unique: true })
+  .field('xid', v.optional(v.string()), { index: true })
   .edges('messages', { ref: true, deletion: 'soft' })
   .edges('audio', { ref: true, deletion: 'soft' })
   .edges('runs', { ref: true, deletion: 'soft' })
@@ -314,7 +320,11 @@ export const runFieldsV2 = {
   kvMetadata: v.record(v.string(), v.string()),
   updatedAt: v.number(),
 }
-const runs = defineEnt(runFieldsV2).deletion('soft').edge('thread').edge('user')
+const runs = defineEnt(runFieldsV2)
+  .deletion('soft')
+  .field('xid', v.optional(v.string()), { index: true })
+  .edge('thread')
+  .edge('user')
 
 // * Patterns
 export const patternFields = {
