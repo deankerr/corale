@@ -428,7 +428,7 @@ const schema = defineEntSchema(
     migrations: defineEntFromTable(migrationsTable),
   },
   {
-    schemaValidation: false,
+    schemaValidation: true,
   },
 )
 

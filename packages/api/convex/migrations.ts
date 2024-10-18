@@ -1,17 +1,16 @@
-import { makeMigration, startMigrationsSerially } from 'convex-helpers/server/migrations'
-import { internal } from './_generated/api'
+import { makeMigration } from 'convex-helpers/server/migrations'
 import { internalMutation } from './_generated/server'
 
 export const migration = makeMigration(internalMutation, {
   migrationTable: 'migrations',
 })
 
-export const xidThreads = migration({
-  table: 'threads',
-  migrateOne: async (ctx, doc) => {
-    return { ...doc, slug: undefined }
-  },
-})
+// export const xidThreadsR = migration({
+//   table: 'threads',
+//   migrateOne: async (ctx, doc) => {
+//     return { ...doc, slug: undefined }
+//   },
+// })
 
 // export const xidMessages = migration({
 //   table: 'messages',
@@ -21,19 +20,19 @@ export const xidThreads = migration({
 //   batchSize: 400,
 // })
 
-export const xidCollections = migration({
-  table: 'collections',
-  migrateOne: async (ctx, doc) => {
-    return { ...doc, id: undefined }
-  },
-})
+// export const xidCollectionsR = migration({
+//   table: 'collections',
+//   migrateOne: async (ctx, doc) => {
+//     return { ...doc, id: undefined }
+//   },
+// })
 
-export const xidImages = migration({
-  table: 'images_v2',
-  migrateOne: async (ctx, doc) => {
-    return { ...doc, id: undefined }
-  },
-})
+// export const xidImagesR = migration({
+//   table: 'images_v2',
+//   migrateOne: async (ctx, doc) => {
+//     return { ...doc, id: undefined }
+//   },
+// })
 
 // export const xidPatterns = migration({
 //   table: 'patterns',
@@ -63,15 +62,15 @@ export const xidImages = migration({
 //   },
 // })
 
-export default internalMutation(async (ctx) => {
-  await startMigrationsSerially(ctx, [
-    internal.migrations.xidThreads,
-    // internal.migrations.xidMessages,
-    internal.migrations.xidCollections,
-    internal.migrations.xidImages,
-    // internal.migrations.xidPatterns,
-    // internal.migrations.xidGenerations,
-    // internal.migrations.xidAudio,
-    // internal.migrations.xidRuns,
-  ])
-})
+// export const rmIds = internalMutation(async (ctx) => {
+//   await startMigrationsSerially(ctx, [
+//     internal.migrations.xidThreadsR,
+//     internal.migrations.xidMessages,
+//     internal.migrations.xidCollectionsR,
+//     internal.migrations.xidImagesR,
+//     internal.migrations.xidPatterns,
+//     internal.migrations.xidGenerations,
+//     internal.migrations.xidAudio,
+//     internal.migrations.xidRuns,
+//   ])
+// })
