@@ -8,6 +8,7 @@ import { internalMutation, mutation, query } from '../functions'
 import { paginatedReturnFields } from '../lib/utils'
 import { generationV2Fields } from '../schema'
 import type { Ent, QueryCtx, RunConfigTextToImageV2 } from '../types'
+import { generateXID } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
 export const runConfigTextToImageV2 = v.object({
@@ -50,6 +51,7 @@ export const generationsReturn = v.object({
     'workflow',
   ]),
   images: v.array(imagesReturn),
+  xid: v.optional(v.string()),
 })
 
 export const getGenerationEdges = async (ctx: QueryCtx, generation: Ent<'generations_v2'>) => {
@@ -107,6 +109,7 @@ export const create = mutation({
         input: { ...input, configId: nanoid() },
         runId,
         ownerId: viewer._id,
+        xid: await generateXID(ctx, 'generations_v2'),
       })
 
       await ctx.scheduler.runAfter(0, internal.action.generateTextToImage.run, {

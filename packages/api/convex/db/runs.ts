@@ -9,6 +9,7 @@ import { runFieldsV2 } from '../schema'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
 import { createMessage, messageCreateFields } from './helpers/messages'
 import { getPattern, getPatternWriterX } from './helpers/patterns'
+import { generateXID } from './helpers/xid'
 import { getChatModel } from './models'
 import { getOrCreateUserThread } from './threads'
 
@@ -22,12 +23,13 @@ const runCreateFields = {
   appendMessages: v.optional(v.array(v.object(messageCreateFields))),
 }
 
-export const runV2ReturnFields = {
+export const runReturnFields = {
   _id: v.id('runs'),
   _creationTime: v.number(),
   ...runFieldsV2,
   threadId: v.id('threads'),
   userId: v.id('users'),
+  xid: v.optional(v.string()),
 }
 
 export const get = query({
@@ -37,7 +39,7 @@ export const get = query({
   handler: async (ctx, { runId }) => {
     return await ctx.table('runs').get(runId as Id<'runs'>)
   },
-  returns: nullable(v.object(runV2ReturnFields)),
+  returns: nullable(v.object(runReturnFields)),
 })
 
 export const create = mutation({
@@ -92,6 +94,7 @@ export const create = mutation({
       userId: thread.userId,
 
       updatedAt: Date.now(),
+      xid: await generateXID(ctx, 'runs'),
     })
 
     await ctx.scheduler.runAfter(0, internal.action.run.run, {

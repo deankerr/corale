@@ -3,6 +3,7 @@ import { v } from 'convex/values'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import { internalMutation, mutation, query } from '../functions'
+import { generateXID } from './helpers/xid'
 
 export const audioReturnFields = v.object({
   _id: v.id('audio'),
@@ -19,6 +20,7 @@ export const audioReturnFields = v.object({
   messageId: v.id('messages'),
   threadId: v.id('threads'),
   userId: v.id('users'),
+  xid: v.optional(v.string()),
 })
 
 export const create = internalMutation({
@@ -43,6 +45,7 @@ export const create = internalMutation({
       messageId,
       threadId: message.threadId,
       userId: message.userId,
+      xid: await generateXID(ctx, 'audio'),
     })
 
     return audioId

@@ -18,11 +18,14 @@ export function generateXidTime(entityType: keyof typeof entityCode): string {
 }
 
 const tables = {
-  // threads: 't',
-  // messages: 'm',
-  // images_v2: 'i',
-  // runs: 'r',
+  audio: 'a',
+  threads: 't',
+  messages: 'm',
+  images_v2: 'i',
+  runs: 'r',
   patterns: 'p',
+  generations_v2: 'g',
+  collections: 'c',
 }
 
 export async function generateXID(ctx: MutationCtx, tableName: keyof typeof tables): Promise<string> {

@@ -4,6 +4,7 @@ import { ConvexError, v } from 'convex/values'
 import { mutation, query } from '../functions'
 import { emptyPage, generateSlugId, paginatedReturnFields } from '../lib/utils'
 import type { Ent, QueryCtx } from '../types'
+import { generateXID } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
 const collectionReturnFields = v.object({
@@ -14,6 +15,7 @@ const collectionReturnFields = v.object({
   ownerId: v.id('users'),
 
   images: v.array(imagesReturn),
+  xid: v.optional(v.string()),
 })
 
 export const getCollection = async (ctx: QueryCtx, collectionId: string) => {
@@ -100,6 +102,7 @@ export const create = mutation({
       ownerId: viewer._id,
       id: generateSlugId(),
       images_v2: imageIds,
+      xid: await generateXID(ctx, 'collections'),
     })
 
     return collectionId

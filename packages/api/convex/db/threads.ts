@@ -10,6 +10,7 @@ import type { EThread, MutationCtx, QueryCtx } from '../types'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { createMessage, messageCreateFields } from './helpers/messages'
 import { getThread, getThreadEdges, getThreadX, threadReturnFields } from './helpers/threads'
+import { generateXID } from './helpers/xid'
 import { getUserPublic } from './users'
 
 // * Helpers
@@ -42,6 +43,7 @@ export const getOrCreateUserThread = async (ctx: MutationCtx, threadId?: string)
         userId: user._id,
         slug: await generateSlug(ctx),
         updatedAtTime: Date.now(),
+        xid: await generateXID(ctx, 'threads'),
       })
       .get()
 
@@ -119,6 +121,7 @@ export const create = mutation({
       updatedAtTime: Date.now(),
       userId: user._id,
       slug: await generateSlug(ctx),
+      xid: await generateXID(ctx, 'threads'),
     })
 
     return {

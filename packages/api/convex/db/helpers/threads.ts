@@ -15,6 +15,7 @@ export const threadReturnFields = {
   // + fields
   slug: v.string(),
   userId: v.id('users'),
+  xid: v.optional(v.string()),
 
   // edge
   user: userReturnFieldsPublic,

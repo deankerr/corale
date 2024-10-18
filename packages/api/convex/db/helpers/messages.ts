@@ -8,6 +8,7 @@ import { messageFields } from '../../schema'
 import { extractValidUrlsFromText } from '../../shared/helpers'
 import type { Ent, MutationCtx, QueryCtx } from '../../types'
 import { getImageV2ByOwnerIdSourceUrl } from '../images'
+import { generateXID } from './xid'
 
 export const messageCreateFields = {
   ...omit(messageFields, ['runId']),
@@ -26,6 +27,7 @@ export const messageReturnFields = {
   runId_v2: v.optional(v.string()),
 
   // fields
+  xid: v.optional(v.string()),
   series: v.number(),
   threadId: v.id('threads'),
   userId: v.id('users'),
@@ -56,7 +58,7 @@ export const getMessageUrlImages = async (ctx: QueryCtx, message: Ent<'messages'
 
 export const createMessage = async (
   ctx: MutationCtx,
-  fields: Omit<WithoutSystemFields<Doc<'messages'>>, 'series' | 'deletionTime'>,
+  fields: Omit<WithoutSystemFields<Doc<'messages'>>, 'series' | 'deletionTime' | 'xid'>,
   options?: {
     skipRules?: boolean
     evaluateUrls?: boolean
@@ -71,15 +73,16 @@ export const createMessage = async (
 
   const prev = await thread.edge('messages').order('desc').first()
   const series = prev ? prev.series + 1 : 1
+  const xid = await generateXID(ctx, 'messages')
 
   const message = skipRules
     ? await ctx.skipRules
         .table('messages')
-        .insert({ ...fields, series })
+        .insert({ ...fields, series, xid })
         .get()
     : await ctx
         .table('messages')
-        .insert({ ...fields, series })
+        .insert({ ...fields, series, xid })
         .get()
 
   if (evaluateUrls) {

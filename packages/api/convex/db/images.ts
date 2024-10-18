@@ -10,6 +10,7 @@ import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, generateTimestampId, paginatedReturnFields } from '../lib/utils'
 import { imagesV2Fields } from '../schema'
 import type { Ent, QueryCtx } from '../types'
+import { generateXID } from './helpers/xid'
 
 export const imagesReturn = v.object({
   _id: v.id('images_v2'),
@@ -29,6 +30,7 @@ export const imagesReturn = v.object({
   runId: v.string(),
   ownerId: v.id('users'),
   collectionIds: v.array(v.id('collections')),
+  xid: v.optional(v.string()),
 })
 
 export const getImageV2Ent = async (ctx: QueryCtx, imageId: string) => {
@@ -89,6 +91,7 @@ export const createImageV2 = internalMutation({
       ...args,
       id,
       createdAt,
+      xid: await generateXID(ctx, 'images_v2'),
     })
 
     // await ctx.scheduler.runAfter(0, internal.action.generateImageVisionData.run, { imageId: id })

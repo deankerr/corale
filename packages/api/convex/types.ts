@@ -8,7 +8,7 @@ import type { threadReturnFields } from './db/helpers/threads'
 import type { imagesReturn } from './db/images'
 import type { chatModelReturn } from './db/models'
 import type { patternReturnFields } from './db/patterns'
-import type { runV2ReturnFields } from './db/runs'
+import type { runReturnFields } from './db/runs'
 import type { userReturnFieldsPublic } from './db/users'
 import type { mutation, query } from './functions'
 import type { entDefinitions } from './schema'
@@ -26,7 +26,7 @@ export type EThread = Infer<AsObjectValidator<typeof threadReturnFields>>
 export type EMessage = Infer<AsObjectValidator<typeof messageReturnFields>>
 export type EImage = Infer<AsObjectValidator<typeof imagesReturn>>
 export type EUser = Infer<AsObjectValidator<typeof userReturnFieldsPublic>>
-export type ERun = Infer<AsObjectValidator<typeof runV2ReturnFields>>
+export type ERun = Infer<AsObjectValidator<typeof runReturnFields>>
 export type EChatModel = Infer<AsObjectValidator<typeof chatModelReturn>>
 
 export type RunConfigTextToImageV2 = Infer<typeof runConfigTextToImageV2>
