@@ -9,6 +9,8 @@ import { Badge } from '@radix-ui/themes'
 import { UsePaginatedQueryReturnType } from 'convex/react'
 import { ms } from 'itty-time'
 import Link from 'next/link'
+import { IconButton } from '../ui/Button'
+import { DeleteGenerationDialog } from './dialogs'
 
 const statusColor = {
   queued: 'yellow',
@@ -47,9 +49,11 @@ export const GenerationCard = ({
           {new Date(generation._creationTime).toLocaleString()}
         </Link>
         <div className="grow" />
-        {/* <IconButton variant="ghost" color="red" aria-label="Delete">
-          <Icons.Trash size={18} />
-        </IconButton> */}
+        <DeleteGenerationDialog id={generation._id}>
+          <IconButton variant="ghost" color="red" aria-label="Delete">
+            <Icons.Trash size={18} />
+          </IconButton>
+        </DeleteGenerationDialog>
       </div>
 
       {/* > details */}

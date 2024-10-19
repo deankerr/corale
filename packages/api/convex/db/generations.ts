@@ -8,7 +8,7 @@ import { internalMutation, mutation, query } from '../functions'
 import { paginatedReturnFields } from '../lib/utils'
 import { generationV2Fields } from '../schema'
 import type { Ent, QueryCtx, RunConfigTextToImageV2 } from '../types'
-import { generateXID } from './helpers/xid'
+import { generateXID, getEntityWriterX } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
 export const runConfigTextToImageV2 = v.object({
@@ -94,6 +94,7 @@ export const list = query({
   returns: v.object({ ...paginatedReturnFields, page: v.array(generationsReturn) }),
 })
 
+// * mutations
 export const create = mutation({
   args: {
     inputs: v.array(runConfigTextToImageV2),
@@ -197,4 +198,22 @@ export const fail = internalMutation({
       errors,
     })
   },
+})
+
+export const destroy = mutation({
+  args: {
+    id: v.string(),
+    destroyImages: v.boolean(),
+  },
+  handler: async (ctx, { id, destroyImages }) => {
+    const generation = await getEntityWriterX(ctx, 'generations_v2', id)
+    await generation.delete()
+
+    if (destroyImages) {
+      await ctx
+        .table('images_v2', 'generationId', (q) => q.eq('generationId', generation._id))
+        .map((image) => image.delete())
+    }
+  },
+  returns: v.null(),
 })
