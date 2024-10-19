@@ -9,6 +9,7 @@ import LightboxComponent, {
   useLightboxProps,
   useLightboxState,
 } from 'yet-another-react-lightbox'
+import imageLoader from '../images/image-loader'
 
 /**
  * The purpose of this intermediate component is to load the Lightbox and
@@ -50,6 +51,7 @@ function NextJsImage({ slide, offset, rect }: RenderSlideProps) {
         }}
         sizes={`${Math.ceil((width / window.innerWidth) * 100)}vw`}
         onClick={offset === 0 ? () => click?.({ index: currentIndex }) : undefined}
+        loader={imageLoader}
       />
     </div>
   )
