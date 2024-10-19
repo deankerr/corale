@@ -180,8 +180,6 @@ export const remove = mutation({
       .table('threads')
       .getX(args.threadId as Id<'threads'>)
       .delete()
-
-    await ctx.scheduler.runAfter(0, internal.deletion.scheduleFileDeletion, {})
   },
   returns: v.null(),
 })

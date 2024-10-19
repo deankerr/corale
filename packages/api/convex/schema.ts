@@ -4,7 +4,7 @@ import { literals } from 'convex-helpers/validators'
 import { v } from 'convex/values'
 import { ms } from 'itty-time'
 
-const timeToDelete = ms('1 day')
+export const timeToDeleteSchedule = ms('24 hours')
 
 // * Models
 export const chatModelFields = {
@@ -47,7 +47,7 @@ export const collectionFields = {
   title: v.string(),
 }
 const collections = defineEnt(collectionFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
   .edge('user', { field: 'ownerId' })
   .edges('images_v2')
@@ -69,7 +69,7 @@ export const imagesV2Fields = {
   ownerId: v.id('users'),
 }
 const images_v2 = defineEnt(imagesV2Fields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
   .index('generationId', ['generationId'])
   .index('ownerId', ['ownerId'])
@@ -114,7 +114,7 @@ export const imagesMetadataV2Fields = {
 }
 const images_metadata_v2 = defineEnt(imagesMetadataV2Fields)
   .deletion('scheduled', {
-    delayMs: timeToDelete,
+    delayMs: timeToDeleteSchedule,
   })
   .edge('image', {
     to: 'images_v2',
@@ -160,7 +160,7 @@ export const audioFields = {
   }),
 }
 const audio = defineEnt(audioFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
   .edge('message')
   .edge('thread')
@@ -187,7 +187,7 @@ export const textFields = {
   runId: v.optional(v.id('runs')),
 }
 const texts = defineEnt(textFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .edge('user')
   .index('userId_type', ['userId', 'type'])
   .index('runId', ['runId'])
@@ -204,7 +204,7 @@ export const messageFields = {
   runId: v.optional(v.id('runs')),
 }
 const messages = defineEnt(messageFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('series', v.number(), { index: true })
   .field('xid', v.string(), { index: true })
   .edge('thread')
@@ -231,7 +231,7 @@ export const threadFields = {
   updatedAtTime: v.number(),
 }
 const threads = defineEnt(threadFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
   .edges('messages', { ref: true, deletion: 'soft' })
   .edges('audio', { ref: true, deletion: 'soft' })
@@ -367,7 +367,7 @@ const patterns = defineEnt(patternFields)
   .field('xid', v.string(), { unique: true })
   .field('updatedAt', v.number())
   .field('lastUsedAt', v.number())
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .edge('user')
 
 // * Users
@@ -377,7 +377,7 @@ export const userFields = {
   role: literals('user', 'admin'),
 }
 const users = defineEnt(userFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('tokenIdentifier', v.string(), { unique: true })
   .edges('users_api_keys', { ref: true })
   .edges('audio', { ref: true, deletion: 'soft' })
@@ -392,7 +392,7 @@ export const usersApiKeysFields = {
   valid: v.boolean(),
 }
 const users_api_keys = defineEnt(usersApiKeysFields)
-  .deletion('scheduled', { delayMs: timeToDelete })
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('secret', v.string(), { unique: true })
   .edge('user')
 

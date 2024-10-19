@@ -186,8 +186,6 @@ export const remove = mutation({
       .table('messages')
       .getX(args.messageId as Id<'messages'>)
       .delete()
-
-    await ctx.scheduler.runAfter(0, internal.deletion.scheduleFileDeletion, {})
   },
   returns: v.null(),
 })

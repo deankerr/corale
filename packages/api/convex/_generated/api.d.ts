@@ -39,7 +39,7 @@ import type * as db_texts from "../db/texts.js";
 import type * as db_thread_messages from "../db/thread/messages.js";
 import type * as db_threads from "../db/threads.js";
 import type * as db_users from "../db/users.js";
-import type * as deletion from "../deletion.js";
+import type * as files from "../files.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as lib_ai from "../lib/ai.js";
@@ -88,7 +88,7 @@ declare const fullApi: ApiFromModules<{
   "db/thread/messages": typeof db_thread_messages;
   "db/threads": typeof db_threads;
   "db/users": typeof db_users;
-  deletion: typeof deletion;
+  files: typeof files;
   functions: typeof functions;
   http: typeof http;
   "lib/ai": typeof lib_ai;
