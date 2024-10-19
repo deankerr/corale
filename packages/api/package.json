@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "convex dev",
     "convex-deploy": "convex deploy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate-api": "mkdir -p build && convex function-spec > build/fn-spec.json && convex-helpers ts-api-spec --input-file build/fn-spec.json --output-file build/convex-api"
   },
   "devDependencies": {
     "@clerk/nextjs": "^5.7.3",

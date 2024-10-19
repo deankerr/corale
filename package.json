@@ -1,11 +1,9 @@
 {
   "name": "corale",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "build": "pnpm --filter @corale/esuite build",
+    "build:api": "pnpm --filter @corale/api generate-api",
     "deploy:api": "pnpm --filter @corale/api convex-deploy",
     "dev": "pnpm --parallel dev",
     "dev:esuite": "pnpm --filter @corale/esuite dev",
