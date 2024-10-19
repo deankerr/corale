@@ -16,10 +16,10 @@ export const useThreads = () => {
   return [...favourites, ...rest]
 }
 
-export const useThread = (threadId: string) => {
+export const useThread = (id: string) => {
   const threads = useThreads()
-  const userThread = threads ? (threads?.find((thread) => thread.xid === threadId) ?? null) : undefined
-  const otherThread = useCachedQuery(api.db.threads.get, !userThread ? { slugOrId: threadId } : 'skip')
+  const userThread = threads ? (threads?.find((thread) => thread.xid === id) ?? null) : undefined
+  const otherThread = useCachedQuery(api.db.threads.get, !userThread ? { id } : 'skip')
 
   return userThread || otherThread
 }

@@ -27,13 +27,13 @@ export const useThreadActions = (threadId: string) => {
 
       try {
         console.log('append', args)
-        const result = await sendAppend({ ...args, threadId })
+        const result = await sendAppend({ ...args, id: threadId })
 
         setActionState('rateLimited')
         reset()
 
-        if (result.id !== threadId) {
-          router.push(`/chats/${result.id}`)
+        if (result !== threadId) {
+          router.push(`/chats/${result}`)
         }
 
         return result

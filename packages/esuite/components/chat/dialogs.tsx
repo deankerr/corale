@@ -82,7 +82,7 @@ export const DeleteThreadDialog = ({
               variant="solid"
               color="red"
               onClick={() => {
-                sendDeleteThread({ threadId }).then(() => router.push('/chats'))
+                sendDeleteThread({ id: threadId }).then(() => router.push('/chats'))
               }}
             >
               Delete

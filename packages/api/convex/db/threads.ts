@@ -1,7 +1,6 @@
 import { omit, pick } from 'convex-helpers'
 import { nullable } from 'convex-helpers/validators'
 import { ConvexError, v, type AsObjectValidator, type Infer } from 'convex/values'
-import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
 import { mutation, query } from '../functions'
 import { threadFields } from '../schema'
@@ -12,6 +11,7 @@ import { createMessage, messageCreateFields } from './messages'
 import { getUserPublic, getUserPublicX, userReturnFieldsPublic } from './users'
 
 // * Helpers
+export const threadCreateFields = pick(threadFields, ['title', 'instructions', 'favourite', 'kvMetadata'])
 
 export const threadReturnFields = {
   // doc
@@ -59,10 +59,10 @@ const getEmptyThread = async (ctx: QueryCtx): Promise<EThread | null> => {
   }
 }
 
-export const getOrCreateUserThread = async (ctx: MutationCtx, threadId?: string) => {
+export const getOrCreateUserThread = async (ctx: MutationCtx, id?: string) => {
   const user = await ctx.viewerX()
 
-  if (!threadId || threadId === 'new') {
+  if (!id || id === 'new') {
     // * create thread
     const thread = await ctx
       .table('threads')
@@ -76,9 +76,7 @@ export const getOrCreateUserThread = async (ctx: MutationCtx, threadId?: string)
     return thread
   }
 
-  const id = ctx.table('threads').normalizeId(threadId)
-  const thread = id ? await ctx.table('threads').getX(id) : null
-
+  const thread = await getEntityWriterX(ctx, 'threads', id)
   if (thread?.userId !== user._id || thread.deletionTime) return null
   return thread
 }
@@ -86,16 +84,15 @@ export const getOrCreateUserThread = async (ctx: MutationCtx, threadId?: string)
 // * Queries
 export const get = query({
   args: {
-    slugOrId: v.string(),
+    id: v.string(),
   },
   handler: async (ctx, args) => {
-    if (args.slugOrId === 'new') {
-      const emptyThread = await getEmptyThread(ctx)
-      return emptyThread
+    if (args.id === 'new') {
+      return await getEmptyThread(ctx)
     }
 
-    const thread = await getEntity(ctx, 'threads', args.slugOrId)
-    if (!thread) return null
+    const thread = await getEntity(ctx, 'threads', args.id)
+    if (!thread || thread.deletionTime) return null
 
     return await getThreadEdges(ctx, thread)
   },
@@ -105,11 +102,11 @@ export const get = query({
 export const list = query({
   args: {},
   handler: async (ctx) => {
-    const viewerId = ctx.viewerId
-    if (!viewerId) return null
+    const userId = ctx.viewerId
+    if (!userId) return null
 
     const threads = await ctx
-      .table('threads', 'userId', (q) => q.eq('userId', viewerId))
+      .table('threads', 'userId', (q) => q.eq('userId', userId))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .map(async (thread) => await getThreadEdges(ctx, thread))
 
@@ -137,7 +134,7 @@ export const getTextStreams = query({
 
 // * Mutations
 export const create = mutation({
-  args: pick(threadFields, ['title', 'instructions', 'favourite', 'kvMetadata']),
+  args: threadCreateFields,
   handler: async (ctx, args) => {
     const user = await ctx.viewerX()
     const xid = generateXID()
@@ -173,13 +170,11 @@ export const update = mutation({
 
 export const remove = mutation({
   args: {
-    threadId: v.string(),
+    id: v.string(),
   },
   handler: async (ctx, args) => {
-    await ctx
-      .table('threads')
-      .getX(args.threadId as Id<'threads'>)
-      .delete()
+    const thread = await getEntityWriterX(ctx, 'threads', args.id)
+    await thread.delete()
   },
   returns: v.null(),
 })
@@ -187,28 +182,20 @@ export const remove = mutation({
 // * append message
 export const append = mutation({
   args: {
-    threadId: v.optional(v.string()),
+    id: v.optional(v.string()),
     message: v.object(messageCreateFields),
   },
   handler: async (ctx, args) => {
-    const thread = await getOrCreateUserThread(ctx, args.threadId)
+    const thread = await getOrCreateUserThread(ctx, args.id)
     if (!thread) throw new ConvexError('invalid thread')
 
-    const message = await createMessage(ctx, {
+    await createMessage(ctx, {
       threadId: thread._id,
       userId: thread.userId,
       ...args.message,
     })
 
-    return {
-      id: thread.xid,
-      messageId: message._id,
-      series: message.series,
-    }
+    return thread.xid
   },
-  returns: v.object({
-    id: v.string(),
-    messageId: v.id('messages'),
-    series: v.number(),
-  }),
+  returns: v.string(),
 })

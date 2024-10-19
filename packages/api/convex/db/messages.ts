@@ -3,9 +3,9 @@ import { mutation, query } from '../functions'
 import { extractValidUrlsFromText } from '../lib/utils'
 import { messageFields } from '../schema'
 import type { Doc, Ent, Id, MutationCtx, QueryCtx, WithoutSystemFields } from '../types'
-import { literals, nullable, omit, v } from '../values'
+import { literals, omit, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
-import { generateXID, getEntityX } from './helpers/xid'
+import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/xid'
 
 export const messageCreateFields = {
   ...omit(messageFields, ['runId']),
@@ -30,7 +30,6 @@ export const messageReturnFields = {
 }
 
 // * query helpers
-
 export const createMessage = async (
   ctx: MutationCtx,
   fields: Omit<WithoutSystemFields<Doc<'messages'>>, 'series' | 'deletionTime' | 'xid'>,
@@ -92,33 +91,13 @@ export const getMessageEdges = async (ctx: QueryCtx, message: Ent<'messages'>) =
 // * queries
 export const get = query({
   args: {
-    messageId: v.string(),
+    id: v.string(),
   },
-  handler: async (ctx, args) => {
-    const id = ctx.table('messages').normalizeId(args.messageId)
-    const message = id ? await ctx.table('messages').get(id) : null
-
+  handler: async (ctx, { id }) => {
+    const message = await getEntity(ctx, 'messages', id)
     return message ? await getMessageEdges(ctx, message) : null
   },
   returns: v.union(v.null(), v.object(messageReturnFields)),
-})
-
-export const getDoc = query({
-  args: {
-    messageId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const id = ctx.table('messages').normalizeId(args.messageId)
-    const message = id ? await ctx.table('messages').get(id).doc() : null
-
-    return message
-      ? {
-          ...message,
-          kvMetadata: message.kvMetadata ?? {},
-        }
-      : null
-  },
-  returns: nullable(v.object(messageReturnFields)),
 })
 
 // * mutations
@@ -179,13 +158,11 @@ export const update = mutation({
 
 export const remove = mutation({
   args: {
-    messageId: v.string(),
+    id: v.string(),
   },
-  handler: async (ctx, args) => {
-    await ctx
-      .table('messages')
-      .getX(args.messageId as Id<'messages'>)
-      .delete()
+  handler: async (ctx, { id }) => {
+    const message = await getEntityWriterX(ctx, 'messages', id)
+    await message.delete()
   },
   returns: v.null(),
 })

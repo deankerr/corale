@@ -15,7 +15,7 @@ export const MessageHeader = () => {
 
   const deleteMessage = useDeleteMessage()
   const handleDeleteMessage = () => {
-    deleteMessage({ messageId: message._id })
+    deleteMessage({ id: message._id })
       .then(() => {
         toast.success('Message deleted')
       })

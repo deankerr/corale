@@ -1,13 +1,9 @@
 import { api } from '@corale/api/convex/_generated/api'
-import type { Id } from '@corale/api/convex/types'
 import { usePaginatedQuery } from 'convex/react'
 import { useMemo, useRef } from 'react'
 import { useCachedQuery } from './helpers'
 import { useThread } from './threads'
 
-export const useMessageQuery = (messageId: string) => {
-  return useCachedQuery(api.db.messages.get, { messageId })
-}
 export const useMessage = (slug?: string, msg?: string) => {
   const thread = useThread(slug ?? '')
   const message = useCachedQuery(
@@ -21,8 +17,8 @@ export const useMessage = (slug?: string, msg?: string) => {
   }
 }
 
-export const useMessageById = (messageId: string) => {
-  return useCachedQuery(api.db.messages.getDoc, { messageId: messageId as Id<'messages'> })
+export const useMessageById = (id: string) => {
+  return useCachedQuery(api.db.messages.get, { id })
 }
 
 export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
