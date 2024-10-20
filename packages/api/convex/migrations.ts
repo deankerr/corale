@@ -1,8 +1,17 @@
 import { makeMigration } from 'convex-helpers/server/migrations'
 import { internalMutation } from './_generated/server'
+import { Doc } from './types'
 
 export const migration = makeMigration(internalMutation, {
   migrationTable: 'migrations',
+})
+
+export const imageMetadataTypes = migration({
+  table: 'images_metadata_v2',
+  migrateOne: async (ctx, doc: Doc<'images_metadata_v2'>) => {
+    return { ...doc, type: doc.data.type }
+  },
+  batchSize: 400,
 })
 
 // export const xidThreadsR = migration({

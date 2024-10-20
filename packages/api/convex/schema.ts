@@ -80,11 +80,13 @@ const images_v2 = defineEnt(imagesV2Fields)
   .edges('collections')
 
 export const imagesMetadataV2Fields = {
+  type: literals('caption', 'generation', 'nsfwProbability', 'message'),
   data: v.union(
     v.object({
       type: v.literal('caption'),
       version: v.number(),
       modelId: v.string(),
+      modelName: v.optional(v.string()),
       title: v.string(),
       description: v.string(),
       ocr: v.array(v.string()),
@@ -109,6 +111,8 @@ export const imagesMetadataV2Fields = {
       role: v.string(),
       name: v.optional(v.string()),
       text: v.string(),
+      messageId: v.optional(v.string()),
+      threadId: v.optional(v.string()),
     }),
   ),
 }
