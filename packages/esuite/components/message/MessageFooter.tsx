@@ -24,8 +24,14 @@ export const MessageFooter = () => {
 
   if (!run) return null
 
-  const timeActive = getDuration(run.timings.startedAt, run.timings.endedAt)
+  const timeActive = run.timings.endedAt ? getDuration(run.timings.startedAt, run.timings.endedAt) : undefined
+
+  const timeToFirstToken = run.timings.firstTokenAt
+    ? getDuration(run.timings.startedAt, run.timings.firstTokenAt)
+    : undefined
+
   const topProvider = run.providerMetadata?.provider_name as string | undefined
+
   return (
     <div className="flex-end divide-gray-a3 border-gray-a3 text-gray-10 h-8 divide-x overflow-hidden border-t px-1 font-mono text-xs [&>div]:px-2.5">
       <div className="grow">
@@ -36,7 +42,10 @@ export const MessageFooter = () => {
 
       <div>{run.usage?.finishReason}</div>
 
-      <div>{timeActive.toFixed(1)}s</div>
+      {timeToFirstToken !== undefined && <div>{timeToFirstToken.toFixed(1)}s</div>}
+
+      {timeActive !== undefined && <div>{timeActive.toFixed(1)}s</div>}
+
       {run.usage && (
         <div>
           {run.usage.completionTokens} / {run.usage.promptTokens} tok
