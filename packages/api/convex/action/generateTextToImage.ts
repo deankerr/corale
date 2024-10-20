@@ -8,7 +8,7 @@ import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
 import { ENV } from '../lib/env'
-import { stringifyValueForError } from '../lib/utils'
+import { getErrorMessage, stringifyValueForError } from '../lib/utils'
 import { defaultSizes, imageModels } from '../provider/imageModels'
 import type { TextToImageInputs } from '../types'
 
@@ -98,7 +98,7 @@ export const run = internalAction({
       console.error(err)
       await ctx.runMutation(internal.db.generations.fail, {
         generationId,
-        errors: [stringifyValueForError(err)],
+        errors: [{ message: getErrorMessage(err), code: 'unknown' }],
       })
     }
   },
