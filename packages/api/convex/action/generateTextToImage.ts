@@ -10,7 +10,7 @@ import { createAIProvider } from '../lib/ai'
 import { ENV } from '../lib/env'
 import { stringifyValueForError } from '../lib/utils'
 import { defaultSizes, imageModels } from '../provider/imageModels'
-import type { RunConfigTextToImageV2 } from '../types'
+import type { TextToImageInputs } from '../types'
 
 const Response = vb.object({
   images: vb.array(
@@ -31,6 +31,8 @@ const Response = vb.object({
   prompt: vb.optional(vb.string()),
 })
 
+export type FalTextToImageOutput = vb.InferOutput<typeof Response>
+
 fal.config({
   credentials: ENV.FAL_API_KEY,
 })
@@ -44,7 +46,7 @@ export const run = internalAction({
       const generation = await ctx.runMutation(internal.db.generations.activate, {
         generationId,
       })
-      const runConfig = generation.input as RunConfigTextToImageV2
+      const runConfig = generation.input as TextToImageInputs
 
       const image_size =
         runConfig.workflow === 'generate_dimensions'

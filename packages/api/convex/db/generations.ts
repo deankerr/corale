@@ -7,11 +7,11 @@ import { internal } from '../_generated/api'
 import { internalMutation, mutation, query } from '../functions'
 import { paginatedReturnFields } from '../lib/utils'
 import { generationV2Fields } from '../schema'
-import type { Ent, QueryCtx, RunConfigTextToImageV2 } from '../types'
+import type { Ent, QueryCtx, TextToImageInputs } from '../types'
 import { generateXID, getEntityWriterX } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
-export const runConfigTextToImageV2 = v.object({
+export const textToImageInputs = v.object({
   type: v.literal('textToImage'),
   modelId: v.string(),
   workflow: v.optional(v.string()),
@@ -58,7 +58,7 @@ export const getGenerationEdges = async (ctx: QueryCtx, generation: Ent<'generat
   const doc = omit(generation.doc(), ['output'])
   return {
     ...doc,
-    input: generation.input as RunConfigTextToImageV2,
+    input: generation.input as TextToImageInputs,
     images: await ctx
       .table('images_v2', 'generationId', (q) => q.eq('generationId', generation._id))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
@@ -97,7 +97,7 @@ export const list = query({
 // * mutations
 export const create = mutation({
   args: {
-    inputs: v.array(runConfigTextToImageV2),
+    inputs: v.array(textToImageInputs),
   },
   handler: async (ctx, { inputs }) => {
     const viewer = await ctx.viewerX()
@@ -187,7 +187,7 @@ export const fail = internalMutation({
     ...pick(generationV2Fields, ['errors']),
   },
   handler: async (ctx, { generationId, errors }) => {
-    const generation = await ctx.table('generations_v2').getX(generationId)
+    const generation = await ctx.skipRules.table('generations_v2').getX(generationId)
     if (generation.status !== 'active') {
       throw new Error('Image generation is not active')
     }

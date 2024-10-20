@@ -35,7 +35,7 @@ const data = [
     link: 'https://fal.ai/models/fal-ai/flux/dev',
     pricing: {
       type: 'perMegapixel',
-      value: '0.025',
+      value: 0.025,
     },
     inputs: {
       loras: true,
@@ -50,7 +50,7 @@ const data = [
     link: 'https://fal.ai/models/fal-ai/flux/schnell',
     pricing: {
       type: 'perMegapixel',
-      value: '0.003',
+      value: 0.003,
     },
   },
   {
@@ -62,7 +62,7 @@ const data = [
     link: 'https://fal.ai/models/fal-ai/flux-pro',
     pricing: {
       type: 'perMegapixel',
-      value: '0.05',
+      value: 0.05,
     },
     inputs: {
       maxQuantity: 1,
@@ -77,7 +77,7 @@ const data = [
     link: 'https://fal.ai/models/fal-ai/aura-flow',
     pricing: {
       type: 'perSecond',
-      value: '0.00111',
+      value: 0.00111,
     },
     inputs: {
       maxQuantity: 2,
@@ -98,8 +98,8 @@ const data = [
     creatorName: 'Stability AI',
     link: 'https://fal.ai/models/fal-ai/stable-diffusion-v3-medium',
     pricing: {
-      type: 'perRequest',
-      value: '0.035',
+      type: 'perImage',
+      value: 0.035,
     },
     inputs: {
       maxQuantity: 1,
@@ -117,7 +117,7 @@ const data = [
     link: 'https://fal.ai/models/stable-diffusion-xl-lightning',
     pricing: {
       type: 'perSecond',
-      value: '0.00111',
+      value: 0.00111,
     },
   },
   {
@@ -129,7 +129,7 @@ const data = [
     link: 'https://fal.ai/models/hyper-sdxl',
     pricing: {
       type: 'perSecond',
-      value: '0.00111',
+      value: 0.00111,
     },
   },
   {
@@ -140,7 +140,7 @@ const data = [
     link: 'https://fal.ai/models/pixart-sigma',
     pricing: {
       type: 'perSecond',
-      value: '0.000575',
+      value: 0.000575,
     },
     inputs: {
       negativePrompt: true,

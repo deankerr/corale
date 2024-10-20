@@ -95,10 +95,34 @@ export const imagesMetadataV2Fields = {
     v.object({
       type: v.literal('generation'),
       version: v.number(),
-      prompt: v.string(),
+
+      generationType: v.optional(v.string()),
+      workflow: v.optional(v.string()),
+
       modelId: v.string(),
       modelName: v.string(),
       provider: v.string(),
+      prompt: v.string(),
+
+      negativePrompt: v.optional(v.string()),
+      n: v.optional(v.number()),
+      width: v.optional(v.number()),
+      height: v.optional(v.number()),
+      size: v.optional(v.string()),
+      seed: v.optional(v.number()),
+      guidanceScale: v.optional(v.number()),
+      steps: v.optional(v.number()),
+      loras: v.optional(
+        v.array(
+          v.object({
+            path: v.string(),
+            scale: v.optional(v.number()),
+          }),
+        ),
+      ),
+
+      nInBatch: v.optional(v.number()),
+      cost: v.optional(v.number()),
     }),
 
     v.object({

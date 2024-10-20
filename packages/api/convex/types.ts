@@ -2,7 +2,7 @@ import type { GenericEnt, GenericEntWriter } from 'convex-ents'
 import type { CustomCtx } from 'convex-helpers/server/customFunctions'
 import type { AsObjectValidator, Infer } from 'convex/values'
 import type { TableNames } from './_generated/dataModel'
-import type { runConfigTextToImageV2 } from './db/generations'
+import type { textToImageInputs } from './db/generations'
 import type { imagesReturn } from './db/images'
 import type { messageReturnFields } from './db/messages'
 import type { chatModelReturn } from './db/models'
@@ -29,4 +29,4 @@ export type EUser = Infer<AsObjectValidator<typeof userReturnFieldsPublic>>
 export type ERun = Infer<AsObjectValidator<typeof runReturnFields>>
 export type EChatModel = Infer<AsObjectValidator<typeof chatModelReturn>>
 
-export type RunConfigTextToImageV2 = Infer<typeof runConfigTextToImageV2>
+export type TextToImageInputs = Infer<typeof textToImageInputs>

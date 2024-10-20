@@ -1,15 +1,17 @@
-import { omit } from 'convex-helpers'
+import { omit, pick } from 'convex-helpers'
 import { literals } from 'convex-helpers/validators'
 import { paginationOptsValidator } from 'convex/server'
-import { v } from 'convex/values'
+import { ConvexError, v } from 'convex/values'
 import { getQuery, parseFilename } from 'ufo'
 import { internal } from '../_generated/api'
-import type { Id } from '../_generated/dataModel'
+import type { Doc, Id } from '../_generated/dataModel'
 import { httpAction } from '../_generated/server'
+import type { FalTextToImageOutput } from '../action/generateTextToImage'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
+import { getImageModel } from '../provider/imageModels'
 import { imagesV2Fields } from '../schema'
-import type { Ent, MutationCtx, QueryCtx } from '../types'
+import type { Ent, MutationCtx, QueryCtx, TextToImageInputs } from '../types'
 import { generateXID } from './helpers/xid'
 
 export const imagesReturn = v.object({
@@ -88,11 +90,17 @@ export const createImageV2 = internalMutation({
     const createdAt = args.createdAt ?? Date.now()
 
     const xid = generateXID()
-    await ctx.skipRules.table('images_v2').insert({
+    const _id = await ctx.skipRules.table('images_v2').insert({
       ...args,
       createdAt,
       xid,
     })
+
+    const generation = args.generationId ? await ctx.table('generations_v2').get(args.generationId) : null
+    if (generation) {
+      const data = createGenerationMetadata(generation, args.sourceUrl)
+      await ctx.table('images_metadata_v2').insert({ data, type: 'generation', imageId: _id })
+    }
 
     return xid
   },
@@ -209,3 +217,67 @@ export const listMyImages = query({
   },
   returns: v.object({ ...paginatedReturnFields, page: v.array(imagesReturn) }),
 })
+
+export const getImageMetadata = query({
+  args: {
+    imageId: v.id('images_v2'),
+  },
+  handler: async (ctx, { imageId }) => {
+    const data = await ctx.table('images_metadata_v2').get('imageId', imageId)
+    return data
+  },
+})
+
+export function createGenerationMetadata(
+  generation: Doc<'generations_v2'>,
+  sourceUrl: string,
+): Doc<'images_metadata_v2'>['data'] {
+  const input = generation.input as TextToImageInputs & { configId: string }
+  const output = generation.output as FalTextToImageOutput
+  if (!(input && output && generation.results)) throw new ConvexError('generation metadata missing required fields')
+
+  const model = getImageModel(input.modelId)
+  const modelName = model?.name ?? 'unknown'
+
+  const n = input.n ?? 1
+  const nInBatch = (generation.results.findIndex((result) => result.url === sourceUrl) ?? 0) + 1
+
+  const seed = output.seed ?? input.seed
+
+  const metadata: Doc<'images_metadata_v2'>['data'] = {
+    type: 'generation',
+    ...omit(input, ['configId', 'type', 'n']),
+    modelName,
+    provider: 'fal',
+    n,
+    nInBatch,
+    seed,
+    version: 2,
+    generationType: input.type,
+  }
+
+  const pricing = model?.pricing
+  const result = generation.results.find((result) => result.url === sourceUrl)
+
+  if (pricing) {
+    switch (pricing.type) {
+      case 'perMegapixel':
+        if (!result?.width || !result?.height) break
+        metadata.cost = roundDecimalPlaces((pricing.value * (result.width * result.height)) / 1000000)
+        break
+      case 'perSecond':
+        if (!output.timings?.inference) break
+        metadata.cost = roundDecimalPlaces((pricing.value * output.timings.inference) / n)
+        break
+      case 'perImage':
+        metadata.cost = roundDecimalPlaces(pricing.value)
+        break
+    }
+  }
+
+  return metadata
+}
+
+function roundDecimalPlaces(value: number, places = 6) {
+  return Math.round(value * 10 ** places) / 10 ** places
+}

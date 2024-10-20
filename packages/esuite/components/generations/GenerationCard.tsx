@@ -2,7 +2,7 @@ import { ImageCardNext } from '@/components/images/ImageCardNext'
 import { ImageGeneratingEffect } from '@/components/images/ImageGeneratingEffect'
 import { useLightbox } from '@/components/lightbox/hooks'
 import { api } from '@corale/api/convex/_generated/api'
-import type { RunConfigTextToImageV2 } from '@corale/api/convex/types'
+import type { TextToImageInputs } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import * as Accordion from '@radix-ui/react-accordion'
 import { Badge } from '@radix-ui/themes'
@@ -33,7 +33,7 @@ export const GenerationCard = ({
   generation: UsePaginatedQueryReturnType<typeof api.db.generations.list>['results'][number]
   defaultOpen?: boolean
 }) => {
-  const input = generation.input as RunConfigTextToImageV2
+  const input = generation.input as TextToImageInputs
   const openLightbox = useLightbox()
 
   return (
@@ -120,8 +120,9 @@ export const GenerationCard = ({
           </Accordion.Trigger>
           <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
             <div className="p-2">
-              <pre className="max-h-64 overflow-y-auto text-wrap font-mono text-xs">
+              <pre className="max-h-64 overflow-y-auto whitespace-pre-wrap font-mono text-xs leading-5">
                 {JSON.stringify({ ...generation, images: undefined }, null, 2)}
+                {'\n\nimages\n'}
                 {JSON.stringify(generation.images, null, 2)}
               </pre>
             </div>

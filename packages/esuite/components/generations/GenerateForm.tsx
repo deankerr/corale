@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SliderWithInput } from '@/components/ui/SliderWithInput'
 import { TextareaAutosize } from '@/components/ui/TextareaAutosize'
 import { TextField } from '@/components/ui/TextField'
-import type { RunConfigTextToImageV2 } from '@corale/api/convex/types'
+import type { TextToImageInputs } from '@corale/api/convex/types'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { RadioCards } from '@radix-ui/themes'
@@ -74,7 +74,7 @@ export const GenerateForm = ({
   loading,
   storageKey = '',
 }: {
-  onRun?: ({ inputs }: { inputs: RunConfigTextToImageV2[] }) => void
+  onRun?: ({ inputs }: { inputs: TextToImageInputs[] }) => void
   loading?: boolean
   storageKey?: string
 }) => {
@@ -99,7 +99,7 @@ export const GenerateForm = ({
       })),
       prompt,
       negativePrompt,
-      n: quantity,
+      n: Math.min(quantity, inputs.maxQuantity),
       seed,
       size: dimensions as 'portrait' | 'square' | 'landscape',
     }
@@ -219,9 +219,9 @@ export const GenerateForm = ({
             type="number"
             className="w-16"
             min={1}
-            max={inputs.maxQuantity ?? 4}
-            value={Math.min(quantity, inputs.maxQuantity ?? 4)}
-            onValueChange={(value) => setState({ quantity: Number(value) })}
+            max={inputs.maxQuantity}
+            value={Math.min(quantity, inputs.maxQuantity)}
+            onValueChange={(value) => setState({ quantity: Math.min(Number(value), inputs.maxQuantity) })}
           />
         </div>
 
