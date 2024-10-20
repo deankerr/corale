@@ -98,8 +98,12 @@ export const createImageV2 = internalMutation({
 
     const generation = args.generationId ? await ctx.table('generations_v2').get(args.generationId) : null
     if (generation) {
-      const data = createGenerationMetadata(generation, args.sourceUrl)
-      await ctx.table('images_metadata_v2').insert({ data, type: 'generation', imageId: _id })
+      try {
+        const data = createGenerationMetadata(generation, args.sourceUrl)
+        await ctx.table('images_metadata_v2').insert({ data, type: 'generation', imageId: _id })
+      } catch (err) {
+        console.error('Failed to get generation metadata', err)
+      }
     }
 
     return xid
