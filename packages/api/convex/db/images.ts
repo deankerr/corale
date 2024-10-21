@@ -243,7 +243,9 @@ export const getMetadata = query({
   },
   handler: async (ctx, { id }) => {
     const image = await getEntityX(ctx, 'images_v2', id)
-    const metadata = await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))
+    const metadata = (await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))).map(
+      (metadata) => ({ ...metadata, xid: image.xid }),
+    )
     return metadata
   },
 })
