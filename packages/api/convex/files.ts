@@ -61,6 +61,7 @@ async function scheduleValidFileDoc(ctx: MutationCtx, doc: BasicDocument | null)
       fileId: doc.fileId,
     })
   }
+  console.debug('queued', doc._id, ':', doc.fileId)
 }
 
 export const startDeletionScan = internalMutation({
@@ -91,7 +92,9 @@ export const deleteDocFile = internalMutation({
   },
   handler: async (ctx, { docId, fileId }) => {
     const doc = await ctx.db.get(docId as Id<any>)
-    if (doc) await scheduleValidFileDoc(ctx, doc)
-    else await ctx.storage.delete(fileId as Id<'_storage'>)
+    if (doc) return await scheduleValidFileDoc(ctx, doc)
+
+    await ctx.storage.delete(fileId as Id<'_storage'>)
+    console.debug('deleted', docId, ':', fileId)
   },
 })
