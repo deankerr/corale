@@ -13,6 +13,7 @@ const collectionReturnFields = v.object({
   _creationTime: v.number(),
   title: v.string(),
   ownerId: v.id('users'),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
 
   images: v.array(imagesReturn),
   xid: v.string(),

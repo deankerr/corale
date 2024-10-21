@@ -1,4 +1,4 @@
-import { omit, pick } from 'convex-helpers'
+import { omit } from 'convex-helpers'
 import { literals } from 'convex-helpers/validators'
 import { paginationOptsValidator } from 'convex/server'
 import { ConvexError, v } from 'convex/values'
@@ -10,9 +10,9 @@ import type { FalTextToImageOutput } from '../action/generateTextToImage'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import { getImageModel } from '../provider/imageModels'
-import { imagesV2Fields } from '../schema'
+import { imagesMetadataV2Fields, imagesV2Fields } from '../schema'
 import type { Ent, MutationCtx, QueryCtx, TextToImageInputs } from '../types'
-import { generateXID } from './helpers/xid'
+import { generateXID, getEntityX } from './helpers/xid'
 
 export const imagesReturn = v.object({
   _id: v.id('images_v2'),
@@ -222,13 +222,29 @@ export const listMyImages = query({
   returns: v.object({ ...paginatedReturnFields, page: v.array(imagesReturn) }),
 })
 
-export const getImageMetadata = query({
+// * metadata
+export const addMetadata = mutation({
   args: {
-    imageId: v.id('images_v2'),
+    id: v.string(),
+    fields: imagesMetadataV2Fields['data'],
   },
-  handler: async (ctx, { imageId }) => {
-    const data = await ctx.table('images_metadata_v2').get('imageId', imageId)
-    return data
+  handler: async (ctx, { id, fields }) => {
+    const user = await ctx.viewerX()
+    const image = await getEntityX(ctx, 'images_v2', id)
+    if (image.ownerId !== user._id) throw new ConvexError('unauthorized')
+    if (fields.type !== 'message') throw new ConvexError('invalid metadata type')
+    return await ctx.table('images_metadata_v2').insert({ imageId: image._id, type: fields.type, data: fields })
+  },
+})
+
+export const getMetadata = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, { id }) => {
+    const image = await getEntityX(ctx, 'images_v2', id)
+    const metadata = await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))
+    return metadata
   },
 })
 

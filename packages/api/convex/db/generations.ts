@@ -50,6 +50,7 @@ export const generationsReturn = v.object({
     'results',
     'workflow',
   ]),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
   images: v.array(imagesReturn),
   xid: v.string(),
 })
@@ -107,7 +108,7 @@ export const create = mutation({
       const id = await ctx.table('generations_v2').insert({
         status: 'queued',
         updatedAt: Date.now(),
-        input: { ...input, configId: nanoid() },
+        input: { ...input, negativePrompt: input.negativePrompt || undefined, configId: nanoid() },
         runId,
         ownerId: viewer._id,
         xid: generateXID(),

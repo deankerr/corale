@@ -1,6 +1,6 @@
 import { CreateCollectionDialog } from '@/components/collections/dialogs'
 import { DotsThreeFillY } from '@/components/icons/DotsThreeFillY'
-import { DeleteImageDialog } from '@/components/images/dialogs'
+import { DeleteImageDialog, ImageMetadataDialog } from '@/components/images/dialogs'
 import { IconButton } from '@/components/ui/Button'
 import { useCollections } from '@/lib/api/collections'
 import { useViewer } from '@/lib/api/users'
@@ -58,6 +58,13 @@ export const ImageCardNext = ({
               Download
             </DropdownMenu.Item>
           </Link>
+
+          <ImageMetadataDialog id={image.xid}>
+            <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
+              <Icons.Info />
+              View metadata
+            </DropdownMenu.Item>
+          </ImageMetadataDialog>
 
           {isViewer && (
             <>

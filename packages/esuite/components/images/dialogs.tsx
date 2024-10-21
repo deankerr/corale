@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/Button'
 import { useDeleteImage } from '@/lib/api/images'
-import { AlertDialog } from '@radix-ui/themes'
+import { api } from '@corale/api/convex/_generated/api'
+import { AlertDialog, Dialog } from '@radix-ui/themes'
+import { useQuery } from 'convex-helpers/react/cache/hooks'
 import { toast } from 'sonner'
 
 export const DeleteImageDialog = ({
@@ -43,5 +45,39 @@ export const DeleteImageDialog = ({
         </div>
       </AlertDialog.Content>
     </AlertDialog.Root>
+  )
+}
+
+export const ImageMetadataDialog = ({
+  id,
+  children,
+  ...props
+}: {
+  id: string
+} & React.ComponentProps<typeof Dialog.Root>) => {
+  const metadata = useQuery(api.db.images.getMetadata, { id })
+  return (
+    <Dialog.Root {...props}>
+      {children ? <Dialog.Trigger>{children}</Dialog.Trigger> : null}
+
+      <Dialog.Content>
+        <Dialog.Title>Metadata</Dialog.Title>
+        <Dialog.Description size="2" mb="4">
+          Here&apos;s what I have on this image:
+        </Dialog.Description>
+
+        <div className="flex flex-col gap-3">
+          <pre className="bg-black-a3 overflow-x-auto whitespace-pre rounded border p-2 font-mono text-xs">
+            {JSON.stringify(metadata, null, 2)}
+          </pre>
+        </div>
+
+        <div className="flex-end mt-4 gap-2">
+          <Dialog.Close>
+            <Button>Close</Button>
+          </Dialog.Close>
+        </div>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }
