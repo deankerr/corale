@@ -12,6 +12,7 @@ import { useMutation } from 'convex/react'
 import NextImage from 'next/image'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { AdminOnlyUi } from '../util/AdminOnlyUi'
 import imageLoader from './image-loader'
 
 export const ImageCardNext = ({
@@ -27,6 +28,7 @@ export const ImageCardNext = ({
   const updateCollection = useMutation(api.db.collections.update)
   const { isViewer } = useViewer(image.ownerId)
 
+  const isSaved = image.collectionIds.length > 0
   return (
     <div key={image.xid} style={{ aspectRatio: image.width / image.height }} className="overflow-hidden rounded-lg">
       <NextImage
@@ -136,6 +138,14 @@ export const ImageCardNext = ({
           )}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
+
+      <AdminOnlyUi>
+        {isSaved ? (
+          <div className="absolute left-1 top-1">
+            <Icons.FloppyDisk />
+          </div>
+        ) : null}
+      </AdminOnlyUi>
     </div>
   )
 }

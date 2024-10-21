@@ -251,7 +251,7 @@ export const getMetadata = query({
 export function createGenerationMetadata(
   generation: Doc<'generations_v2'>,
   sourceUrl: string,
-): Doc<'images_metadata_v2'>['data'] {
+): Extract<Doc<'images_metadata_v2'>['data'], { type: 'generation' }> {
   const input = generation.input as TextToImageInputs & { configId: string }
   const output = generation.output as FalTextToImageOutput
   if (!(input && output && generation.results)) throw new ConvexError('generation metadata missing required fields')
@@ -260,7 +260,7 @@ export function createGenerationMetadata(
   const modelName = model?.name ?? 'unknown'
 
   const n = input.n ?? 1
-  const nInBatch = (generation.results.findIndex((result) => result.url === sourceUrl) ?? 0) + 1
+  const nthInBatch = (generation.results.findIndex((result) => result.url === sourceUrl) ?? 0) + 1
 
   const seed = output.seed ?? input.seed
 
@@ -270,7 +270,7 @@ export function createGenerationMetadata(
     modelName,
     provider: 'fal',
     n,
-    nInBatch,
+    nthInBatch,
     seed,
     version: 2,
     generationType: input.type,

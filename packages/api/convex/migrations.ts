@@ -1,5 +1,6 @@
 import { makeMigration } from 'convex-helpers/server/migrations'
 import { internalMutation } from './_generated/server'
+import { createGenerationMetadata } from './db/images'
 import { Doc } from './types'
 
 export const migration = makeMigration(internalMutation, {
@@ -12,6 +13,22 @@ export const imageMetadataTypes = migration({
     return { ...doc, type: doc.data.type }
   },
   batchSize: 400,
+})
+
+export const addGenData_1 = migration({
+  table: 'generations_v2',
+  migrateOne: async (ctx, doc) => {
+    const images = await ctx.db
+      .query('images_v2')
+      .withIndex('generationId', (q) => q.eq('generationId', doc._id))
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .collect()
+
+    for (const image of images) {
+      const metadata = createGenerationMetadata(doc, image.sourceUrl)
+      await ctx.db.insert('images_metadata_v2', { data: metadata, type: 'generation', imageId: image._id })
+    }
+  },
 })
 
 // export const xidThreadsR = migration({

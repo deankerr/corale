@@ -122,7 +122,7 @@ export const imagesMetadataV2Fields = {
         ),
       ),
 
-      nInBatch: v.optional(v.number()),
+      nthInBatch: v.optional(v.number()),
       cost: v.optional(v.number()),
     }),
 
@@ -145,6 +145,7 @@ const images_metadata_v2 = defineEnt(imagesMetadataV2Fields)
   .deletion('scheduled', {
     delayMs: timeToDeleteSchedule,
   })
+  .index('type', ['data.type'])
   .edge('image', {
     to: 'images_v2',
     field: 'imageId',
