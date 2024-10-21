@@ -3,14 +3,10 @@ import { internalAction, internalMutation } from './functions'
 import { nullable, v } from './values'
 
 const init = internalAction({
-  args: {
-    deleteAllFiles: v.optional(v.boolean()),
-  },
-  handler: async (ctx, { deleteAllFiles = false }) => {
+  args: {},
+  handler: async (ctx) => {
     console.log('convex init')
-    if (deleteAllFiles) await ctx.runAction(internal.init.dev_deleteAllFiles, {})
     await ctx.runAction(internal.lib.clerk.importUsers, {})
-    await ctx.runAction(internal.provider.openrouter.updateOpenRouterModels, {})
   },
 })
 
