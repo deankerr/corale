@@ -24,7 +24,7 @@ export const list = query({
         return {
           ...run,
           pattern: run.patternId ? await getEntity(ctx, 'patterns', run.patternId) : undefined,
-          instructions: run.instructions?.slice(0, 100),
+          instructions: run.instructions?.slice(0, 20),
           username: user?.name ?? 'Unknown',
           threadTitle: thread?.title ?? 'Unknown',
         }

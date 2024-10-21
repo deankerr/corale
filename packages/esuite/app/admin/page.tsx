@@ -1,29 +1,20 @@
 'use client'
 
-import { AdminPageWrapper } from '@/app/admin/AdminPageWrapper'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useCachedQuery } from '@/lib/api/helpers'
 import { useChatModels } from '@/lib/api/models'
 import { api } from '@corale/api/convex/_generated/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Badge, BadgeProps, Card, Heading } from '@radix-ui/themes'
-import { accentColors } from '@radix-ui/themes/props'
+import { AdminPageWrapper } from './admin-utils'
 
 export default function Page() {
   const events = useCachedQuery(api.db.admin.events.latest, { limit: 100 })
   const chatModels = useChatModels()
 
   return (
-    <AdminPageWrapper className="space-y-4">
-      <div className="bg-gray-a2 flex flex-wrap gap-3 p-2">
-        {accentColors.map((color) => (
-          <Badge key={color} size="3" color={color}>
-            {color}
-          </Badge>
-        ))}
-      </div>
-
-      <Card className="max-w-2xl">
+    <AdminPageWrapper>
+      <Card className="max-w-2xl shrink-0">
         <Heading size="5" className="flex items-center gap-2">
           <Icons.Info className="size-6" />
           Models
