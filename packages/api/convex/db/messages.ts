@@ -103,28 +103,24 @@ export const get = query({
 // * mutations
 export const create = mutation({
   args: {
-    threadId: v.string(),
-    ...messageCreateFields,
+    thread: v.string(),
+    fields: v.object(messageCreateFields),
   },
-  handler: async (ctx, { threadId, ...fields }) => {
-    const thread = await getEntityX(ctx, 'threads', threadId)
+  handler: async (ctx, args) => {
+    const thread = await getEntityX(ctx, 'threads', args.thread)
 
     const message = await createMessage(ctx, {
-      ...fields,
+      ...args.fields,
       threadId: thread._id,
       userId: thread.userId,
     })
 
     return {
-      threadId: thread.xid,
-      id: message._id,
-      series: message.series,
+      message: message.xid,
     }
   },
   returns: v.object({
-    threadId: v.string(),
-    id: v.id('messages'),
-    series: v.number(),
+    message: v.string(),
   }),
 })
 

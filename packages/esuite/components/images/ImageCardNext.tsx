@@ -3,6 +3,7 @@ import { DotsThreeFillY } from '@/components/icons/DotsThreeFillY'
 import { DeleteImageDialog } from '@/components/images/dialogs'
 import { IconButton } from '@/components/ui/Button'
 import { useCollections } from '@/lib/api/collections'
+import { useViewer } from '@/lib/api/users'
 import { api } from '@corale/api/convex/_generated/api'
 import type { EImage } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
@@ -24,6 +25,7 @@ export const ImageCardNext = ({
 }) => {
   const collections = useCollections()
   const updateCollection = useMutation(api.db.collections.update)
+  const { isViewer } = useViewer(image.ownerId)
 
   return (
     <div key={image.xid} style={{ aspectRatio: image.width / image.height }} className="overflow-hidden rounded-lg">
@@ -57,70 +59,74 @@ export const ImageCardNext = ({
             </DropdownMenu.Item>
           </Link>
 
-          <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>
-              <Icons.Plus />
-              Add to collection
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.SubContent>
-              <CreateCollectionDialog imageId={image._id}>
-                <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>Create new…</DropdownMenu.Item>
-              </CreateCollectionDialog>
+          {isViewer && (
+            <>
+              <DropdownMenu.Sub>
+                <DropdownMenu.SubTrigger>
+                  <Icons.Plus />
+                  Add to collection
+                </DropdownMenu.SubTrigger>
+                <DropdownMenu.SubContent>
+                  <CreateCollectionDialog imageId={image._id}>
+                    <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>Create new…</DropdownMenu.Item>
+                  </CreateCollectionDialog>
+                  <DropdownMenu.Separator />
+
+                  {collections?.map((collection) => {
+                    const isInCollection = image.collectionIds?.some((id) => id === collection._id)
+
+                    return (
+                      <DropdownMenu.CheckboxItem
+                        key={collection.xid}
+                        checked={isInCollection}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            updateCollection({
+                              collectionId: collection._id,
+                              images_v2: {
+                                add: [image._id],
+                              },
+                            })
+                              .then(() => toast.success('Image added to collection'))
+                              .catch((error) => {
+                                console.error(error)
+                                toast.error('Failed to add image to collection')
+                              })
+                          } else {
+                            updateCollection({
+                              collectionId: collection._id,
+                              images_v2: {
+                                remove: [image._id],
+                              },
+                            })
+                              .then(() => toast.success('Image removed from collection'))
+                              .catch((error) => {
+                                console.error(error)
+                                toast.error('Failed to remove image from collection')
+                              })
+                          }
+                        }}
+                        onSelect={(e) => {
+                          e.preventDefault()
+                        }}
+                      >
+                        {collection.title}
+                      </DropdownMenu.CheckboxItem>
+                    )
+                  })}
+                </DropdownMenu.SubContent>
+              </DropdownMenu.Sub>
+
               <DropdownMenu.Separator />
 
-              {collections?.map((collection) => {
-                const isInCollection = image.collectionIds?.some((id) => id === collection._id)
-
-                return (
-                  <DropdownMenu.CheckboxItem
-                    key={collection.xid}
-                    checked={isInCollection}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        updateCollection({
-                          collectionId: collection._id,
-                          images_v2: {
-                            add: [image._id],
-                          },
-                        })
-                          .then(() => toast.success('Image added to collection'))
-                          .catch((error) => {
-                            console.error(error)
-                            toast.error('Failed to add image to collection')
-                          })
-                      } else {
-                        updateCollection({
-                          collectionId: collection._id,
-                          images_v2: {
-                            remove: [image._id],
-                          },
-                        })
-                          .then(() => toast.success('Image removed from collection'))
-                          .catch((error) => {
-                            console.error(error)
-                            toast.error('Failed to remove image from collection')
-                          })
-                      }
-                    }}
-                    onSelect={(e) => {
-                      e.preventDefault()
-                    }}
-                  >
-                    {collection.title}
-                  </DropdownMenu.CheckboxItem>
-                )
-              })}
-            </DropdownMenu.SubContent>
-          </DropdownMenu.Sub>
-
-          <DropdownMenu.Separator />
-
-          <DeleteImageDialog id={image.xid}>
-            <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
-              <Icons.Trash />
-              Delete
-            </DropdownMenu.Item>
-          </DeleteImageDialog>
+              <DeleteImageDialog id={image.xid}>
+                <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
+                  <Icons.Trash />
+                  Delete
+                </DropdownMenu.Item>
+              </DeleteImageDialog>
+            </>
+          )}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </div>

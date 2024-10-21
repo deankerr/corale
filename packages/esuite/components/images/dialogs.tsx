@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/Button'
 import { useDeleteImage } from '@/lib/api/images'
 import { AlertDialog } from '@radix-ui/themes'
+import { toast } from 'sonner'
 
 export const DeleteImageDialog = ({
   id,
@@ -26,7 +27,16 @@ export const DeleteImageDialog = ({
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button variant="solid" color="red" onClick={() => sendDeleteImage({ id })}>
+            <Button
+              variant="solid"
+              color="red"
+              onClick={() =>
+                sendDeleteImage({ id }).catch((err) => {
+                  console.error(err)
+                  toast.error('Failed to delete image.')
+                })
+              }
+            >
               Delete
             </Button>
           </AlertDialog.Action>
