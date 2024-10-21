@@ -45,6 +45,7 @@ const chat_models = defineEnt(chatModelFields).field('resourceKey', v.string(), 
 
 export const collectionFields = {
   title: v.string(),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
 }
 const collections = defineEnt(collectionFields)
   .deletion('scheduled', { delayMs: timeToDeleteSchedule })

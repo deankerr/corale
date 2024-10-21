@@ -4,7 +4,8 @@ import { ConvexError, v } from 'convex/values'
 import { mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import type { Ent, QueryCtx } from '../types'
-import { generateXID } from './helpers/xid'
+import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
+import { generateXID, getEntityWriterX } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
 const collectionReturnFields = v.object({
@@ -93,13 +94,15 @@ export const listImages = query({
 export const create = mutation({
   args: {
     title: v.string(),
+    kvMetadata: v.optional(v.record(v.string(), v.string())),
     imageIds: v.optional(v.array(v.id('images_v2'))),
   },
-  handler: async (ctx, { title, imageIds }) => {
+  handler: async (ctx, { title, kvMetadata, imageIds }) => {
     const viewer = await ctx.viewerX()
 
     const collectionId = await ctx.table('collections').insert({
       title,
+      kvMetadata,
       ownerId: viewer._id,
       images_v2: imageIds,
       xid: generateXID(),
@@ -119,13 +122,15 @@ export const update = mutation({
         remove: v.optional(v.array(v.id('images_v2'))),
       }),
     ),
+    updateKv: v.optional(updateKvValidator),
   },
-  handler: async (ctx, { collectionId, ...fields }) => {
-    const collection = await getCollection(ctx, collectionId)
-    if (!collection) {
-      throw new ConvexError('Collection not found')
-    }
-    return await ctx.table('collections').getX(collection._id).patch(fields)
+  handler: async (ctx, { collectionId, updateKv, ...fields }) => {
+    const collection = await getEntityWriterX(ctx, 'collections', collectionId)
+    const kvMetadata = updateKvMetadata(collection.kvMetadata, updateKv)
+    return await ctx
+      .table('collections')
+      .getX(collection._id)
+      .patch({ ...fields, kvMetadata })
   },
 })
 
