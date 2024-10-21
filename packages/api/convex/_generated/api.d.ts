@@ -23,6 +23,7 @@ import type * as action_run from "../action/run.js";
 import type * as action_textToAudio from "../action/textToAudio.js";
 import type * as crons from "../crons.js";
 import type * as db_admin_events from "../db/admin/events.js";
+import type * as db_admin_runs from "../db/admin/runs.js";
 import type * as db_admin_see from "../db/admin/see.js";
 import type * as db_audio from "../db/audio.js";
 import type * as db_collections from "../db/collections.js";
@@ -71,6 +72,7 @@ declare const fullApi: ApiFromModules<{
   "action/textToAudio": typeof action_textToAudio;
   crons: typeof crons;
   "db/admin/events": typeof db_admin_events;
+  "db/admin/runs": typeof db_admin_runs;
   "db/admin/see": typeof db_admin_see;
   "db/audio": typeof db_audio;
   "db/collections": typeof db_collections;

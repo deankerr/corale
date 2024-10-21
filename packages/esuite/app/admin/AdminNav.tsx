@@ -8,6 +8,7 @@ const routes = [
   { path: '/admin/chat-models', label: 'chat models' },
   { path: '/admin/image-models', label: 'image models' },
   { path: '/admin/images', label: 'images' },
+  { path: '/admin/runs', label: 'runs' },
 ]
 
 export const AdminNav = () => {
