@@ -1,34 +1,30 @@
-import { useDeleteMessage, useUpdateMessage } from '@/lib/api/threads'
 import { cn } from '@/lib/utils'
 import type { EMessage } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, DropdownMenu } from '@radix-ui/themes'
 import Link from 'next/link'
-import { toast } from 'sonner'
 import { IconButton } from '../ui/Button'
 import { useMessageContext } from './MessageProvider'
 import { TimeSince } from './TimeSince'
 
 export const MessageHeader = () => {
-  const { message, isEditing, showJson, setShowJson, setIsEditing, viewerCanEdit, textStyle, setTextStyle } =
-    useMessageContext()
-
-  const deleteMessage = useDeleteMessage()
-  const handleDeleteMessage = () => {
-    deleteMessage({ id: message._id })
-      .then(() => {
-        toast.success('Message deleted')
-      })
-      .catch((error) => {
-        toast.error('Failed to delete message')
-        console.error('Error deleting message:', error)
-      })
-  }
+  const {
+    message,
+    updateMessage,
+    deleteMessage,
+    isEditing,
+    showJson,
+    setShowJson,
+    setIsEditing,
+    viewerCanEdit,
+    textStyle,
+    setTextStyle,
+  } = useMessageContext()
 
   const isHidden = message.channel === 'hidden'
-  const updateMessage = useUpdateMessage()
+
   const handleToggleHidden = () => {
-    updateMessage({ messageId: message._id, channel: isHidden ? '' : 'hidden' })
+    updateMessage({ channel: isHidden ? '' : 'hidden' })
   }
 
   const color = getRoleColor(message.role)
@@ -122,7 +118,7 @@ export const MessageHeader = () => {
             </IconButton>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content variant="soft">
-            <DropdownMenu.Item color="red" onClick={handleDeleteMessage}>
+            <DropdownMenu.Item color="red" onClick={deleteMessage}>
               Delete
             </DropdownMenu.Item>
           </DropdownMenu.Content>
@@ -137,7 +133,7 @@ export const MessageHeader = () => {
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Content variant="soft">
-          {/* ! TODO: use xid */}
+          {/* TODO: use xid */}
           <Link href={`/chats/${message.threadId}/${message.series}`}>
             <DropdownMenu.Item>
               <Icons.Share /> Link
@@ -170,6 +166,6 @@ function getName(message: EMessage) {
   if (message.name) return message.name
 
   if (message.role === 'assistant') {
-    return message.kvMetadata['esuite:run:model:name']
+    return message.kvMetadata?.['esuite:run:model:name']
   }
 }

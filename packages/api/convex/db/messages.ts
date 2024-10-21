@@ -2,7 +2,7 @@ import { internal } from '../_generated/api'
 import { mutation, query } from '../functions'
 import { extractValidUrlsFromText } from '../lib/utils'
 import { messageFields } from '../schema'
-import type { Doc, Ent, Id, MutationCtx, QueryCtx, WithoutSystemFields } from '../types'
+import type { Doc, MutationCtx, WithoutSystemFields } from '../types'
 import { literals, omit, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/xid'
@@ -19,7 +19,7 @@ export const messageReturnFields = {
   name: v.optional(v.string()),
   text: v.optional(v.string()),
   channel: v.optional(v.string()),
-  kvMetadata: v.record(v.string(), v.string()),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
   runId: v.optional(v.id('runs')),
 
   // fields
@@ -81,21 +81,14 @@ export const createMessage = async (
   return message
 }
 
-export const getMessageEdges = async (ctx: QueryCtx, message: Ent<'messages'>) => {
-  return {
-    ...message.doc(),
-    kvMetadata: message.kvMetadata ?? {},
-  }
-}
-
 // * queries
 export const get = query({
   args: {
-    id: v.string(),
+    messageId: v.string(),
   },
-  handler: async (ctx, { id }) => {
-    const message = await getEntity(ctx, 'messages', id)
-    return message ? await getMessageEdges(ctx, message) : null
+  handler: async (ctx, { messageId }) => {
+    const message = await getEntity(ctx, 'messages', messageId)
+    return message ? message.doc() : null
   },
   returns: v.union(v.null(), v.object(messageReturnFields)),
 })
@@ -103,61 +96,56 @@ export const get = query({
 // * mutations
 export const create = mutation({
   args: {
-    thread: v.string(),
+    threadId: v.string(),
     fields: v.object(messageCreateFields),
   },
-  handler: async (ctx, args) => {
-    const thread = await getEntityX(ctx, 'threads', args.thread)
+  handler: async (ctx, { threadId, fields }) => {
+    const thread = await getEntityX(ctx, 'threads', threadId)
 
     const message = await createMessage(ctx, {
-      ...args.fields,
+      ...fields,
       threadId: thread._id,
       userId: thread.userId,
     })
 
-    return {
-      message: message.xid,
-    }
+    return message.xid
   },
-  returns: v.object({
-    message: v.string(),
-  }),
+  returns: v.string(),
 })
 
 export const update = mutation({
   args: {
-    messageId: v.id('messages'),
+    messageId: v.string(),
 
-    role: v.optional(messageFields.role),
-    name: v.optional(v.string()),
-    text: v.optional(v.string()),
-
-    channel: v.optional(v.string()),
+    fields: v.object({
+      role: v.optional(messageFields.role),
+      name: v.optional(v.string()),
+      text: v.optional(v.string()),
+      channel: v.optional(v.string()),
+    }),
     updateKv: v.optional(updateKvValidator),
   },
-  handler: async (ctx, { messageId, updateKv, ...args }) => {
-    const message = await ctx.table('messages').getX(messageId)
+  handler: async (ctx, { messageId, fields, updateKv }) => {
+    const message = await getEntityWriterX(ctx, 'messages', messageId)
 
-    if (args.name === '') args.name = undefined
-    if (args.text === '') args.text = undefined
-    if (args.channel === '') args.channel = undefined
+    if (fields.name === '') fields.name = undefined
+    if (fields.text === '') fields.text = undefined
+    if (fields.channel === '') fields.channel = undefined
 
     const kvMetadata = updateKvMetadata(message.kvMetadata, updateKv)
 
-    return await ctx
-      .table('messages')
-      .getX(messageId)
-      .patch({ ...args, kvMetadata })
+    await message.patch({ ...fields, kvMetadata })
+    return message.xid
   },
-  returns: v.id('messages'),
+  returns: v.string(),
 })
 
 export const remove = mutation({
   args: {
-    id: v.string(),
+    messageId: v.string(),
   },
-  handler: async (ctx, { id }) => {
-    const message = await getEntityWriterX(ctx, 'messages', id)
+  handler: async (ctx, { messageId }) => {
+    const message = await getEntityWriterX(ctx, 'messages', messageId)
     await message.delete()
   },
   returns: v.null(),

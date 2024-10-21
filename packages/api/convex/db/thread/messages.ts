@@ -4,7 +4,7 @@ import { v } from 'convex/values'
 import { query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { getEntity } from '../helpers/xid'
-import { getMessageEdges, messageReturnFields } from '../messages'
+import { messageReturnFields } from '../messages'
 
 export const get = query({
   args: {
@@ -20,7 +20,7 @@ export const get = query({
       .unique()
 
     if (!message || message.deletionTime) return null
-    return await getMessageEdges(ctx, message)
+    return message.doc()
   },
   returns: nullable(v.object(messageReturnFields)),
 })
@@ -40,7 +40,7 @@ export const list = query({
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .order(order)
       .take(Math.min(limit, 100))
-      .map(async (message) => await getMessageEdges(ctx, message))
+      .map(async (message) => message.doc())
     return messages
   },
   returns: nullable(v.array(v.object(messageReturnFields))),
@@ -99,7 +99,7 @@ export const search = query({
       .order(order)
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .paginate(paginationOpts)
-      .map(async (message) => await getMessageEdges(ctx, message))
+      .map(async (message) => message.doc())
 
     return messages
   },
@@ -132,7 +132,7 @@ export const searchText = query({
       })
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .take(Math.min(limit, 50))
-      .map(async (message) => await getMessageEdges(ctx, message))
+      .map(async (message) => message.doc())
 
     return messages
   },

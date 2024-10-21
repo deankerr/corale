@@ -1,3 +1,4 @@
+import { twx } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Loader } from '../ui/Loader'
 import { useMessageContext } from './MessageProvider'
@@ -19,10 +20,13 @@ function getDuration(startTime = 0, endTime = Date.now()) {
   return (endTime - startTime) / 1000
 }
 
+const FooterShell = twx.div`flex-end divide-gray-a3 border-gray-a3 text-gray-10 h-8 divide-x overflow-hidden border-t px-1 font-mono text-xs [&>div]:px-2.5`
+
 export const MessageFooter = () => {
   const { message, run } = useMessageContext()
 
-  if (!run) return null
+  if (!message.runId) return null
+  if (!run) return <FooterShell />
 
   const timeActive = run.timings.endedAt ? getDuration(run.timings.startedAt, run.timings.endedAt) : undefined
 
@@ -33,9 +37,9 @@ export const MessageFooter = () => {
   const topProvider = run.providerMetadata?.provider_name as string | undefined
 
   return (
-    <div className="flex-end divide-gray-a3 border-gray-a3 text-gray-10 h-8 divide-x overflow-hidden border-t px-1 font-mono text-xs [&>div]:px-2.5">
+    <FooterShell>
       <div className="grow">
-        {run.model.id} {message.kvMetadata['esuite:pattern:xid']}
+        {run.model.id} {message.kvMetadata?.['esuite:pattern:xid']}
       </div>
 
       {topProvider && <div>{topProvider}</div>}
@@ -63,6 +67,6 @@ export const MessageFooter = () => {
           <Icons.WarningOctagon className="text-red-10 size-4 saturate-50" />
         )}
       </div>
-    </div>
+    </FooterShell>
   )
 }
