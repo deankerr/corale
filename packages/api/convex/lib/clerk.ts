@@ -1,9 +1,11 @@
-import type { WebhookEvent } from '@clerk/nextjs/server'
+import { createClerkClient } from '@clerk/backend'
+import type { User, UserJSON, WebhookEvent } from '@clerk/nextjs/server'
 import { ConvexError } from 'convex/values'
 import { Webhook } from 'svix'
 import { internal } from '../_generated/api'
-import { httpAction } from '../_generated/server'
+import { httpAction, internalAction } from '../_generated/server'
 import { ENV } from './env'
+import { generateRandomString } from './utils'
 
 export const handleWebhook = httpAction(async (ctx, request) => {
   const webhookSecret = ENV.CLERK_WEBHOOK_SECRET
@@ -26,28 +28,22 @@ export const handleWebhook = httpAction(async (ctx, request) => {
     switch (event.type) {
       case 'user.created':
         await ctx.runMutation(internal.db.users.create, {
-          fields: {
-            tokenIdentifier: `${issuerDomain}|${event.data.id}`,
-            // TODO proper name fallback
-            name: event.data.username ?? event.data.first_name ?? event.data.created_at.toString(),
-            imageUrl: event.data.image_url,
-            role: 'user',
-          },
+          fields: getUserJsonFields(event.data),
         })
         break
+
       case 'user.updated':
+        const { imageUrl } = getUserJsonFields(event.data)
         await ctx.runMutation(internal.db.users.update, {
           by: {
             tokenIdentifier: `${issuerDomain}|${event.data.id}`,
           },
           fields: {
-            // TODO proper name fallback
-            name: event.data.username ?? event.data.first_name ?? event.data.created_at.toString(),
-            imageUrl: event.data.image_url,
-            role: 'user',
+            imageUrl,
           },
         })
         break
+
       case 'user.deleted':
         await ctx.runMutation(internal.db.users.remove, {
           by: {
@@ -55,6 +51,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
           },
         })
         break
+
       default:
         throw new ConvexError({ message: 'Unhandled result type', type: event.type })
     }
@@ -67,3 +64,48 @@ export const handleWebhook = httpAction(async (ctx, request) => {
     })
   }
 })
+
+export const importUsers = internalAction(async (ctx) => {
+  const secretKey = ENV.CLERK_SECRET_KEY
+
+  const clerkClient = createClerkClient({ secretKey })
+  const users = await clerkClient.users.getUserList()
+
+  for (const user of users.data) {
+    const fields = getUserFields(user)
+
+    const existingUser = await ctx.runQuery(internal.db.users.getByTokenIdentifier, {
+      tokenIdentifier: fields.tokenIdentifier,
+    })
+    if (existingUser) continue
+
+    const _id = await ctx.runMutation(internal.db.users.create, {
+      fields,
+    })
+    await ctx.runMutation(internal.db.users.generateApiKeyForUser, { userId: _id })
+  }
+})
+
+function getUserFields(user: User) {
+  const { id, username, imageUrl, firstName, publicMetadata } = user
+
+  const issuerDomain = ENV.CLERK_JWT_ISSUER_DOMAIN
+  const tokenIdentifier = `${issuerDomain}|${id}`
+
+  const name = username || firstName || `User_${generateRandomString(10)}`
+  const role = (publicMetadata?.role as 'user' | 'admin' | undefined) || 'user'
+
+  return { tokenIdentifier, name, role, imageUrl }
+}
+
+function getUserJsonFields(user: UserJSON) {
+  const { id, username, image_url, first_name, public_metadata } = user
+
+  const issuerDomain = ENV.CLERK_JWT_ISSUER_DOMAIN
+  const tokenIdentifier = `${issuerDomain}|${id}`
+
+  const name = username || first_name || `User_${generateRandomString(10)}`
+  const role = (public_metadata?.role as 'user' | 'admin' | undefined) || 'user'
+
+  return { tokenIdentifier, name, role, imageUrl: image_url }
+}

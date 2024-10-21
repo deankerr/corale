@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.67",
+    "@clerk/backend": "^1.14.1",
     "@fal-ai/serverless-client": "^0.15.0",
     "ai": "^3.4.12",
     "convex": "^1.16.5",

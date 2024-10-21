@@ -43,6 +43,7 @@ import type * as db_users from "../db/users.js";
 import type * as files from "../files.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
+import type * as init from "../init.js";
 import type * as lib_ai from "../lib/ai.js";
 import type * as lib_clerk from "../lib/clerk.js";
 import type * as lib_env from "../lib/env.js";
@@ -93,6 +94,7 @@ declare const fullApi: ApiFromModules<{
   files: typeof files;
   functions: typeof functions;
   http: typeof http;
+  init: typeof init;
   "lib/ai": typeof lib_ai;
   "lib/clerk": typeof lib_clerk;
   "lib/env": typeof lib_env;

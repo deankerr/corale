@@ -2,10 +2,10 @@ import { omit, pick } from 'convex-helpers'
 import { nullable, partial } from 'convex-helpers/validators'
 import { ConvexError, v, type Infer } from 'convex/values'
 import type { Id } from '../_generated/dataModel'
-import { internalMutation, mutation, query } from '../functions'
+import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { generateRandomString } from '../lib/utils'
 import { userFields } from '../schema'
-import type { QueryCtx } from '../types'
+import type { MutationCtx, QueryCtx } from '../types'
 
 export const userReturnFieldsPublic = v.object({
   _id: v.id('users'),
@@ -47,6 +47,15 @@ export const getUserIsViewer = (ctx: QueryCtx, userId: Id<'users'>) => {
   return ctx.viewerId ? ctx.viewerId === userId : false
 }
 
+export const getViewer = query({
+  args: {},
+  handler: async (ctx) => {
+    const viewer = await ctx.viewer()
+    return viewer ? pick(viewer.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']) : null
+  },
+  returns: nullable(v.object(omit(userReturnFieldsPublic.fields, ['isViewer']))),
+})
+
 const getUserBySchema = v.union(v.object({ id: v.id('users') }), v.object({ tokenIdentifier: v.string() }))
 
 export const create = internalMutation({
@@ -56,7 +65,11 @@ export const create = internalMutation({
       tokenIdentifier: v.string(),
     }),
   },
-  handler: async (ctx, { fields }) => await ctx.table('users').insert({ ...fields }),
+  handler: async (ctx, { fields }) => {
+    const id = await ctx.table('users').insert({ ...fields })
+    console.info('user created', id, fields.name, fields.role)
+    return id
+  },
 })
 
 export const update = internalMutation({
@@ -80,29 +93,38 @@ export const remove = internalMutation({
   },
 })
 
+export const getByTokenIdentifier = internalQuery({
+  args: {
+    tokenIdentifier: v.string(),
+  },
+  handler: async (ctx, { tokenIdentifier }) => await ctx.table('users').get('tokenIdentifier', tokenIdentifier),
+})
+
 // * Users API Keys
-export const generateNewApiKey = mutation({
+
+async function refreshApiKey(ctx: MutationCtx, userId: Id<'users'>) {
+  // invalidate all current keys
+  await ctx
+    .table('users_api_keys', 'userId', (q) => q.eq('userId', userId))
+    .map(async (apiKey) => {
+      if (apiKey.valid) await apiKey.patch({ valid: false })
+    })
+
+  const secret = `sk_${generateRandomString(32)}`
+  const id = await ctx.table('users_api_keys').insert({ secret, valid: true, userId })
+  console.info('api key created', id, secret)
+  return { id, secret }
+}
+
+export const generateApiKeyForUser = internalMutation({
+  args: { userId: v.id('users') },
+  handler: async (ctx, { userId }) => await refreshApiKey(ctx, userId),
+})
+
+export const generateViewerApiKey = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await ctx.viewerX()
-
-    // invalidate all current keys
-    await ctx
-      .table('users_api_keys', 'userId', (q) => q.eq('userId', user._id))
-      .map(async (apiKey) => {
-        if (apiKey.valid) await apiKey.patch({ valid: false })
-      })
-
-    const secret = `sk_${generateRandomString(32)}`
-    return await ctx.table('users_api_keys').insert({ secret, valid: true, userId: user._id })
+    return await refreshApiKey(ctx, user._id)
   },
-})
-
-export const getViewer = query({
-  args: {},
-  handler: async (ctx) => {
-    const viewer = await ctx.viewer()
-    return viewer ? pick(viewer.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']) : null
-  },
-  returns: nullable(v.object(omit(userReturnFieldsPublic.fields, ['isViewer']))),
 })
