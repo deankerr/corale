@@ -7,6 +7,7 @@ const init = internalAction({
     deleteAllFiles: v.optional(v.boolean()),
   },
   handler: async (ctx, { deleteAllFiles = false }) => {
+    console.log('convex init')
     if (deleteAllFiles) await ctx.runAction(internal.init.dev_deleteAllFiles, {})
     await ctx.runAction(internal.lib.clerk.importUsers, {})
     await ctx.runAction(internal.provider.openrouter.updateOpenRouterModels, {})

@@ -2,16 +2,17 @@
   "name": "corale",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter @corale/esuite build",
-    "build:api": "pnpm --filter @corale/api generate-api",
-    "deploy:api": "pnpm --filter @corale/api convex-deploy",
+    "build": "pnpm --filter api build",
+    "build:esuite": "pnpm --filter esuite build",
     "dev": "pnpm --parallel dev",
-    "dev:esuite": "pnpm --filter @corale/esuite dev",
-    "dev:api": "pnpm --filter @corale/api dev",
-    "start": "pnpm --filter @corale/esuite start",
+    "dev:esuite": "pnpm --filter esuite dev",
+    "dev:api": "pnpm --filter api dev",
+    "start": "pnpm --filter esuite start",
     "format": "pnpm prettier --write .",
     "lint": "pnpm eslint .",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "convex-deploy": "pnpm --filter api convex-deploy",
+    "generate-api": "pnpm --filter api generate-api"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",

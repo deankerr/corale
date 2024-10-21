@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "convex dev",
+    "build": "pnpx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd 'pnpm -w build:esuite' --preview-run init",
+    "convex-init": "pnpx convex run init",
     "convex-deploy": "convex deploy",
     "typecheck": "tsc --noEmit",
     "generate-api": "mkdir -p build && convex function-spec > build/fn-spec.json && convex-helpers ts-api-spec --input-file build/fn-spec.json --output-file ${OUTPUT_FILE:-build/convex-api}"
