@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo --port 3333",
+    "dev": "next dev --port 3333",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -26,6 +26,7 @@
     "@radix-ui/themes": "^3.1.4",
     "@react-hookz/web": "^24.0.4",
     "@remixicon/react": "^4.3.0",
+    "@sentry/nextjs": "^8",
     "@tailwindcss/container-queries": "^0.1.1",
     "@vercel/speed-insights": "^1.0.12",
     "audiomotion-analyzer": "^4.5.0",

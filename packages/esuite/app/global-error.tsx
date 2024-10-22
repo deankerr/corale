@@ -1,10 +1,12 @@
 'use client'
 
+import * as Sentry from '@sentry/nextjs'
+import Error from 'next/error'
 import { useEffect } from 'react'
 
-export default function GlobalError({ error }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function GlobalError({ error }: { error: Error }) {
   useEffect(() => {
-    console.error(error)
+    Sentry.captureException(error)
   }, [error])
 
   const styles = {
@@ -97,7 +99,7 @@ export default function GlobalError({ error }: { error: Error & { digest?: strin
             </button>
           </div>
 
-          <pre style={styles.errorMessage}>{error.message}</pre>
+          <pre style={styles.errorMessage}>{error?.message}</pre>
         </div>
       </body>
     </html>
