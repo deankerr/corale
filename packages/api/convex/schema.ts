@@ -192,13 +192,7 @@ export const audioFields = {
 const audio = defineEnt(audioFields)
   .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
-  .edge('message')
-  .edge('thread')
   .edge('user')
-  .searchIndex('prompt', {
-    searchField: 'generationData.prompt',
-    filterFields: ['threadId', 'userId', 'generationData.modelId'],
-  })
 
 // * speech
 export const speechFields = {
@@ -239,7 +233,6 @@ const messages = defineEnt(messageFields)
   .field('xid', v.string(), { index: true })
   .edge('thread')
   .edge('user')
-  .edges('audio', { ref: true, deletion: 'soft' })
   .index('threadId_series', ['threadId', 'series'])
   .index('threadId_role', ['threadId', 'role'])
   .index('threadId_name', ['threadId', 'name'])
@@ -264,7 +257,6 @@ const threads = defineEnt(threadFields)
   .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
   .edges('messages', { ref: true, deletion: 'soft' })
-  .edges('audio', { ref: true, deletion: 'soft' })
   .edges('runs', { ref: true, deletion: 'soft' })
   .edge('user')
 

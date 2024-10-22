@@ -7,13 +7,13 @@ import { ENV } from '../lib/env'
 
 export const run = internalAction({
   args: {
-    messageId: v.id('messages'),
     input: v.object({
       prompt: v.string(),
       duration: v.optional(v.number()),
     }),
+    userId: v.id('users'),
   },
-  handler: async (ctx, { messageId, input }): Promise<void> => {
+  handler: async (ctx, { userId, input }): Promise<void> => {
     const { prompt, duration } = input
 
     const fileId = await soundGeneration(ctx, {
@@ -22,7 +22,7 @@ export const run = internalAction({
     })
 
     await ctx.runMutation(internal.db.audio.create, {
-      messageId,
+      userId,
       fileId,
       prompt,
       duration,
