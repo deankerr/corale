@@ -1,18 +1,14 @@
-import { omit } from 'convex-helpers'
-import { literals } from 'convex-helpers/validators'
-import { paginationOptsValidator } from 'convex/server'
-import { ConvexError, v } from 'convex/values'
 import { getQuery, parseFilename } from 'ufo'
 import { internal } from '../_generated/api'
-import type { Doc, Id } from '../_generated/dataModel'
 import { httpAction } from '../_generated/server'
 import type { FalTextToImageOutput } from '../action/generateTextToImage'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import { getImageModel } from '../provider/imageModels'
 import { imagesMetadataV2Fields, imagesV2Fields } from '../schema'
-import type { Ent, MutationCtx, QueryCtx, TextToImageInputs } from '../types'
-import { generateXID, getEntityX } from './helpers/xid'
+import type { Doc, Ent, QueryCtx, TextToImageInputs } from '../types'
+import { ConvexError, literals, omit, paginationOptsValidator, v } from '../values'
+import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/xid'
 
 export const imagesReturn = v.object({
   _id: v.id('images_v2'),
@@ -31,18 +27,9 @@ export const imagesReturn = v.object({
   runId: v.string(),
   ownerId: v.id('users'),
   collectionIds: v.array(v.id('collections')),
+  // fields
   xid: v.string(),
 })
-
-export const getImageV2Ent = async (ctx: QueryCtx, imageId: string) => {
-  const _id = ctx.table('images_v2').normalizeId(imageId)
-  return _id ? await ctx.table('images_v2').get(_id) : await ctx.table('images_v2').get('xid', imageId)
-}
-
-export const getImageV2EntWriter = async (ctx: MutationCtx, imageId: string) => {
-  const _id = ctx.table('images_v2').normalizeId(imageId)
-  return _id ? await ctx.table('images_v2').get(_id) : await ctx.table('images_v2').get('xid', imageId)
-}
 
 export const getImageV2Edges = async (ctx: QueryCtx, image: Ent<'images_v2'>) => {
   return {
@@ -51,20 +38,12 @@ export const getImageV2Edges = async (ctx: QueryCtx, image: Ent<'images_v2'>) =>
   }
 }
 
-export const getImageV2ByOwnerIdSourceUrl = async (ctx: QueryCtx, ownerId: Id<'users'>, sourceUrl: string) => {
-  const image = await ctx
-    .table('images_v2', 'ownerId_sourceUrl', (q) => q.eq('ownerId', ownerId).eq('sourceUrl', sourceUrl))
-    .filter((q) => q.eq(q.field('deletionTime'), undefined))
-    .first()
-  return image ? await getImageV2Edges(ctx, image) : null
-}
-
 export const getDoc = internalQuery({
   args: {
     imageId: v.string(),
   },
-  handler: async (ctx, args) => {
-    return await getImageV2Ent(ctx, args.imageId)
+  handler: async (ctx, { imageId }) => {
+    return await getEntity(ctx, 'images_v2', imageId)
   },
 })
 
@@ -112,11 +91,11 @@ export const createImageV2 = internalMutation({
 
 export const remove = mutation({
   args: {
-    id: v.string(),
+    imageId: v.string(),
   },
-  handler: async (ctx, args) => {
-    const image = await getImageV2EntWriter(ctx, args.id)
-    if (image) await image.delete()
+  handler: async (ctx, { imageId }) => {
+    const image = await getEntityWriterX(ctx, 'images_v2', imageId)
+    return await image.delete()
   },
 })
 
@@ -181,28 +160,6 @@ function parseUrlToImageId(url: string) {
   return [uid, ext] as const
 }
 
-export const listAllImagesNotInCollection = query({
-  args: {
-    paginationOpts: paginationOptsValidator,
-  },
-  handler: async (ctx, args) => {
-    const viewer = await ctx.viewerX()
-    const result = await ctx
-      .table('images_v2', 'ownerId', (q) => q.eq('ownerId', viewer._id))
-      .order('desc')
-      .paginate(args.paginationOpts)
-      .map(async (image) => {
-        const collection = await image.edge('collections').first()
-        return collection ? null : await getImageV2Edges(ctx, image)
-      })
-
-    return {
-      ...result,
-      page: result.page.filter((i) => i !== null),
-    }
-  },
-})
-
 export const listMyImages = query({
   args: {
     paginationOpts: paginationOptsValidator,
@@ -225,12 +182,12 @@ export const listMyImages = query({
 // * metadata
 export const addMetadata = mutation({
   args: {
-    id: v.string(),
+    imageId: v.string(),
     fields: imagesMetadataV2Fields['data'],
   },
-  handler: async (ctx, { id, fields }) => {
+  handler: async (ctx, { imageId, fields }) => {
     const user = await ctx.viewerX()
-    const image = await getEntityX(ctx, 'images_v2', id)
+    const image = await getEntityX(ctx, 'images_v2', imageId)
     if (image.ownerId !== user._id) throw new ConvexError('unauthorized')
     if (fields.type !== 'message') throw new ConvexError('invalid metadata type')
     return await ctx.table('images_metadata_v2').insert({ imageId: image._id, type: fields.type, data: fields })
@@ -239,10 +196,10 @@ export const addMetadata = mutation({
 
 export const getMetadata = query({
   args: {
-    id: v.string(),
+    imageId: v.string(),
   },
-  handler: async (ctx, { id }) => {
-    const image = await getEntityX(ctx, 'images_v2', id)
+  handler: async (ctx, { imageId }) => {
+    const image = await getEntityX(ctx, 'images_v2', imageId)
     const metadata = (await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))).map(
       (metadata) => ({ ...metadata, xid: image.xid }),
     )
