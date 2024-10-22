@@ -1,12 +1,10 @@
-import { literals, nullable } from 'convex-helpers/validators'
-import { paginationOptsValidator } from 'convex/server'
-import { v } from 'convex/values'
 import { query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
+import { literals, nullable, paginationOptsValidator, v } from '../../values'
 import { getEntity } from '../helpers/xid'
 import { messageReturnFields } from '../messages'
 
-export const get = query({
+export const getBySeries = query({
   args: {
     threadId: v.string(),
     series: v.number(),

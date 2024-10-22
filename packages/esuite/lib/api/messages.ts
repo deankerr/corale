@@ -4,7 +4,7 @@ import { useMemo, useRef } from 'react'
 import { useCachedQuery } from './helpers'
 
 export const useMessageBySeries = (threadId: string, series: string) => {
-  return useCachedQuery(api.db.thread.messages.get, { threadId, series: parseInt(series) })
+  return useCachedQuery(api.db.thread.messages.getBySeries, { threadId, series: parseInt(series) })
 }
 
 export const useMessageById = (id: string) => {
