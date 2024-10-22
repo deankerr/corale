@@ -40,7 +40,7 @@ export default withSentryConfig(process.env.ANALYZE === 'true' ? withBundleAnaly
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
   org: 'deanco',
-  project: 'javascript-nextjs',
+  project: 'corale-esuite',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
