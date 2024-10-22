@@ -69,7 +69,7 @@ export const updateOpenRouterModels = internalAction({
         }
       } else {
         // * create new model
-        await ctx.runMutation(internal.db.models.createChatModel, model)
+        await ctx.runMutation(internal.db.models.create, model)
         await logActionOpsEvent(ctx, {
           message: `openrouter new model: ${model.name}`,
           type: 'notice',
@@ -80,7 +80,7 @@ export const updateOpenRouterModels = internalAction({
     const notFound = existingModels.filter((m) => !processed.find((p) => p?.resourceKey === m.resourceKey))
     await asyncMap(notFound, async (model) => {
       // * mark as unavailable
-      await ctx.runMutation(internal.db.models.updateChatModel, {
+      await ctx.runMutation(internal.db.models.replace, {
         id: model._id,
         ...omit(model, ['_id', '_creationTime']),
         available: false,
