@@ -1,40 +1,36 @@
-import * as fal from '@fal-ai/serverless-client'
+import { fal } from '@fal-ai/client'
 import { generateObject } from 'ai'
 import { omit } from 'convex-helpers'
 import { v } from 'convex/values'
-import * as vb from 'valibot'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
-import { ENV } from '../lib/env'
-import { getErrorMessage, stringifyValueForError } from '../lib/utils'
+import { getErrorMessage } from '../lib/utils'
 import { defaultSizes, imageModels } from '../provider/imageModels'
 import type { TextToImageInputs } from '../types'
 
-const Response = vb.object({
-  images: vb.array(
-    vb.object({
-      url: vb.pipe(vb.string(), vb.url()),
-      width: vb.number(),
-      height: vb.number(),
-      content_type: vb.string(),
-    }),
-  ),
-  timings: vb.optional(
-    vb.object({
-      inference: vb.optional(vb.number()),
-    }),
-  ),
-  seed: vb.optional(vb.number()),
-  has_nsfw_concepts: vb.optional(vb.array(vb.boolean())),
-  prompt: vb.optional(vb.string()),
-})
-
-export type FalTextToImageOutput = vb.InferOutput<typeof Response>
-
-fal.config({
-  credentials: ENV.FAL_API_KEY,
+export type FalTextToImageOutput = z.infer<typeof FalResponse>
+const FalResponse = z.object({
+  data: z.object({
+    images: z.array(
+      z.object({
+        url: z.string().url(),
+        width: z.number(),
+        height: z.number(),
+        content_type: z.string(),
+      }),
+    ),
+    timings: z
+      .object({
+        inference: z.number().optional(),
+      })
+      .optional(),
+    seed: z.number(),
+    has_nsfw_concepts: z.array(z.boolean()).optional(),
+    prompt: z.string(),
+  }),
+  requestId: z.string(),
 })
 
 export const run = internalAction({
@@ -82,11 +78,11 @@ export const run = internalAction({
         input,
       })
       console.log('response', response)
-      const output = vb.parse(Response, response)
+      const output = FalResponse.parse(response)
 
       await ctx.runMutation(internal.db.generations.complete, {
         generationId,
-        results: output.images.map((image) => ({
+        results: output.data.images.map((image) => ({
           url: image.url,
           width: image.width,
           height: image.height,

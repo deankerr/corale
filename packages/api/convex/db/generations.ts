@@ -104,7 +104,7 @@ export const create = mutation({
         xid,
       })
 
-      await ctx.scheduler.runAfter(0, internal.action.generateTextToImage.run, {
+      await ctx.scheduler.runAfter(0, internal.action.textToImage.run, {
         generationId: id,
       })
 

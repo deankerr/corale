@@ -16,11 +16,11 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as action_evaluateMessageUrls from "../action/evaluateMessageUrls.js";
-import type * as action_generateTextToImage from "../action/generateTextToImage.js";
 import type * as action_generateThreadTitle from "../action/generateThreadTitle.js";
 import type * as action_ingestImageUrl from "../action/ingestImageUrl.js";
 import type * as action_run from "../action/run.js";
 import type * as action_textToAudio from "../action/textToAudio.js";
+import type * as action_textToImage from "../action/textToImage.js";
 import type * as crons from "../crons.js";
 import type * as db_admin_collection from "../db/admin/collection.js";
 import type * as db_admin_events from "../db/admin/events.js";
@@ -67,11 +67,11 @@ import type * as values from "../values.js";
  */
 declare const fullApi: ApiFromModules<{
   "action/evaluateMessageUrls": typeof action_evaluateMessageUrls;
-  "action/generateTextToImage": typeof action_generateTextToImage;
   "action/generateThreadTitle": typeof action_generateThreadTitle;
   "action/ingestImageUrl": typeof action_ingestImageUrl;
   "action/run": typeof action_run;
   "action/textToAudio": typeof action_textToAudio;
+  "action/textToImage": typeof action_textToImage;
   crons: typeof crons;
   "db/admin/collection": typeof db_admin_collection;
   "db/admin/events": typeof db_admin_events;

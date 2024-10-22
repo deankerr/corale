@@ -1,7 +1,7 @@
 import { getQuery, parseFilename } from 'ufo'
 import { internal } from '../_generated/api'
 import { httpAction } from '../_generated/server'
-import type { FalTextToImageOutput } from '../action/generateTextToImage'
+import type { FalTextToImageOutput } from '../action/textToImage'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import { getImageModel } from '../provider/imageModels'
@@ -212,7 +212,7 @@ export function createGenerationMetadata(
   sourceUrl: string,
 ): Extract<Doc<'images_metadata_v2'>['data'], { type: 'generation' }> {
   const input = generation.input as TextToImageInputs & { configId: string }
-  const output = generation.output as FalTextToImageOutput
+  const output = generation.output?.data as FalTextToImageOutput['data'] | undefined
   if (!(input && output && generation.results)) throw new ConvexError('generation metadata missing required fields')
 
   const model = getImageModel(input.modelId)
