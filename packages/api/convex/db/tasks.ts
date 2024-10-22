@@ -1,6 +1,6 @@
 import { internal } from '../_generated/api'
-import { isLikeIPAddress, parseMarkdownCodeBlocks, parseURLs } from '../../parse'
 import { ENV } from '../lib/env'
+import { isLikeIPAddress, parseMarkdownCodeBlocks, parseURLs } from '../lib/parse'
 import type { Ent, MutationCtx } from '../types'
 
 export async function threadPostRun(ctx: MutationCtx, thread: Ent<'threads'>) {
