@@ -1,3 +1,4 @@
+export { paginationOptsValidator } from 'convex/server'
 export { asyncMap, nullThrows, omit, pick, pruneNull } from 'convex-helpers'
 export {
   deprecated,
