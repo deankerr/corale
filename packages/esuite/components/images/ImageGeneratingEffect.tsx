@@ -11,8 +11,8 @@ export const ImageGeneratingEffect = ({ className, ...props }: React.ComponentPr
     >
       <div className="animate-shimmerDown from-gold-1 via-gold-3 to-gold-1 absolute bottom-[100%] h-[200%] w-full bg-gradient-to-b"></div>
 
-      <div className="animate-starfieldDown absolute inset-0 bg-[url('/textures/stardust.png')]"></div>
-      <div className="animate-starfieldDown absolute -top-full h-full w-full bg-[url('/textures/stardust.png')]"></div>
+      <div className="animate-starfieldDown absolute inset-0 bg-[url('/stardust.png')]"></div>
+      <div className="animate-starfieldDown absolute -top-full h-full w-full bg-[url('/stardust.png')]"></div>
 
       <div className="absolute flex h-[700px] w-[700px] bg-[url('/noise.svg')]"></div>
     </div>

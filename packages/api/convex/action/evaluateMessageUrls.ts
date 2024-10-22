@@ -11,6 +11,7 @@ export const run = internalAction({
     ownerId: v.id('users'),
   },
   handler: async (ctx, args): Promise<void> => {
+    console.debug('evaluate', args.urls)
     const urlData = await Promise.all(args.urls.map(fetchContentTypeData))
 
     const imageUrls = urlData.filter((data) => data.type.startsWith('image')).map((data) => data.url)

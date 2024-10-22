@@ -1,9 +1,8 @@
-import { nullable } from 'convex-helpers/validators'
-import { v } from 'convex/values'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import { internalMutation, mutation, query } from '../functions'
-import { generateXID } from './helpers/xid'
+import { nullable, v } from '../values'
+import { generateXID, getEntity } from './helpers/xid'
 
 export const audioReturnFields = v.object({
   _id: v.id('audio'),
@@ -17,23 +16,20 @@ export const audioReturnFields = v.object({
     endpointId: v.string(),
     duration: v.optional(v.number()),
   }),
-  messageId: v.id('messages'),
-  threadId: v.id('threads'),
   userId: v.id('users'),
   xid: v.string(),
 })
 
 export const create = internalMutation({
   args: {
-    messageId: v.id('messages'),
     fileId: v.id('_storage'),
     prompt: v.string(),
     duration: v.optional(v.number()),
+    userId: v.id('users'),
   },
-  handler: async (ctx, { messageId, fileId, prompt, duration }) => {
-    const message = await ctx.skipRules.table('messages').getX(messageId)
-
-    const audioId = await ctx.table('audio').insert({
+  handler: async (ctx, { fileId, prompt, duration, userId }) => {
+    const xid = generateXID()
+    await ctx.table('audio').insert({
       fileId,
       generationData: {
         prompt,
@@ -42,44 +38,32 @@ export const create = internalMutation({
         endpointId: 'elevenlabs',
         duration,
       },
-      messageId,
-      threadId: message.threadId,
-      userId: message.userId,
-      xid: generateXID(),
+      userId,
+      xid,
     })
 
-    return audioId
+    return xid
   },
 })
 
 export const get = query({
   args: {
-    audioId: v.id('audio'),
+    audioId: v.string(),
   },
   handler: async (ctx, { audioId }) => {
-    const audio = await ctx.table('audio').get(audioId)
-    return audio ? { ...audio, fileUrl: await ctx.storage.getUrl(audio.fileId) } : null
+    const audio = await getEntity(ctx, 'audio', audioId)
+    return audio && !audio.deletionTime ? { ...audio, fileUrl: await ctx.storage.getUrl(audio.fileId) } : null
   },
   returns: nullable(audioReturnFields),
 })
 
-export const getByMessageId = query({
-  args: {
-    messageId: v.id('messages'),
-  },
-  handler: async (ctx, { messageId }) => {
-    const audios = await ctx.table('audio', 'messageId', (q) => q.eq('messageId', messageId))
-    return audios
-  },
-})
-
 export const generate = mutation({
   args: {
-    messageId: v.id('messages'),
     prompt: v.string(),
     duration: v.optional(v.number()),
   },
-  handler: async (ctx, { messageId, prompt, duration }) => {
+  handler: async (ctx, { prompt, duration }) => {
+    const user = await ctx.viewerX()
     const input = z
       .object({
         prompt: z.string().max(2048),
@@ -88,7 +72,7 @@ export const generate = mutation({
       .parse({ prompt, duration })
 
     await ctx.scheduler.runAfter(0, internal.action.textToAudio.run, {
-      messageId,
+      userId: user._id,
       input,
     })
   },

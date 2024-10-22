@@ -6,11 +6,11 @@ import { useQuery } from 'convex-helpers/react/cache/hooks'
 import { toast } from 'sonner'
 
 export const DeleteImageDialog = ({
-  id,
+  imageId,
   children,
   ...props
 }: {
-  id: string
+  imageId: string
 } & React.ComponentProps<typeof AlertDialog.Root>) => {
   const sendDeleteImage = useDeleteImage()
 
@@ -33,7 +33,7 @@ export const DeleteImageDialog = ({
               variant="solid"
               color="red"
               onClick={() =>
-                sendDeleteImage({ id }).catch((err) => {
+                sendDeleteImage({ imageId }).catch((err) => {
                   console.error(err)
                   toast.error('Failed to delete image.')
                 })
@@ -49,13 +49,13 @@ export const DeleteImageDialog = ({
 }
 
 export const ImageMetadataDialog = ({
-  id,
+  imageId,
   children,
   ...props
 }: {
-  id: string
+  imageId: string
 } & React.ComponentProps<typeof Dialog.Root>) => {
-  const metadata = useQuery(api.db.images.getMetadata, { id })
+  const metadata = useQuery(api.db.images.getMetadata, { imageId })
   return (
     <Dialog.Root {...props}>
       {children ? <Dialog.Trigger>{children}</Dialog.Trigger> : null}

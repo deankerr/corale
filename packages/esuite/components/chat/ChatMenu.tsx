@@ -4,17 +4,19 @@ import { DeleteThreadDialog, EditThreadTitleDialog } from '@/components/chat/dia
 import { DotsThreeFillX } from '@/components/icons/DotsThreeFillX'
 import { IconButton } from '@/components/ui/Button'
 import { useThread } from '@/lib/api/threads'
+import { useViewer } from '@/lib/api/users'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
 import { useState } from 'react'
 
 export const ChatMenu = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
+  const { isViewer } = useViewer(thread?.userId)
 
   const [showEditTitleDialog, setShowEditTitleDialog] = useState(false)
   const [showDeleteThreadDialog, setShowDeleteThreadDialog] = useState(false)
 
-  if (!thread || !thread.user.isViewer) {
+  if (!thread || !isViewer) {
     return null
   }
 

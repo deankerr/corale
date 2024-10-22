@@ -1,15 +1,14 @@
-import { pick } from 'convex-helpers'
-import { nullable } from 'convex-helpers/validators'
-import { ConvexError, v } from 'convex/values'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
 import { internalMutation, mutation, query } from '../functions'
 import { runFieldsV2 } from '../schema'
+import { ConvexError, nullable, pick, v } from '../values'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
 import { createMessage, messageCreateFields } from './messages'
 import { getChatModel } from './models'
+import { threadPostRun } from './tasks'
 import { getOrCreateUserThread } from './threads'
 
 const runCreateFields = {
@@ -117,22 +116,21 @@ export const activate = internalMutation({
 
     const pattern = run.patternId ? await getEntity(ctx, 'patterns', run.patternId) : null
 
+    // TODO custom ctx
+    const skipRulesCtx = { ...ctx, table: ctx.skipRules.table }
+
     // * create response message
-    const responseMessage = await createMessage(
-      ctx,
-      {
-        threadId: run.threadId,
-        userId: run.userId,
-        role: 'assistant',
-        runId,
-        kvMetadata: createKvMetadata({
-          'esuite:run:active': run.stream ? 'stream' : 'get',
-          'esuite:model:id': run.model.id,
-          'esuite:pattern:xid': pattern?.xid,
-        }),
-      },
-      { skipRules: true },
-    )
+    const responseMessage = await createMessage(skipRulesCtx, {
+      threadId: run.threadId,
+      userId: run.userId,
+      role: 'assistant',
+      runId,
+      kvMetadata: createKvMetadata({
+        'esuite:run:active': run.stream ? 'stream' : 'get',
+        'esuite:model:id': run.model.id,
+        'esuite:pattern:xid': pattern?.xid,
+      }),
+    })
 
     const messages: AIChatMessage[] = []
 
@@ -234,7 +232,7 @@ export const complete = internalMutation({
       }),
     })
 
-    return await run.patch({
+    await run.patch({
       status: 'done',
       updatedAt: Date.now(),
       timings: {
@@ -257,6 +255,8 @@ export const complete = internalMutation({
         },
       ],
     })
+
+    await threadPostRun(ctx, await message.edgeX('thread'))
   },
 })
 

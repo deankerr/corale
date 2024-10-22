@@ -1,14 +1,13 @@
-import { asyncMap, omit, pick } from 'convex-helpers'
-import { nullable } from 'convex-helpers/validators'
+import { asyncMap } from 'convex-helpers'
 import { paginationOptsValidator } from 'convex/server'
-import { v } from 'convex/values'
 import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../_generated/api'
 import { internalMutation, mutation, query } from '../functions'
-import { paginatedReturnFields } from '../lib/utils'
+import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import { generationV2Fields } from '../schema'
 import type { Ent, QueryCtx, TextToImageInputs } from '../types'
-import { generateXID, getEntityWriterX } from './helpers/xid'
+import { nullable, omit, pick, v } from '../values'
+import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
 export const textToImageInputs = v.object({
@@ -39,17 +38,7 @@ export const textToImageInputs = v.object({
 export const generationsReturn = v.object({
   _id: v.id('generations_v2'),
   _creationTime: v.number(),
-  ...pick(generationV2Fields, [
-    'status',
-    'updatedAt',
-    'input',
-    'runId',
-    'ownerId',
-    'input',
-    'errors',
-    'results',
-    'workflow',
-  ]),
+  ...omit(generationV2Fields, ['output']),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
   images: v.array(imagesReturn),
   xid: v.string(),
@@ -72,10 +61,8 @@ export const get = query({
     generationId: v.id('generations_v2'),
   },
   handler: async (ctx, { generationId }) => {
-    return await ctx
-      .table('generations_v2')
-      .get(generationId)
-      .then(async (gen) => (gen ? await getGenerationEdges(ctx, gen) : null))
+    const generation = await getEntity(ctx, 'generations_v2', generationId)
+    return generation ? await getGenerationEdges(ctx, generation) : null
   },
   returns: nullable(generationsReturn),
 })
@@ -85,9 +72,11 @@ export const list = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, { paginationOpts }) => {
-    const viewer = await ctx.viewerX()
+    const userId = ctx.viewerId
+    if (!userId) return emptyPage()
+
     return await ctx
-      .table('generations_v2', 'ownerId', (q) => q.eq('ownerId', viewer._id))
+      .table('generations_v2', 'ownerId', (q) => q.eq('ownerId', userId))
       .order('desc')
       .paginate(paginationOpts)
       .map(async (gen) => await getGenerationEdges(ctx, gen))
@@ -105,20 +94,21 @@ export const create = mutation({
     const runId = nanoid()
 
     const ids = await asyncMap(inputs, async (input) => {
+      const xid = generateXID()
       const id = await ctx.table('generations_v2').insert({
         status: 'queued',
         updatedAt: Date.now(),
         input: { ...input, negativePrompt: input.negativePrompt || undefined, configId: nanoid() },
         runId,
         ownerId: viewer._id,
-        xid: generateXID(),
+        xid,
       })
 
-      await ctx.scheduler.runAfter(0, internal.action.generateTextToImage.run, {
+      await ctx.scheduler.runAfter(0, internal.action.textToImage.run, {
         generationId: id,
       })
 
-      return id
+      return xid
     })
 
     return {
@@ -128,7 +118,7 @@ export const create = mutation({
   },
   returns: v.object({
     runId: v.string(),
-    generationIds: v.array(v.id('generations_v2')),
+    generationIds: v.array(v.string()),
   }),
 })
 

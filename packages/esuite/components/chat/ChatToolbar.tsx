@@ -9,7 +9,7 @@ export const ChatToolbar = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId ?? '')
   if (!thread) return null
 
-  const kv = Object.entries(thread.kvMetadata)
+  const kv = Object.entries(thread.kvMetadata ?? {})
   return (
     <PanelToolbar className="bg-gray-a1 pl-2">
       <TextEditorDialog slug={thread.xid}>

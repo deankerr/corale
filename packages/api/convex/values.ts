@@ -1,4 +1,6 @@
+export { paginationOptsValidator } from 'convex/server'
 export { asyncMap, nullThrows, omit, pick, pruneNull } from 'convex-helpers'
+export type { BetterOmit } from 'convex-helpers'
 export {
   deprecated,
   literals,
@@ -9,4 +11,4 @@ export {
   withSystemFields,
   nullable,
 } from 'convex-helpers/validators'
-export { asObjectValidator, ConvexError, v, type Value } from 'convex/values'
+export { asObjectValidator, ConvexError, v, type Value, type Infer } from 'convex/values'

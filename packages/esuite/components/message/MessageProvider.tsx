@@ -1,10 +1,10 @@
-import { useRun, useUpdateMessage } from '@/lib/api/threads'
+import { useDeleteMessage, useRun, useUpdateMessage } from '@/lib/api/threads'
 import { useViewer } from '@/lib/api/users'
 import type { EMessage, ERun } from '@corale/api/convex/types'
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { toast } from 'sonner'
 
-type EMessageUpdate = { role: EMessage['role']; name: EMessage['name']; text: EMessage['text'] }
+type EMessageUpdateFields = Partial<Pick<EMessage, 'role' | 'name' | 'text' | 'channel'>>
 
 type MessageContextType = {
   message: EMessage
@@ -16,7 +16,8 @@ type MessageContextType = {
   setIsEditing: (value: boolean) => void
   setShowJson: (value: boolean) => void
   setTextStyle: (value: 'markdown' | 'monospace') => void
-  updateMessage: (fields: EMessageUpdate) => Promise<void>
+  updateMessage: (fields: EMessageUpdateFields) => Promise<void>
+  deleteMessage: () => Promise<void>
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined)
@@ -27,17 +28,16 @@ export function MessageProvider({ children, message }: { children: React.ReactNo
   const [textStyle, setTextStyle] = useState<'markdown' | 'monospace'>('markdown')
   const { isViewer: viewerCanEdit } = useViewer(message.userId)
 
+  const messageId = message.xid
   const run = useRun(message.runId)
 
   const sendUpdateMessage = useUpdateMessage()
   const updateMessage = useCallback(
-    async ({ role, name, text }: EMessageUpdate) => {
+    async (fields: EMessageUpdateFields) => {
       try {
         await sendUpdateMessage({
-          messageId: message._id,
-          role,
-          name,
-          text,
+          messageId,
+          fields,
         })
         setIsEditing(false)
         toast.success('Message updated')
@@ -46,8 +46,19 @@ export function MessageProvider({ children, message }: { children: React.ReactNo
         console.error('Error updating message:', error)
       }
     },
-    [message._id, sendUpdateMessage],
+    [messageId, sendUpdateMessage],
   )
+
+  const sendDeleteMessage = useDeleteMessage()
+  const deleteMessage = useCallback(async () => {
+    try {
+      await sendDeleteMessage({ messageId })
+      toast.success('Message deleted')
+    } catch (error) {
+      toast.error('Failed to delete message')
+      console.error('Error deleting message:', error)
+    }
+  }, [messageId, sendDeleteMessage])
 
   const value = {
     message,
@@ -60,6 +71,7 @@ export function MessageProvider({ children, message }: { children: React.ReactNo
     setShowJson,
     setTextStyle,
     updateMessage,
+    deleteMessage,
   }
 
   return <MessageContext.Provider value={value}>{children}</MessageContext.Provider>

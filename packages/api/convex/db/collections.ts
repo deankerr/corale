@@ -1,11 +1,9 @@
-import { literals, nullable } from 'convex-helpers/validators'
-import { paginationOptsValidator } from 'convex/server'
-import { ConvexError, v } from 'convex/values'
 import { mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import type { Ent, QueryCtx } from '../types'
+import { literals, nullable, paginationOptsValidator, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
-import { generateXID, getEntityWriterX } from './helpers/xid'
+import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 import { getImageV2Edges, imagesReturn } from './images'
 
 const collectionReturnFields = v.object({
@@ -14,19 +12,10 @@ const collectionReturnFields = v.object({
   title: v.string(),
   ownerId: v.id('users'),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
-
+  // fields
   images: v.array(imagesReturn),
   xid: v.string(),
 })
-
-export const getCollection = async (ctx: QueryCtx, collectionId: string) => {
-  const _id = ctx.table('collections').normalizeId(collectionId)
-  const collection = _id
-    ? await ctx.table('collections').get(_id)
-    : await ctx.table('collections').get('xid', collectionId)
-
-  return collection && collection.deletionTime === undefined ? collection : null
-}
 
 export const getCollectionEdges = async (ctx: QueryCtx, collection: Ent<'collections'>) => {
   const images = await collection
@@ -46,7 +35,7 @@ export const get = query({
     collectionId: v.string(),
   },
   handler: async (ctx, { collectionId }) => {
-    const collection = await getCollection(ctx, collectionId)
+    const collection = await getEntity(ctx, 'collections', collectionId)
     return collection ? await getCollectionEdges(ctx, collection) : null
   },
   returns: nullable(collectionReturnFields),
@@ -75,7 +64,7 @@ export const listImages = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, { collectionId, order = 'desc', paginationOpts }) => {
-    const collection = await getCollection(ctx, collectionId)
+    const collection = await getEntity(ctx, 'collections', collectionId)
     if (!collection) return emptyPage()
 
     const result = await collection
@@ -140,10 +129,7 @@ export const remove = mutation({
     collectionId: v.string(),
   },
   handler: async (ctx, { collectionId }) => {
-    const collection = await getCollection(ctx, collectionId)
-    if (!collection) {
-      throw new ConvexError('Collection not found')
-    }
+    const collection = await getEntityWriterX(ctx, 'collections', collectionId)
     return await ctx.table('collections').getX(collection._id).delete()
   },
 })

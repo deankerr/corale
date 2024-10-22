@@ -1,14 +1,10 @@
-import { omit, pick } from 'convex-helpers'
-import { nullable } from 'convex-helpers/validators'
-import { ConvexError, v, type AsObjectValidator, type Infer } from 'convex/values'
-import type { Id } from '../_generated/dataModel'
 import { mutation, query } from '../functions'
 import { threadFields } from '../schema'
-import type { Ent, EThread, MutationCtx, QueryCtx } from '../types'
+import type { EThread, Id, MutationCtx, QueryCtx } from '../types'
+import { ConvexError, nullable, omit, pick, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 import { createMessage, messageCreateFields } from './messages'
-import { getUserPublic, getUserPublicX, userReturnFieldsPublic } from './users'
 
 // * Helpers
 export const threadCreateFields = pick(threadFields, ['title', 'instructions', 'favourite', 'kvMetadata'])
@@ -20,32 +16,16 @@ export const threadReturnFields = {
   title: v.optional(v.string()),
   instructions: v.optional(v.string()),
   favourite: v.optional(v.boolean()),
-  kvMetadata: v.record(v.string(), v.string()),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
   updatedAtTime: v.number(),
   // + fields
   xid: v.string(),
   userId: v.id('users'),
-
-  // edge
-  user: userReturnFieldsPublic,
-}
-
-export const getThreadEdges = async (
-  ctx: QueryCtx,
-  thread: Ent<'threads'>,
-): Promise<Infer<AsObjectValidator<typeof threadReturnFields>>> => {
-  return {
-    ...thread,
-    user: await getUserPublicX(ctx, thread.userId),
-    kvMetadata: thread.kvMetadata ?? {},
-  }
 }
 
 const getEmptyThread = async (ctx: QueryCtx): Promise<EThread | null> => {
-  const viewer = await ctx.viewer()
-  const user = viewer ? await getUserPublic(ctx, viewer._id) : null
-  if (!user) return null
-
+  const userId = ctx.viewerId
+  if (!userId) return null
   return {
     _id: 'new' as Id<'threads'>,
     _creationTime: Date.now(),
@@ -53,9 +33,7 @@ const getEmptyThread = async (ctx: QueryCtx): Promise<EThread | null> => {
     title: 'New Thread',
 
     updatedAtTime: Date.now(),
-    userId: user._id,
-    user,
-    kvMetadata: {},
+    userId,
   }
 }
 
@@ -94,7 +72,7 @@ export const get = query({
     const thread = await getEntity(ctx, 'threads', args.id)
     if (!thread || thread.deletionTime) return null
 
-    return await getThreadEdges(ctx, thread)
+    return thread.doc()
   },
   returns: nullable(v.object(threadReturnFields)),
 })
@@ -108,7 +86,7 @@ export const list = query({
     const threads = await ctx
       .table('threads', 'userId', (q) => q.eq('userId', userId))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
-      .map(async (thread) => await getThreadEdges(ctx, thread))
+      .map(async (thread) => thread.doc())
 
     return threads
   },
@@ -152,28 +130,26 @@ export const create = mutation({
 
 export const update = mutation({
   args: {
-    ...omit(threadFields, ['updatedAtTime', 'kvMetadata']),
     threadId: v.string(),
+    fields: v.object(omit(threadFields, ['updatedAtTime', 'kvMetadata'])),
     updateKv: v.optional(updateKvValidator),
   },
-  handler: async (ctx, { threadId, updateKv, ...fields }) => {
+  handler: async (ctx, { threadId, fields, updateKv }) => {
     const thread = await getEntityWriterX(ctx, 'threads', threadId)
     const kvMetadata = updateKvMetadata(thread.kvMetadata, updateKv)
 
-    return await ctx
-      .table('threads')
-      .getX(thread._id)
-      .patch({ ...fields, kvMetadata, updatedAtTime: Date.now() })
+    await thread.patch({ ...fields, kvMetadata, updatedAtTime: Date.now() })
+    return thread.xid
   },
-  returns: v.id('threads'),
+  returns: v.string(),
 })
 
 export const remove = mutation({
   args: {
-    id: v.string(),
+    threadId: v.string(),
   },
-  handler: async (ctx, args) => {
-    const thread = await getEntityWriterX(ctx, 'threads', args.id)
+  handler: async (ctx, { threadId }) => {
+    const thread = await getEntityWriterX(ctx, 'threads', threadId)
     await thread.delete()
   },
   returns: v.null(),
@@ -182,17 +158,17 @@ export const remove = mutation({
 // * append message
 export const append = mutation({
   args: {
-    id: v.optional(v.string()),
+    threadId: v.optional(v.string()),
     message: v.object(messageCreateFields),
   },
-  handler: async (ctx, args) => {
-    const thread = await getOrCreateUserThread(ctx, args.id)
+  handler: async (ctx, { threadId, message }) => {
+    const thread = await getOrCreateUserThread(ctx, threadId)
     if (!thread) throw new ConvexError('invalid thread')
 
     await createMessage(ctx, {
       threadId: thread._id,
       userId: thread.userId,
-      ...args.message,
+      ...message,
     })
 
     return thread.xid

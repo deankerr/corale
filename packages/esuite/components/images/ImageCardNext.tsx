@@ -61,7 +61,7 @@ export const ImageCardNext = ({
             </DropdownMenu.Item>
           </Link>
 
-          <ImageMetadataDialog id={image.xid}>
+          <ImageMetadataDialog imageId={image.xid}>
             <DropdownMenu.Item onSelect={(e) => e.preventDefault()}>
               <Icons.Info />
               View metadata
@@ -128,7 +128,7 @@ export const ImageCardNext = ({
 
               <DropdownMenu.Separator />
 
-              <DeleteImageDialog id={image.xid}>
+              <DeleteImageDialog imageId={image.xid}>
                 <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
                   <Icons.Trash />
                   Delete
