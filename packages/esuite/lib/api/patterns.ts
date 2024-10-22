@@ -8,8 +8,8 @@ export const usePatterns = () => {
   return useCachedQuery(api.db.patterns.list, {})
 }
 
-export const usePattern = (xid?: string) => {
-  return useCachedQuery(api.db.patterns.get, xid ? { id: xid } : 'skip')
+export const usePattern = (patternId?: string) => {
+  return useCachedQuery(api.db.patterns.get, patternId ? { patternId } : 'skip')
 }
 
 export function useCreatePattern() {
@@ -22,19 +22,21 @@ export function useCreatePattern() {
 }
 
 export function useUpdatePattern() {
-  const update = useMutation(api.db.patterns.update)
+  const sendUpdate = useMutation(api.db.patterns.update)
   return (newPattern: EPattern) => {
-    const fields = prepareUpdate(newPattern)
-    const { xid, ...rest } = fields
-    return update({
-      id: xid,
-      ...rest,
-      initialMessages: newPattern.initialMessages.map((message) => ({
-        role: message.role,
-        text: message.text,
-        name: message.name,
-        channel: message.channel,
-      })),
+    const update = prepareUpdate(newPattern)
+    const { xid, ...fields } = update
+    return sendUpdate({
+      patternId: xid,
+      fields: {
+        ...fields,
+        initialMessages: newPattern.initialMessages.map((message) => ({
+          role: message.role,
+          text: message.text,
+          name: message.name,
+          channel: message.channel,
+        })),
+      },
     })
   }
 }
@@ -50,6 +52,5 @@ export function prepareUpdate(newPattern: EPattern) {
 }
 
 export function useDeletePattern() {
-  const deletePattern = useMutation(api.db.patterns.remove)
-  return (xid: string) => deletePattern({ id: xid })
+  return useMutation(api.db.patterns.remove)
 }

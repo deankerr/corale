@@ -1,15 +1,19 @@
-import { omit } from 'convex-helpers'
-import { nullable, partial } from 'convex-helpers/validators'
-import { v } from 'convex/values'
 import { mutation, query } from '../functions'
 import { prepareUpdate } from '../lib/utils'
 import { patternFields } from '../schema'
+import { nullable, omit, partial, v } from '../values'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 
+const patternCreateFields = {
+  ...partial(omit(patternFields, ['model'])),
+  model: patternFields['model'],
+}
+
 export const patternReturnFields = {
-  ...patternFields,
   _id: v.id('patterns'),
   _creationTime: v.number(),
+  ...patternFields,
+  // fields
   xid: v.string(),
   updatedAt: v.number(),
   lastUsedAt: v.number(),
@@ -17,35 +21,28 @@ export const patternReturnFields = {
 }
 
 // * Queries
-
 export const get = query({
   args: {
-    id: v.string(),
+    patternId: v.string(),
   },
-  handler: async (ctx, { id }) => {
-    return await getEntity(ctx, 'patterns', id)
+  handler: async (ctx, { patternId }) => {
+    return await getEntity(ctx, 'patterns', patternId)
   },
 })
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
-    const user = await ctx.viewer()
-    if (!user) return null
+    const userId = ctx.viewerId
+    if (!userId) return null
     return await ctx
-      .table('patterns', 'userId', (q) => q.eq('userId', user._id))
+      .table('patterns', 'userId', (q) => q.eq('userId', userId))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
   },
   returns: nullable(v.array(v.object(patternReturnFields))),
 })
 
 // * Mutations
-
-const patternCreateFields = {
-  ...partial(omit(patternFields, ['model'])),
-  model: patternFields['model'],
-}
-
 export const create = mutation({
   args: patternCreateFields,
   handler: async (
@@ -63,8 +60,7 @@ export const create = mutation({
     const user = await ctx.viewerX()
 
     const xid = generateXID()
-
-    const patternId = await ctx.table('patterns').insert({
+    await ctx.table('patterns').insert({
       name,
       description,
       instructions,
@@ -78,21 +74,18 @@ export const create = mutation({
       lastUsedAt: 0,
     })
 
-    return { id: patternId, xid }
+    return xid
   },
-  returns: v.object({
-    id: v.id('patterns'),
-    xid: v.string(),
-  }),
+  returns: v.string(),
 })
 
 export const update = mutation({
   args: {
-    id: v.string(),
-    ...partial(patternFields),
+    patternId: v.string(),
+    fields: v.object(partial(patternFields)),
   },
-  handler: async (ctx, { id, ...args }) => {
-    const pattern = await getEntityWriterX(ctx, 'patterns', id)
+  handler: async (ctx, { patternId, fields }) => {
+    const pattern = await getEntityWriterX(ctx, 'patterns', patternId)
 
     const defaults = {
       name: '',
@@ -100,18 +93,17 @@ export const update = mutation({
       instructions: '',
     }
 
-    const updates = prepareUpdate(args, defaults)
-
+    const updates = prepareUpdate(fields, defaults)
     return await pattern.patch(updates)
   },
 })
 
 export const remove = mutation({
   args: {
-    id: v.string(),
+    patternId: v.string(),
   },
-  handler: async (ctx, { id }) => {
-    const pattern = await getEntityWriterX(ctx, 'patterns', id)
+  handler: async (ctx, { patternId }) => {
+    const pattern = await getEntityWriterX(ctx, 'patterns', patternId)
     return await pattern.delete()
   },
 })

@@ -21,10 +21,10 @@ import { LoadingPage } from '../pages/LoadingPage'
 
 type PatternMessage = EPattern['initialMessages'][number] & { __key: string }
 
-export function PatternEditorPage({ xid }: { xid?: string }) {
-  const pattern = usePattern(xid ?? '')
+export function PatternEditorPage({ patternId }: { patternId?: string }) {
+  const pattern = usePattern(patternId ?? '')
 
-  if (xid && !pattern) return <LoadingPage />
+  if (patternId && !pattern) return <LoadingPage />
 
   const defaultPattern: EPattern = {
     xid: '',
@@ -42,7 +42,7 @@ export function PatternEditorPage({ xid }: { xid?: string }) {
     userId: '' as any,
   }
 
-  return <PatternEditor pattern={pattern || defaultPattern} isNew={!xid} />
+  return <PatternEditor pattern={pattern || defaultPattern} isNew={!patternId} />
 }
 
 function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: boolean }) {
@@ -60,11 +60,9 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
   const handleSave = () => {
     const saveAction = isNew ? createPattern : updatePattern
     saveAction(patternState)
-      .then((res) => {
+      .then((patternId) => {
         toast.success(isNew ? 'Pattern created' : 'Pattern updated')
-        if (typeof res === 'object' && 'xid' in res) {
-          router.push(`/patterns/${res.xid}`)
-        }
+        router.push(`/patterns/${patternId}`)
       })
       .catch((error) => {
         toast.error(isNew ? 'Failed to create pattern' : 'Failed to update pattern')
@@ -161,7 +159,7 @@ function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: 
               </div>
 
               <div className="flex justify-end gap-2 p-4">
-                <Button variant="soft" color="red" onClick={() => deletePattern(patternState.xid)}>
+                <Button variant="soft" color="red" onClick={() => deletePattern({ patternId: patternState.xid })}>
                   Delete
                 </Button>
               </div>

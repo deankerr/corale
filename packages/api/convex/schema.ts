@@ -394,10 +394,10 @@ export const patternFields = {
   kvMetadata: v.record(v.string(), v.string()),
 }
 const patterns = defineEnt(patternFields)
+  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .field('xid', v.string(), { unique: true })
   .field('updatedAt', v.number())
   .field('lastUsedAt', v.number())
-  .deletion('scheduled', { delayMs: timeToDeleteSchedule })
   .edge('user')
 
 // * Users
