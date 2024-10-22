@@ -7,31 +7,9 @@ import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
 import { getErrorMessage } from '../lib/utils'
-import { defaultSizes, imageModels } from '../provider/imageModels'
+import { defaultSizes, imageModels } from '../provider/fal/models'
+import { FalTextToImageResponse } from '../provider/fal/schema'
 import type { TextToImageInputs } from '../types'
-
-export type FalTextToImageOutput = z.infer<typeof FalResponse>
-const FalResponse = z.object({
-  data: z.object({
-    images: z.array(
-      z.object({
-        url: z.string().url(),
-        width: z.number(),
-        height: z.number(),
-        content_type: z.string(),
-      }),
-    ),
-    timings: z
-      .object({
-        inference: z.number().optional(),
-      })
-      .optional(),
-    seed: z.number(),
-    has_nsfw_concepts: z.array(z.boolean()).optional(),
-    prompt: z.string(),
-  }),
-  requestId: z.string(),
-})
 
 export const run = internalAction({
   args: {
@@ -78,7 +56,7 @@ export const run = internalAction({
         input,
       })
       console.log('response', response)
-      const output = FalResponse.parse(response)
+      const output = FalTextToImageResponse.parse(response)
 
       await ctx.runMutation(internal.db.generations.complete, {
         generationId,
