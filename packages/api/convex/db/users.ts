@@ -1,11 +1,8 @@
-import { omit, pick } from 'convex-helpers'
-import { nullable, partial } from 'convex-helpers/validators'
-import { ConvexError, v, type Infer } from 'convex/values'
-import type { Id } from '../_generated/dataModel'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { generateRandomString } from '../lib/utils'
 import { userFields } from '../schema'
-import type { MutationCtx, QueryCtx } from '../types'
+import type { Id, MutationCtx, QueryCtx } from '../types'
+import { ConvexError, Infer, nullable, omit, partial, pick, v } from '../values'
 
 export const userReturnFieldsPublic = v.object({
   _id: v.id('users'),
