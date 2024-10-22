@@ -2,13 +2,15 @@
 
 import { IconButton } from '@/components/ui/Button'
 import { useThread, useUpdateThread } from '@/lib/api/threads'
+import { useViewer } from '@/lib/api/users'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
 export const FavouriteButton = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
+  const { isViewer } = useViewer(thread?.userId)
   const sendUpdateThread = useUpdateThread()
 
-  if (!thread || !thread.user.isViewer) {
+  if (!thread || !isViewer) {
     return null
   }
 
@@ -20,7 +22,7 @@ export const FavouriteButton = ({ threadId }: { threadId: string }) => {
       onClick={() =>
         sendUpdateThread({
           threadId: thread._id,
-          favourite: !thread.favourite,
+          fields: { favourite: !thread.favourite },
         })
       }
     >

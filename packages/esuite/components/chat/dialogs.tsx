@@ -45,7 +45,7 @@ export const EditThreadTitleDialog = ({
             </Button>
           </Dialog.Close>
           <Dialog.Close>
-            <Button onClick={() => sendUpdateThread({ threadId, title })}>Save</Button>
+            <Button onClick={() => sendUpdateThread({ threadId, fields: { title } })}>Save</Button>
           </Dialog.Close>
         </div>
       </Dialog.Content>
@@ -82,7 +82,7 @@ export const DeleteThreadDialog = ({
               variant="solid"
               color="red"
               onClick={() => {
-                sendDeleteThread({ id: threadId }).then(() => router.push('/chats'))
+                sendDeleteThread({ threadId }).then(() => router.push('/chats'))
               }}
             >
               Delete

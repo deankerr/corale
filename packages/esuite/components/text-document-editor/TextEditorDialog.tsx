@@ -1,6 +1,7 @@
 'use client'
 
 import { useThread, useUpdateThread } from '@/lib/api/threads'
+import { useViewer } from '@/lib/api/users'
 import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button, Dialog, IconButton } from '@radix-ui/themes'
@@ -22,10 +23,11 @@ export interface TextEditorDialogProps {
 export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialogProps>(
   ({ slug, children, ...props }, ref) => {
     const thread = useThread(slug)
+    const { isViewer } = useViewer(thread?.userId)
+    const updateThread = useUpdateThread()
+
     const [open, setOpen] = useState(false)
     const editorRef = useRef<MDXEditorMethods>(null)
-
-    const updateThread = useUpdateThread()
 
     const handleSave = () => {
       const instructions = editorRef.current?.getMarkdown()
@@ -33,7 +35,7 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
 
       updateThread({
         threadId: thread._id,
-        instructions,
+        fields: { instructions },
       })
         .catch((err) => {
           console.error(err)
@@ -82,7 +84,7 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
               <MDXEditor
                 ref={editorRef}
                 markdown={thread?.instructions ?? ''}
-                readOnly={!thread?.user.isViewer}
+                readOnly={!isViewer}
                 placeholder="Write your instructions here..."
                 contentEditableClassName="markdown-root"
               />
@@ -99,7 +101,7 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
                 {/* <Button color="gray" variant="solid">
                   Cancel
                 </Button> */}
-                {thread?.user.isViewer && (
+                {isViewer && (
                   <Button variant="solid" onClick={handleSave}>
                     Save
                   </Button>

@@ -5,6 +5,7 @@ import { MessageSearchResults } from '@/components/chat/panels/MessageSearchResu
 import { Composer } from '@/components/composer/Composer'
 import { Panel, PanelBodyGrid, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
 import { useThread } from '@/lib/api/threads'
+import { useViewer } from '@/lib/api/users'
 import { ChatHeader } from './ChatHeader'
 import { ChatBackgroundPanel } from './panels/ChatBackgroundPanel'
 import { MessageFeed2 } from './panels/MessageFeed2'
@@ -12,6 +13,7 @@ import { RunsPanel } from './panels/RunsPanel'
 
 export const Chat = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
+  const { isViewer } = useViewer(thread?.userId)
 
   if (!thread) return thread === null ? <PanelEmpty /> : <PanelLoading />
   return (
@@ -28,7 +30,7 @@ export const Chat = ({ threadId }: { threadId: string }) => {
       </PanelBodyGrid>
 
       {/* > composer */}
-      {thread.user.isViewer && <Composer threadId={threadId} />}
+      {isViewer && <Composer threadId={threadId} />}
     </Panel>
   )
 }

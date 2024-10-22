@@ -27,7 +27,7 @@ export const useThreadActions = (threadId: string) => {
 
       try {
         console.log('append', args)
-        const result = await sendAppend({ ...args, id: threadId })
+        const result = await sendAppend({ ...args, threadId })
 
         setActionState('rateLimited')
         reset()
