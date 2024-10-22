@@ -28,22 +28,16 @@ export const useRun = (runId: string | undefined) => {
   return useCachedQuery(api.db.runs.get, runId ? { runId } : 'skip')
 }
 
-// export const useListThreadRuns = (threadId: string) => {
-//   return useQuery(api.db.thread.runs.list, { threadId })
-// }
-
 export const useMessageTextStream = (runId: Id<'runs'> | undefined) => {
   const textStreams = useQuery(api.db.threads.getTextStreams, runId ? { runId } : 'skip')
   return textStreams?.[0]?.content
 }
 
-export const useThreadTextSearchQueryParams = () => {
-  const search = useQueryState('search', parseAsString.withDefault(''))
-  const name = useQueryState('name', parseAsString.withDefault(''))
-  return { search, name }
+export const useSearchQueryParams = () => {
+  return useQueryState('search', parseAsString.withDefault(''))
 }
 
-export const useThreadTextSearch = (args: { threadId: string; name?: string }, textSearchValue: string) => {
+export const useThreadSearch = (threadId: string, textSearchValue: string) => {
   const [debouncedValue, setDebouncedValue] = useDebounceValue(textSearchValue, 300, {
     maxWait: 1000,
   })
@@ -54,7 +48,28 @@ export const useThreadTextSearch = (args: { threadId: string; name?: string }, t
   const text = debouncedValue.length >= 3 ? debouncedValue : ''
   const isSkipped = !text
 
-  const results = useQuery(api.db.thread.messages.searchText, text ? { ...args, text } : 'skip')
+  // Parse role and name from the search text
+  const roleMatch = text.match(/\brole:(\w+)\b/)
+  const nameMatch = text.match(/\bname:(\w+)\b/)
+
+  const role = roleMatch ? (roleMatch[1] as 'system' | 'assistant' | 'user') : undefined
+  const name = nameMatch ? nameMatch[1] : undefined
+
+  // Validate role to match the literals
+  const validRole = role && ['system', 'assistant', 'user'].includes(role) ? role : undefined
+
+  // Remove role: and name: from the search text
+  const cleanedText = text.replace(/\b(role|name):\w+\b/g, '').trim()
+
+  // Prepare query arguments
+  const queryArgs = {
+    threadId,
+    text: cleanedText,
+    ...(validRole && { role: validRole }),
+    ...(name && { name }),
+  }
+
+  const results = useQuery(api.db.thread.messages.searchText, text ? queryArgs : 'skip')
   const stored = useRef(results)
 
   if (results !== undefined) {
@@ -68,15 +83,6 @@ export const useThreadTextSearch = (args: { threadId: string; name?: string }, t
     isLoading,
     isSkipped,
   }
-}
-
-export const useThreadTextSearchResults = (threadId: string) => {
-  const {
-    search: [searchValue],
-    name: [nameValue],
-  } = useThreadTextSearchQueryParams()
-  const results = useThreadTextSearch({ threadId, name: nameValue }, searchValue)
-  return results
 }
 
 export const useUpdateThread = () => {
