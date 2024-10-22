@@ -1,11 +1,10 @@
-import { internal } from '../_generated/api'
 import { mutation, query } from '../functions'
-import { extractValidUrlsFromText } from '../lib/utils'
 import { messageFields } from '../schema'
 import type { Doc, MutationCtx, WithoutSystemFields } from '../types'
 import { literals, omit, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/xid'
+import { messagePostCreate } from './tasks'
 
 export const messageCreateFields = {
   ...omit(messageFields, ['runId']),
@@ -33,50 +32,19 @@ export const messageReturnFields = {
 export const createMessage = async (
   ctx: MutationCtx,
   fields: Omit<WithoutSystemFields<Doc<'messages'>>, 'series' | 'deletionTime' | 'xid'>,
-  options?: {
-    skipRules?: boolean
-    evaluateUrls?: boolean
-    generateThreadTitle?: boolean
-  },
 ) => {
-  const skipRules = options?.skipRules ?? false
-  const evaluateUrls = options?.evaluateUrls ?? fields.role === 'user'
-  const generateThreadTitle = options?.generateThreadTitle ?? fields.role === 'assistant'
-
-  const thread = await ctx.skipRules.table('threads').getX(fields.threadId)
+  const thread = await ctx.table('threads').getX(fields.threadId)
 
   const prev = await thread.edge('messages').order('desc').first()
   const series = prev ? prev.series + 1 : 1
   const xid = generateXID()
 
-  const message = skipRules
-    ? await ctx.skipRules
-        .table('messages')
-        .insert({ ...fields, series, xid })
-        .get()
-    : await ctx
-        .table('messages')
-        .insert({ ...fields, series, xid })
-        .get()
+  const message = await ctx
+    .table('messages')
+    .insert({ ...fields, series, xid })
+    .get()
 
-  if (evaluateUrls) {
-    if (message.text) {
-      const urls = extractValidUrlsFromText(message.text)
-
-      if (urls.length > 0) {
-        await ctx.scheduler.runAfter(0, internal.action.evaluateMessageUrls.run, {
-          urls: urls.map((url) => url.toString()),
-          ownerId: message.userId,
-        })
-      }
-    }
-  }
-
-  if (generateThreadTitle && !thread.title) {
-    await ctx.scheduler.runAfter(0, internal.action.generateThreadTitle.run, {
-      threadId: thread._id,
-    })
-  }
+  await messagePostCreate(ctx, message)
 
   return message
 }

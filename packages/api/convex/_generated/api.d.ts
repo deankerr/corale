@@ -36,6 +36,7 @@ import type * as db_messages from "../db/messages.js";
 import type * as db_models from "../db/models.js";
 import type * as db_patterns from "../db/patterns.js";
 import type * as db_runs from "../db/runs.js";
+import type * as db_tasks from "../db/tasks.js";
 import type * as db_texts from "../db/texts.js";
 import type * as db_thread_messages from "../db/thread/messages.js";
 import type * as db_threads from "../db/threads.js";
@@ -87,6 +88,7 @@ declare const fullApi: ApiFromModules<{
   "db/models": typeof db_models;
   "db/patterns": typeof db_patterns;
   "db/runs": typeof db_runs;
+  "db/tasks": typeof db_tasks;
   "db/texts": typeof db_texts;
   "db/thread/messages": typeof db_thread_messages;
   "db/threads": typeof db_threads;
