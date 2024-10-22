@@ -1,14 +1,14 @@
-import * as vb from 'valibot'
+import { z } from 'zod'
 
-const schema = vb.object({
-  APP_HOSTNAME: vb.string(),
-  CLERK_JWT_ISSUER_DOMAIN: vb.string(),
-  CLERK_SECRET_KEY: vb.string(),
-  CLERK_WEBHOOK_SECRET: vb.string(),
+const schema = z.object({
+  APP_HOSTNAME: z.string(),
+  CLERK_JWT_ISSUER_DOMAIN: z.string(),
+  CLERK_SECRET_KEY: z.string(),
+  CLERK_WEBHOOK_SECRET: z.string(),
 
-  ELEVENLABS_API_KEY: vb.string(),
-  FAL_API_KEY: vb.string(),
-  OPENROUTER_API_KEY: vb.string(),
+  ELEVENLABS_API_KEY: z.string(),
+  FAL_KEY: z.string(),
+  OPENROUTER_API_KEY: z.string(),
 })
 
-export const ENV = vb.parse(schema, process.env)
+export const ENV = schema.parse(process.env)
