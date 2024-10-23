@@ -1,18 +1,18 @@
+import { patternSchemaFields } from '../entities/patterns'
 import { mutation, query } from '../functions'
 import { prepareUpdate } from '../lib/utils'
-import { patternFields } from '../schema'
 import { nullable, omit, partial, v } from '../values'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 
 const patternCreateFields = {
-  ...partial(omit(patternFields, ['model'])),
-  model: patternFields['model'],
+  ...partial(omit(patternSchemaFields, ['model'])),
+  model: patternSchemaFields['model'],
 }
 
 export const patternReturnFields = {
   _id: v.id('patterns'),
   _creationTime: v.number(),
-  ...patternFields,
+  ...patternSchemaFields,
   // fields
   xid: v.string(),
   updatedAt: v.number(),
@@ -82,7 +82,7 @@ export const create = mutation({
 export const update = mutation({
   args: {
     patternId: v.string(),
-    fields: v.object(partial(patternFields)),
+    fields: v.object(partial(patternSchemaFields)),
   },
   handler: async (ctx, { patternId, fields }) => {
     const pattern = await getEntityWriterX(ctx, 'patterns', patternId)

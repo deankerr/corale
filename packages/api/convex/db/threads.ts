@@ -1,5 +1,5 @@
+import { threadSchemaFields } from '../entities/threads'
 import { mutation, query } from '../functions'
-import { threadFields } from '../schema'
 import type { EThread, Id, MutationCtx, QueryCtx } from '../types'
 import { ConvexError, nullable, omit, pick, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
@@ -7,7 +7,7 @@ import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
 import { createMessage, messageCreateFields } from './messages'
 
 // * Helpers
-export const threadCreateFields = pick(threadFields, ['title', 'instructions', 'favourite', 'kvMetadata'])
+export const threadCreateFields = pick(threadSchemaFields, ['title', 'instructions', 'favourite', 'kvMetadata'])
 
 export const threadReturnFields = {
   // doc
@@ -131,7 +131,7 @@ export const create = mutation({
 export const update = mutation({
   args: {
     threadId: v.string(),
-    fields: v.object(omit(threadFields, ['updatedAtTime', 'kvMetadata'])),
+    fields: v.object(omit(threadSchemaFields, ['updatedAtTime', 'kvMetadata'])),
     updateKv: v.optional(updateKvValidator),
   },
   handler: async (ctx, { threadId, fields, updateKv }) => {

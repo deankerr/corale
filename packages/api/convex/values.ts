@@ -1,3 +1,5 @@
+import { ms } from 'itty-time'
+
 export { paginationOptsValidator } from 'convex/server'
 export { asyncMap, nullThrows, omit, pick, pruneNull } from 'convex-helpers'
 export type { BetterOmit } from 'convex-helpers'
@@ -10,5 +12,8 @@ export {
   systemFields,
   withSystemFields,
   nullable,
+  brandedString,
 } from 'convex-helpers/validators'
 export { asObjectValidator, ConvexError, v, type Value, type Infer } from 'convex/values'
+
+export const entityScheduledDeletionDelay = ms('24 hours')

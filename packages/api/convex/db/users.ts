@@ -1,13 +1,13 @@
+import { userSchemaFields } from '../entities/users'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { generateRandomString } from '../lib/utils'
-import { userFields } from '../schema'
 import type { Id, MutationCtx, QueryCtx } from '../types'
 import { ConvexError, Infer, nullable, omit, partial, pick, v } from '../values'
 
 export const userReturnFieldsPublic = v.object({
   _id: v.id('users'),
   _creationTime: v.number(),
-  ...pick(userFields, ['name', 'imageUrl', 'role']),
+  ...pick(userSchemaFields, ['name', 'imageUrl', 'role']),
   isViewer: v.boolean(),
 })
 
@@ -58,7 +58,7 @@ const getUserBySchema = v.union(v.object({ id: v.id('users') }), v.object({ toke
 export const create = internalMutation({
   args: {
     fields: v.object({
-      ...userFields,
+      ...userSchemaFields,
       tokenIdentifier: v.string(),
     }),
   },
@@ -72,7 +72,7 @@ export const create = internalMutation({
 export const update = internalMutation({
   args: {
     by: getUserBySchema,
-    fields: v.object(partial(userFields)),
+    fields: v.object(partial(userSchemaFields)),
   },
   handler: async (ctx, { by, fields }) => {
     if ('id' in by) return await ctx.table('users').getX(by.id).patch(fields)

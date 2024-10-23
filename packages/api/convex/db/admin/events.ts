@@ -1,11 +1,11 @@
 import { ConvexError, v, type Infer } from 'convex/values'
 import { internal } from '../../_generated/api'
 import type { ActionCtx } from '../../_generated/server'
+import { operationsEventLogSchemaFields } from '../../entities/operationsEventLogs'
 import { internalMutation, mutation, query } from '../../functions'
-import { operationsEventLogFields } from '../../schema'
 import type { MutationCtx } from '../../types'
 
-const createEventArgs = v.object(operationsEventLogFields)
+const createEventArgs = v.object(operationsEventLogSchemaFields)
 
 export const logOpsEvent = async (ctx: MutationCtx, args: Infer<typeof createEventArgs>) => {
   return await ctx.table('operationsEventLog').insert({
