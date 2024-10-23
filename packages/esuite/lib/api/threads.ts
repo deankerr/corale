@@ -1,9 +1,9 @@
 import { api } from '@corale/api/convex/_generated/api'
 import type { Id } from '@corale/api/convex/_generated/dataModel'
 import { useMutation, useQuery } from 'convex/react'
-import { parseAsString, useQueryState } from 'nuqs'
 import { useEffect, useRef } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
+import { useRoleQueryParam } from '../searchParams'
 import { useCachedQuery } from './helpers'
 
 export const useThreads = () => {
@@ -33,10 +33,6 @@ export const useMessageTextStream = (runId: Id<'runs'> | undefined) => {
   return textStreams?.[0]?.content
 }
 
-export const useSearchQueryParams = () => {
-  return useQueryState('search', parseAsString.withDefault(''))
-}
-
 export const useThreadSearch = (threadId: string, textSearchValue: string) => {
   const [debouncedValue, setDebouncedValue] = useDebounceValue(textSearchValue, 300, {
     maxWait: 1000,
@@ -48,24 +44,20 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
   const text = debouncedValue.length >= 3 ? debouncedValue : ''
   const isSkipped = !text
 
-  // Parse role and name from the search text
-  const roleMatch = text.match(/\brole:(\w+)\b/)
+  // Parse name from the search text
   const nameMatch = text.match(/\bname:(\w+)\b/)
 
-  const role = roleMatch ? (roleMatch[1] as 'system' | 'assistant' | 'user') : undefined
   const name = nameMatch ? nameMatch[1] : undefined
 
-  // Validate role to match the literals
-  const validRole = role && ['system', 'assistant', 'user'].includes(role) ? role : undefined
-
-  // Remove role: and name: from the search text
+  // Remove name: from the search text
   const cleanedText = text.replace(/\b(role|name):\w+\b/g, '').trim()
 
   // Prepare query arguments
+  const [roleQueryParam] = useRoleQueryParam()
   const queryArgs = {
     threadId,
     text: cleanedText,
-    ...(validRole && { role: validRole }),
+    role: roleQueryParam || undefined,
     ...(name && { name }),
   }
 

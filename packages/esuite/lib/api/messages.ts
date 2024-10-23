@@ -1,3 +1,4 @@
+import { useRoleQueryParam } from '@/lib/searchParams'
 import { api } from '@corale/api/convex/_generated/api'
 import { usePaginatedQuery } from 'convex/react'
 import { useMemo, useRef } from 'react'
@@ -12,9 +13,11 @@ export const useMessageById = (id: string) => {
 }
 
 export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
+  const [roleQueryParam] = useRoleQueryParam()
+
   const messages = usePaginatedQuery(
     api.db.thread.messages.search,
-    { threadId },
+    { threadId, role: roleQueryParam || undefined },
     {
       initialNumItems,
     },

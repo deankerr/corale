@@ -1,4 +1,4 @@
-import { useSearchQueryParams } from '@/lib/api/threads'
+import { useSearchQueryParams } from '@/lib/searchParams'
 import { SearchField } from '../ui/SearchField'
 
 export const ChatSearchField = () => {

@@ -9,7 +9,6 @@ import { useViewer } from '@/lib/api/users'
 import { ChatHeader } from './ChatHeader'
 import { ChatBackgroundPanel } from './panels/ChatBackgroundPanel'
 import { MessageFeed2 } from './panels/MessageFeed2'
-import { RunsPanel } from './panels/RunsPanel'
 
 export const Chat = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
@@ -26,7 +25,6 @@ export const Chat = ({ threadId }: { threadId: string }) => {
         <ChatBackgroundPanel />
         <MessageFeed2 threadId={threadId} />
         <MessageSearchResults threadId={threadId} />
-        <RunsPanel threadId={threadId} />
       </PanelBodyGrid>
 
       {/* > composer */}

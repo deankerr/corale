@@ -5,6 +5,7 @@ import { DotsThreeFillX } from '@/components/icons/DotsThreeFillX'
 import { IconButton } from '@/components/ui/Button'
 import { useThread } from '@/lib/api/threads'
 import { useViewer } from '@/lib/api/users'
+import { useRoleQueryParam } from '@/lib/searchParams'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
 import { useState } from 'react'
@@ -15,6 +16,8 @@ export const ChatMenu = ({ threadId }: { threadId: string }) => {
 
   const [showEditTitleDialog, setShowEditTitleDialog] = useState(false)
   const [showDeleteThreadDialog, setShowDeleteThreadDialog] = useState(false)
+
+  const [roleQueryParam, setRoleQueryParam] = useRoleQueryParam()
 
   if (!thread || !isViewer) {
     return null
@@ -37,6 +40,33 @@ export const ChatMenu = ({ threadId }: { threadId: string }) => {
           >
             <Icons.Copy /> Copy thread ID
           </DropdownMenu.Item>
+
+          <DropdownMenu.Sub>
+            <DropdownMenu.SubTrigger>
+              <Icons.Funnel />
+              Filter role
+            </DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent>
+              <DropdownMenu.CheckboxItem
+                checked={roleQueryParam === 'user'}
+                onCheckedChange={(checked) => setRoleQueryParam(checked ? 'user' : null)}
+              >
+                <Icons.User /> User
+              </DropdownMenu.CheckboxItem>
+              <DropdownMenu.CheckboxItem
+                checked={roleQueryParam === 'assistant'}
+                onCheckedChange={(checked) => setRoleQueryParam(checked ? 'assistant' : null)}
+              >
+                <Icons.Robot /> Assistant
+              </DropdownMenu.CheckboxItem>
+              <DropdownMenu.CheckboxItem
+                checked={roleQueryParam === 'system'}
+                onCheckedChange={(checked) => setRoleQueryParam(checked ? 'system' : null)}
+              >
+                <Icons.Gear /> System
+              </DropdownMenu.CheckboxItem>
+            </DropdownMenu.SubContent>
+          </DropdownMenu.Sub>
 
           <DropdownMenu.Item onClick={() => setShowEditTitleDialog(true)}>
             <Icons.Pencil /> Edit title
