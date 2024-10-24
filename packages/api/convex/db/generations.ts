@@ -2,9 +2,9 @@ import { asyncMap } from 'convex-helpers'
 import { paginationOptsValidator } from 'convex/server'
 import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../_generated/api'
+import { generationSchemaFields } from '../entities/generations'
 import { internalMutation, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
-import { generationV2Fields } from '../schema'
 import type { Ent, QueryCtx, TextToImageInputs } from '../types'
 import { nullable, omit, pick, v } from '../values'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
@@ -38,7 +38,7 @@ export const textToImageInputs = v.object({
 export const generationsReturn = v.object({
   _id: v.id('generations_v2'),
   _creationTime: v.number(),
-  ...omit(generationV2Fields, ['output']),
+  ...omit(generationSchemaFields, ['output']),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
   images: v.array(imagesReturn),
   xid: v.string(),
@@ -144,7 +144,7 @@ export const activate = internalMutation({
 export const complete = internalMutation({
   args: {
     generationId: v.id('generations_v2'),
-    results: v.array(generationV2Fields.results.element),
+    results: v.array(generationSchemaFields.results.element),
     output: v.any(),
   },
   handler: async (ctx, { generationId, results, output }) => {
@@ -175,7 +175,7 @@ export const complete = internalMutation({
 export const fail = internalMutation({
   args: {
     generationId: v.id('generations_v2'),
-    ...pick(generationV2Fields, ['errors']),
+    ...pick(generationSchemaFields, ['errors']),
   },
   handler: async (ctx, { generationId, errors }) => {
     const generation = await ctx.skipRules.table('generations_v2').getX(generationId)

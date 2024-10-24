@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
+import { runSchemaFields } from '../entities/runs'
 import { internalMutation, mutation, query } from '../functions'
-import { runFieldsV2 } from '../schema'
 import { ConvexError, nullable, pick, v } from '../values'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
@@ -13,8 +13,8 @@ import { getOrCreateUserThread } from './threads'
 
 const runCreateFields = {
   threadId: v.string(),
-  ...pick(runFieldsV2, ['stream', 'options', 'instructions', 'additionalInstructions']),
-  model: v.optional(runFieldsV2.model),
+  ...pick(runSchemaFields, ['stream', 'options', 'instructions', 'additionalInstructions']),
+  model: v.optional(runSchemaFields.model),
   patternId: v.optional(v.string()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
 
@@ -24,7 +24,7 @@ const runCreateFields = {
 export const runReturnFields = {
   _id: v.id('runs'),
   _creationTime: v.number(),
-  ...runFieldsV2,
+  ...runSchemaFields,
   threadId: v.id('threads'),
   userId: v.id('users'),
   xid: v.string(),
@@ -263,7 +263,7 @@ export const complete = internalMutation({
 export const fail = internalMutation({
   args: {
     runId: v.id('runs'),
-    errors: v.array(runFieldsV2.errors.element),
+    errors: v.array(runSchemaFields.errors.element),
   },
   handler: async (ctx, { runId, errors }) => {
     const run = await ctx.skipRules.table('runs').getX(runId)

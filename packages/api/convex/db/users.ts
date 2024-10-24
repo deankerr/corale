@@ -1,21 +1,21 @@
+import { userSchemaFields } from '../entities/users'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { generateRandomString } from '../lib/utils'
-import { userFields } from '../schema'
+import { getViewerIdFromApiKey } from '../rules'
 import type { Id, MutationCtx, QueryCtx } from '../types'
 import { ConvexError, Infer, nullable, omit, partial, pick, v } from '../values'
 
 export const userReturnFieldsPublic = v.object({
   _id: v.id('users'),
   _creationTime: v.number(),
-  ...pick(userFields, ['name', 'imageUrl', 'role']),
-  isViewer: v.boolean(),
+  ...pick(userSchemaFields, ['name', 'imageUrl', 'role']),
 })
+export type UserReturnObject = Infer<typeof userReturnFieldsPublic>
 
 export const getUserPrivate = async (ctx: QueryCtx, userId: Id<'users'>) => {
   const user = await ctx.table('users').get(userId)
   if (!user) return null
-  const isViewer = ctx.viewerId === user._id
-  return { ...omit(user, ['tokenIdentifier']), isViewer }
+  return { ...omit(user, ['tokenIdentifier']) }
 }
 
 export const getUserPublic = async (
@@ -27,7 +27,6 @@ export const getUserPublic = async (
 
   return {
     ...pick(user.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']),
-    isViewer: getUserIsViewer(ctx, userId),
   }
 }
 
@@ -40,17 +39,29 @@ export const getUserPublicX = async (
   return user
 }
 
-export const getUserIsViewer = (ctx: QueryCtx, userId: Id<'users'>) => {
-  return ctx.viewerId ? ctx.viewerId === userId : false
-}
-
 export const getViewer = query({
   args: {},
   handler: async (ctx) => {
     const viewer = await ctx.viewer()
     return viewer ? pick(viewer.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']) : null
   },
-  returns: nullable(v.object(omit(userReturnFieldsPublic.fields, ['isViewer']))),
+  returns: nullable(userReturnFieldsPublic),
+})
+
+export const getViewerWithApiKey = internalQuery({
+  args: {
+    apiKey: v.optional(v.string()),
+  },
+  handler: async (ctx, { apiKey }) => {
+    const apiKeyViewerId = await getViewerIdFromApiKey(ctx, apiKey)
+    if (apiKeyViewerId) return await getUserPublicX(ctx, apiKeyViewerId)
+
+    const viewerId = ctx.viewerId
+    if (viewerId) return await getUserPublicX(ctx, viewerId)
+
+    return null
+  },
+  returns: nullable(userReturnFieldsPublic),
 })
 
 const getUserBySchema = v.union(v.object({ id: v.id('users') }), v.object({ tokenIdentifier: v.string() }))
@@ -58,7 +69,7 @@ const getUserBySchema = v.union(v.object({ id: v.id('users') }), v.object({ toke
 export const create = internalMutation({
   args: {
     fields: v.object({
-      ...userFields,
+      ...userSchemaFields,
       tokenIdentifier: v.string(),
     }),
   },
@@ -72,7 +83,7 @@ export const create = internalMutation({
 export const update = internalMutation({
   args: {
     by: getUserBySchema,
-    fields: v.object(partial(userFields)),
+    fields: v.object(partial(userSchemaFields)),
   },
   handler: async (ctx, { by, fields }) => {
     if ('id' in by) return await ctx.table('users').getX(by.id).patch(fields)

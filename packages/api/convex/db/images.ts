@@ -1,11 +1,12 @@
 import { getQuery, parseFilename } from 'ufo'
 import { internal } from '../_generated/api'
 import { httpAction } from '../_generated/server'
+import { imageSchemaFields } from '../entities/images'
+import { imagesMetadataSchemaFields } from '../entities/imagesMetadata'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import { getImageModel } from '../provider/fal/models'
 import type { FalTextToImageResponse } from '../provider/fal/schema'
-import { imagesMetadataV2Fields, imagesV2Fields } from '../schema'
 import type { Doc, Ent, QueryCtx, TextToImageInputs } from '../types'
 import { ConvexError, literals, omit, paginationOptsValidator, v } from '../values'
 import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/xid'
@@ -62,7 +63,7 @@ export const getByRunId = query({
 
 export const createImageV2 = internalMutation({
   args: {
-    ...omit(imagesV2Fields, ['createdAt']),
+    ...omit(imageSchemaFields, ['createdAt']),
     createdAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
@@ -183,7 +184,7 @@ export const listMyImages = query({
 export const addMetadata = mutation({
   args: {
     imageId: v.string(),
-    fields: imagesMetadataV2Fields['data'],
+    fields: imagesMetadataSchemaFields['data'],
   },
   handler: async (ctx, { imageId, fields }) => {
     const user = await ctx.viewerX()

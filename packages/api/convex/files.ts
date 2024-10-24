@@ -3,9 +3,8 @@ import { ms } from 'itty-time'
 import { internal } from './_generated/api'
 import type { Id, TableNames } from './_generated/dataModel'
 import { internalMutation } from './functions'
-import { timeToDeleteSchedule } from './schema'
 import type { MutationCtx } from './types'
-import { v } from './values'
+import { entityScheduledDeletionDelay, v } from './values'
 
 /* 
   Example scheduled delete function:
@@ -51,7 +50,7 @@ const ignoreTables = [
 async function scheduleValidFileDoc(ctx: MutationCtx, doc: BasicDocument | null) {
   if (!doc || !doc.fileId || !doc.deletionTime) return
 
-  const checkTime = doc.deletionTime + timeToDeleteSchedule + checkFilesDelay
+  const checkTime = doc.deletionTime + entityScheduledDeletionDelay + checkFilesDelay
   if (checkTime > Date.now()) {
     await ctx.scheduler.runAt(checkTime, internal.files.deleteDocFile, { docId: doc._id, fileId: doc.fileId })
   } else {
@@ -69,7 +68,7 @@ export const startDeletionScan = internalMutation({
   handler: async (ctx) => {
     const scheduledDeletions = await ctx.table
       .system('_scheduled_functions', 'by_creation_time', (q) =>
-        q.gte('_creationTime', Date.now() - timeToDeleteSchedule),
+        q.gte('_creationTime', Date.now() - entityScheduledDeletionDelay),
       )
       .order('desc')
       .filter((q) =>

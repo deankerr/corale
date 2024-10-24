@@ -1,5 +1,5 @@
+import { messagesEnt } from '../entities/messages'
 import { mutation, query } from '../functions'
-import { messageFields } from '../schema'
 import type { Doc, MutationCtx, WithoutSystemFields } from '../types'
 import { literals, omit, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
@@ -7,7 +7,7 @@ import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/
 import { messagePostCreate } from './tasks'
 
 export const messageCreateFields = {
-  ...omit(messageFields, ['runId']),
+  ...omit(messagesEnt.validator.fields, ['runId']),
 }
 
 export const messageReturnFields = {
@@ -86,7 +86,7 @@ export const update = mutation({
     messageId: v.string(),
 
     fields: v.object({
-      role: v.optional(messageFields.role),
+      role: v.optional(messagesEnt.validator.fields['role']),
       name: v.optional(v.string()),
       text: v.optional(v.string()),
       channel: v.optional(v.string()),
