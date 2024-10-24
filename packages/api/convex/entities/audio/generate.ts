@@ -1,19 +1,18 @@
 import ky from 'ky'
-import { api, internal } from '../../_generated/api'
+import { internal } from '../../_generated/api'
 import type { UserReturnObject } from '../../db/users'
 import { action } from '../../functions'
 import { ENV } from '../../lib/env'
 import type { Id } from '../../types'
-import { ConvexError, v, type Infer } from '../../values'
+import { ConvexError, v, type AsObjectValidator, type Infer } from '../../values'
 
-const SoundEffectInputV = v.object({
+const SoundEffectInputFields = {
   text: v.string(),
   duration_seconds: v.optional(v.number()),
   prompt_influence: v.optional(v.number()),
-})
-type SoundEffectInputV = Infer<typeof SoundEffectInputV>
+}
 
-async function generateSoundEffect(input: SoundEffectInputV): Promise<Blob> {
+async function generateSoundEffect(input: Infer<AsObjectValidator<typeof SoundEffectInputFields>>): Promise<Blob> {
   const blob = await ky
     .post(`https://api.elevenlabs.io/v1/sound-generation`, {
       headers: {
@@ -28,9 +27,11 @@ async function generateSoundEffect(input: SoundEffectInputV): Promise<Blob> {
 }
 
 export const soundEffect = action({
-  args: SoundEffectInputV,
-  handler: async (ctx, args) => {
-    const user: UserReturnObject | null = await ctx.runQuery(api.db.users.getViewer, {})
+  args: { ...SoundEffectInputFields, apiKey: v.optional(v.string()) },
+  handler: async (ctx, { apiKey, ...args }) => {
+    const user: UserReturnObject | null = await ctx.runQuery(internal.db.users.getViewerWithApiKey, {
+      apiKey,
+    })
     if (!user) throw new ConvexError('not authorized')
 
     const blob = await generateSoundEffect(args)

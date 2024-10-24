@@ -9,7 +9,7 @@ import { nullable, paginationOptsValidator, v, type AsObjectValidator, type Infe
 // * create
 async function createAudio(ctx: MutationCtx, args: Infer<AsObjectValidator<typeof AudioCreateArgs>>) {
   const xid = generateXID()
-  await ctx.table('audio').insert({
+  await ctx.skipRules.table('audio').insert({
     fileId: args.fileId,
     generationData: {
       prompt: args.prompt,

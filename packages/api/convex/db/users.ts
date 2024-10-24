@@ -1,6 +1,7 @@
 import { userSchemaFields } from '../entities/users'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { generateRandomString } from '../lib/utils'
+import { getViewerIdFromApiKey } from '../rules'
 import type { Id, MutationCtx, QueryCtx } from '../types'
 import { ConvexError, Infer, nullable, omit, partial, pick, v } from '../values'
 
@@ -38,15 +39,27 @@ export const getUserPublicX = async (
   return user
 }
 
-export const getUserIsViewer = (ctx: QueryCtx, userId: Id<'users'>) => {
-  return ctx.viewerId ? ctx.viewerId === userId : false
-}
-
 export const getViewer = query({
   args: {},
   handler: async (ctx) => {
     const viewer = await ctx.viewer()
     return viewer ? pick(viewer.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']) : null
+  },
+  returns: nullable(userReturnFieldsPublic),
+})
+
+export const getViewerWithApiKey = internalQuery({
+  args: {
+    apiKey: v.optional(v.string()),
+  },
+  handler: async (ctx, { apiKey }) => {
+    const apiKeyViewerId = await getViewerIdFromApiKey(ctx, apiKey)
+    if (apiKeyViewerId) return await getUserPublicX(ctx, apiKeyViewerId)
+
+    const viewerId = ctx.viewerId
+    if (viewerId) return await getUserPublicX(ctx, viewerId)
+
+    return null
   },
   returns: nullable(userReturnFieldsPublic),
 })
