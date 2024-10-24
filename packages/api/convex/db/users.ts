@@ -8,14 +8,13 @@ export const userReturnFieldsPublic = v.object({
   _id: v.id('users'),
   _creationTime: v.number(),
   ...pick(userSchemaFields, ['name', 'imageUrl', 'role']),
-  isViewer: v.boolean(),
 })
+export type UserReturnObject = Infer<typeof userReturnFieldsPublic>
 
 export const getUserPrivate = async (ctx: QueryCtx, userId: Id<'users'>) => {
   const user = await ctx.table('users').get(userId)
   if (!user) return null
-  const isViewer = ctx.viewerId === user._id
-  return { ...omit(user, ['tokenIdentifier']), isViewer }
+  return { ...omit(user, ['tokenIdentifier']) }
 }
 
 export const getUserPublic = async (
@@ -27,7 +26,6 @@ export const getUserPublic = async (
 
   return {
     ...pick(user.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']),
-    isViewer: getUserIsViewer(ctx, userId),
   }
 }
 
@@ -50,7 +48,7 @@ export const getViewer = query({
     const viewer = await ctx.viewer()
     return viewer ? pick(viewer.doc(), ['_id', '_creationTime', 'name', 'imageUrl', 'role']) : null
   },
-  returns: nullable(v.object(omit(userReturnFieldsPublic.fields, ['isViewer']))),
+  returns: nullable(userReturnFieldsPublic),
 })
 
 const getUserBySchema = v.union(v.object({ id: v.id('users') }), v.object({ tokenIdentifier: v.string() }))

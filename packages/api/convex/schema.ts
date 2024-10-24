@@ -1,6 +1,6 @@
 import { defineEntFromTable, defineEntSchema, getEntDefinitions } from 'convex-ents'
 import { migrationsTable } from 'convex-helpers/server/migrations'
-import { audioEnt } from './entities/audio'
+import { audioEnt } from './entities/audio/ent'
 import { chatModelsEnt } from './entities/chatModels'
 import { collectionsEnt } from './entities/collections'
 import { generationsEnt } from './entities/generations'
