@@ -12,6 +12,7 @@ import { Theme } from '@radix-ui/themes'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
@@ -44,19 +45,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={cn('overscroll-none', sans.variable, mono.variable)}>
       <body>
         <ClerkProvider appearance={{ baseTheme: dark }} dynamic>
-          <ClientProviders>
-            <Theme
-              accentColor="orange"
-              grayColor="slate"
-              appearance="dark"
-              panelBackground="solid"
-              className="bg-midnight"
-            >
-              <AppShell>{children}</AppShell>
-              <Toaster position="top-right" theme="light" expand visibleToasts={5} richColors />
-              <LightboxProvider />
-            </Theme>
-          </ClientProviders>
+          <NuqsAdapter>
+            <ClientProviders>
+              <Theme
+                accentColor="orange"
+                grayColor="slate"
+                appearance="dark"
+                panelBackground="solid"
+                className="bg-midnight"
+              >
+                <AppShell>{children}</AppShell>
+                <Toaster position="top-right" theme="light" expand visibleToasts={5} richColors />
+                <LightboxProvider />
+              </Theme>
+            </ClientProviders>
+          </NuqsAdapter>
         </ClerkProvider>
         <TailwindBreakpointIndicator />
         <Analytics />

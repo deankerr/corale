@@ -44,7 +44,7 @@
     "mini-svg-data-uri": "^1.4.4",
     "nanoid": "^5.0.7",
     "next": "14.2.15",
-    "nuqs": "^1.20.0",
+    "nuqs": "^2.0.4",
     "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
