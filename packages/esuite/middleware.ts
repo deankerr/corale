@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server'
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)'])
 
-export default clerkMiddleware((auth, request) => {
+export default clerkMiddleware(async (auth, request) => {
   if (isProtectedRoute(request)) {
-    auth().protect()
+    await auth.protect()
   }
 
   const response = NextResponse.next()

@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={cn('overscroll-none', sans.variable, mono.variable)}>
       <body>
-        <ClerkProvider appearance={{ baseTheme: dark }}>
+        <ClerkProvider appearance={{ baseTheme: dark }} dynamic>
           <ClientProviders>
             <Theme
               accentColor="orange"
