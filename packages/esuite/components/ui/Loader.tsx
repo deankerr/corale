@@ -1,7 +1,7 @@
 'use client'
 
 import type * as LdrsType from 'ldrs'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type JSX } from 'react';
 
 const loaderComponents = {
   dotWave: 'l-dot-wave',

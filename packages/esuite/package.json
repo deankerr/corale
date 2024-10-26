@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3333",
+    "dev": "next dev --turbopack --port 3333",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -43,11 +43,11 @@
     "ldrs": "^1.0.2",
     "mini-svg-data-uri": "^1.4.4",
     "nanoid": "^5.0.7",
-    "next": "14.2.15",
+    "next": "15.0.1",
     "nuqs": "^2.0.4",
     "prism-react-renderer": "^2.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-markdown": "^9.0.1",
     "react-plock": "^3.2.0",
     "react-textarea-autosize": "^8.5.4",
@@ -66,19 +66,25 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.16",
+    "@next/bundle-analyzer": "15.0.1",
     "@radix-ui/colors": "^3.0.0",
     "@types/dompurify": "^3.0.5",
     "@types/howler": "^2.2.12",
     "@types/node": "^20.17.0",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "eslint": "^8.57.1",
-    "eslint-config-next": "14.2.15",
+    "eslint-config-next": "15.0.1",
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.14",
     "type-fest": "^4.26.1",
     "typescript": "^5.6.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
   }
 }

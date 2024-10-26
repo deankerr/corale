@@ -1,5 +1,6 @@
 import { PatternEditorPage } from '@/components/patterns/PatternEditor'
 
-export default function Page({ params }: { params: { id?: string[] } }) {
+export default async function Page(props: { params: Promise<{ id?: string[] }> }) {
+  const params = await props.params;
   return <PatternEditorPage patternId={params.id?.[0]} />
 }

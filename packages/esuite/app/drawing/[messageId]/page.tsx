@@ -6,7 +6,7 @@ import { LoadingPage } from '@/components/pages/LoadingPage'
 import { Panel } from '@/components/ui/Panel'
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useMessageById } from '@/lib/api/messages'
-import { useMemo } from 'react'
+import { useMemo, use } from 'react';
 
 const extractSVGCodeblocks = (messageText: string): string[] => {
   const svgRegex = /```svg\n([\s\S]*?)\n```/g
@@ -14,7 +14,8 @@ const extractSVGCodeblocks = (messageText: string): string[] => {
   return matches.map((match) => match[1] ?? '').filter((svg) => svg.trim() !== '')
 }
 
-export default function Page({ params }: { params: { messageId: string } }) {
+export default function Page(props: { params: Promise<{ messageId: string }> }) {
+  const params = use(props.params);
   const message = useMessageById(params.messageId)
 
   const svgContents = useMemo(() => {
