@@ -1,7 +1,6 @@
 'use client'
 
-import type * as LdrsType from 'ldrs'
-import { useEffect, useState, type JSX } from 'react';
+import { useEffect, useState } from 'react'
 
 const loaderComponents = {
   dotWave: 'l-dot-wave',
@@ -24,7 +23,7 @@ const loaderComponents = {
   ping: 'l-ping',
   pulsar: 'l-pulsar',
   ripples: 'l-ripples',
-} satisfies Partial<Record<keyof typeof LdrsType, keyof JSX.IntrinsicElements>>
+}
 
 export function Loader({
   type,
@@ -46,8 +45,8 @@ export function Loader({
     getLoader()
   }, [type])
 
-  if (!isClient) return null
-
   const Component = loaderComponents[type]
-  return <Component color="var(--accent-11)" {...props} />
+  if (!isClient || !Component) return null
+  const loaderProps = { color: 'var(--accent-11)', ...props } as any
+  return <Component {...loaderProps} />
 }
