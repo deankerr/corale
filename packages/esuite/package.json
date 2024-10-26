@@ -38,6 +38,7 @@
     "dompurify": "^3.1.7",
     "fuzzysort": "^3.1.0",
     "howler": "^2.2.4",
+    "import-in-the-middle": "^1.11.2",
     "itty-time": "^1.0.6",
     "jotai": "^2.10.1",
     "ldrs": "^1.0.2",
@@ -56,6 +57,7 @@
     "rehowl": "^1.0.1",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
+    "require-in-the-middle": "^7.4.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
@@ -80,11 +82,5 @@
     "tailwindcss": "^3.4.14",
     "type-fest": "^4.26.1",
     "typescript": "^5.6.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "npm:types-react@19.0.0-rc.1",
-      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
-    }
   }
 }
