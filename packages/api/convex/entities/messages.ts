@@ -1,30 +1,34 @@
-import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, literals, v } from '../values'
+import { mutation, query } from '../functions'
+import { nullable, omit, v } from '../values'
+import { createMessage, getMessage, removeMessage, updateMessage } from './messages/db'
+import { MessageCreate, MessageReturn, MessageUpdate } from './messages/validators'
+import type { Message } from './types'
 
-export const messageSchemaFields = {
-  role: literals('system', 'assistant', 'user'),
-  name: v.optional(v.string()),
-  text: v.optional(v.string()),
+export const get = query({
+  args: {
+    messageId: v.string(),
+  },
+  handler: async (ctx, args): Promise<Message | null> => await getMessage(ctx, args),
+  returns: nullable(MessageReturn),
+})
 
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
-  channel: v.optional(v.string()),
+export const create = mutation({
+  args: MessageCreate,
+  handler: async (ctx, args): Promise<string> => {
+    const message = await createMessage(ctx, args)
+    return message.xid
+  },
+  returns: v.string(),
+})
 
-  runId: v.optional(v.id('runs')),
-}
+export const update = mutation({
+  args: MessageUpdate,
+  handler: async (ctx, args): Promise<string> => await updateMessage(ctx, args),
+  returns: v.string(),
+})
 
-export const messagesEnt = defineEnt(messageSchemaFields)
-  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
-  .field('series', v.number(), { index: true })
-  .field('xid', v.string(), { index: true })
-  .edge('thread')
-  .edge('user')
-  .index('threadId_series', ['threadId', 'series'])
-  .index('threadId_role', ['threadId', 'role'])
-  .index('threadId_name', ['threadId', 'name'])
-  .index('threadId_role_name', ['threadId', 'role', 'name'])
-  .index('threadId_channel', ['threadId', 'channel'])
-  .index('runId', ['runId'])
-  .searchIndex('search_text_threadId_role_name', {
-    searchField: 'text',
-    filterFields: ['threadId', 'role', 'name'],
-  })
+export const remove = mutation({
+  args: { messageId: v.string() },
+  handler: async (ctx, args): Promise<string> => await removeMessage(ctx, args),
+  returns: v.string(),
+})

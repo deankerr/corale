@@ -1,4 +1,4 @@
-import { messagesEnt } from '../entities/messages'
+import { messagesEnt } from '../entities/messages/ent'
 import { mutation, query } from '../functions'
 import type { Doc, MutationCtx, WithoutSystemFields } from '../types'
 import { literals, omit, v } from '../values'

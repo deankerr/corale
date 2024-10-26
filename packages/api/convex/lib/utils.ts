@@ -62,7 +62,11 @@ export function createError(
 }
 
 export function insist<T>(condition: T, message: string, data?: Record<string, Value>): asserts condition {
-  if (!condition) throw new ConvexError({ ...data, message: `assertion failed: ${message}`, fatal: true })
+  if (!condition) throw new ConvexError({ ...data, message })
+}
+
+export function raise(message: string, data?: Record<string, Value>): never {
+  throw new ConvexError({ ...data, message })
 }
 
 export function getErrorMessage(error: unknown) {
