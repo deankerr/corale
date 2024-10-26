@@ -12,18 +12,18 @@
   },
   "devDependencies": {
     "@clerk/nextjs": "^6.0.2",
-    "@types/node": "^22.7.9",
+    "@types/node": "^22.8.1",
     "type-fest": "^4.26.1",
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.67",
+    "@ai-sdk/openai": "^0.0.70",
     "@clerk/backend": "^1.15.1",
     "@fal-ai/client": "^1.0.2",
-    "ai": "^3.4.18",
+    "ai": "^3.4.20",
     "convex": "^1.17.0",
     "convex-ents": "^0.11.0",
-    "convex-helpers": "^0.1.62",
+    "convex-helpers": "^0.1.63",
     "deep-object-diff": "^1.1.9",
     "fast-content-type-parse": "^2.0.0",
     "itty-time": "^1.0.6",
