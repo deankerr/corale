@@ -1,13 +1,13 @@
 import type { PaginationOptions } from 'convex/server'
-import { generateXID } from '../db/helpers/xid'
-import { AudioCreateArgs, AudioReturnObject } from '../entities/audio/validators'
-import { internalMutation, query } from '../functions'
-import { emptyPage, paginatedReturnFields } from '../lib/utils'
-import type { MutationCtx, QueryCtx } from '../types'
-import { nullable, paginationOptsValidator, v, type AsObjectValidator, type Infer } from '../values'
+import { generateXID } from '../../db/helpers/xid'
+import { internalMutation, query } from '../../functions'
+import { emptyPage, paginatedReturnFields } from '../../lib/utils'
+import type { MutationCtx, QueryCtx } from '../../types'
+import { nullable, paginationOptsValidator, v, type AsObjectValidator, type Infer } from '../../values'
+import { AudioCreate, AudioReturn } from './validators'
 
 // * create
-async function createAudio(ctx: MutationCtx, args: Infer<AsObjectValidator<typeof AudioCreateArgs>>) {
+async function createAudio(ctx: MutationCtx, args: Infer<AsObjectValidator<typeof AudioCreate>>) {
   const xid = generateXID()
   await ctx.skipRules.table('audio').insert({
     fileId: args.fileId,
@@ -26,7 +26,7 @@ async function createAudio(ctx: MutationCtx, args: Infer<AsObjectValidator<typeo
 }
 
 export const create = internalMutation({
-  args: AudioCreateArgs,
+  args: AudioCreate.fields,
   handler: createAudio,
   returns: v.string(),
 })
@@ -44,7 +44,7 @@ export async function getAudio(ctx: QueryCtx, { audioId }: Infer<AsObjectValidat
 export const get = query({
   args: GetAudioArgs,
   handler: getAudio,
-  returns: nullable(AudioReturnObject),
+  returns: nullable(AudioReturn),
 })
 
 // * listMy
@@ -67,5 +67,5 @@ export const listMy = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: listMyAudio,
-  returns: v.object({ ...paginatedReturnFields, page: v.array(AudioReturnObject) }),
+  returns: v.object({ ...paginatedReturnFields, page: v.array(AudioReturn) }),
 })

@@ -1,13 +1,13 @@
 import { nullable, v, withSystemFields } from '../../values'
 
-export const AudioCreateArgs = {
+export const AudioCreate = v.object({
   fileId: v.id('_storage'),
   prompt: v.string(),
   duration: v.optional(v.number()),
   userId: v.id('users'),
-}
+})
 
-export const AudioReturnObject = v.object(
+export const AudioReturn = v.object(
   withSystemFields('audio', {
     fileId: v.id('_storage'),
 

@@ -1,14 +1,11 @@
 import { updateKvMetadata } from '../../db/helpers/kvMetadata'
-import { mutation, query } from '../../functions'
 import { raise } from '../../lib/utils'
 import type { Id, MutationCtx, QueryCtx } from '../../types'
-import { nullable, v, type Infer } from '../../values'
+import { type Infer } from '../../values'
 import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
-import type { Thread } from '../types'
-import { ThreadCreate, ThreadReturn, ThreadUpdate } from './validators'
+import { ThreadCreate, ThreadUpdate } from './validators'
 
 // * queries
-
 export async function getThread(ctx: QueryCtx, args: { threadId: string }) {
   const docId = ctx.table('threads').normalizeId(args.threadId)
   const thread = docId ? await ctx.table('threads').get(docId) : await ctx.table('threads').get('xid', args.threadId)

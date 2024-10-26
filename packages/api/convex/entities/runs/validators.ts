@@ -1,8 +1,7 @@
-import { defineEnt } from 'convex-ents'
-import { literals, v } from '../values'
-import { modelParametersSchemaFields } from './shared'
+import { literals, pick, v, withSystemFields } from '../../values'
+import { modelParametersSchemaFields } from '../shared'
 
-export const runSchemaFields = {
+export const RunSchemaFields = {
   status: literals('queued', 'active', 'done', 'failed'),
   stream: v.boolean(),
   patternId: v.optional(v.id('patterns')),
@@ -68,11 +67,19 @@ export const runSchemaFields = {
   providerMetadata: v.optional(v.record(v.string(), v.any())),
   // * user metadata
   kvMetadata: v.record(v.string(), v.string()),
-  updatedAt: v.number(),
 }
 
-export const runsEnt = defineEnt(runSchemaFields)
-  .deletion('soft')
-  .field('xid', v.string(), { unique: true })
-  .edge('thread')
-  .edge('user')
+export const RunCreate = v.object({
+  ...pick(RunSchemaFields, ['stream', 'options', 'instructions', 'additionalInstructions']),
+  threadId: v.id('threads'),
+})
+
+export const RunReturn = v.object(
+  withSystemFields('runs', {
+    ...RunSchemaFields,
+    xid: v.string(),
+    updatedAt: v.number(),
+    threadId: v.id('threads'),
+    userId: v.id('users'),
+  }),
+)

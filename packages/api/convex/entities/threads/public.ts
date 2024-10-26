@@ -1,8 +1,8 @@
-import { mutation, query } from '../functions'
-import { nullable, v } from '../values'
-import { createThread, getThread, removeThread, updateThread } from './threads/db'
-import { ThreadCreate, ThreadReturn, ThreadUpdate } from './threads/validators'
-import type { Thread } from './types'
+import { mutation, query } from '../../functions'
+import { nullable, v } from '../../values'
+import type { Thread } from '../types'
+import { createThread, getThread, removeThread, updateThread } from './db'
+import { ThreadCreate, ThreadReturn, ThreadUpdate } from './validators'
 
 export const get = query({
   args: { threadId: v.string() },

@@ -1,8 +1,7 @@
-import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, literals, v } from '../values'
-import { modelParametersSchemaFields } from './shared'
+import { literals, v, withSystemFields } from '../../values'
+import { modelParametersSchemaFields } from '../shared'
 
-export const patternSchemaFields = {
+export const PatternSchemaFields = {
   name: v.string(),
   description: v.string(),
 
@@ -42,9 +41,16 @@ export const patternSchemaFields = {
   kvMetadata: v.record(v.string(), v.string()),
 }
 
-export const patternsEnt = defineEnt(patternSchemaFields)
-  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
-  .field('xid', v.string(), { unique: true })
-  .field('updatedAt', v.number())
-  .field('lastUsedAt', v.number())
-  .edge('user')
+export const PatternCreate = PatternSchemaFields
+
+export const PatternUpdate = PatternSchemaFields
+
+export const PatternReturn = v.object({
+  ...withSystemFields('patterns', {
+    ...PatternSchemaFields,
+    xid: v.string(),
+    updatedAt: v.number(),
+    lastUsedAt: v.number(),
+    userId: v.id('users'),
+  }),
+})

@@ -44,7 +44,7 @@ export const soundEffect = action({
       duration: args.duration_seconds,
     }
 
-    const xid: string = await ctx.runMutation(internal.entities.audio.create, createArgs)
+    const xid: string = await ctx.runMutation(internal.entities.audio.public.create, createArgs)
     return xid
   },
   returns: v.string(),

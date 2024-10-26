@@ -1,24 +1,8 @@
-import { PatternSchemaFields } from '../entities/patterns/validators'
-import { mutation, query } from '../functions'
-import { prepareUpdate } from '../lib/utils'
-import { nullable, omit, partial, v } from '../values'
-import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
-
-const patternCreateFields = {
-  ...partial(omit(PatternSchemaFields, ['model'])),
-  model: PatternSchemaFields['model'],
-}
-
-export const patternReturnFields = {
-  _id: v.id('patterns'),
-  _creationTime: v.number(),
-  ...PatternSchemaFields,
-  // fields
-  xid: v.string(),
-  updatedAt: v.number(),
-  lastUsedAt: v.number(),
-  userId: v.id('users'),
-}
+import { generateXID, getEntity, getEntityWriterX } from '../../db/helpers/xid'
+import { mutation, query } from '../../functions'
+import { prepareUpdate } from '../../lib/utils'
+import { nullable, v } from '../../values'
+import { PatternCreate, PatternReturn, PatternUpdate } from './validators'
 
 // * Queries
 export const get = query({
@@ -39,12 +23,12 @@ export const list = query({
       .table('patterns', 'userId', (q) => q.eq('userId', userId))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
   },
-  returns: nullable(v.array(v.object(patternReturnFields))),
+  returns: nullable(v.array(PatternReturn)),
 })
 
 // * Mutations
 export const create = mutation({
-  args: patternCreateFields,
+  args: PatternCreate,
   handler: async (
     ctx,
     {
@@ -82,7 +66,7 @@ export const create = mutation({
 export const update = mutation({
   args: {
     patternId: v.string(),
-    fields: v.object(partial(PatternSchemaFields)),
+    fields: v.object(PatternUpdate),
   },
   handler: async (ctx, { patternId, fields }) => {
     const pattern = await getEntityWriterX(ctx, 'patterns', patternId)

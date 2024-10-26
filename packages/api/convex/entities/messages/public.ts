@@ -1,8 +1,8 @@
-import { mutation, query } from '../functions'
-import { nullable, v } from '../values'
-import { createMessage, getMessage, removeMessage, updateMessage } from './messages/db'
-import { MessageCreate, MessageReturn, MessageUpdate } from './messages/validators'
-import type { Message } from './types'
+import { mutation, query } from '../../functions'
+import { nullable, v } from '../../values'
+import type { Message } from '../types'
+import { createMessage, getMessage, removeMessage, updateMessage } from './db'
+import { MessageCreate, MessageReturn, MessageUpdate } from './validators'
 
 export const get = query({
   args: {
