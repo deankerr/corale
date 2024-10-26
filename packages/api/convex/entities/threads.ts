@@ -1,18 +1,32 @@
-import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, v } from '../values'
+import { mutation, query } from '../functions'
+import { nullable, v } from '../values'
+import { createThread, getThread, removeThread, updateThread } from './threads/db'
+import { ThreadCreate, ThreadReturn, ThreadUpdate } from './threads/validators'
+import type { Thread } from './types'
 
-export const threadSchemaFields = {
-  title: v.optional(v.string()),
-  instructions: v.optional(v.string()),
-  favourite: v.optional(v.boolean()),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
+export const get = query({
+  args: { threadId: v.string() },
+  handler: async (ctx, args): Promise<Thread | null> => await getThread(ctx, args),
+  returns: nullable(ThreadReturn),
+})
 
-  updatedAtTime: v.number(),
-}
+export const create = mutation({
+  args: ThreadCreate,
+  handler: async (ctx, args): Promise<string> => {
+    const thread = await createThread(ctx, args)
+    return thread.xid
+  },
+  returns: v.string(),
+})
 
-export const threadsEnt = defineEnt(threadSchemaFields)
-  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
-  .field('xid', v.string(), { unique: true })
-  .edges('messages', { ref: true, deletion: 'soft' })
-  .edges('runs', { ref: true, deletion: 'soft' })
-  .edge('user')
+export const update = mutation({
+  args: ThreadUpdate,
+  handler: async (ctx, args): Promise<string> => await updateThread(ctx, args),
+  returns: v.string(),
+})
+
+export const remove = mutation({
+  args: { threadId: v.string() },
+  handler: async (ctx, args): Promise<string> => await removeThread(ctx, args),
+  returns: v.string(),
+})

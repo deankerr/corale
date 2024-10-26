@@ -12,7 +12,7 @@ import { patternsEnt } from './entities/patterns'
 import { runsEnt } from './entities/runs'
 import { speechEnt } from './entities/speech'
 import { textsEnt } from './entities/texts'
-import { threadsEnt } from './entities/threads'
+import { threadsEnt } from './entities/threads/ent'
 import { usersApiKeysEnt } from './entities/userApiKeys'
 import { usersEnt } from './entities/users'
 

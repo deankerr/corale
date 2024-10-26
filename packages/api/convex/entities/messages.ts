@@ -1,5 +1,5 @@
 import { mutation, query } from '../functions'
-import { nullable, omit, v } from '../values'
+import { nullable, v } from '../values'
 import { createMessage, getMessage, removeMessage, updateMessage } from './messages/db'
 import { MessageCreate, MessageReturn, MessageUpdate } from './messages/validators'
 import type { Message } from './types'
