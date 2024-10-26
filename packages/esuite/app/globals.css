@@ -247,6 +247,7 @@
 
 .markdown-root table {
   @apply w-full border-separate border-spacing-0;
+  @apply block max-w-full overflow-x-auto; /* scrollable table */
 }
 
 .markdown-root thead {
