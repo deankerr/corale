@@ -10,6 +10,7 @@ const config: Config = {
     require('@tailwindcss/container-queries'),
     require('tailwindcss-animated'),
     require('tailwindcss-animate'),
+    require('@nauverse/tailwind-dot-grid-backgrounds'),
     plugin(({ addBase }) => {
       addBase({
         // css reset
@@ -87,7 +88,7 @@ const config: Config = {
       border: radixColors.css.gray[5],
       input: radixColors.css.gray[6],
       ring: 'var(--focus-8)',
-      background: radixColors.css.gray,
+      background: radixColors.css.gray[1],
       foreground: radixColors.css.gray[12],
       primary: {
         DEFAULT: radixColors.css.accent[9],

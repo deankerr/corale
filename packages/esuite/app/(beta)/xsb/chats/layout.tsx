@@ -10,9 +10,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           '--sidebar-width-icon': '18rem',
         } as React.CSSProperties
       }
+      className="bg-dot-4-s-1-gray-3"
     >
       <XSBChatsSidebar />
-      <SidebarInset className="h-svh">{children}</SidebarInset>
+      <SidebarInset className="h-svh bg-transparent">{children}</SidebarInset>
     </SidebarProvider>
   )
 }

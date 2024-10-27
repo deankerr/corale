@@ -1,8 +1,8 @@
 'use client'
 
 import { AppLogo } from '@/components/icons/AppLogo'
-import { TimeSince } from '@/components/message/TimeSince'
 import { IconButton } from '@/components/ui/Button'
+import { RelativeTimeAgo } from '@/components/ui/RelativeTimeAgo'
 import {
   Sidebar,
   SidebarContent,
@@ -60,7 +60,7 @@ export function XSBChatsSidebar() {
                 <div className="flex w-full items-center gap-2">
                   <span className="truncate">{thread.details.modelName ?? 'no model selected'}</span>{' '}
                   <span className="ml-auto text-xs">
-                    <TimeSince time={thread.updatedAtTime} />
+                    <RelativeTimeAgo time={thread.updatedAtTime} />
                   </span>
                 </div>
                 <span className="font-medium">{thread.title ?? 'Untitled'}</span>

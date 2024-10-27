@@ -10,7 +10,7 @@ import { twx } from '@/lib/utils'
 import type { EThread } from '@corale/api/convex/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
-const XSBChatShell = twx.div`flex h-full min-w-[28rem] bg-gray-1 w-full flex-col overflow-hidden`
+const XSBChatShell = twx.div`flex h-full min-w-[28rem] w-full flex-col overflow-hidden`
 
 export function XSBChat({ threadId }: { threadId: string }) {
   const thread = useThread(threadId)
@@ -31,7 +31,7 @@ export function XSBChat({ threadId }: { threadId: string }) {
 
 const XSBChatHeader = ({ thread }: { thread: EThread }) => {
   return (
-    <header className="flex-start bg-gray-1 h-12 gap-2 border-b px-3 text-base">
+    <header className="flex-start bg-gray-1 h-12 gap-2 border-b px-3">
       <SidebarTrigger />
 
       <span className="text-sm font-medium">{thread.title ?? 'Untitled'}</span>
@@ -57,7 +57,7 @@ const XSBChatBody = ({ thread }: { thread: EThread }) => {
 
 const XSBChatFooter = ({ thread }: { thread: EThread }) => {
   return (
-    <div className="flex-center sticky bottom-0 border-t px-4 py-3">
+    <div className="flex-center bg-gray-1 sticky bottom-0 border-t px-4 py-3">
       <XSBChatComposer thread={thread} />
     </div>
   )
