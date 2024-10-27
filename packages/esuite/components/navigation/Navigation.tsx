@@ -54,11 +54,7 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
               <Icons.FolderStar size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Collections</div>
             </NavItem>
-          </div>
-        </Authenticated>
 
-        <AdminOnlyUi>
-          <div className="space-y-1 py-2">
             <NavItem href={'/patterns'}>
               <Icons.Robot size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Patterns</div>
@@ -66,6 +62,15 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
             <NavItem href={'/prompts'}>
               <Icons.NotePencil size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Prompts</div>
+            </NavItem>
+          </div>
+        </Authenticated>
+
+        <AdminOnlyUi>
+          <div className="space-y-1 py-2">
+            <NavItem href={'/xsb/chats'}>
+              <Icons.ChatsCircle size={20} className="text-accent-11 place-self-center" />
+              <div className="line-clamp-2 select-none overflow-hidden pr-3">(XSB Chats)</div>
             </NavItem>
           </div>
         </AdminOnlyUi>
