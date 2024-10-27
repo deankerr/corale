@@ -7,7 +7,7 @@ import { useRoleQueryParam } from '../searchParams'
 import { useCachedQuery } from './helpers'
 
 export const useThreads = () => {
-  const threads = useCachedQuery(api.db.threads.list, {})
+  const threads = useCachedQuery(api.entities.threads.public.list, {})
   if (!threads) return threads
 
   const favourites = threads.filter((thread) => thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
@@ -19,7 +19,7 @@ export const useThreads = () => {
 export const useThread = (id: string) => {
   const threads = useThreads()
   const userThread = threads ? (threads?.find((thread) => thread.xid === id) ?? null) : undefined
-  const otherThread = useCachedQuery(api.db.threads.get, !userThread ? { id } : 'skip')
+  const otherThread = useCachedQuery(api.entities.threads.public.get, !userThread ? { threadId: id } : 'skip')
 
   return userThread || otherThread
 }
@@ -29,7 +29,7 @@ export const useRun = (runId: string | undefined) => {
 }
 
 export const useMessageTextStream = (runId: Id<'runs'> | undefined) => {
-  const textStreams = useQuery(api.db.threads.getTextStreams, runId ? { runId } : 'skip')
+  const textStreams = useQuery(api.entities.runs.public.getTextStreams, runId ? { runId } : 'skip')
   return textStreams?.[0]?.content
 }
 
@@ -78,11 +78,11 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
 }
 
 export const useUpdateThread = () => {
-  return useMutation(api.db.threads.update)
+  return useMutation(api.entities.threads.public.update)
 }
 
 export const useDeleteThread = () => {
-  return useMutation(api.db.threads.remove)
+  return useMutation(api.entities.threads.public.remove)
 }
 
 export const useUpdateMessage = () => {

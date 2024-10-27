@@ -16,7 +16,7 @@ export const useThreadActions = (threadId: string) => {
     setActionState('ready')
   }, runTimeout)
 
-  const sendAppend = useMutation(api.db.threads.append)
+  const sendAppend = useMutation(api.entities.messages.public.create)
   const append = useCallback(
     async (args: Omit<Parameters<typeof sendAppend>[0], 'threadId'>) => {
       if (actionState !== 'ready') {
@@ -87,7 +87,7 @@ export const useThreadActions = (threadId: string) => {
         text,
       }
 
-      if (action === 'append') return append({ message })
+      if (action === 'append') return append(message)
       else {
         const appendMessages = text ? [message] : undefined
         return createRun({

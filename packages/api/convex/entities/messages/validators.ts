@@ -10,7 +10,7 @@ export const MessageCreate = v.object({
   channel: v.optional(v.string()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
 
-  threadId: v.id('threads'),
+  threadId: v.string(),
 })
 
 export const MessageUpdate = v.object({

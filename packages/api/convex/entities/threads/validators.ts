@@ -1,5 +1,5 @@
 import { updateKvValidator } from '../../db/helpers/kvMetadata'
-import { v, withSystemFields } from '../../values'
+import { deprecated, v, withSystemFields } from '../../values'
 
 export const ThreadCreate = v.object({
   title: v.optional(v.string()),
@@ -20,6 +20,7 @@ export const ThreadReturn = v.object(
     title: v.optional(v.string()),
     favourite: v.optional(v.boolean()),
     kvMetadata: v.optional(v.record(v.string(), v.string())),
+    instructions: v.optional(v.string()),
     // ent fields
     xid: v.string(),
     updatedAtTime: v.number(),

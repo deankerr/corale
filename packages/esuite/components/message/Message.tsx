@@ -1,12 +1,12 @@
 'use client'
 
-import type { EMessage } from '@corale/api/convex/types'
+import type { Message as MessageType } from '@corale/api/convex/entities/types'
 import { MessageBody } from './MessageBody'
 import { MessageFooter } from './MessageFooter'
 import { MessageHeader } from './MessageHeader'
 import { MessageProvider } from './MessageProvider'
 
-export const Message = ({ message }: { message: EMessage }) => {
+export const Message = ({ message }: { message: MessageType }) => {
   return (
     <MessageProvider message={message}>
       <div className="bg-gray-2 flex shrink-0 flex-col overflow-hidden rounded border" style={{ contain: 'paint' }}>

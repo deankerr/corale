@@ -6,7 +6,6 @@ import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button, Dialog, IconButton } from '@radix-ui/themes'
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
-import { toast } from 'sonner'
 import { MDXEditor } from '../mdx-editor/MDXEditor'
 
 export interface TextEditorDialogRef {
@@ -19,6 +18,8 @@ export interface TextEditorDialogProps {
   slug: string
   children: React.ReactNode
 }
+
+// NOTE threads are no longer used for instructions
 
 export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialogProps>(
   ({ slug, children, ...props }, ref) => {
@@ -33,17 +34,17 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
       const instructions = editorRef.current?.getMarkdown()
       if (!thread || !instructions) return
 
-      updateThread({
-        threadId: thread._id,
-        fields: { instructions },
-      })
-        .catch((err) => {
-          console.error(err)
-          toast.error('An error occurred while trying to update the thread.')
-        })
-        .then(() => {
-          toast.success('Thread updated successfully.')
-        })
+      // updateThread({
+      //   threadId: thread._id,
+      //   fields: { instructions },
+      // })
+      //   .catch((err) => {
+      //     console.error(err)
+      //     toast.error('An error occurred while trying to update the thread.')
+      //   })
+      //   .then(() => {
+      //     toast.success('Thread updated successfully.')
+      //   })
     }
 
     useImperativeHandle(ref, () => ({
@@ -83,7 +84,7 @@ export const TextEditorDialog = forwardRef<TextEditorDialogRef, TextEditorDialog
             >
               <MDXEditor
                 ref={editorRef}
-                markdown={thread?.instructions ?? ''}
+                markdown={''}
                 readOnly={!isViewer}
                 placeholder="Write your instructions here..."
                 contentEditableClassName="markdown-root"

@@ -2,7 +2,7 @@ import { CmdK } from '@/components/command/CmdK'
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { useChatModels } from '@/lib/api/models'
 import { cn } from '@/lib/utils'
-import type { EChatModel } from '@corale/api/convex/types'
+import type { ChatModel } from '@corale/api/convex/entities/types'
 import { Dialog } from '@radix-ui/themes'
 import { useState } from 'react'
 
@@ -62,7 +62,7 @@ export const ModelPickerCmd = ({
   )
 }
 
-const ModelItem = ({ model, className, ...props }: { model: EChatModel } & React.ComponentProps<typeof CmdK.Item>) => {
+const ModelItem = ({ model, className, ...props }: { model: ChatModel } & React.ComponentProps<typeof CmdK.Item>) => {
   const isFree = model.name.endsWith(':free')
   return (
     <CmdK.Item {...props} className={cn('aria-selected:text-orange-11 font-medium', className)}>

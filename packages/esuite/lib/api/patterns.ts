@@ -1,5 +1,5 @@
 import { api } from '@corale/api/convex/_generated/api'
-import type { EPattern } from '@corale/api/convex/types'
+import type { Pattern } from '@corale/api/convex/entities/types'
 import { omit } from 'convex-helpers'
 import { useMutation } from 'convex/react'
 import { useCachedQuery } from './helpers'
@@ -14,7 +14,7 @@ export const usePattern = (patternId?: string) => {
 
 export function useCreatePattern() {
   const create = useMutation(api.db.patterns.create)
-  return (newPattern: EPattern) => {
+  return (newPattern: Pattern) => {
     const fields = prepareUpdate(newPattern)
     const { xid, ...rest } = fields
     return create(rest)
@@ -23,7 +23,7 @@ export function useCreatePattern() {
 
 export function useUpdatePattern() {
   const sendUpdate = useMutation(api.db.patterns.update)
-  return (newPattern: EPattern) => {
+  return (newPattern: Pattern) => {
     const update = prepareUpdate(newPattern)
     const { xid, ...fields } = update
     return sendUpdate({
@@ -41,7 +41,7 @@ export function useUpdatePattern() {
   }
 }
 
-export function prepareUpdate(newPattern: EPattern) {
+export function prepareUpdate(newPattern: Pattern) {
   return {
     ...omit(newPattern, ['_creationTime', 'updatedAt', 'lastUsedAt', 'userId', '_id', 'initialMessages']),
     initialMessages: newPattern.initialMessages.map((message) => ({

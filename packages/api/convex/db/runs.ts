@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
 import { RunReturn, RunSchemaFields } from '../entities/runs/validators'
+import { getThreadWriter } from '../entities/threads/db'
 import { internalMutation, mutation, query } from '../functions'
 import { ConvexError, nullable, pick, v } from '../values'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
@@ -9,7 +10,6 @@ import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
 import { createMessage, messageCreateFields } from './messages'
 import { getChatModel } from './models'
 import { threadPostRun } from './tasks'
-import { getOrCreateUserThread } from './threads'
 
 const runCreateFields = {
   threadId: v.string(),
@@ -34,7 +34,7 @@ export const get = query({
 export const create = mutation({
   args: runCreateFields,
   handler: async (ctx, { appendMessages = [], ...args }) => {
-    const thread = await getOrCreateUserThread(ctx, args.threadId)
+    const thread = await getThreadWriter(ctx, { threadId: args.threadId })
     if (!thread) throw new ConvexError('invalid thread id')
 
     const pattern = args.patternId ? await getEntityWriter(ctx, 'patterns', args.patternId) : null

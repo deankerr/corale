@@ -1,4 +1,4 @@
-import type { EMessage } from '@corale/api/convex/types'
+import type { Message as MessageType } from '@corale/api/convex/entities/types'
 import { Select } from '@radix-ui/themes'
 import { useState } from 'react'
 import { Button } from '../ui/Button'
@@ -13,7 +13,7 @@ export const MessageEditor = () => {
   const [nameValue, setNameValue] = useState(message.name)
 
   const handleSave = () => {
-    updateMessage({ text: textValue, role: roleValue as EMessage['role'], name: nameValue })
+    updateMessage({ text: textValue, role: roleValue as MessageType['role'], name: nameValue })
   }
 
   return (

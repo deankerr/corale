@@ -45,7 +45,7 @@ export async function createMessage(ctx: MutationCtx, fields: Infer<typeof Messa
 
   const message = await ctx
     .table('messages')
-    .insert({ ...fields, series, xid, userId })
+    .insert({ ...fields, series, xid, userId, threadId: thread._id })
     .get()
 
   await processMessageURLs(ctx, message)

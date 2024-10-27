@@ -4,12 +4,12 @@ import { omit } from 'convex-helpers'
 import { v } from 'convex/values'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
+import type { TextToImageInputs } from '../entities/types'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
 import { getErrorMessage } from '../lib/utils'
 import { defaultSizes, imageModels } from '../provider/fal/models'
 import { FalTextToImageResponse } from '../provider/fal/schema'
-import type { TextToImageInputs } from '../types'
 
 export const run = internalAction({
   args: {

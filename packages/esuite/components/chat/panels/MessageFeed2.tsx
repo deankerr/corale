@@ -6,7 +6,7 @@ import { PanelBody } from '@/components/ui/Panel'
 import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { twx } from '@/lib/utils'
-import type { EMessage } from '@corale/api/convex/types'
+import type { Message as MessageType } from '@corale/api/convex/entities/types'
 import { memo, useCallback, useRef, useState } from 'react'
 import { Components, ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
@@ -36,7 +36,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
 
   // * track last item's size, scroll to end if increased
   const handleItemsRendered = useCallback(
-    (items: ListItem<EMessage>[]) => {
+    (items: ListItem<MessageType>[]) => {
       const lastItemRendered = items.at(-1)
       const isLastMessage = lastItemRendered && lastItemRendered.originalIndex === results.length - 1
       if (!isLastMessage || !lastItemRendered.data) return
@@ -65,7 +65,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
 
   return (
     <PanelBody>
-      <Virtuoso<EMessage, MessageFeedContext>
+      <Virtuoso<MessageType, MessageFeedContext>
         ref={virtuosoRef}
         context={{ status }}
         components={{
@@ -111,7 +111,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
   )
 }
 
-const MemoizedMessage = memo(({ message }: { message: EMessage }) => {
+const MemoizedMessage = memo(({ message }: { message: MessageType }) => {
   return (
     <div className="mx-auto max-w-4xl py-2">
       <Message message={message} />

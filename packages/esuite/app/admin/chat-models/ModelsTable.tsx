@@ -1,15 +1,11 @@
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { cn } from '@/lib/utils'
-import type { EChatModel } from '@corale/api/convex/types'
+import type { ChatModel } from '@corale/api/convex/entities/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Table } from '@radix-ui/themes'
 import { useState } from 'react'
 
-export const ModelsTable = ({
-  models,
-  className,
-  ...props
-}: { models: EChatModel[] } & React.ComponentProps<'div'>) => {
+export const ModelsTable = ({ models, className, ...props }: { models: ChatModel[] } & React.ComponentProps<'div'>) => {
   const [sort, setSort] = useState<'score' | 'cost'>('score')
 
   const models2 = models.map((model) => ({

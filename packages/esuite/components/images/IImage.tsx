@@ -1,12 +1,12 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import type { EImage } from '@corale/api/convex/types'
+import type { Image } from '@corale/api/convex/entities/types'
 import NextImage from 'next/image'
 import { forwardRef } from 'react'
 import imageLoader from './image-loader'
 
-type Props = { image: EImage } & Partial<React.ComponentPropsWithoutRef<typeof NextImage>>
+type Props = { image: Image } & Partial<React.ComponentPropsWithoutRef<typeof NextImage>>
 
 export const IImage = forwardRef<HTMLImageElement, Props>(({ image, className, children, ...props }, ref) => {
   return (
