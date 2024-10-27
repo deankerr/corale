@@ -1,5 +1,4 @@
 import './globals.css'
-import { AppShell } from '@/components/layout/AppShell'
 import { LightboxProvider } from '@/components/lightbox/LightboxProvider'
 import { ClientProviders } from '@/components/util/ClientProviders'
 import { TailwindBreakpointIndicator } from '@/components/util/TailwindBreakpointIndicator'
@@ -54,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 panelBackground="solid"
                 className="bg-midnight"
               >
-                <AppShell>{children}</AppShell>
+                {children}
                 <Toaster position="top-right" theme="light" expand visibleToasts={5} richColors />
                 <LightboxProvider />
               </Theme>
