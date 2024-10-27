@@ -1,4 +1,6 @@
+import { omit } from 'convex-helpers'
 import { literals, pick, v, withSystemFields } from '../../values'
+import { MessageCreate } from '../messages/validators'
 import { ModelParametersSchemaFields } from '../shared'
 
 export const RunSchemaFields = {
@@ -66,12 +68,15 @@ export const RunSchemaFields = {
   // * post-run metadata from openrouter
   providerMetadata: v.optional(v.record(v.string(), v.any())),
   // * user metadata
-  kvMetadata: v.record(v.string(), v.string()),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
 }
 
 export const RunCreate = v.object({
-  ...pick(RunSchemaFields, ['stream', 'options', 'instructions', 'additionalInstructions']),
-  threadId: v.id('threads'),
+  ...pick(RunSchemaFields, ['stream', 'options', 'instructions', 'additionalInstructions', 'kvMetadata']),
+  patternId: v.optional(v.string()),
+  model: v.optional(RunSchemaFields.model),
+  appendMessages: v.optional(v.array(v.object(omit(MessageCreate.fields, ['threadId'])))),
+  threadId: v.string(),
 })
 
 export const RunReturn = v.object(

@@ -1,25 +1,15 @@
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
-import { RunReturn, RunSchemaFields } from '../entities/runs/validators'
+import { createMessage } from '../entities/messages/db'
+import { RunCreate, RunReturn, RunSchemaFields } from '../entities/runs/validators'
 import { getThreadWriter } from '../entities/threads/db'
 import { internalMutation, mutation, query } from '../functions'
 import { ConvexError, nullable, pick, v } from '../values'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
-import { createMessage, messageCreateFields } from './messages'
 import { getChatModel } from './models'
 import { threadPostRun } from './tasks'
-
-const runCreateFields = {
-  threadId: v.string(),
-  ...pick(RunSchemaFields, ['stream', 'options', 'instructions', 'additionalInstructions']),
-  model: v.optional(RunSchemaFields.model),
-  patternId: v.optional(v.string()),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
-
-  appendMessages: v.optional(v.array(v.object(messageCreateFields))),
-}
 
 export const get = query({
   args: {
@@ -32,8 +22,8 @@ export const get = query({
 })
 
 export const create = mutation({
-  args: runCreateFields,
-  handler: async (ctx, { appendMessages = [], ...args }) => {
+  args: RunCreate,
+  handler: async (ctx, args) => {
     const thread = await getThreadWriter(ctx, { threadId: args.threadId })
     if (!thread) throw new ConvexError('invalid thread id')
 
@@ -57,7 +47,7 @@ export const create = mutation({
     })
     await thread.patch({ updatedAtTime: Date.now(), kvMetadata: threadKvMetadata })
 
-    for (const message of appendMessages) {
+    for (const message of args.appendMessages ?? []) {
       await createMessage(ctx, {
         threadId: thread._id,
         userId: thread.userId,

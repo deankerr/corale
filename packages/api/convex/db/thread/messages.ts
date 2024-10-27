@@ -1,8 +1,8 @@
+import { MessageReturn } from '../../entities/messages/validators'
 import { query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { literals, nullable, paginationOptsValidator, v } from '../../values'
 import { getEntity } from '../helpers/xid'
-import { messageReturnFields } from '../messages'
 
 export const getBySeries = query({
   args: {
@@ -20,7 +20,7 @@ export const getBySeries = query({
     if (!message || message.deletionTime) return null
     return message.doc()
   },
-  returns: nullable(v.object(messageReturnFields)),
+  returns: nullable(MessageReturn),
 })
 
 export const list = query({
@@ -41,7 +41,7 @@ export const list = query({
       .map(async (message) => message.doc())
     return messages
   },
-  returns: nullable(v.array(v.object(messageReturnFields))),
+  returns: nullable(v.array(MessageReturn)),
 })
 
 export const search = query({
@@ -101,7 +101,7 @@ export const search = query({
 
     return messages
   },
-  returns: v.object({ ...paginatedReturnFields, page: v.array(v.object(messageReturnFields)) }),
+  returns: v.object({ ...paginatedReturnFields, page: v.array(MessageReturn) }),
 })
 
 export const searchText = query({
@@ -134,5 +134,5 @@ export const searchText = query({
 
     return messages
   },
-  returns: nullable(v.array(v.object(messageReturnFields))),
+  returns: nullable(v.array(MessageReturn)),
 })

@@ -11,12 +11,13 @@ export const MessageCreate = v.object({
   kvMetadata: v.optional(v.record(v.string(), v.string())),
 
   threadId: v.string(),
+  runId: v.optional(v.id('runs')),
 })
 
 export const MessageUpdate = v.object({
   messageId: v.string(),
   fields: v.object({
-    role: MessageRoles,
+    role: v.optional(MessageRoles),
     name: v.optional(v.string()),
     text: v.optional(v.string()),
     channel: v.optional(v.string()),
@@ -31,7 +32,7 @@ export const MessageReturn = v.object(
     text: v.optional(v.string()),
     channel: v.optional(v.string()),
     kvMetadata: v.optional(v.record(v.string(), v.string())),
-    runId: v.optional(v.id('runs')),
+    runId: v.optional(v.string()),
 
     // ent fields
     xid: v.string(),

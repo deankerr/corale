@@ -5,11 +5,11 @@ import { useMemo, useRef } from 'react'
 import { useCachedQuery } from './helpers'
 
 export const useMessageBySeries = (threadId: string, series: string) => {
-  return useCachedQuery(api.db.thread.messages.getBySeries, { threadId, series: parseInt(series) })
+  return useCachedQuery(api.entities.messages.public.getSeries, { threadId, series: parseInt(series) })
 }
 
 export const useMessageById = (id: string) => {
-  return useCachedQuery(api.db.messages.get, { messageId: id })
+  return useCachedQuery(api.entities.messages.public.get, { messageId: id })
 }
 
 export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
