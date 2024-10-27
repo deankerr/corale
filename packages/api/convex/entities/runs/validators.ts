@@ -1,5 +1,5 @@
 import { literals, pick, v, withSystemFields } from '../../values'
-import { modelParametersSchemaFields } from '../shared'
+import { ModelParametersSchemaFields } from '../shared'
 
 export const RunSchemaFields = {
   status: literals('queued', 'active', 'done', 'failed'),
@@ -9,7 +9,7 @@ export const RunSchemaFields = {
   model: v.object({
     id: v.string(),
     provider: v.optional(v.string()),
-    ...modelParametersSchemaFields,
+    ...ModelParametersSchemaFields,
   }),
 
   options: v.optional(

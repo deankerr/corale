@@ -1,13 +1,8 @@
 import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, literals, v } from '../values'
+import { entityScheduledDeletionDelay, v } from '../../values'
+import { UsersApiKeysSchemaFields, UserSchemaFields } from './validators'
 
-export const userSchemaFields = {
-  name: v.string(),
-  imageUrl: v.string(),
-  role: literals('user', 'admin'),
-}
-
-export const usersEnt = defineEnt(userSchemaFields)
+export const usersEnt = defineEnt(UserSchemaFields)
   .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
   .field('tokenIdentifier', v.string(), { unique: true })
   .edges('users_api_keys', { ref: true })
@@ -18,3 +13,8 @@ export const usersEnt = defineEnt(userSchemaFields)
   .edges('threads', { ref: true, deletion: 'soft' })
   .edges('patterns', { ref: true, deletion: 'soft' })
   .edges('runs', { ref: true, deletion: 'soft' })
+
+export const usersApiKeysEnt = defineEnt(UsersApiKeysSchemaFields)
+  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
+  .field('secret', v.string(), { unique: true })
+  .edge('user')

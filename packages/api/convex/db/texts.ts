@@ -1,15 +1,6 @@
+import { TextPromptReturn } from '../entities/texts/validators'
 import { internalMutation, mutation, query } from '../functions'
 import { ConvexError, nullable, v } from '../values'
-
-const textPromptsReturn = v.object({
-  _id: v.id('texts'),
-  _creationTime: v.number(),
-  title: v.string(),
-  content: v.string(),
-  type: v.literal('prompt'),
-  userId: v.id('users'),
-  updatedAt: v.number(),
-})
 
 export const getPrompt = query({
   args: {
@@ -24,7 +15,7 @@ export const getPrompt = query({
 
     return { ...text, type: 'prompt' as const, title: text.title ?? 'Untitled Prompt' }
   },
-  returns: nullable(textPromptsReturn),
+  returns: nullable(TextPromptReturn),
 })
 
 export const listPrompts = query({
@@ -40,7 +31,7 @@ export const listPrompts = query({
         title: text.title ?? 'Untitled Prompt',
       }))
   },
-  returns: v.array(textPromptsReturn),
+  returns: v.array(TextPromptReturn),
 })
 
 export const setPrompt = mutation({

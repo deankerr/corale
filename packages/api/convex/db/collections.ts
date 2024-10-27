@@ -1,21 +1,12 @@
+import { CollectionReturn } from '../entities/collections/validators'
+import { ImageReturn } from '../entities/images/validators'
 import { mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import type { Ent, QueryCtx } from '../types'
 import { literals, nullable, paginationOptsValidator, v } from '../values'
 import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
-import { getImageV2Edges, imagesReturn } from './images'
-
-const collectionReturnFields = v.object({
-  _id: v.id('collections'),
-  _creationTime: v.number(),
-  title: v.string(),
-  ownerId: v.id('users'),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
-  // fields
-  images: v.array(imagesReturn),
-  xid: v.string(),
-})
+import { getImageV2Edges } from './images'
 
 export const getCollectionEdges = async (ctx: QueryCtx, collection: Ent<'collections'>) => {
   const images = await collection
@@ -38,7 +29,7 @@ export const get = query({
     const collection = await getEntity(ctx, 'collections', collectionId)
     return collection ? await getCollectionEdges(ctx, collection) : null
   },
-  returns: nullable(collectionReturnFields),
+  returns: nullable(CollectionReturn),
 })
 
 export const latest = query({
@@ -54,7 +45,7 @@ export const latest = query({
       .take(24)
       .map(async (collection) => await getCollectionEdges(ctx, collection))
   },
-  returns: nullable(v.array(collectionReturnFields)),
+  returns: nullable(v.array(CollectionReturn)),
 })
 
 export const listImages = query({
@@ -78,7 +69,7 @@ export const listImages = query({
       page: result.page.filter((image) => image.deletionTime === undefined),
     }
   },
-  returns: v.object({ ...paginatedReturnFields, page: v.array(imagesReturn) }),
+  returns: v.object({ ...paginatedReturnFields, page: v.array(ImageReturn) }),
 })
 
 export const create = mutation({

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
-import { RunSchemaFields } from '../entities/runs/validators'
+import { RunReturn, RunSchemaFields } from '../entities/runs/validators'
 import { internalMutation, mutation, query } from '../functions'
 import { ConvexError, nullable, pick, v } from '../values'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
@@ -21,15 +21,6 @@ const runCreateFields = {
   appendMessages: v.optional(v.array(v.object(messageCreateFields))),
 }
 
-export const runReturnFields = {
-  _id: v.id('runs'),
-  _creationTime: v.number(),
-  ...RunSchemaFields,
-  threadId: v.id('threads'),
-  userId: v.id('users'),
-  xid: v.string(),
-}
-
 export const get = query({
   args: {
     runId: v.string(),
@@ -37,7 +28,7 @@ export const get = query({
   handler: async (ctx, { runId }) => {
     return await ctx.table('runs').get(runId as Id<'runs'>)
   },
-  returns: nullable(v.object(runReturnFields)),
+  returns: nullable(RunReturn),
 })
 
 export const create = mutation({

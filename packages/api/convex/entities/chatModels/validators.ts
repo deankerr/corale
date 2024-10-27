@@ -1,7 +1,6 @@
-import { defineEnt } from 'convex-ents'
-import { v } from '../values'
+import { v, withSystemFields } from '../../values'
 
-export const chatModelSchemaFields = {
+export const ChatModelSchemaFields = {
   name: v.string(),
   description: v.string(),
   creatorName: v.string(),
@@ -34,6 +33,6 @@ export const chatModelSchemaFields = {
   maxOutputTokens: v.optional(v.number()),
 }
 
-export const chatModelsEnt = defineEnt(chatModelSchemaFields).field('resourceKey', v.string(), {
-  unique: true,
-})
+export const ChatModelReturn = v.object(
+  withSystemFields('chat_models', { ...ChatModelSchemaFields, resourceKey: v.string() }),
+)

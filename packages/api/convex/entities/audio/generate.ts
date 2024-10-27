@@ -1,10 +1,10 @@
 import ky from 'ky'
 import { internal } from '../../_generated/api'
-import type { UserReturnObject } from '../../db/users'
 import { action } from '../../functions'
 import { ENV } from '../../lib/env'
 import type { Id } from '../../types'
 import { ConvexError, v, type AsObjectValidator, type Infer } from '../../values'
+import type { User } from '../types'
 
 const SoundEffectInputFields = {
   text: v.string(),
@@ -29,7 +29,7 @@ async function generateSoundEffect(input: Infer<AsObjectValidator<typeof SoundEf
 export const soundEffect = action({
   args: { ...SoundEffectInputFields, apiKey: v.optional(v.string()) },
   handler: async (ctx, { apiKey, ...args }) => {
-    const user: UserReturnObject | null = await ctx.runQuery(internal.db.users.getViewerWithApiKey, {
+    const user: User | null = await ctx.runQuery(internal.db.users.getViewerWithApiKey, {
       apiKey,
     })
     if (!user) throw new ConvexError('not authorized')

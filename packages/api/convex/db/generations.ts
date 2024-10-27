@@ -2,53 +2,20 @@ import { asyncMap } from 'convex-helpers'
 import { paginationOptsValidator } from 'convex/server'
 import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../_generated/api'
-import { generationSchemaFields } from '../entities/generations'
+import { GenerationReturn, GenerationSchemaFields } from '../entities/generations/validators'
+import { TextToImageInputs } from '../entities/shared'
 import { internalMutation, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
-import type { Ent, QueryCtx, TextToImageInputs } from '../types'
-import { nullable, omit, pick, v } from '../values'
+import type { Ent, QueryCtx } from '../types'
+import { nullable, omit, pick, v, type Infer } from '../values'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
-import { getImageV2Edges, imagesReturn } from './images'
-
-export const textToImageInputs = v.object({
-  type: v.literal('textToImage'),
-  modelId: v.string(),
-  workflow: v.optional(v.string()),
-
-  prompt: v.string(),
-  negativePrompt: v.optional(v.string()),
-  n: v.optional(v.number()),
-  width: v.optional(v.number()),
-  height: v.optional(v.number()),
-  size: v.optional(v.string()),
-  seed: v.optional(v.number()),
-  guidanceScale: v.optional(v.number()),
-  steps: v.optional(v.number()),
-
-  loras: v.optional(
-    v.array(
-      v.object({
-        path: v.string(),
-        scale: v.optional(v.number()),
-      }),
-    ),
-  ),
-})
-
-export const generationsReturn = v.object({
-  _id: v.id('generations_v2'),
-  _creationTime: v.number(),
-  ...omit(generationSchemaFields, ['output']),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
-  images: v.array(imagesReturn),
-  xid: v.string(),
-})
+import { getImageV2Edges } from './images'
 
 export const getGenerationEdges = async (ctx: QueryCtx, generation: Ent<'generations_v2'>) => {
   const doc = omit(generation.doc(), ['output'])
   return {
     ...doc,
-    input: generation.input as TextToImageInputs,
+    input: generation.input as Infer<typeof TextToImageInputs>,
     images: await ctx
       .table('images_v2', 'generationId', (q) => q.eq('generationId', generation._id))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
@@ -64,7 +31,7 @@ export const get = query({
     const generation = await getEntity(ctx, 'generations_v2', generationId)
     return generation ? await getGenerationEdges(ctx, generation) : null
   },
-  returns: nullable(generationsReturn),
+  returns: nullable(GenerationReturn),
 })
 
 export const list = query({
@@ -81,13 +48,13 @@ export const list = query({
       .paginate(paginationOpts)
       .map(async (gen) => await getGenerationEdges(ctx, gen))
   },
-  returns: v.object({ ...paginatedReturnFields, page: v.array(generationsReturn) }),
+  returns: v.object({ ...paginatedReturnFields, page: v.array(GenerationReturn) }),
 })
 
 // * mutations
 export const create = mutation({
   args: {
-    inputs: v.array(textToImageInputs),
+    inputs: v.array(TextToImageInputs),
   },
   handler: async (ctx, { inputs }) => {
     const viewer = await ctx.viewerX()
@@ -144,7 +111,7 @@ export const activate = internalMutation({
 export const complete = internalMutation({
   args: {
     generationId: v.id('generations_v2'),
-    results: v.array(generationSchemaFields.results.element),
+    results: v.array(GenerationSchemaFields.results.element),
     output: v.any(),
   },
   handler: async (ctx, { generationId, results, output }) => {
@@ -175,7 +142,7 @@ export const complete = internalMutation({
 export const fail = internalMutation({
   args: {
     generationId: v.id('generations_v2'),
-    ...pick(generationSchemaFields, ['errors']),
+    ...pick(GenerationSchemaFields, ['errors']),
   },
   handler: async (ctx, { generationId, errors }) => {
     const generation = await ctx.skipRules.table('generations_v2').getX(generationId)

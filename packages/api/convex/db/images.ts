@@ -1,36 +1,16 @@
 import { getQuery, parseFilename } from 'ufo'
 import { internal } from '../_generated/api'
 import { httpAction } from '../_generated/server'
-import { imageSchemaFields } from '../entities/images'
-import { imagesMetadataSchemaFields } from '../entities/imagesMetadata'
+import { ImageReturn, ImageSchemaFields } from '../entities/images/validators'
+import { ImagesMetadataSchemaFields } from '../entities/imagesMetadata/validators'
+import { TextToImageInputs } from '../entities/types'
 import { internalMutation, internalQuery, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import { getImageModel } from '../provider/fal/models'
 import type { FalTextToImageResponse } from '../provider/fal/schema'
-import type { Doc, Ent, QueryCtx, TextToImageInputs } from '../types'
+import type { Doc, Ent, QueryCtx } from '../types'
 import { ConvexError, literals, omit, paginationOptsValidator, v } from '../values'
 import { generateXID, getEntity, getEntityWriterX, getEntityX } from './helpers/xid'
-
-export const imagesReturn = v.object({
-  _id: v.id('images_v2'),
-  _creationTime: v.number(),
-  sourceUrl: v.string(),
-  sourceType: v.string(),
-  fileId: v.string(),
-  format: v.string(),
-  width: v.number(),
-  height: v.number(),
-  blurDataUrl: v.string(),
-  createdAt: v.optional(v.number()),
-  color: v.string(),
-
-  generationId: v.optional(v.id('generations_v2')),
-  runId: v.string(),
-  ownerId: v.id('users'),
-  collectionIds: v.array(v.id('collections')),
-  // fields
-  xid: v.string(),
-})
 
 export const getImageV2Edges = async (ctx: QueryCtx, image: Ent<'images_v2'>) => {
   return {
@@ -58,12 +38,12 @@ export const getByRunId = query({
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .map(async (image) => await getImageV2Edges(ctx, image))
   },
-  returns: v.array(imagesReturn),
+  returns: v.array(ImageReturn),
 })
 
 export const createImageV2 = internalMutation({
   args: {
-    ...omit(imageSchemaFields, ['createdAt']),
+    ...omit(ImageSchemaFields, ['createdAt']),
     createdAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
@@ -177,14 +157,14 @@ export const listMyImages = query({
       .paginate(paginationOpts)
       .map((image) => getImageV2Edges(ctx, image))
   },
-  returns: v.object({ ...paginatedReturnFields, page: v.array(imagesReturn) }),
+  returns: v.object({ ...paginatedReturnFields, page: v.array(ImageReturn) }),
 })
 
 // * metadata
 export const addMetadata = mutation({
   args: {
     imageId: v.string(),
-    fields: imagesMetadataSchemaFields['data'],
+    fields: ImagesMetadataSchemaFields['data'],
   },
   handler: async (ctx, { imageId, fields }) => {
     const user = await ctx.viewerX()

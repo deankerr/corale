@@ -1,7 +1,7 @@
-import { defineEnt } from 'convex-ents'
-import { literals, v } from '../values'
+import { literals, v, withSystemFields } from '../../values'
+import { ImageReturn } from '../images/validators'
 
-export const generationSchemaFields = {
+export const GenerationSchemaFields = {
   status: literals('queued', 'active', 'done', 'failed'),
   updatedAt: v.number(),
   workflow: v.optional(v.string()),
@@ -22,8 +22,10 @@ export const generationSchemaFields = {
   ownerId: v.id('users'),
 }
 
-export const generationsEnt = defineEnt(generationSchemaFields)
-  .field('xid', v.string(), { unique: true })
-  .index('status', ['status'])
-  .index('runId', ['runId'])
-  .index('ownerId', ['ownerId'])
+export const GenerationReturn = v.object(
+  withSystemFields('generations_v2', {
+    ...GenerationSchemaFields,
+    xid: v.string(),
+    images: v.optional(v.array(ImageReturn)),
+  }),
+)

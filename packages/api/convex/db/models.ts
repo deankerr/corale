@@ -1,10 +1,10 @@
-import { chatModelSchemaFields } from '../entities/chatModels'
+import { ChatModelSchemaFields } from '../entities/chatModels/validators'
 import { internalMutation, internalQuery, query } from '../functions'
 import { QueryCtx } from '../types'
 import { partial, v, withSystemFields } from '../values'
 
 export const chatModelReturn = v.object({
-  ...withSystemFields('chat_models', chatModelSchemaFields),
+  ...withSystemFields('chat_models', ChatModelSchemaFields),
   resourceKey: v.string(),
 })
 
@@ -38,7 +38,7 @@ export const listAll = internalQuery({
 
 export const create = internalMutation({
   args: {
-    ...chatModelSchemaFields,
+    ...ChatModelSchemaFields,
     resourceKey: v.string(),
   },
   handler: async (ctx, args) => {
@@ -49,7 +49,7 @@ export const create = internalMutation({
 export const replace = internalMutation({
   args: {
     id: v.id('chat_models'),
-    ...chatModelSchemaFields,
+    ...ChatModelSchemaFields,
     resourceKey: v.string(),
   },
   handler: async (ctx, { id, ...args }) => {
@@ -60,7 +60,7 @@ export const replace = internalMutation({
 export const update = internalMutation({
   args: {
     id: v.id('chat_models'),
-    fields: v.object(partial(chatModelSchemaFields)),
+    fields: v.object(partial(ChatModelSchemaFields)),
   },
   handler: async (ctx, { id, fields }) => {
     return await ctx.table('chat_models').getX(id).patch(fields)

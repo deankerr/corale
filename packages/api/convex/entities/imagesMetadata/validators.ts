@@ -1,7 +1,6 @@
-import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, literals, v } from '../values'
+import { literals, v, withSystemFields } from '../../values'
 
-const captionMetadataFields = {
+const CaptionMetadataFields = {
   type: v.literal('caption'),
   version: v.number(),
   modelId: v.string(),
@@ -11,18 +10,15 @@ const captionMetadataFields = {
   ocr: v.array(v.string()),
 }
 
-const generationMetadataFields = {
+const GenerationMetadataFields = {
   type: v.literal('generation'),
   version: v.number(),
-
   generationType: v.optional(v.string()),
   workflow: v.optional(v.string()),
-
   modelId: v.string(),
   modelName: v.string(),
   provider: v.string(),
   prompt: v.string(),
-
   negativePrompt: v.optional(v.string()),
   n: v.optional(v.number()),
   width: v.optional(v.number()),
@@ -39,17 +35,16 @@ const generationMetadataFields = {
       }),
     ),
   ),
-
   nthInBatch: v.optional(v.number()),
   cost: v.optional(v.number()),
 }
 
-const nsfwProbabilityMetadataFields = {
+const NsfwProbabilityMetadataFields = {
   type: v.literal('nsfwProbability'),
   nsfwProbability: v.number(),
 }
 
-const messageMetadataFields = {
+const MessageMetadataFields = {
   type: v.literal('message'),
   role: v.string(),
   name: v.optional(v.string()),
@@ -58,22 +53,14 @@ const messageMetadataFields = {
   threadId: v.optional(v.string()),
 }
 
-export const imagesMetadataSchemaFields = {
+export const ImagesMetadataSchemaFields = {
   type: literals('caption', 'generation', 'nsfwProbability', 'message'),
   data: v.union(
-    v.object(captionMetadataFields),
-    v.object(generationMetadataFields),
-    v.object(nsfwProbabilityMetadataFields),
-    v.object(messageMetadataFields),
+    v.object(CaptionMetadataFields),
+    v.object(GenerationMetadataFields),
+    v.object(NsfwProbabilityMetadataFields),
+    v.object(MessageMetadataFields),
   ),
 }
 
-export const imagesMetadataEnt = defineEnt(imagesMetadataSchemaFields)
-  .deletion('scheduled', {
-    delayMs: entityScheduledDeletionDelay,
-  })
-  .index('type', ['data.type'])
-  .edge('image', {
-    to: 'images_v2',
-    field: 'imageId',
-  })
+export const ImagesMetadataReturn = v.object(withSystemFields('images_metadata_v2', ImagesMetadataSchemaFields))
