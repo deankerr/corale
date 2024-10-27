@@ -1,6 +1,5 @@
 'use client'
 
-import { ChatToolbar } from '@/components/chat/ChatToolbar'
 import { MessageSearchResults } from '@/components/chat/panels/MessageSearchResults'
 import { Composer } from '@/components/composer/Composer'
 import { Panel, PanelBodyGrid, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
@@ -18,7 +17,6 @@ export const Chat = ({ threadId }: { threadId: string }) => {
   return (
     <Panel>
       <ChatHeader threadId={threadId} />
-      <ChatToolbar threadId={threadId} />
 
       {/* > body */}
       <PanelBodyGrid>
