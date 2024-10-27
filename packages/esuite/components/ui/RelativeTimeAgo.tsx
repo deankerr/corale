@@ -1,7 +1,7 @@
 'use client'
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip'
 import { useIsClient } from '@/lib/useIsClient'
+import { Tooltip } from '@radix-ui/themes'
 import { useCallback, useEffect, useState } from 'react'
 
 type RelativeTimeAgoProps = {
@@ -62,15 +62,10 @@ export function RelativeTimeAgo({
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <time dateTime={new Date(time).toISOString()} className="whitespace-pre">
-          {timeString}
-        </time>
-      </TooltipTrigger>
-      <TooltipContent side="top" align="center">
-        {tooltipFormat(new Date(time))}
-      </TooltipContent>
+    <Tooltip content={tooltipFormat(new Date(time))}>
+      <time dateTime={new Date(time).toISOString()} className="whitespace-pre">
+        {timeString}
+      </time>
     </Tooltip>
   )
 }
