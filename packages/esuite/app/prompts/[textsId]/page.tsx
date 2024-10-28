@@ -3,7 +3,7 @@
 import { PromptEditor } from '@/components/prompts/PromptEditor'
 import { PanelEmpty, PanelLoading } from '@/components/ui/Panel'
 import { usePrompt } from '@/lib/api/prompts'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import type { Id } from '@corale/api/convex/types'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'

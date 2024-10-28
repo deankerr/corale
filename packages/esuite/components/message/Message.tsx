@@ -1,6 +1,6 @@
 'use client'
 
-import type { Message as MessageType } from '@corale/api/convex/entities/types'
+import type { Message as MessageType } from '@corale/api'
 import { MessageBody } from './MessageBody'
 import { MessageFooter } from './MessageFooter'
 import { MessageHeader } from './MessageHeader'

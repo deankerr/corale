@@ -1,7 +1,7 @@
 import { ImageCardNext } from '@/components/images/ImageCardNext'
 import { ImageGeneratingEffect } from '@/components/images/ImageGeneratingEffect'
 import { useLightbox } from '@/components/lightbox/hooks'
-import type { Generation, Image, TextToImageInputs } from '@corale/api/convex/entities/types'
+import type { Generation, Image, TextToImageInputs } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import * as Accordion from '@radix-ui/react-accordion'
 import { Badge } from '@radix-ui/themes'

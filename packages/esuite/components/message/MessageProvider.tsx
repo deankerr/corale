@@ -1,6 +1,6 @@
 import { useDeleteMessage, useRun, useUpdateMessage } from '@/lib/api/threads'
 import { useViewer } from '@/lib/api/users'
-import type { Message as MessageType, Run } from '@corale/api/convex/entities/types'
+import type { Message as MessageType, Run } from '@corale/api'
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { toast } from 'sonner'
 

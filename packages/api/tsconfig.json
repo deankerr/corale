@@ -9,6 +9,6 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["convex/**/*.ts"],
+  "include": ["convex/**/*.ts", "index.ts"],
   "exclude": ["node_modules", "./convex/_generated", "./build"]
 }

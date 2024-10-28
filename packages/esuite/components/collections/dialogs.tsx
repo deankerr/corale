@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import type { Id } from '@corale/api/convex/types'
 import { AlertDialog, Dialog, TextField } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'

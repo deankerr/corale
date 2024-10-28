@@ -1,4 +1,4 @@
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { usePaginatedQuery } from 'convex/react'
 import { useCachedQuery } from './helpers'
 

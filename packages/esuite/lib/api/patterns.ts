@@ -1,5 +1,4 @@
-import { api } from '@corale/api/convex/_generated/api'
-import type { Pattern } from '@corale/api/convex/entities/types'
+import { api, type Pattern } from '@corale/api'
 import { omit } from 'convex-helpers'
 import { useMutation } from 'convex/react'
 import { useCachedQuery } from './helpers'

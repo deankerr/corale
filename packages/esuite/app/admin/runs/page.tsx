@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { Loader } from '@/components/ui/Loader'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { usePaginatedQuery } from 'convex/react'
 import { AdminPageWrapper } from '../admin-utils'

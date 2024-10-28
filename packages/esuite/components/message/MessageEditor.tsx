@@ -1,4 +1,4 @@
-import type { Message as MessageType } from '@corale/api/convex/entities/types'
+import type { Message as MessageType } from '@corale/api'
 import { Select } from '@radix-ui/themes'
 import { useState } from 'react'
 import { Button } from '../ui/Button'

@@ -6,7 +6,7 @@ import { PanelBody } from '@/components/ui/Panel'
 import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { twx } from '@/lib/utils'
-import type { Message as MessageType } from '@corale/api/convex/entities/types'
+import type { Message as MessageType } from '@corale/api'
 import { memo, useCallback, useRef, useState } from 'react'
 import { Components, ListItem, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 

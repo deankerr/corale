@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SliderWithInput } from '@/components/ui/SliderWithInput'
 import { TextareaAutosize } from '@/components/ui/TextareaAutosize'
 import { TextField } from '@/components/ui/TextField'
-import type { TextToImageInputs } from '@corale/api/convex/entities/types'
+import type { TextToImageInputs } from '@corale/api'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { RadioCards } from '@radix-ui/themes'

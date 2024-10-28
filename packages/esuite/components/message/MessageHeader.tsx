@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import type { Message as MessageType } from '@corale/api/convex/entities/types'
+import type { Message as MessageType } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, DropdownMenu } from '@radix-ui/themes'
 import Link from 'next/link'

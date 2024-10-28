@@ -1,5 +1,5 @@
 import type { ComposerSend } from '@/components/composer/Composer'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { useTimeoutEffect } from '@react-hookz/web'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'

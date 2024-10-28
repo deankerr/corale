@@ -1,4 +1,4 @@
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { useMutation, usePaginatedQuery } from 'convex/react'
 
 export const useMyImagesList = (order?: 'asc' | 'desc') => {

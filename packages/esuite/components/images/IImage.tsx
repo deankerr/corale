@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import type { Image } from '@corale/api/convex/entities/types'
+import type { Image } from '@corale/api'
 import NextImage from 'next/image'
 import { forwardRef } from 'react'
 import imageLoader from './image-loader'

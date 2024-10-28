@@ -1,4 +1,4 @@
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { ConvexHttpClient } from 'convex/browser'
 import type { Metadata } from 'next'
 

@@ -1,6 +1,6 @@
 import { useTextStreams } from '@/lib/api/threads'
 import { cn } from '@/lib/utils'
-import type { Message as MessageType } from '@corale/api/convex/entities/types'
+import type { Message as MessageType } from '@corale/api'
 import { Code } from '@radix-ui/themes'
 import { Markdown } from '../markdown/Markdown'
 import { Loader } from '../ui/Loader'

@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { AlertDialog } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'

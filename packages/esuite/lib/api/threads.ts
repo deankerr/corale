@@ -1,6 +1,4 @@
-import { api } from '@corale/api/convex/_generated/api'
-import type { Id } from '@corale/api/convex/_generated/dataModel'
-import type { Thread } from '@corale/api/convex/entities/types'
+import { api, type Id, type Thread } from '@corale/api'
 import { useMutation, useQuery } from 'convex/react'
 import { useEffect, useRef } from 'react'
 import { useDebounceValue } from 'usehooks-ts'

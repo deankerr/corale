@@ -3,7 +3,7 @@
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useCachedQuery } from '@/lib/api/helpers'
 import { useChatModels } from '@/lib/api/models'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Badge, BadgeProps, Card, Heading } from '@radix-ui/themes'
 import { AdminPageWrapper } from './admin-utils'

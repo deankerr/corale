@@ -1,5 +1,5 @@
 import { useRoleQueryParam } from '@/lib/searchParams'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { usePaginatedQuery } from 'convex/react'
 import { useMemo, useRef } from 'react'
 import { useCachedQuery } from './helpers'

@@ -1,6 +1,6 @@
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { cn } from '@/lib/utils'
-import type { ChatModel } from '@corale/api/convex/entities/types'
+import type { ChatModel } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Table } from '@radix-ui/themes'
 import { useState } from 'react'

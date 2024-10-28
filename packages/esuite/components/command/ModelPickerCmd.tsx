@@ -2,7 +2,7 @@ import { CmdK } from '@/components/command/CmdK'
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { useChatModels } from '@/lib/api/models'
 import { cn } from '@/lib/utils'
-import type { ChatModel } from '@corale/api/convex/entities/types'
+import type { ChatModel } from '@corale/api'
 import { Dialog } from '@radix-ui/themes'
 import { useState } from 'react'
 
