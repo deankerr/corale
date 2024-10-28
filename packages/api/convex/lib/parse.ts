@@ -1,3 +1,5 @@
+import { ENV } from './env'
+
 type MarkdownBlock =
   | {
       type: 'text'
@@ -61,4 +63,11 @@ export function isLikeIPAddress(url: URL | string): boolean {
   const isLikeIPV6 = hostname.includes(':') || hostname.includes('[')
 
   return isLikeIPV4 || isLikeIPV6
+}
+
+export function parseURLsFromText(text: string) {
+  return parseMarkdownCodeBlocks(text)
+    .filter((block) => block.type === 'text')
+    .flatMap((block) => parseURLs(block.content))
+    .filter((url) => !isLikeIPAddress(url) && url.hostname !== ENV.APP_HOSTNAME)
 }

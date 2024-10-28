@@ -1,6 +1,6 @@
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { useCachedQuery } from './helpers'
 
 export const useChatModels = () => {
-  return useCachedQuery(api.db.models.list, {})
+  return useCachedQuery(api.entities.chatModels.public.list, {})
 }

@@ -1,6 +1,6 @@
+import { imageModelConfig } from '@/config/config'
 import { useSessionStorageValue } from '@react-hookz/web'
 import { useCallback } from 'react'
-import { defaultImageModel } from './imageModels'
 
 type GenerateFormState = {
   modelId: string
@@ -13,7 +13,7 @@ type GenerateFormState = {
 }
 
 const defaultValue: GenerateFormState = {
-  modelId: defaultImageModel,
+  modelId: imageModelConfig.defaultModel,
   prompt: '',
   negativePrompt: '',
   quantity: 1,

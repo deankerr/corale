@@ -1,14 +1,14 @@
 import { useDeleteMessage, useRun, useUpdateMessage } from '@/lib/api/threads'
 import { useViewer } from '@/lib/api/users'
-import type { EMessage, ERun } from '@corale/api/convex/types'
+import type { Message as MessageType, Run } from '@corale/api'
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { toast } from 'sonner'
 
-type EMessageUpdateFields = Partial<Pick<EMessage, 'role' | 'name' | 'text' | 'channel'>>
+type EMessageUpdateFields = Partial<Pick<MessageType, 'role' | 'name' | 'text' | 'channel'>>
 
 type MessageContextType = {
-  message: EMessage
-  run?: ERun | null
+  message: MessageType
+  run?: Run | null
   isEditing: boolean
   showJson: boolean
   textStyle: 'markdown' | 'monospace'
@@ -22,7 +22,7 @@ type MessageContextType = {
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined)
 
-export function MessageProvider({ children, message }: { children: React.ReactNode; message: EMessage }) {
+export function MessageProvider({ children, message }: { children: React.ReactNode; message: MessageType }) {
   const [isEditing, setIsEditing] = useState(false)
   const [showJson, setShowJson] = useState(false)
   const [textStyle, setTextStyle] = useState<'markdown' | 'monospace'>('markdown')

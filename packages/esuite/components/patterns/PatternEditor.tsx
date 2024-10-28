@@ -9,7 +9,7 @@ import { ScrollArea } from '@/components/ui/ScrollArea'
 import { TextField } from '@/components/ui/TextField'
 import { useCreatePattern, useDeletePattern, usePattern, useUpdatePattern } from '@/lib/api/patterns'
 import { orderedListReducer, useOrderedList } from '@/lib/useOrderedList'
-import type { EMessage, EPattern } from '@corale/api/convex/types'
+import type { Message as MessageType, Pattern } from '@corale/api'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, type ButtonProps } from '@radix-ui/themes'
@@ -19,14 +19,14 @@ import ReactTextareaAutosize from 'react-textarea-autosize'
 import { toast } from 'sonner'
 import { LoadingPage } from '../pages/LoadingPage'
 
-type PatternMessage = EPattern['initialMessages'][number] & { __key: string }
+type PatternMessage = Pattern['initialMessages'][number] & { __key: string }
 
 export function PatternEditorPage({ patternId }: { patternId?: string }) {
   const pattern = usePattern(patternId ?? '')
 
   if (patternId && !pattern) return <LoadingPage />
 
-  const defaultPattern: EPattern = {
+  const defaultPattern: Pattern = {
     xid: '',
     name: '',
     description: '',
@@ -45,7 +45,7 @@ export function PatternEditorPage({ patternId }: { patternId?: string }) {
   return <PatternEditor pattern={pattern || defaultPattern} isNew={!patternId} />
 }
 
-function PatternEditor({ pattern, isNew = false }: { pattern: EPattern; isNew?: boolean }) {
+function PatternEditor({ pattern, isNew = false }: { pattern: Pattern; isNew?: boolean }) {
   const router = useRouter()
 
   const [patternState, setPatternState] = useState({
@@ -326,7 +326,13 @@ function PatternMessagesEditor({
   )
 }
 
-function RoleToggleButton({ role, onClick }: { role: EMessage['role']; onClick: (newRole: EMessage['role']) => void }) {
+function RoleToggleButton({
+  role,
+  onClick,
+}: {
+  role: MessageType['role']
+  onClick: (newRole: MessageType['role']) => void
+}) {
   const colors: Record<string, ButtonProps['color']> = {
     user: 'grass',
     assistant: 'orange',

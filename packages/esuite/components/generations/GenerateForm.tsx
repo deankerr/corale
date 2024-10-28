@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SliderWithInput } from '@/components/ui/SliderWithInput'
 import { TextareaAutosize } from '@/components/ui/TextareaAutosize'
 import { TextField } from '@/components/ui/TextField'
-import type { TextToImageInputs } from '@corale/api/convex/types'
+import { imageModelConfig } from '@/config/config'
+import { imageModels, type TextToImageInputs } from '@corale/api'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { RadioCards } from '@radix-ui/themes'
@@ -17,7 +18,6 @@ import { Authenticated } from 'convex/react'
 import { nanoid } from 'nanoid/non-secure'
 import Image from 'next/image'
 import { useState } from 'react'
-import { defaultImageModelInputs, imageModels } from './imageModels'
 
 const Lora = ({
   value,
@@ -87,7 +87,7 @@ export const GenerateForm = ({
   const { modelId, loras, prompt, negativePrompt, quantity, seed, dimensions } = value
 
   const model = imageModels.find((model) => model.modelId === modelId)
-  const inputs = model?.inputs ?? defaultImageModelInputs
+  const inputs = model?.inputs ?? imageModelConfig.defaultInputs
 
   const run = () => {
     const runConfig = {

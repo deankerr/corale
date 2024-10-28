@@ -1,6 +1,5 @@
 'use client'
 
-import { ChatToolbar } from '@/components/chat/ChatToolbar'
 import { MessageSearchResults } from '@/components/chat/panels/MessageSearchResults'
 import { Composer } from '@/components/composer/Composer'
 import { Panel, PanelBodyGrid, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
@@ -13,12 +12,12 @@ import { MessageFeed2 } from './panels/MessageFeed2'
 export const Chat = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
   const { isViewer } = useViewer(thread?.userId)
+  const shouldShowComposer = isViewer || threadId === 'new'
 
   if (!thread) return thread === null ? <PanelEmpty /> : <PanelLoading />
   return (
     <Panel>
       <ChatHeader threadId={threadId} />
-      <ChatToolbar threadId={threadId} />
 
       {/* > body */}
       <PanelBodyGrid>
@@ -28,7 +27,7 @@ export const Chat = ({ threadId }: { threadId: string }) => {
       </PanelBodyGrid>
 
       {/* > composer */}
-      {isViewer && <Composer threadId={threadId} />}
+      {shouldShowComposer && <Composer threadId={threadId} />}
     </Panel>
   )
 }

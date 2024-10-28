@@ -1,11 +1,11 @@
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { usePaginatedQuery } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
 export const useAudio = (audioId: string) => {
-  return useCachedQuery(api.entities.audio.get, { audioId })
+  return useCachedQuery(api.entities.audio.public.get, { audioId })
 }
 
 export const useMyAudioList = (initialNumItems = 25) => {
-  return usePaginatedQuery(api.entities.audio.listMy, {}, { initialNumItems })
+  return usePaginatedQuery(api.entities.audio.public.listMy, {}, { initialNumItems })
 }

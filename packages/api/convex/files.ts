@@ -2,9 +2,10 @@ import type { GenericId } from 'convex/values'
 import { ms } from 'itty-time'
 import { internal } from './_generated/api'
 import type { Id, TableNames } from './_generated/dataModel'
+import { deletionDelayTime } from './constants'
 import { internalMutation } from './functions'
 import type { MutationCtx } from './types'
-import { entityScheduledDeletionDelay, v } from './values'
+import { v } from './values'
 
 /* 
   Example scheduled delete function:
@@ -50,7 +51,7 @@ const ignoreTables = [
 async function scheduleValidFileDoc(ctx: MutationCtx, doc: BasicDocument | null) {
   if (!doc || !doc.fileId || !doc.deletionTime) return
 
-  const checkTime = doc.deletionTime + entityScheduledDeletionDelay + checkFilesDelay
+  const checkTime = doc.deletionTime + deletionDelayTime + checkFilesDelay
   if (checkTime > Date.now()) {
     await ctx.scheduler.runAt(checkTime, internal.files.deleteDocFile, { docId: doc._id, fileId: doc.fileId })
   } else {
@@ -67,9 +68,7 @@ export const startDeletionScan = internalMutation({
   args: {},
   handler: async (ctx) => {
     const scheduledDeletions = await ctx.table
-      .system('_scheduled_functions', 'by_creation_time', (q) =>
-        q.gte('_creationTime', Date.now() - entityScheduledDeletionDelay),
-      )
+      .system('_scheduled_functions', 'by_creation_time', (q) => q.gte('_creationTime', Date.now() - deletionDelayTime))
       .order('desc')
       .filter((q) =>
         q.and(q.eq(q.field('name'), 'functions.js:scheduledDelete'), q.eq(q.field('state.kind'), 'pending')),

@@ -1,6 +1,6 @@
-import { useMessageTextStream } from '@/lib/api/threads'
+import { useTextStreams } from '@/lib/api/threads'
 import { cn } from '@/lib/utils'
-import type { EMessage } from '@corale/api/convex/types'
+import type { Message as MessageType } from '@corale/api'
 import { Code } from '@radix-ui/themes'
 import { Markdown } from '../markdown/Markdown'
 import { Loader } from '../ui/Loader'
@@ -13,7 +13,7 @@ export const MessageBody = () => {
   const isHidden = message.channel === 'hidden'
   const isActive = run?.status === 'active'
   const isStreaming = run?.stream && !message.text
-  const textStream = useMessageTextStream(isStreaming ? run._id : undefined)
+  const textStream = useTextStreams(isStreaming ? run._id : undefined)
   const text = message.text ?? textStream
 
   return (
@@ -57,7 +57,7 @@ const MessageText = ({
   return <div className="text-gray-11 whitespace-pre-wrap font-mono font-[15px] leading-7">{children}</div>
 }
 
-const MessageJson = ({ message }: { message: EMessage }) => {
+const MessageJson = ({ message }: { message: MessageType }) => {
   return (
     <pre className="bg-black-a3 text-gray-11 overflow-x-auto whitespace-pre-wrap p-3.5 leading-6">
       {JSON.stringify(message, null, 2)}

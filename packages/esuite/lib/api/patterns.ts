@@ -1,20 +1,19 @@
-import { api } from '@corale/api/convex/_generated/api'
-import type { EPattern } from '@corale/api/convex/types'
+import { api, type Pattern } from '@corale/api'
 import { omit } from 'convex-helpers'
 import { useMutation } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
 export const usePatterns = () => {
-  return useCachedQuery(api.db.patterns.list, {})
+  return useCachedQuery(api.entities.patterns.public.listMy, {})
 }
 
 export const usePattern = (patternId?: string) => {
-  return useCachedQuery(api.db.patterns.get, patternId ? { patternId } : 'skip')
+  return useCachedQuery(api.entities.patterns.public.get, patternId ? { patternId } : 'skip')
 }
 
 export function useCreatePattern() {
-  const create = useMutation(api.db.patterns.create)
-  return (newPattern: EPattern) => {
+  const create = useMutation(api.entities.patterns.public.create)
+  return (newPattern: Pattern) => {
     const fields = prepareUpdate(newPattern)
     const { xid, ...rest } = fields
     return create(rest)
@@ -22,8 +21,8 @@ export function useCreatePattern() {
 }
 
 export function useUpdatePattern() {
-  const sendUpdate = useMutation(api.db.patterns.update)
-  return (newPattern: EPattern) => {
+  const sendUpdate = useMutation(api.entities.patterns.public.update)
+  return (newPattern: Pattern) => {
     const update = prepareUpdate(newPattern)
     const { xid, ...fields } = update
     return sendUpdate({
@@ -41,7 +40,7 @@ export function useUpdatePattern() {
   }
 }
 
-export function prepareUpdate(newPattern: EPattern) {
+export function prepareUpdate(newPattern: Pattern) {
   return {
     ...omit(newPattern, ['_creationTime', 'updatedAt', 'lastUsedAt', 'userId', '_id', 'initialMessages']),
     initialMessages: newPattern.initialMessages.map((message) => ({
@@ -52,5 +51,5 @@ export function prepareUpdate(newPattern: EPattern) {
 }
 
 export function useDeletePattern() {
-  return useMutation(api.db.patterns.remove)
+  return useMutation(api.entities.patterns.public.remove)
 }

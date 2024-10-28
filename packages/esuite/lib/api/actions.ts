@@ -1,5 +1,5 @@
 import type { ComposerSend } from '@/components/composer/Composer'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { useTimeoutEffect } from '@react-hookz/web'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
@@ -16,18 +16,28 @@ export const useThreadActions = (threadId: string) => {
     setActionState('ready')
   }, runTimeout)
 
-  const sendAppend = useMutation(api.db.threads.append)
+  const sendCreateThread = useMutation(api.entities.threads.public.create)
+  const createThread = useCallback(
+    async (threadId: string) => {
+      if (threadId && threadId !== 'new') return threadId
+      console.log('create thread')
+      return await sendCreateThread({})
+    },
+    [sendCreateThread],
+  )
+
+  const sendAppend = useMutation(api.entities.messages.public.create)
   const append = useCallback(
     async (args: Omit<Parameters<typeof sendAppend>[0], 'threadId'>) => {
       if (actionState !== 'ready') {
         return toast.error('Please wait before running the action again.')
       }
-
       setActionState('pending')
 
       try {
         console.log('append', args)
-        const result = await sendAppend({ ...args, threadId })
+        const id = await createThread(threadId)
+        const result = await sendAppend({ ...args, threadId: id })
 
         setActionState('rateLimited')
         reset()
@@ -45,10 +55,10 @@ export const useThreadActions = (threadId: string) => {
         return null
       }
     },
-    [actionState, sendAppend, threadId, reset, router],
+    [actionState, createThread, sendAppend, threadId, reset, router],
   )
 
-  const sendCreateRun = useMutation(api.db.runs.create)
+  const sendCreateRun = useMutation(api.entities.runs.public.create)
   const createRun = useCallback(
     async (args: Omit<Parameters<typeof sendCreateRun>[0], 'threadId'>) => {
       if (actionState !== 'ready') {
@@ -59,7 +69,9 @@ export const useThreadActions = (threadId: string) => {
 
       try {
         console.log('createRun', args)
-        const result = await sendCreateRun({ ...args, threadId: threadId ?? 'new', stream: true })
+        const id = await createThread(threadId)
+
+        const result = await sendCreateRun({ ...args, threadId: id, stream: true })
 
         setActionState('rateLimited')
         reset()
@@ -77,7 +89,7 @@ export const useThreadActions = (threadId: string) => {
         return null
       }
     },
-    [actionState, reset, router, sendCreateRun, threadId],
+    [actionState, createThread, reset, router, sendCreateRun, threadId],
   )
 
   const send = useCallback(
@@ -87,7 +99,7 @@ export const useThreadActions = (threadId: string) => {
         text,
       }
 
-      if (action === 'append') return append({ message })
+      if (action === 'append') return append(message)
       else {
         const appendMessages = text ? [message] : undefined
         return createRun({

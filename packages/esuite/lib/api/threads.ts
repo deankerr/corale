@@ -1,13 +1,21 @@
-import { api } from '@corale/api/convex/_generated/api'
-import type { Id } from '@corale/api/convex/_generated/dataModel'
+import { api, type Id, type Thread } from '@corale/api'
 import { useMutation, useQuery } from 'convex/react'
 import { useEffect, useRef } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
 import { useRoleQueryParam } from '../searchParams'
 import { useCachedQuery } from './helpers'
 
+const newThread: Thread = {
+  _id: '' as Id<'threads'>,
+  xid: 'new',
+  _creationTime: 0,
+  updatedAtTime: 0,
+  favourite: false,
+  userId: '' as Id<'users'>,
+}
+
 export const useThreads = () => {
-  const threads = useCachedQuery(api.db.threads.list, {})
+  const threads = useCachedQuery(api.entities.threads.public.listMy, {})
   if (!threads) return threads
 
   const favourites = threads.filter((thread) => thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
@@ -19,17 +27,18 @@ export const useThreads = () => {
 export const useThread = (id: string) => {
   const threads = useThreads()
   const userThread = threads ? (threads?.find((thread) => thread.xid === id) ?? null) : undefined
-  const otherThread = useCachedQuery(api.db.threads.get, !userThread ? { id } : 'skip')
+  const otherThread = useCachedQuery(api.entities.threads.public.get, !userThread ? { threadId: id } : 'skip')
 
+  if (id === 'new') return newThread
   return userThread || otherThread
 }
 
 export const useRun = (runId: string | undefined) => {
-  return useCachedQuery(api.db.runs.get, runId ? { runId } : 'skip')
+  return useCachedQuery(api.entities.runs.public.get, runId ? { runId } : 'skip')
 }
 
-export const useMessageTextStream = (runId: Id<'runs'> | undefined) => {
-  const textStreams = useQuery(api.db.threads.getTextStreams, runId ? { runId } : 'skip')
+export const useTextStreams = (runId: Id<'runs'> | undefined) => {
+  const textStreams = useQuery(api.entities.runs.public.getTextStreams, runId ? { runId } : 'skip')
   return textStreams?.[0]?.content
 }
 
@@ -61,7 +70,7 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
     ...(name && { name }),
   }
 
-  const results = useQuery(api.db.thread.messages.searchText, text ? queryArgs : 'skip')
+  const results = useQuery(api.entities.messages.public.searchText, text ? queryArgs : 'skip')
   const stored = useRef(results)
 
   if (results !== undefined) {
@@ -78,17 +87,17 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
 }
 
 export const useUpdateThread = () => {
-  return useMutation(api.db.threads.update)
+  return useMutation(api.entities.threads.public.update)
 }
 
 export const useDeleteThread = () => {
-  return useMutation(api.db.threads.remove)
+  return useMutation(api.entities.threads.public.remove)
 }
 
 export const useUpdateMessage = () => {
-  return useMutation(api.db.messages.update)
+  return useMutation(api.entities.messages.public.update)
 }
 
 export const useDeleteMessage = () => {
-  return useMutation(api.db.messages.remove)
+  return useMutation(api.entities.messages.public.remove)
 }

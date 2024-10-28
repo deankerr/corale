@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/Button'
 import { Loader } from '@/components/ui/Loader'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { usePaginatedQuery } from 'convex/react'
 import { AdminPageWrapper } from '../admin-utils'
@@ -25,7 +25,7 @@ function getDuration(startTime = 0, endTime = Date.now()) {
 }
 
 export default function Page() {
-  const runs = usePaginatedQuery(api.db.admin.runs.list, {}, { initialNumItems: 50 })
+  const runs = usePaginatedQuery(api.entities.runs.public.adminListAll, {}, { initialNumItems: 50 })
 
   return (
     <AdminPageWrapper className="w-full">

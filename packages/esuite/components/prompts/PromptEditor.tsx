@@ -2,11 +2,10 @@ import { NavigationButton } from '@/components/navigation/NavigationSheet'
 import { Button, IconButton } from '@/components/ui/Button'
 import { Panel, PanelHeader, PanelTitle } from '@/components/ui/Panel'
 import { twx } from '@/lib/utils'
-import type { MDXEditorMethods } from '@mdxeditor/editor'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
-import { useRef, useState } from 'react'
-import { MDXEditor } from '../mdx-editor/MDXEditor'
+import { useState } from 'react'
+import { TextareaAutosize } from '../ui/TextareaAutosize'
 
 const TextFieldGhost = twx.input`flex outline-none disabled:cursor-not-allowed disabled:opacity-50 w-full text-base 
   font-normal text-gray-12 placeholder:text-gray-a10 sm:text-sm`
@@ -22,8 +21,6 @@ export const PromptEditor = ({
   onSave: (args: { title: string; content: string }) => void
   onDelete?: () => void
 }) => {
-  const ref = useRef<MDXEditorMethods>(null)
-
   const [titleValue, setTitleValue] = useState(initialTitle)
   const [textValue, setTextValue] = useState(initialContent)
 
@@ -69,7 +66,7 @@ export const PromptEditor = ({
         </Button>
       </PanelHeader>
       <div className="grow">
-        <MDXEditor ref={ref} markdown={textValue} onChange={setTextValue} className="markdown-body" autoFocus />
+        <TextareaAutosize value={textValue} onChange={(e) => setTextValue(e.target.value)} autoFocus />
       </div>
     </Panel>
   )

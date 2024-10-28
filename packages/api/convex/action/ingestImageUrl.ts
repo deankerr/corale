@@ -2,12 +2,12 @@ import { pick } from 'convex-helpers'
 import { v } from 'convex/values'
 import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../_generated/api'
-import { imageSchemaFields } from '../entities/images'
+import { ImageSchemaFields } from '../entities/images/validators'
 import { internalAction } from '../functions'
 
 export const run = internalAction({
   args: {
-    ...pick(imageSchemaFields, ['sourceUrl', 'sourceType', 'generationId', 'ownerId']),
+    ...pick(ImageSchemaFields, ['sourceUrl', 'sourceType', 'generationId', 'ownerId']),
     runId: v.optional(v.string()),
   },
   handler: async (ctx, args): Promise<void> => {
@@ -16,7 +16,7 @@ export const run = internalAction({
       url: args.sourceUrl,
     })
 
-    await ctx.runMutation(internal.db.images.createImageV2, {
+    await ctx.runMutation(internal.entities.images.internal.create, {
       ...args,
       fileId,
       runId,

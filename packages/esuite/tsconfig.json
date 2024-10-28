@@ -1,6 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "jsx": "preserve",
+    "noEmit": true,
+    "incremental": true,
+    "allowJs": true,
     "plugins": [
       {
         "name": "next"

@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { AlertDialog } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
@@ -13,7 +13,7 @@ export const DeleteGenerationDialog = ({
 }: {
   id: string
 } & React.ComponentProps<typeof AlertDialog.Root>) => {
-  const sendDestroy = useMutation(api.db.generations.destroy)
+  const sendDestroy = useMutation(api.entities.generations.public.remove)
   const router = useRouter()
 
   return (
@@ -37,7 +37,7 @@ export const DeleteGenerationDialog = ({
               variant="solid"
               color="red"
               onClick={() => {
-                sendDestroy({ id, destroyImages: true }).then(() => router.push('/generations'))
+                sendDestroy({ generationId: id, destroyImages: true }).then(() => router.push('/generations'))
               }}
             >
               Delete

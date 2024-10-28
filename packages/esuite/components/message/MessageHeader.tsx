@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import type { EMessage } from '@corale/api/convex/types'
+import type { Message as MessageType } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, DropdownMenu } from '@radix-ui/themes'
 import Link from 'next/link'
@@ -162,7 +162,7 @@ function getRoleColor(role: string) {
   return 'gray'
 }
 
-function getName(message: EMessage) {
+function getName(message: MessageType) {
   if (message.name) return message.name
 
   if (message.role === 'assistant') {

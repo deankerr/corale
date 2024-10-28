@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/Badge'
 import { Link } from '@/components/ui/Link'
-import { RiExternalLinkLine } from '@remixicon/react'
+import * as Icons from '@phosphor-icons/react/dist/ssr'
 import type { Url } from 'next/dist/shared/lib/router/router'
 
 export const LinkBadge = ({ href, ...props }: React.ComponentProps<typeof Link>) => {
@@ -10,7 +10,7 @@ export const LinkBadge = ({ href, ...props }: React.ComponentProps<typeof Link>)
   return (
     <Link href={href} className="opacity-90 hover:opacity-100" {...props}>
       <Badge className="select-none" color="bronze">
-        {label} <RiExternalLinkLine size="1.3em" />
+        {label} <Icons.Link size="1.3em" />
       </Badge>
     </Link>
   )

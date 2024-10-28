@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import type { Id } from '@corale/api/convex/types'
 import { AlertDialog, Dialog, TextField } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'
@@ -15,7 +15,7 @@ export const CreateCollectionDialog = ({
   imageId?: Id<'images_v2'>
 } & React.ComponentProps<typeof Dialog.Root>) => {
   const router = useRouter()
-  const createCollection = useMutation(api.db.collections.create)
+  const createCollection = useMutation(api.entities.collections.public.create)
   const [title, setTitle] = useState('')
   return (
     <Dialog.Root {...props}>
@@ -76,7 +76,7 @@ export const EditCollectionTitleDialog = ({
   collectionId: string
   currentTitle: string
 } & React.ComponentProps<typeof Dialog.Root>) => {
-  const updateCollection = useMutation(api.db.collections.update)
+  const updateCollection = useMutation(api.entities.collections.public.update)
   const [title, setTitle] = useState(currentTitle)
   return (
     <Dialog.Root {...props}>
@@ -121,7 +121,7 @@ export const DeleteCollectionDialog = ({
 }: {
   collectionId: string
 } & React.ComponentProps<typeof AlertDialog.Root>) => {
-  const deleteCollection = useMutation(api.db.collections.remove)
+  const deleteCollection = useMutation(api.entities.collections.public.remove)
   const router = useRouter()
 
   return (

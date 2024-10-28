@@ -4,8 +4,7 @@ import { DeleteImageDialog, ImageMetadataDialog } from '@/components/images/dial
 import { IconButton } from '@/components/ui/Button'
 import { useCollections } from '@/lib/api/collections'
 import { useViewer } from '@/lib/api/users'
-import { api } from '@corale/api/convex/_generated/api'
-import type { EImage } from '@corale/api/convex/types'
+import { api, type Image } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
 import { useMutation } from 'convex/react'
@@ -20,12 +19,12 @@ export const ImageCardNext = ({
   sizes,
   children,
 }: {
-  image: EImage
+  image: Image
   sizes: string
   children?: React.ReactNode
 }) => {
   const collections = useCollections()
-  const updateCollection = useMutation(api.db.collections.update)
+  const updateCollection = useMutation(api.entities.collections.public.update)
   const { isViewer } = useViewer(image.ownerId)
 
   const isSaved = image.collectionIds.length > 0

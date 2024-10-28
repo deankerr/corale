@@ -3,7 +3,7 @@
 import { PromptEditor } from '@/components/prompts/PromptEditor'
 import { PanelEmpty, PanelLoading } from '@/components/ui/Panel'
 import { usePrompt } from '@/lib/api/prompts'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import type { Id } from '@corale/api/convex/types'
 import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
@@ -17,8 +17,8 @@ export default function Page({ params }: { params: { textsId: string } }) {
 
   const prompt = usePrompt(!isNewPrompt ? textsId : '')
 
-  const setPrompt = useMutation(api.db.texts.setPrompt)
-  const deletePrompt = useMutation(api.db.texts.deletePrompt)
+  const setPrompt = useMutation(api.entities.texts.public.setPrompt)
+  const deletePrompt = useMutation(api.entities.texts.public.deletePrompt)
 
   const handleSave = ({ title, content }: { title: string; content: string }) => {
     if (!title) return toast.error('Please enter a title')

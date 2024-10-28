@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/Button'
 import { useDeleteImage } from '@/lib/api/images'
-import { api } from '@corale/api/convex/_generated/api'
+import { api } from '@corale/api'
 import { AlertDialog, Dialog } from '@radix-ui/themes'
 import { useQuery } from 'convex-helpers/react/cache/hooks'
 import { toast } from 'sonner'
@@ -55,7 +55,7 @@ export const ImageMetadataDialog = ({
 }: {
   imageId: string
 } & React.ComponentProps<typeof Dialog.Root>) => {
-  const metadata = useQuery(api.db.images.getMetadata, { imageId })
+  const metadata = useQuery(api.entities.imagesMetadata.public.get, { imageId })
   return (
     <Dialog.Root {...props}>
       {children ? <Dialog.Trigger>{children}</Dialog.Trigger> : null}

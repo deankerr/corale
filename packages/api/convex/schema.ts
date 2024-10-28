@@ -1,20 +1,19 @@
-import { defineEntFromTable, defineEntSchema, getEntDefinitions } from 'convex-ents'
+import { defineEnt, defineEntFromTable, defineEntSchema, getEntDefinitions } from 'convex-ents'
 import { migrationsTable } from 'convex-helpers/server/migrations'
+import { v } from 'convex/values'
 import { audioEnt } from './entities/audio/ent'
-import { chatModelsEnt } from './entities/chatModels'
-import { collectionsEnt } from './entities/collections'
-import { generationsEnt } from './entities/generations'
-import { imagesEnt } from './entities/images'
-import { imagesMetadataEnt } from './entities/imagesMetadata'
-import { messagesEnt } from './entities/messages'
-import { operationsEventLogEnt } from './entities/operationsEventLogs'
-import { patternsEnt } from './entities/patterns'
-import { runsEnt } from './entities/runs'
-import { speechEnt } from './entities/speech'
-import { textsEnt } from './entities/texts'
-import { threadsEnt } from './entities/threads'
-import { usersApiKeysEnt } from './entities/userApiKeys'
-import { usersEnt } from './entities/users'
+import { chatModelsEnt } from './entities/chatModels/ent'
+import { collectionsEnt } from './entities/collections/ent'
+import { generationsEnt } from './entities/generations/ent'
+import { imagesEnt } from './entities/images/ent'
+import { imagesMetadataEnt } from './entities/imagesMetadata/ent'
+import { messagesEnt } from './entities/messages/ent'
+import { operationsEventLogEnt } from './entities/operationsEventLogs/ent'
+import { patternsEnt } from './entities/patterns/ent'
+import { runsEnt } from './entities/runs/ent'
+import { textsEnt } from './entities/texts/ent'
+import { threadsEnt } from './entities/threads/ent'
+import { usersApiKeysEnt, usersEnt } from './entities/users/ent'
 
 const schema = defineEntSchema(
   {
@@ -29,7 +28,11 @@ const schema = defineEntSchema(
     operationsEventLog: operationsEventLogEnt,
     patterns: patternsEnt,
     runs: runsEnt,
-    speech: speechEnt,
+    speech: defineEnt({
+      fileId: v.optional(v.id('_storage')),
+      resourceKey: v.string(),
+      textHash: v.string(),
+    }).index('textHash_resourceKey', ['textHash', 'resourceKey']),
     texts: textsEnt,
     threads: threadsEnt,
     users_api_keys: usersApiKeysEnt,
