@@ -1,13 +1,8 @@
-import { asyncMap } from 'convex-helpers'
-import { paginationOptsValidator } from 'convex/server'
-import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../../_generated/api'
-import { internalMutation, mutation, query } from '../../functions'
-import { emptyPage, paginatedReturnFields } from '../../lib/utils'
-import { nullable, pick, v } from '../../values'
-import { TextToImageInputs } from '../shared'
+import { internalMutation } from '../../functions'
+import { pick, v } from '../../values'
 import { getGenerationWriterX } from './db'
-import { GenerationReturn, GenerationSchemaFields } from './validators'
+import { GenerationSchemaFields } from './validators'
 
 export const activate = internalMutation({
   args: {

@@ -27,14 +27,14 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 
     switch (event.type) {
       case 'user.created':
-        await ctx.runMutation(internal.entities.users.action.create, {
+        await ctx.runMutation(internal.entities.users.internal.create, {
           fields: getUserJsonFields(event.data),
         })
         break
 
       case 'user.updated':
         const { imageUrl } = getUserJsonFields(event.data)
-        await ctx.runMutation(internal.entities.users.action.update, {
+        await ctx.runMutation(internal.entities.users.internal.update, {
           tokenIdentifier: `${issuerDomain}|${event.data.id}`,
           fields: {
             imageUrl,
@@ -43,7 +43,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
         break
 
       case 'user.deleted':
-        await ctx.runMutation(internal.entities.users.action.remove, {
+        await ctx.runMutation(internal.entities.users.internal.remove, {
           tokenIdentifier: `${issuerDomain}|${event.data.id}`,
         })
         break
@@ -70,12 +70,12 @@ export const importUsers = internalAction(async (ctx) => {
   for (const user of users.data) {
     const fields = getUserFields(user)
 
-    const existingUser = await ctx.runQuery(internal.entities.users.action.getByTokenIdentifier, {
+    const existingUser = await ctx.runQuery(internal.entities.users.internal.getByTokenIdentifier, {
       tokenIdentifier: fields.tokenIdentifier,
     })
     if (existingUser) continue
 
-    const _id = await ctx.runMutation(internal.entities.users.action.create, {
+    const _id = await ctx.runMutation(internal.entities.users.internal.create, {
       fields,
     })
     await ctx.runMutation(internal.entities.users.keys.generateApiKeyForUser, { userId: _id })

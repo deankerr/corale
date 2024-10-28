@@ -29,7 +29,7 @@ async function generateSoundEffect(input: Infer<AsObjectValidator<typeof SoundEf
 export const soundEffect = action({
   args: { ...SoundEffectInputFields, apiKey: v.optional(v.string()) },
   handler: async (ctx, { apiKey, ...args }) => {
-    const user: User | null = await ctx.runQuery(internal.entities.users.action.getViewerWithApiKey, {
+    const user: User | null = await ctx.runQuery(internal.entities.users.internal.getViewerWithApiKey, {
       apiKey,
     })
     if (!user) throw new ConvexError('not authorized')
@@ -44,7 +44,7 @@ export const soundEffect = action({
       duration: args.duration_seconds,
     }
 
-    const xid: string = await ctx.runMutation(internal.entities.audio.action.create, createArgs)
+    const xid: string = await ctx.runMutation(internal.entities.audio.internal.create, createArgs)
     return xid
   },
   returns: v.string(),

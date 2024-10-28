@@ -20,8 +20,10 @@
     "node:console"
   ],
   "typescript.tsserver.watchOptions": {
-    "watchFile": "useFsEvents",
     "watchDirectory": "useFsEvents",
-    "fallbackPolling": "dynamicPriorityPolling"
+    "fallbackPolling": "dynamicPriorityPolling",
+    "watchFile": "useFsEventsOnParentDirectory",
+    "synchronousWatchDirectory": true,
+    "excludeDirectories": ["**/node_modules/**/*"]
   }
 }

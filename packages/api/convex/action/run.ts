@@ -25,7 +25,7 @@ export const run = internalAction({
         messageId,
         patternId,
         options,
-      } = await ctx.runMutation(internal.entities.runs.action.activate, {
+      } = await ctx.runMutation(internal.entities.runs.internal.activate, {
         runId,
       })
 
@@ -60,7 +60,7 @@ export const run = internalAction({
 
       console.log(text, { finishReason, usage, warnings })
 
-      await ctx.runMutation(internal.entities.runs.action.complete, {
+      await ctx.runMutation(internal.entities.runs.internal.complete, {
         runId,
         messageId,
         text,
@@ -80,7 +80,7 @@ export const run = internalAction({
     } catch (err) {
       console.error(err)
 
-      await ctx.runMutation(internal.entities.runs.action.fail, {
+      await ctx.runMutation(internal.entities.runs.internal.fail, {
         runId,
         errors: [{ message: getErrorMessage(err), code: 'unknown' }],
       })
@@ -98,7 +98,7 @@ async function streamAIText(
   run: { runId: Id<'runs'>; userId: Id<'users'> },
   input: Parameters<typeof streamText>[0],
 ) {
-  const textId = await ctx.runMutation(internal.entities.texts.action.createMessageText, {
+  const textId = await ctx.runMutation(internal.entities.texts.internal.createMessageText, {
     runId: run.runId,
     userId: run.userId,
   })
@@ -111,7 +111,7 @@ async function streamAIText(
     if (!firstTokenAt) firstTokenAt = Date.now()
     streamedText += textPart
     if (hasDelimiter(textPart)) {
-      await ctx.runMutation(internal.entities.texts.action.streamToText, {
+      await ctx.runMutation(internal.entities.texts.internal.streamToText, {
         textId,
         content: streamedText,
       })
@@ -127,7 +127,7 @@ async function streamAIText(
   ])
 
   try {
-    await ctx.scheduler.runAfter(0, internal.entities.texts.action.deleteText, {
+    await ctx.scheduler.runAfter(0, internal.entities.texts.internal.deleteText, {
       textId,
     })
   } catch (err) {
@@ -167,7 +167,7 @@ export const getProviderMetadata = internalAction({
       const metadata = await fetchOpenRouterMetadata(requestId)
       if (!metadata) throw new ConvexError('failed to fetch openrouter metadata')
 
-      await ctx.runMutation(internal.entities.runs.action.updateProviderMetadata, {
+      await ctx.runMutation(internal.entities.runs.internal.updateProviderMetadata, {
         runId,
         providerMetadata: metadata,
       })

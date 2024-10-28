@@ -5,7 +5,7 @@ import { httpAction } from '../../_generated/server'
 export const serve = httpAction(async (ctx, request) => {
   const [imageId] = parseUrlToImageId(request.url)
   const image = imageId
-    ? await ctx.runQuery(internal.entities.images.action.get, {
+    ? await ctx.runQuery(internal.entities.images.internal.get, {
         imageId,
       })
     : null
@@ -35,7 +35,7 @@ export const serve = httpAction(async (ctx, request) => {
 export const serveUrl = httpAction(async (ctx, request) => {
   const [imageId] = parseUrlToImageId(request.url)
   const image = imageId
-    ? await ctx.runQuery(internal.entities.images.action.get, {
+    ? await ctx.runQuery(internal.entities.images.internal.get, {
         imageId,
       })
     : null
