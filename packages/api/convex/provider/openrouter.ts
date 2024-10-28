@@ -6,7 +6,7 @@ import { mergeDeep } from 'remeda'
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Doc } from '../_generated/dataModel'
-import { logActionOpsEvent } from '../db/admin/events'
+import { logActionOpsEvent } from '../entities/operationsEventLogs/db'
 import { internalAction } from '../functions'
 
 type ModelDoc = WithoutSystemFields<Doc<'chat_models'>>

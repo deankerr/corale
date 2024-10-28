@@ -9,7 +9,7 @@ import { Badge, BadgeProps, Card, Heading } from '@radix-ui/themes'
 import { AdminPageWrapper } from './admin-utils'
 
 export default function Page() {
-  const events = useCachedQuery(api.db.admin.events.latest, { limit: 100 })
+  const events = useCachedQuery(api.entities.operationsEventLogs.public.latest, { limit: 100 })
   const chatModels = useChatModels()
 
   return (
