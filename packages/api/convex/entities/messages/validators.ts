@@ -1,5 +1,5 @@
-import { updateKvValidator } from '../../db/helpers/kvMetadata'
 import { literals, v, withSystemFields } from '../../values'
+import { updateKvValidator } from '../kvMetadata'
 
 export const MessageRoles = literals('system', 'assistant', 'user')
 

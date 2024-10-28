@@ -2,14 +2,15 @@ import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
 import { getChatModel } from '../entities/chatModels/db'
+import { generateXID } from '../entities/helpers'
+import { createKvMetadata, updateKvMetadata } from '../entities/kvMetadata'
 import { createMessage } from '../entities/messages/db'
+import { getPattern, getPatternWriter } from '../entities/patterns/db'
 import { RunCreate, RunReturn, RunSchemaFields } from '../entities/runs/validators'
 import { getThreadWriter } from '../entities/threads/db'
 import { internalMutation, mutation, query } from '../functions'
 import type { Ent, MutationCtx } from '../types'
-import { ConvexError, nullable, pick, v } from '../values'
-import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
-import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
+import { ConvexError, nullable, v } from '../values'
 
 export const get = query({
   args: {
@@ -27,7 +28,7 @@ export const create = mutation({
     const thread = await getThreadWriter(ctx, { threadId: args.threadId })
     if (!thread) throw new ConvexError('invalid thread id')
 
-    const pattern = args.patternId ? await getEntityWriter(ctx, 'patterns', args.patternId) : null
+    const pattern = args.patternId ? await getPatternWriter(ctx, { patternId: args.patternId }) : null
     if (pattern) {
       await pattern.patch({ lastUsedAt: Date.now() })
     }
@@ -95,7 +96,7 @@ export const activate = internalMutation({
     const run = await ctx.skipRules.table('runs').getX(runId)
     if (run.status !== 'queued') throw new ConvexError({ message: 'run is not queued', runId })
 
-    const pattern = run.patternId ? await getEntity(ctx, 'patterns', run.patternId) : null
+    const pattern = run.patternId ? await getPattern(ctx, { patternId: run.patternId }) : null
 
     // TODO custom ctx
     const skipRulesCtx = { ...ctx, table: ctx.skipRules.table }

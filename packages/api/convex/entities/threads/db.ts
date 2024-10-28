@@ -1,8 +1,8 @@
-import { updateKvMetadata } from '../../db/helpers/kvMetadata'
 import { raise } from '../../lib/utils'
 import type { Id, MutationCtx, QueryCtx } from '../../types'
-import { type Infer } from '../../values'
+import { ConvexError, type Infer } from '../../values'
 import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
+import { updateKvMetadata } from '../kvMetadata'
 import { ThreadCreate, ThreadUpdate } from './validators'
 
 // * queries
@@ -12,10 +12,22 @@ export async function getThread(ctx: QueryCtx, args: { threadId: string }) {
   return nullifyDeletedEnt(thread)
 }
 
+export async function getThreadX(ctx: QueryCtx, args: { threadId: string }) {
+  const thread = await getThread(ctx, args)
+  if (!thread) throw new ConvexError({ message: `Invalid thread id`, id: args.threadId })
+  return thread
+}
+
 export async function getThreadWriter(ctx: MutationCtx, args: { threadId: string }) {
   const docId = ctx.table('threads').normalizeId(args.threadId)
   const thread = docId ? await ctx.table('threads').get(docId) : await ctx.table('threads').get('xid', args.threadId)
   return nullifyDeletedEntWriter(thread)
+}
+
+export async function getThreadWriterX(ctx: MutationCtx, args: { threadId: string }) {
+  const thread = await getThreadWriter(ctx, args)
+  if (!thread) throw new ConvexError({ message: `Invalid thread id`, id: args.threadId })
+  return thread
 }
 
 // * mutations

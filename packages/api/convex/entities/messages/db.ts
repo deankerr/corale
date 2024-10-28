@@ -1,12 +1,12 @@
 import { ConvexError } from 'convex/values'
 import { internal } from '../../_generated/api'
-import { updateKvMetadata } from '../../db/helpers/kvMetadata'
-import { getEntityX } from '../../db/helpers/xid'
 import { parseURLsFromText } from '../../lib/parse'
 import { raise } from '../../lib/utils'
 import type { Ent, Id, MutationCtx, QueryCtx } from '../../types'
 import type { Infer } from '../../values'
 import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
+import { updateKvMetadata } from '../kvMetadata'
+import { getThreadX } from '../threads/db'
 import { MessageCreate, type MessageUpdate } from './validators'
 
 // * helpers
@@ -49,7 +49,7 @@ export async function getMessageWriterX(ctx: MutationCtx, { messageId }: { messa
 
 // * mutations
 export async function createMessage(ctx: MutationCtx, fields: Infer<typeof MessageCreate> & { userId?: Id<'users'> }) {
-  const thread = await getEntityX(ctx, 'threads', fields.threadId)
+  const thread = await getThreadX(ctx, { threadId: fields.threadId })
   const userId = fields.userId ?? ctx.viewerId ?? raise('No user ID provided')
 
   const prev = await thread.edge('messages').order('desc').first()

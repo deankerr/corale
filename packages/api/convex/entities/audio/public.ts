@@ -1,9 +1,9 @@
 import type { PaginationOptions } from 'convex/server'
-import { generateXID } from '../../db/helpers/xid'
 import { internalMutation, query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import type { MutationCtx, QueryCtx } from '../../types'
 import { nullable, paginationOptsValidator, v, type AsObjectValidator, type Infer } from '../../values'
+import { generateXID } from '../helpers'
 import { getAudio } from './db'
 import { AudioCreate, AudioReturn } from './validators'
 

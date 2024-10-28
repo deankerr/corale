@@ -19,8 +19,6 @@ import type * as action_ingestImageUrl from "../action/ingestImageUrl.js";
 import type * as action_run from "../action/run.js";
 import type * as action_textToImage from "../action/textToImage.js";
 import type * as crons from "../crons.js";
-import type * as db_helpers_kvMetadata from "../db/helpers/kvMetadata.js";
-import type * as db_helpers_xid from "../db/helpers/xid.js";
 import type * as db_runs from "../db/runs.js";
 import type * as entities_audio_db from "../entities/audio/db.js";
 import type * as entities_audio_ent from "../entities/audio/ent.js";
@@ -52,6 +50,7 @@ import type * as entities_imagesMetadata_db from "../entities/imagesMetadata/db.
 import type * as entities_imagesMetadata_ent from "../entities/imagesMetadata/ent.js";
 import type * as entities_imagesMetadata_public from "../entities/imagesMetadata/public.js";
 import type * as entities_imagesMetadata_validators from "../entities/imagesMetadata/validators.js";
+import type * as entities_kvMetadata from "../entities/kvMetadata.js";
 import type * as entities_messages_db from "../entities/messages/db.js";
 import type * as entities_messages_ent from "../entities/messages/ent.js";
 import type * as entities_messages_public from "../entities/messages/public.js";
@@ -118,8 +117,6 @@ declare const fullApi: ApiFromModules<{
   "action/run": typeof action_run;
   "action/textToImage": typeof action_textToImage;
   crons: typeof crons;
-  "db/helpers/kvMetadata": typeof db_helpers_kvMetadata;
-  "db/helpers/xid": typeof db_helpers_xid;
   "db/runs": typeof db_runs;
   "entities/audio/db": typeof entities_audio_db;
   "entities/audio/ent": typeof entities_audio_ent;
@@ -151,6 +148,7 @@ declare const fullApi: ApiFromModules<{
   "entities/imagesMetadata/ent": typeof entities_imagesMetadata_ent;
   "entities/imagesMetadata/public": typeof entities_imagesMetadata_public;
   "entities/imagesMetadata/validators": typeof entities_imagesMetadata_validators;
+  "entities/kvMetadata": typeof entities_kvMetadata;
   "entities/messages/db": typeof entities_messages_db;
   "entities/messages/ent": typeof entities_messages_ent;
   "entities/messages/public": typeof entities_messages_public;

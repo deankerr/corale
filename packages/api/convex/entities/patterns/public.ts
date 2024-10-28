@@ -1,7 +1,8 @@
-import { generateXID, getEntity, getEntityWriterX } from '../../db/helpers/xid'
 import { mutation, query } from '../../functions'
 import { prepareUpdate } from '../../lib/utils'
 import { nullable, v } from '../../values'
+import { generateXID } from '../helpers'
+import { getPattern, getPatternWriterX } from './db'
 import { PatternCreate, PatternReturn, PatternUpdate } from './validators'
 
 // * Queries
@@ -10,8 +11,9 @@ export const get = query({
     patternId: v.string(),
   },
   handler: async (ctx, { patternId }) => {
-    return await getEntity(ctx, 'patterns', patternId)
+    return await getPattern(ctx, { patternId })
   },
+  returns: nullable(PatternReturn),
 })
 
 export const list = query({
@@ -69,7 +71,7 @@ export const update = mutation({
     fields: v.object(PatternUpdate),
   },
   handler: async (ctx, { patternId, fields }) => {
-    const pattern = await getEntityWriterX(ctx, 'patterns', patternId)
+    const pattern = await getPatternWriterX(ctx, { patternId })
 
     const defaults = {
       name: '',
@@ -78,8 +80,10 @@ export const update = mutation({
     }
 
     const updates = prepareUpdate(fields, defaults)
-    return await pattern.patch(updates)
+    await pattern.patch(updates)
+    return pattern.xid
   },
+  returns: v.string(),
 })
 
 export const remove = mutation({
@@ -87,7 +91,9 @@ export const remove = mutation({
     patternId: v.string(),
   },
   handler: async (ctx, { patternId }) => {
-    const pattern = await getEntityWriterX(ctx, 'patterns', patternId)
-    return await pattern.delete()
+    const pattern = await getPatternWriterX(ctx, { patternId })
+    await pattern.delete()
+    return pattern.xid
   },
+  returns: v.string(),
 })

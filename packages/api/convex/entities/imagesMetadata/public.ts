@@ -1,7 +1,7 @@
-import { getEntityX } from '../../db/helpers/xid'
 import { mutation, query } from '../../functions'
 import { ConvexError, v } from '../../values'
-import { ImagesMetadataSchemaFields } from './validators'
+import { getImageWriterX, getImageX } from '../images/db'
+import { ImagesMetadataReturn, ImagesMetadataSchemaFields } from './validators'
 
 export const add = mutation({
   args: {
@@ -10,11 +10,12 @@ export const add = mutation({
   },
   handler: async (ctx, { imageId, fields }) => {
     const user = await ctx.viewerX()
-    const image = await getEntityX(ctx, 'images_v2', imageId)
+    const image = await getImageWriterX(ctx, { imageId })
     if (image.ownerId !== user._id) throw new ConvexError('unauthorized')
     if (fields.type !== 'message') throw new ConvexError('invalid metadata type')
     return await ctx.table('images_metadata_v2').insert({ imageId: image._id, type: fields.type, data: fields })
   },
+  returns: v.string(),
 })
 
 export const get = query({
@@ -22,10 +23,11 @@ export const get = query({
     imageId: v.string(),
   },
   handler: async (ctx, { imageId }) => {
-    const image = await getEntityX(ctx, 'images_v2', imageId)
+    const image = await getImageX(ctx, { imageId })
     const metadata = (await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))).map(
       (metadata) => ({ ...metadata, xid: image.xid }),
     )
     return metadata
   },
+  returns: v.array(ImagesMetadataReturn),
 })

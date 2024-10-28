@@ -1,11 +1,11 @@
-import { updateKvMetadata, updateKvValidator } from '../../db/helpers/kvMetadata'
-import { generateXID, getEntity, getEntityWriterX } from '../../db/helpers/xid'
 import { mutation, query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { literals, nullable, paginationOptsValidator, v } from '../../values'
+import { generateXID } from '../helpers'
 import { getImageEdges } from '../images/db'
 import { ImageReturn } from '../images/validators'
-import { getCollectionEdges } from './db'
+import { updateKvMetadata, updateKvValidator } from '../kvMetadata'
+import { getCollection, getCollectionEdges, getCollectionWriterX } from './db'
 import { CollectionReturn } from './validators'
 
 export const get = query({
@@ -13,7 +13,7 @@ export const get = query({
     collectionId: v.string(),
   },
   handler: async (ctx, { collectionId }) => {
-    const collection = await getEntity(ctx, 'collections', collectionId)
+    const collection = await getCollection(ctx, { collectionId })
     return collection ? await getCollectionEdges(ctx, collection) : null
   },
   returns: nullable(CollectionReturn),
@@ -42,7 +42,7 @@ export const listImages = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, { collectionId, order = 'desc', paginationOpts }) => {
-    const collection = await getEntity(ctx, 'collections', collectionId)
+    const collection = await getCollection(ctx, { collectionId })
     if (!collection) return emptyPage()
 
     const result = await collection
@@ -93,7 +93,7 @@ export const update = mutation({
     updateKv: v.optional(updateKvValidator),
   },
   handler: async (ctx, { collectionId, updateKv, ...fields }) => {
-    const collection = await getEntityWriterX(ctx, 'collections', collectionId)
+    const collection = await getCollectionWriterX(ctx, { collectionId })
     const kvMetadata = updateKvMetadata(collection.kvMetadata, updateKv)
     return await ctx
       .table('collections')
@@ -107,7 +107,7 @@ export const remove = mutation({
     collectionId: v.string(),
   },
   handler: async (ctx, { collectionId }) => {
-    const collection = await getEntityWriterX(ctx, 'collections', collectionId)
+    const collection = await getCollectionWriterX(ctx, { collectionId })
     return await ctx.table('collections').getX(collection._id).delete()
   },
 })

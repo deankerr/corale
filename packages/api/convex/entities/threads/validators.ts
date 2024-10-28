@@ -1,6 +1,6 @@
-import { updateKvValidator } from '../../db/helpers/kvMetadata'
 import { pick, v, withSystemFields } from '../../values'
 import { ChatModelReturn } from '../chatModels/validators'
+import { updateKvValidator } from '../kvMetadata'
 import { MessageReturn } from '../messages/validators'
 
 export const ThreadCreate = v.object({
