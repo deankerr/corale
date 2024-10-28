@@ -63,4 +63,10 @@ export const ImagesMetadataSchemaFields = {
   ),
 }
 
-export const ImagesMetadataReturn = v.object(withSystemFields('images_metadata_v2', ImagesMetadataSchemaFields))
+export const ImagesMetadataReturn = v.object(
+  withSystemFields('images_metadata_v2', {
+    ...ImagesMetadataSchemaFields,
+    imageId: v.id('images_v2'),
+    xid: v.string(),
+  }),
+)
