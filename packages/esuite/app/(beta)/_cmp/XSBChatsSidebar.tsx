@@ -19,7 +19,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
 export function XSBChatsSidebar() {
-  const threads = useQuery(api.db.threads.listDetails, {})
+  const threads = useQuery(api.entities.threads.public.listMy, {})
   const params = useParams()
 
   const isActive = (threadId: string) => params.threadId === threadId
@@ -58,14 +58,14 @@ export function XSBChatsSidebar() {
                 )}
               >
                 <div className="flex w-full items-center gap-2">
-                  <span className="truncate">{thread.details.modelName ?? 'no model selected'}</span>{' '}
+                  <span className="truncate">{thread.model?.name ?? 'no model selected'}</span>{' '}
                   <span className="ml-auto text-xs">
                     <RelativeTimeAgo time={thread.updatedAtTime} />
                   </span>
                 </div>
                 <span className="font-medium">{thread.title ?? 'Untitled'}</span>
                 <span className="line-clamp-2 whitespace-break-spaces text-xs">
-                  {thread.details.latestMessageText?.slice(0, 120).trim() ?? 'No messages'}
+                  {thread.latestMessage?.text?.slice(0, 120).trim() ?? 'No messages'}
                 </span>
               </Link>
             ))}

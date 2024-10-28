@@ -7,7 +7,7 @@ import { TextArea } from '@/components/ui/TextArea'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { useThread } from '@/lib/api/threads'
 import { twx } from '@/lib/utils'
-import type { EThread } from '@corale/api/convex/types'
+import type { Thread } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
 const XSBChatShell = twx.div`flex h-full min-w-[28rem] w-full flex-col overflow-hidden`
@@ -29,7 +29,7 @@ export function XSBChat({ threadId }: { threadId: string }) {
   )
 }
 
-const XSBChatHeader = ({ thread }: { thread: EThread }) => {
+const XSBChatHeader = ({ thread }: { thread: Thread }) => {
   return (
     <header className="flex-start bg-gray-1 h-12 gap-2 border-b px-3">
       <SidebarTrigger />
@@ -39,7 +39,7 @@ const XSBChatHeader = ({ thread }: { thread: EThread }) => {
   )
 }
 
-const XSBChatBody = ({ thread }: { thread: EThread }) => {
+const XSBChatBody = ({ thread }: { thread: Thread }) => {
   const messages = useMessageFeedQuery(thread.xid)
 
   return (
@@ -55,7 +55,7 @@ const XSBChatBody = ({ thread }: { thread: EThread }) => {
   )
 }
 
-const XSBChatFooter = ({ thread }: { thread: EThread }) => {
+const XSBChatFooter = ({ thread }: { thread: Thread }) => {
   return (
     <div className="flex-center bg-gray-1 sticky bottom-0 border-t px-4 py-3">
       <XSBChatComposer thread={thread} />
@@ -63,7 +63,7 @@ const XSBChatFooter = ({ thread }: { thread: EThread }) => {
   )
 }
 
-const XSBChatComposer = ({ thread }: { thread: EThread }) => {
+const XSBChatComposer = ({ thread }: { thread: Thread }) => {
   return (
     <div className="bg-gray-1 w-full max-w-2xl overflow-hidden rounded-md border">
       <TextArea placeholder="Type a message..." />
