@@ -1,4 +1,4 @@
-import { useMessageTextStream } from '@/lib/api/threads'
+import { useTextStreams } from '@/lib/api/threads'
 import { cn } from '@/lib/utils'
 import type { Message as MessageType } from '@corale/api/convex/entities/types'
 import { Code } from '@radix-ui/themes'
@@ -13,7 +13,7 @@ export const MessageBody = () => {
   const isHidden = message.channel === 'hidden'
   const isActive = run?.status === 'active'
   const isStreaming = run?.stream && !message.text
-  const textStream = useMessageTextStream(isStreaming ? run._id : undefined)
+  const textStream = useTextStreams(isStreaming ? run._id : undefined)
   const text = message.text ?? textStream
 
   return (

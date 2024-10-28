@@ -1,8 +1,9 @@
+import { getChatModel } from '../../db/models'
 import { mutation, query } from '../../functions'
 import { nullable, v } from '../../values'
 import type { Thread } from '../types'
 import { createThread, getThread, removeThread, updateThread } from './db'
-import { ThreadCreate, ThreadReturn, ThreadUpdate } from './validators'
+import { ThreadCreate, ThreadReturn, ThreadUpdate, ThreadWithDetailsReturn } from './validators'
 
 // * queries
 export const get = query({
@@ -19,12 +20,34 @@ export const list = query({
 
     const threads = await user
       .edgeX('threads')
+      .order('desc')
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
-      .map(async (thread) => thread.doc())
+      .map(async (thread) => {
+        const modelId = thread.kvMetadata?.['esuite:model:id']
+        const model = modelId ? await getChatModel(ctx, modelId) : null
+
+        const latestMessage = await thread
+          .edge('messages')
+          .order('desc')
+          .first()
+          .then((message) => (message ? { ...message, text: message?.text?.slice(0, 120) } : undefined))
+
+        return {
+          ...thread.doc(),
+          model: model
+            ? {
+                modelId: model.modelId,
+                name: model.name,
+                creatorName: model.creatorName,
+              }
+            : undefined,
+          latestMessage,
+        }
+      })
 
     return threads
   },
-  returns: nullable(v.array(ThreadReturn)),
+  returns: nullable(v.array(ThreadWithDetailsReturn)),
 })
 
 // * mutations

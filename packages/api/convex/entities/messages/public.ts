@@ -1,5 +1,6 @@
 import { mutation, query } from '../../functions'
-import { nullable, v } from '../../values'
+import { emptyPage, paginatedReturnFields } from '../../lib/utils'
+import { literals, nullable, paginationOptsValidator, v, type Infer } from '../../values'
 import { nullifyDeletedEnt } from '../helpers'
 import { getThread } from '../threads/db'
 import type { Message } from '../types'
@@ -30,6 +31,123 @@ export const getSeries = query({
     return nullifyDeletedEnt(message)
   },
   returns: nullable(MessageReturn),
+})
+
+export type PaginatedMessages = Infer<typeof PaginatedMessages>
+const PaginatedMessages = v.object({ ...paginatedReturnFields, page: v.array(MessageReturn) })
+
+export const list = query({
+  args: {
+    threadId: v.string(),
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args): Promise<PaginatedMessages> => {
+    const thread = await getThread(ctx, { threadId: args.threadId })
+    if (!thread) return emptyPage()
+
+    const messages = await thread
+      .edge('messages')
+      .order('desc')
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .paginate(args.paginationOpts)
+      .map((message) => message.doc())
+
+    return messages
+  },
+  returns: PaginatedMessages,
+})
+
+export const search = query({
+  args: {
+    threadId: v.string(),
+    order: v.optional(literals('asc', 'desc')),
+    role: v.optional(literals('system', 'assistant', 'user')),
+    name: v.optional(v.string()),
+    createdAfter: v.optional(v.number()),
+    createdBefore: v.optional(v.number()),
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (
+    ctx,
+    { threadId, order = 'desc', role, name, createdAfter = 1, createdBefore = Infinity, paginationOpts },
+  ) => {
+    const thread = await getThread(ctx, { threadId })
+    if (!thread) return emptyPage()
+
+    paginationOpts.numItems = Math.min(paginationOpts.numItems, 100)
+
+    const query =
+      role && name
+        ? ctx.table('messages', 'threadId_role_name', (q) =>
+            q
+              .eq('threadId', thread._id)
+              .eq('role', role)
+              .eq('name', name)
+              .gt('_creationTime', createdAfter)
+              .lt('_creationTime', createdBefore),
+          )
+        : role
+          ? ctx.table('messages', 'threadId_role', (q) =>
+              q
+                .eq('threadId', thread._id)
+                .eq('role', role)
+                .gt('_creationTime', createdAfter)
+                .lt('_creationTime', createdBefore),
+            )
+          : name
+            ? ctx.table('messages', 'threadId_name', (q) =>
+                q
+                  .eq('threadId', thread._id)
+                  .eq('name', name)
+                  .gt('_creationTime', createdAfter)
+                  .lt('_creationTime', createdBefore),
+              )
+            : ctx.table('messages', 'threadId', (q) =>
+                q.eq('threadId', thread._id).gt('_creationTime', createdAfter).lt('_creationTime', createdBefore),
+              )
+
+    const messages = await query
+      .order(order)
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .paginate(paginationOpts)
+      .map(async (message) => message.doc())
+
+    return messages
+  },
+  returns: v.object({ ...paginatedReturnFields, page: v.array(MessageReturn) }),
+})
+
+export const searchText = query({
+  args: {
+    threadId: v.string(),
+    text: v.string(),
+    role: v.optional(literals('system', 'assistant', 'user')),
+    name: v.optional(v.string()),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, { threadId, role, name, limit = 20, ...args }) => {
+    const text = args.text.trimStart()
+    if (text.length < 3) return []
+
+    const thread = await getThread(ctx, { threadId })
+    if (!thread) return []
+
+    const messages = await ctx
+      .table('messages')
+      .search('search_text_threadId_role_name', (q) => {
+        const query = q.search('text', text).eq('threadId', thread._id)
+        if (role && name) return query.eq('role', role).eq('name', name)
+        if (role) return query.eq('role', role)
+        if (name) return query.eq('name', name)
+        return query
+      })
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .take(Math.min(limit, 50))
+      .map(async (message) => message.doc())
+
+    return messages
+  },
+  returns: nullable(v.array(MessageReturn)),
 })
 
 // * mutations

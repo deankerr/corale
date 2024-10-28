@@ -31,7 +31,6 @@ import type * as db_patterns from "../db/patterns.js";
 import type * as db_runs from "../db/runs.js";
 import type * as db_tasks from "../db/tasks.js";
 import type * as db_texts from "../db/texts.js";
-import type * as db_thread_messages from "../db/thread/messages.js";
 import type * as db_users from "../db/users.js";
 import type * as entities_audio_ent from "../entities/audio/ent.js";
 import type * as entities_audio_generate from "../entities/audio/generate.js";
@@ -115,7 +114,6 @@ declare const fullApi: ApiFromModules<{
   "db/runs": typeof db_runs;
   "db/tasks": typeof db_tasks;
   "db/texts": typeof db_texts;
-  "db/thread/messages": typeof db_thread_messages;
   "db/users": typeof db_users;
   "entities/audio/ent": typeof entities_audio_ent;
   "entities/audio/generate": typeof entities_audio_generate;

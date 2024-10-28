@@ -28,7 +28,7 @@ export const useRun = (runId: string | undefined) => {
   return useCachedQuery(api.db.runs.get, runId ? { runId } : 'skip')
 }
 
-export const useMessageTextStream = (runId: Id<'runs'> | undefined) => {
+export const useTextStreams = (runId: Id<'runs'> | undefined) => {
   const textStreams = useQuery(api.entities.runs.public.getTextStreams, runId ? { runId } : 'skip')
   return textStreams?.[0]?.content
 }
@@ -61,7 +61,7 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
     ...(name && { name }),
   }
 
-  const results = useQuery(api.db.thread.messages.searchText, text ? queryArgs : 'skip')
+  const results = useQuery(api.entities.messages.public.searchText, text ? queryArgs : 'skip')
   const stored = useRef(results)
 
   if (results !== undefined) {
