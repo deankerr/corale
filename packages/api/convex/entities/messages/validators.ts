@@ -3,6 +3,16 @@ import { updateKvValidator } from '../kvMetadata'
 
 export const MessageRoles = literals('system', 'assistant', 'user')
 
+export const MessageSchemaFields = {
+  role: MessageRoles,
+  name: v.optional(v.string()),
+  text: v.optional(v.string()),
+  channel: v.optional(v.string()),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
+
+  runId: v.optional(v.id('runs')),
+}
+
 export const MessageCreate = v.object({
   role: MessageRoles,
   name: v.optional(v.string()),

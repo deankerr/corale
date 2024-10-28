@@ -1,15 +1,8 @@
 import { defineEnt } from 'convex-ents'
 import { literals, scheduledDeletionDelayMS, v } from '../../values'
+import { MessageSchemaFields } from './validators'
 
-export const messagesEnt = defineEnt({
-  role: literals('system', 'assistant', 'user'),
-  name: v.optional(v.string()),
-  text: v.optional(v.string()),
-  channel: v.optional(v.string()),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
-
-  runId: v.optional(v.id('runs')),
-})
+export const messagesEnt = defineEnt(MessageSchemaFields)
   .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
   .field('series', v.number(), { index: true })
   .field('xid', v.string(), { index: true })

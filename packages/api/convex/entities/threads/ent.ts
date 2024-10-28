@@ -1,12 +1,8 @@
 import { defineEnt } from 'convex-ents'
 import { scheduledDeletionDelayMS, v } from '../../values'
+import { ThreadSchemaFields } from './validators'
 
-export const threadsEnt = defineEnt({
-  title: v.optional(v.string()),
-  instructions: v.optional(v.string()), // TODO deprecate
-  favourite: v.optional(v.boolean()),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
-})
+export const threadsEnt = defineEnt(ThreadSchemaFields)
   .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
   .field('xid', v.string(), { unique: true })
   .field('updatedAtTime', v.number())

@@ -3,6 +3,13 @@ import { ChatModelReturn } from '../chatModels/validators'
 import { updateKvValidator } from '../kvMetadata'
 import { MessageReturn } from '../messages/validators'
 
+export const ThreadSchemaFields = {
+  title: v.optional(v.string()),
+  instructions: v.optional(v.string()), // TODO deprecate
+  favourite: v.optional(v.boolean()),
+  kvMetadata: v.optional(v.record(v.string(), v.string())),
+}
+
 export const ThreadCreate = v.object({
   title: v.optional(v.string()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),

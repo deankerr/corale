@@ -19,6 +19,7 @@ import type * as action_ingestImageUrl from "../action/ingestImageUrl.js";
 import type * as action_run from "../action/run.js";
 import type * as action_textToImage from "../action/textToImage.js";
 import type * as crons from "../crons.js";
+import type * as entities_audio_action from "../entities/audio/action.js";
 import type * as entities_audio_db from "../entities/audio/db.js";
 import type * as entities_audio_ent from "../entities/audio/ent.js";
 import type * as entities_audio_generate from "../entities/audio/generate.js";
@@ -117,6 +118,7 @@ declare const fullApi: ApiFromModules<{
   "action/run": typeof action_run;
   "action/textToImage": typeof action_textToImage;
   crons: typeof crons;
+  "entities/audio/action": typeof entities_audio_action;
   "entities/audio/db": typeof entities_audio_db;
   "entities/audio/ent": typeof entities_audio_ent;
   "entities/audio/generate": typeof entities_audio_generate;

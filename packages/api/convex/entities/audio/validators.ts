@@ -1,5 +1,17 @@
 import { nullable, v, withSystemFields } from '../../values'
 
+export const AudioSchemaFields = {
+  fileId: v.id('_storage'),
+
+  generationData: v.object({
+    prompt: v.string(),
+    modelId: v.string(),
+    modelName: v.string(),
+    endpointId: v.string(),
+    duration: v.optional(v.number()),
+  }),
+}
+
 export const AudioCreate = v.object({
   fileId: v.id('_storage'),
   prompt: v.string(),
