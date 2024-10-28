@@ -1,5 +1,5 @@
 import { httpRouter } from 'convex/server'
-import { serve, serveUrl } from './db/images'
+import { serve, serveUrl } from './entities/images/serve'
 import { handleWebhook } from './lib/clerk'
 
 const http = httpRouter()

@@ -55,7 +55,7 @@ export const ImageMetadataDialog = ({
 }: {
   imageId: string
 } & React.ComponentProps<typeof Dialog.Root>) => {
-  const metadata = useQuery(api.db.images.getMetadata, { imageId })
+  const metadata = useQuery(api.entities.imagesMetadata.public.get, { imageId })
   return (
     <Dialog.Root {...props}>
       {children ? <Dialog.Trigger>{children}</Dialog.Trigger> : null}

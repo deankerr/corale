@@ -1,6 +1,6 @@
-import { getChatModel } from '../../db/models'
 import { mutation, query } from '../../functions'
 import { nullable, v } from '../../values'
+import { getChatModel } from '../chatModels/db'
 import type { Thread } from '../types'
 import { createThread, getThread, removeThread, updateThread } from './db'
 import { ThreadCreate, ThreadReturn, ThreadUpdate, ThreadWithDetailsReturn } from './validators'

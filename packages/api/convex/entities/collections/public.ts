@@ -1,25 +1,12 @@
-import { CollectionReturn } from '../entities/collections/validators'
-import { ImageReturn } from '../entities/images/validators'
-import { mutation, query } from '../functions'
-import { emptyPage, paginatedReturnFields } from '../lib/utils'
-import type { Ent, QueryCtx } from '../types'
-import { literals, nullable, paginationOptsValidator, v } from '../values'
-import { updateKvMetadata, updateKvValidator } from './helpers/kvMetadata'
-import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
-import { getImageV2Edges } from './images'
-
-export const getCollectionEdges = async (ctx: QueryCtx, collection: Ent<'collections'>) => {
-  const images = await collection
-    .edge('images_v2')
-    .order('desc')
-    .take(24)
-    .map(async (image) => getImageV2Edges(ctx, image))
-
-  return {
-    ...collection.doc(),
-    images: images.filter((image) => image.deletionTime === undefined),
-  }
-}
+import { updateKvMetadata, updateKvValidator } from '../../db/helpers/kvMetadata'
+import { generateXID, getEntity, getEntityWriterX } from '../../db/helpers/xid'
+import { mutation, query } from '../../functions'
+import { emptyPage, paginatedReturnFields } from '../../lib/utils'
+import { literals, nullable, paginationOptsValidator, v } from '../../values'
+import { getImageEdges } from '../images/db'
+import { ImageReturn } from '../images/validators'
+import { getCollectionEdges } from './db'
+import { CollectionReturn } from './validators'
 
 export const get = query({
   args: {
@@ -62,7 +49,7 @@ export const listImages = query({
       .edge('images_v2')
       .order(order)
       .paginate(paginationOpts)
-      .map(async (image) => getImageV2Edges(ctx, image))
+      .map(async (image) => getImageEdges(ctx, image))
 
     return {
       ...result,

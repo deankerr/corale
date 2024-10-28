@@ -25,7 +25,7 @@ export const ImageCardNext = ({
   children?: React.ReactNode
 }) => {
   const collections = useCollections()
-  const updateCollection = useMutation(api.db.collections.update)
+  const updateCollection = useMutation(api.entities.collections.public.update)
   const { isViewer } = useViewer(image.ownerId)
 
   const isSaved = image.collectionIds.length > 0

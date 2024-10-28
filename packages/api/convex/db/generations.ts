@@ -3,13 +3,13 @@ import { paginationOptsValidator } from 'convex/server'
 import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../_generated/api'
 import { GenerationReturn, GenerationSchemaFields } from '../entities/generations/validators'
+import { getImageEdges } from '../entities/images/db'
 import { TextToImageInputs } from '../entities/shared'
 import { internalMutation, mutation, query } from '../functions'
 import { emptyPage, paginatedReturnFields } from '../lib/utils'
 import type { Ent, QueryCtx } from '../types'
 import { nullable, omit, pick, v, type Infer } from '../values'
 import { generateXID, getEntity, getEntityWriterX } from './helpers/xid'
-import { getImageV2Edges } from './images'
 
 export const getGenerationEdges = async (ctx: QueryCtx, generation: Ent<'generations_v2'>) => {
   const doc = omit(generation.doc(), ['output'])
@@ -19,7 +19,7 @@ export const getGenerationEdges = async (ctx: QueryCtx, generation: Ent<'generat
     images: await ctx
       .table('images_v2', 'generationId', (q) => q.eq('generationId', generation._id))
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
-      .map(async (image) => getImageV2Edges(ctx, image)),
+      .map(async (image) => getImageEdges(ctx, image)),
   }
 }
 

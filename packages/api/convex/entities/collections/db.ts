@@ -1,6 +1,7 @@
 import { ConvexError } from 'convex/values'
-import type { MutationCtx, QueryCtx } from '../../types'
+import type { Ent, MutationCtx, QueryCtx } from '../../types'
 import { nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
+import { getImageEdges } from '../images/db'
 
 export async function getCollection(ctx: QueryCtx, { collectionId }: { collectionId: string }) {
   const docId = ctx.table('collections').normalizeId(collectionId)
@@ -28,4 +29,17 @@ export async function getCollectionWriterX(ctx: MutationCtx, { collectionId }: {
   const collection = await getCollectionWriter(ctx, { collectionId })
   if (!collection) throw new ConvexError({ message: `Invalid collection id`, id: collectionId })
   return collection
+}
+
+export const getCollectionEdges = async (ctx: QueryCtx, collection: Ent<'collections'>) => {
+  const images = await collection
+    .edge('images_v2')
+    .order('desc')
+    .take(24)
+    .map(async (image) => getImageEdges(ctx, image))
+
+  return {
+    ...collection.doc(),
+    images: images.filter((image) => image.deletionTime === undefined),
+  }
 }

@@ -1,5 +1,5 @@
 import { ConvexError } from 'convex/values'
-import type { MutationCtx, QueryCtx } from '../../types'
+import type { Ent, MutationCtx, QueryCtx } from '../../types'
 import { nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
 
 export async function getImage(ctx: QueryCtx, { imageId }: { imageId: string }) {
@@ -24,4 +24,11 @@ export async function getImageWriterX(ctx: MutationCtx, { imageId }: { imageId: 
   const image = await getImageWriter(ctx, { imageId })
   if (!image) throw new ConvexError({ message: `Invalid image id`, id: imageId })
   return image
+}
+
+export const getImageEdges = async (ctx: QueryCtx, image: Ent<'images_v2'>) => {
+  return {
+    ...image.doc(),
+    collectionIds: await image.edge('collections').map((c) => c._id),
+  }
 }
