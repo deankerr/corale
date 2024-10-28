@@ -17,8 +17,8 @@ export default function Page({ params }: { params: { textsId: string } }) {
 
   const prompt = usePrompt(!isNewPrompt ? textsId : '')
 
-  const setPrompt = useMutation(api.db.texts.setPrompt)
-  const deletePrompt = useMutation(api.db.texts.deletePrompt)
+  const setPrompt = useMutation(api.entities.texts.public.setPrompt)
+  const deletePrompt = useMutation(api.entities.texts.public.deletePrompt)
 
   const handleSave = ({ title, content }: { title: string; content: string }) => {
     if (!title) return toast.error('Please enter a title')

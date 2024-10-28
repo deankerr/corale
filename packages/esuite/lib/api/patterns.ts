@@ -5,15 +5,15 @@ import { useMutation } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
 export const usePatterns = () => {
-  return useCachedQuery(api.db.patterns.list, {})
+  return useCachedQuery(api.entities.patterns.public.list, {})
 }
 
 export const usePattern = (patternId?: string) => {
-  return useCachedQuery(api.db.patterns.get, patternId ? { patternId } : 'skip')
+  return useCachedQuery(api.entities.patterns.public.get, patternId ? { patternId } : 'skip')
 }
 
 export function useCreatePattern() {
-  const create = useMutation(api.db.patterns.create)
+  const create = useMutation(api.entities.patterns.public.create)
   return (newPattern: Pattern) => {
     const fields = prepareUpdate(newPattern)
     const { xid, ...rest } = fields
@@ -22,7 +22,7 @@ export function useCreatePattern() {
 }
 
 export function useUpdatePattern() {
-  const sendUpdate = useMutation(api.db.patterns.update)
+  const sendUpdate = useMutation(api.entities.patterns.public.update)
   return (newPattern: Pattern) => {
     const update = prepareUpdate(newPattern)
     const { xid, ...fields } = update
@@ -52,5 +52,5 @@ export function prepareUpdate(newPattern: Pattern) {
 }
 
 export function useDeletePattern() {
-  return useMutation(api.db.patterns.remove)
+  return useMutation(api.entities.patterns.public.remove)
 }

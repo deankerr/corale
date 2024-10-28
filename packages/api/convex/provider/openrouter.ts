@@ -25,7 +25,7 @@ async function fetchModelRecords() {
 export const updateOpenRouterModels = internalAction({
   args: {},
   handler: async (ctx) => {
-    const existingModels = await ctx.runQuery(internal.db.models.listAll, {})
+    const existingModels = await ctx.runQuery(internal.entities.chatModels.action.listAll, {})
     const records = await fetchModelRecords()
     const processed = records.map(processModelRecord).filter((m) => m !== null)
 
@@ -52,7 +52,7 @@ export const updateOpenRouterModels = internalAction({
           // * replace data of existing model
           const patch = pick(mergeDeep(current, diff), diffKeys)
 
-          await ctx.runMutation(internal.db.models.update, {
+          await ctx.runMutation(internal.entities.chatModels.action.update, {
             id: existing._id,
             fields: patch,
           })
@@ -69,7 +69,7 @@ export const updateOpenRouterModels = internalAction({
         }
       } else {
         // * create new model
-        await ctx.runMutation(internal.db.models.create, model)
+        await ctx.runMutation(internal.entities.chatModels.action.create, model)
         await logActionOpsEvent(ctx, {
           message: `openrouter new model: ${model.name}`,
           type: 'notice',
@@ -80,7 +80,7 @@ export const updateOpenRouterModels = internalAction({
     const notFound = existingModels.filter((m) => !processed.find((p) => p?.resourceKey === m.resourceKey))
     await asyncMap(notFound, async (model) => {
       // * mark as unavailable
-      await ctx.runMutation(internal.db.models.replace, {
+      await ctx.runMutation(internal.entities.chatModels.action.replace, {
         id: model._id,
         ...omit(model, ['_id', '_creationTime']),
         available: false,

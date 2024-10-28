@@ -98,7 +98,7 @@ async function streamAIText(
   run: { runId: Id<'runs'>; userId: Id<'users'> },
   input: Parameters<typeof streamText>[0],
 ) {
-  const textId = await ctx.runMutation(internal.db.texts.createMessageText, {
+  const textId = await ctx.runMutation(internal.entities.texts.action.createMessageText, {
     runId: run.runId,
     userId: run.userId,
   })
@@ -111,7 +111,7 @@ async function streamAIText(
     if (!firstTokenAt) firstTokenAt = Date.now()
     streamedText += textPart
     if (hasDelimiter(textPart)) {
-      await ctx.runMutation(internal.db.texts.streamToText, {
+      await ctx.runMutation(internal.entities.texts.action.streamToText, {
         textId,
         content: streamedText,
       })
@@ -127,7 +127,7 @@ async function streamAIText(
   ])
 
   try {
-    await ctx.scheduler.runAfter(0, internal.db.texts.deleteText, {
+    await ctx.scheduler.runAfter(0, internal.entities.texts.action.deleteText, {
       textId,
     })
   } catch (err) {

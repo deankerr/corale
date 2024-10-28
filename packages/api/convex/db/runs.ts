@@ -1,15 +1,15 @@
 import { z } from 'zod'
 import { internal } from '../_generated/api'
 import type { Id } from '../_generated/dataModel'
+import { getChatModel } from '../entities/chatModels/db'
 import { createMessage } from '../entities/messages/db'
 import { RunCreate, RunReturn, RunSchemaFields } from '../entities/runs/validators'
 import { getThreadWriter } from '../entities/threads/db'
 import { internalMutation, mutation, query } from '../functions'
+import type { Ent, MutationCtx } from '../types'
 import { ConvexError, nullable, pick, v } from '../values'
 import { createKvMetadata, updateKvMetadata } from './helpers/kvMetadata'
 import { generateXID, getEntity, getEntityWriter } from './helpers/xid'
-import { getChatModel } from './models'
-import { threadPostRun } from './tasks'
 
 export const get = query({
   args: {
@@ -240,6 +240,13 @@ export const complete = internalMutation({
     await threadPostRun(ctx, await message.edgeX('thread'))
   },
 })
+
+export async function threadPostRun(ctx: MutationCtx, thread: Ent<'threads'>) {
+  if (thread.title) return
+  await ctx.scheduler.runAfter(1000, internal.action.generateThreadTitle.run, {
+    threadId: thread._id,
+  })
+}
 
 export const fail = internalMutation({
   args: {
