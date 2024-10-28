@@ -17,4 +17,5 @@ export {
 
 export { asObjectValidator, ConvexError, v, type Value, type Infer, type AsObjectValidator } from 'convex/values'
 
-export const entityScheduledDeletionDelay = ms('24 hours')
+const isDev = process.env.CONVEX_ENV === 'development'
+export const scheduledDeletionDelayMS = isDev ? ms('2 minutes') : ms('24 hours')

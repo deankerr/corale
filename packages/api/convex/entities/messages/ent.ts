@@ -1,5 +1,5 @@
 import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, literals, v } from '../../values'
+import { literals, scheduledDeletionDelayMS, v } from '../../values'
 
 export const messagesEnt = defineEnt({
   role: literals('system', 'assistant', 'user'),
@@ -10,7 +10,7 @@ export const messagesEnt = defineEnt({
 
   runId: v.optional(v.id('runs')),
 })
-  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
+  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
   .field('series', v.number(), { index: true })
   .field('xid', v.string(), { index: true })
   .edge('thread')

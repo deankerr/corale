@@ -1,5 +1,5 @@
 import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, v } from '../../values'
+import { scheduledDeletionDelayMS, v } from '../../values'
 
 export const threadsEnt = defineEnt({
   title: v.optional(v.string()),
@@ -7,7 +7,7 @@ export const threadsEnt = defineEnt({
   favourite: v.optional(v.boolean()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
 })
-  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
+  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
   .field('xid', v.string(), { unique: true })
   .field('updatedAtTime', v.number())
   .edges('messages', { ref: true, deletion: 'soft' })

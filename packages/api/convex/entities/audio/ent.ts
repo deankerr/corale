@@ -1,5 +1,5 @@
 import { defineEnt } from 'convex-ents'
-import { entityScheduledDeletionDelay, v } from '../../values'
+import { scheduledDeletionDelayMS, v } from '../../values'
 
 export const audioEnt = defineEnt({
   fileId: v.id('_storage'),
@@ -12,6 +12,6 @@ export const audioEnt = defineEnt({
     duration: v.optional(v.number()),
   }),
 })
-  .deletion('scheduled', { delayMs: entityScheduledDeletionDelay })
+  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
   .field('xid', v.string(), { unique: true })
   .edge('user')
