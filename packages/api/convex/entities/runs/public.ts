@@ -3,7 +3,6 @@ import { internal } from '../../_generated/api'
 import type { Id } from '../../_generated/dataModel'
 import { getUser } from '../../entities/users/db'
 import { mutation, query } from '../../functions'
-import { createError } from '../../lib/utils'
 import { ConvexError, nullable, v } from '../../values'
 import { generateXID } from '../helpers'
 import { updateKvMetadata } from '../kvMetadata'
@@ -46,7 +45,7 @@ export const adminList = query({
   },
   handler: async (ctx, args) => {
     const user = await ctx.viewerX()
-    if (user.role !== 'admin') throw createError('Unauthorized', { code: 'unauthorized' })
+    if (user.role !== 'admin') throw new ConvexError('Unauthorized')
 
     return await ctx
       .table('runs')
