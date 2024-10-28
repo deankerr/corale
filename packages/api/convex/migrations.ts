@@ -1,7 +1,7 @@
 import { makeMigration } from 'convex-helpers/server/migrations'
 import { internalMutation } from './_generated/server'
 import { createGenerationMetadata } from './db/images'
-import { Doc } from './types'
+import type { Doc } from './types'
 
 export const migration = makeMigration(internalMutation, {
   migrationTable: 'migrations',

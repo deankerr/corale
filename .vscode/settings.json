@@ -18,5 +18,10 @@
     "node:stream/consumers",
     "node:test",
     "node:console"
-  ]
+  ],
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriorityPolling"
+  }
 }

@@ -1,3 +1,14 @@
 {
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["convex/**/*.ts"],
+  "exclude": ["node_modules", "./convex/_generated", "./build"]
 }

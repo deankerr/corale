@@ -1,6 +1,6 @@
 import { ChatModelSchemaFields } from '../entities/chatModels/validators'
 import { internalMutation, internalQuery, query } from '../functions'
-import { QueryCtx } from '../types'
+import type { QueryCtx } from '../types'
 import { partial, v, withSystemFields } from '../values'
 
 export const chatModelReturn = v.object({
