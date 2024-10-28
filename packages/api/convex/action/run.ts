@@ -25,7 +25,7 @@ export const run = internalAction({
         messageId,
         patternId,
         options,
-      } = await ctx.runMutation(internal.db.runs.activate, {
+      } = await ctx.runMutation(internal.entities.runs.action.activate, {
         runId,
       })
 
@@ -60,7 +60,7 @@ export const run = internalAction({
 
       console.log(text, { finishReason, usage, warnings })
 
-      await ctx.runMutation(internal.db.runs.complete, {
+      await ctx.runMutation(internal.entities.runs.action.complete, {
         runId,
         messageId,
         text,
@@ -80,7 +80,7 @@ export const run = internalAction({
     } catch (err) {
       console.error(err)
 
-      await ctx.runMutation(internal.db.runs.fail, {
+      await ctx.runMutation(internal.entities.runs.action.fail, {
         runId,
         errors: [{ message: getErrorMessage(err), code: 'unknown' }],
       })
@@ -167,7 +167,7 @@ export const getProviderMetadata = internalAction({
       const metadata = await fetchOpenRouterMetadata(requestId)
       if (!metadata) throw new ConvexError('failed to fetch openrouter metadata')
 
-      await ctx.runMutation(internal.db.runs.updateProviderMetadata, {
+      await ctx.runMutation(internal.entities.runs.action.updateProviderMetadata, {
         runId,
         providerMetadata: metadata,
       })

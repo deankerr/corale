@@ -48,7 +48,7 @@ export const useThreadActions = (threadId: string) => {
     [actionState, sendAppend, threadId, reset, router],
   )
 
-  const sendCreateRun = useMutation(api.db.runs.create)
+  const sendCreateRun = useMutation(api.entities.runs.public.create)
   const createRun = useCallback(
     async (args: Omit<Parameters<typeof sendCreateRun>[0], 'threadId'>) => {
       if (actionState !== 'ready') {

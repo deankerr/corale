@@ -1,11 +1,27 @@
 import { paginationOptsValidator } from 'convex/server'
-import { v } from 'convex/values'
+import { internal } from '../../_generated/api'
+import type { Id } from '../../_generated/dataModel'
 import { getUser } from '../../entities/users/db'
-import { query } from '../../functions'
+import { mutation, query } from '../../functions'
 import { createError } from '../../lib/utils'
-import type { Id } from '../../types'
-import { getPattern } from '../patterns/db'
-import { getThread } from '../threads/db'
+import { ConvexError, nullable, v } from '../../values'
+import { generateXID } from '../helpers'
+import { updateKvMetadata } from '../kvMetadata'
+import { createMessage } from '../messages/db'
+import { getPattern, getPatternWriter } from '../patterns/db'
+import { getThread, getThreadWriter } from '../threads/db'
+import { RunCreate, RunReturn } from './validators'
+
+// * queries
+export const get = query({
+  args: {
+    runId: v.string(),
+  },
+  handler: async (ctx, { runId }) => {
+    return await ctx.table('runs').get(runId as Id<'runs'>)
+  },
+  returns: nullable(RunReturn),
+})
 
 export const getTextStreams = query({
   args: {
@@ -50,5 +66,72 @@ export const adminList = query({
           threadTitle: thread?.title ?? 'Unknown',
         }
       })
+  },
+})
+
+// * mutations
+export const create = mutation({
+  args: RunCreate,
+  handler: async (ctx, args) => {
+    const thread = await getThreadWriter(ctx, { threadId: args.threadId })
+    if (!thread) throw new ConvexError('invalid thread id')
+
+    const pattern = args.patternId ? await getPatternWriter(ctx, { patternId: args.patternId }) : null
+    if (pattern) {
+      await pattern.patch({ lastUsedAt: Date.now() })
+    }
+
+    const model = args.model ?? pattern?.model
+    if (!model) {
+      throw new ConvexError('no model provided')
+      // ? use fallback model
+    }
+
+    // * tag thread with ids to inform frontend input settings
+    const threadKvMetadata = updateKvMetadata(thread.kvMetadata, {
+      set: {
+        'esuite:model:id': model.id,
+        'esuite:pattern:xid': pattern?.xid,
+      },
+    })
+    await thread.patch({ updatedAtTime: Date.now(), kvMetadata: threadKvMetadata })
+
+    for (const message of args.appendMessages ?? []) {
+      await createMessage(ctx, {
+        threadId: thread._id,
+        userId: thread.userId,
+        ...message,
+      })
+    }
+
+    const runId = await ctx.table('runs').insert({
+      status: 'queued',
+      stream: args.stream,
+      patternId: pattern?._id,
+      model,
+      options: args.options ?? pattern?.options,
+      instructions: args.instructions ?? pattern?.instructions,
+      additionalInstructions: args.additionalInstructions,
+      kvMetadata: args.kvMetadata ?? {},
+
+      timings: {
+        queuedAt: Date.now(),
+      },
+
+      threadId: thread._id,
+      userId: thread.userId,
+
+      updatedAt: Date.now(),
+      xid: generateXID(),
+    })
+
+    await ctx.scheduler.runAfter(0, internal.action.run.run, {
+      runId,
+    })
+
+    return {
+      runId,
+      threadId: thread.xid,
+    }
   },
 })

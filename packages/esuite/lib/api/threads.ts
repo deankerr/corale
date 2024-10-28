@@ -25,7 +25,7 @@ export const useThread = (id: string) => {
 }
 
 export const useRun = (runId: string | undefined) => {
-  return useCachedQuery(api.db.runs.get, runId ? { runId } : 'skip')
+  return useCachedQuery(api.entities.runs.public.get, runId ? { runId } : 'skip')
 }
 
 export const useTextStreams = (runId: Id<'runs'> | undefined) => {
