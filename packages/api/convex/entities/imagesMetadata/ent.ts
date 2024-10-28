@@ -1,10 +1,10 @@
 import { defineEnt } from 'convex-ents'
-import { scheduledDeletionDelayMS } from '../../values'
+import { deletionDelayTime } from '../../constants'
 import { ImagesMetadataSchemaFields } from './validators'
 
 export const imagesMetadataEnt = defineEnt(ImagesMetadataSchemaFields)
   .deletion('scheduled', {
-    delayMs: scheduledDeletionDelayMS,
+    delayMs: deletionDelayTime,
   })
   .index('type', ['data.type'])
   .edge('image', {

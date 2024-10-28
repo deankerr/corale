@@ -1,9 +1,10 @@
 import { defineEnt } from 'convex-ents'
-import { literals, scheduledDeletionDelayMS, v } from '../../values'
+import { deletionDelayTime } from '../../constants'
+import { literals, v } from '../../values'
 import { MessageSchemaFields } from './validators'
 
 export const messagesEnt = defineEnt(MessageSchemaFields)
-  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
+  .deletion('scheduled', { delayMs: deletionDelayTime })
   .field('series', v.number(), { index: true })
   .field('xid', v.string(), { index: true })
   .edge('thread')

@@ -1,9 +1,10 @@
 import { defineEnt } from 'convex-ents'
-import { scheduledDeletionDelayMS, v } from '../../values'
+import { deletionDelayTime } from '../../constants'
+import { v } from '../../values'
 import { UsersApiKeysSchemaFields, UserSchemaFields } from './validators'
 
 export const usersEnt = defineEnt(UserSchemaFields)
-  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
+  .deletion('scheduled', { delayMs: deletionDelayTime })
   .field('tokenIdentifier', v.string(), { unique: true })
   .edges('users_api_keys', { ref: true })
   .edges('audio', { ref: true, deletion: 'soft' })
@@ -15,6 +16,6 @@ export const usersEnt = defineEnt(UserSchemaFields)
   .edges('runs', { ref: true, deletion: 'soft' })
 
 export const usersApiKeysEnt = defineEnt(UsersApiKeysSchemaFields)
-  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
+  .deletion('scheduled', { delayMs: deletionDelayTime })
   .field('secret', v.string(), { unique: true })
   .edge('user')

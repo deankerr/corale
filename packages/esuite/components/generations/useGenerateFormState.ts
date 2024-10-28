@@ -1,6 +1,6 @@
 import { useSessionStorageValue } from '@react-hookz/web'
 import { useCallback } from 'react'
-import { defaultImageModel } from './imageModels'
+import { defaultImageModel } from './GenerateForm'
 
 type GenerateFormState = {
   modelId: string

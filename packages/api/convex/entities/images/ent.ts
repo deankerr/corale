@@ -1,9 +1,10 @@
 import { defineEnt } from 'convex-ents'
-import { scheduledDeletionDelayMS, v } from '../../values'
+import { deletionDelayTime } from '../../constants'
+import { v } from '../../values'
 import { ImageSchemaFields } from './validators'
 
 export const imagesEnt = defineEnt(ImageSchemaFields)
-  .deletion('scheduled', { delayMs: scheduledDeletionDelayMS })
+  .deletion('scheduled', { delayMs: deletionDelayTime })
   .field('xid', v.string(), { unique: true })
   .index('generationId', ['generationId'])
   .index('ownerId', ['ownerId'])

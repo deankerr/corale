@@ -18,6 +18,7 @@ import type * as action_generateThreadTitle from "../action/generateThreadTitle.
 import type * as action_ingestImageUrl from "../action/ingestImageUrl.js";
 import type * as action_run from "../action/run.js";
 import type * as action_textToImage from "../action/textToImage.js";
+import type * as constants from "../constants.js";
 import type * as crons from "../crons.js";
 import type * as entities_audio_db from "../entities/audio/db.js";
 import type * as entities_audio_ent from "../entities/audio/ent.js";
@@ -117,6 +118,7 @@ declare const fullApi: ApiFromModules<{
   "action/ingestImageUrl": typeof action_ingestImageUrl;
   "action/run": typeof action_run;
   "action/textToImage": typeof action_textToImage;
+  constants: typeof constants;
   crons: typeof crons;
   "entities/audio/db": typeof entities_audio_db;
   "entities/audio/ent": typeof entities_audio_ent;

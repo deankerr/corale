@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SliderWithInput } from '@/components/ui/SliderWithInput'
 import { TextareaAutosize } from '@/components/ui/TextareaAutosize'
 import { TextField } from '@/components/ui/TextField'
-import type { TextToImageInputs } from '@corale/api'
+import { imageModels, type TextToImageInputs } from '@corale/api'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { RadioCards } from '@radix-ui/themes'
@@ -17,7 +17,31 @@ import { Authenticated } from 'convex/react'
 import { nanoid } from 'nanoid/non-secure'
 import Image from 'next/image'
 import { useState } from 'react'
-import { defaultImageModelInputs, imageModels } from './imageModels'
+
+export const defaultImageModel = 'fal-ai/flux/dev'
+
+export const defaultImageModelInputs = {
+  negativePrompt: false,
+  loras: false,
+  maxQuantity: 4,
+  sizes: [
+    {
+      name: 'portrait',
+      width: 832,
+      height: 1216,
+    },
+    {
+      name: 'square',
+      width: 1024,
+      height: 1024,
+    },
+    {
+      name: 'landscape',
+      width: 1216,
+      height: 832,
+    },
+  ],
+}
 
 const Lora = ({
   value,
