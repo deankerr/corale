@@ -16,7 +16,7 @@ export const get = query({
   returns: nullable(PatternReturn),
 })
 
-export const list = query({
+export const listMy = query({
   args: {},
   handler: async (ctx) => {
     const userId = ctx.viewerId

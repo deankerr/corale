@@ -21,7 +21,7 @@ export const get = query({
   returns: nullable(GenerationReturn),
 })
 
-export const list = query({
+export const listMy = query({
   args: {
     paginationOpts: paginationOptsValidator,
   },

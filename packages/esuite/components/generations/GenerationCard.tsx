@@ -1,12 +1,10 @@
 import { ImageCardNext } from '@/components/images/ImageCardNext'
 import { ImageGeneratingEffect } from '@/components/images/ImageGeneratingEffect'
 import { useLightbox } from '@/components/lightbox/hooks'
-import { api } from '@corale/api/convex/_generated/api'
-import type { TextToImageInputs } from '@corale/api/convex/entities/types'
+import type { Generation, Image, TextToImageInputs } from '@corale/api/convex/entities/types'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import * as Accordion from '@radix-ui/react-accordion'
 import { Badge } from '@radix-ui/themes'
-import { UsePaginatedQueryReturnType } from 'convex/react'
 import { ms } from 'itty-time'
 import Link from 'next/link'
 import { IconButton } from '../ui/Button'
@@ -30,7 +28,7 @@ export const GenerationCard = ({
   generation,
   defaultOpen = false,
 }: {
-  generation: UsePaginatedQueryReturnType<typeof api.entities.generations.public.list>['results'][number]
+  generation: Generation & { images: Image[] }
   defaultOpen?: boolean
 }) => {
   const input = generation.input as TextToImageInputs

@@ -2,7 +2,7 @@ import { api } from '@corale/api/convex/_generated/api'
 import { useMutation, usePaginatedQuery } from 'convex/react'
 
 export const useMyImagesList = (order?: 'asc' | 'desc') => {
-  const images = usePaginatedQuery(api.entities.images.public.listMyImages, { order }, { initialNumItems: 24 })
+  const images = usePaginatedQuery(api.entities.images.public.listMy, { order }, { initialNumItems: 24 })
   return images
 }
 

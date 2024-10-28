@@ -12,9 +12,9 @@ export const get = query({
   returns: nullable(ThreadReturn),
 })
 
-export const list = query({
+export const listMy = query({
   args: {},
-  handler: async (ctx): Promise<Thread[] | null> => {
+  handler: async (ctx) => {
     const user = await ctx.viewer()
     if (!user) return null
 

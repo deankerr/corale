@@ -17,14 +17,12 @@ export const getByRunId = query({
   returns: v.array(ImageReturn),
 })
 
-const PaginatedImages = v.object({ ...paginatedReturnFields, page: v.array(ImageReturn) })
-
-export const listMyImages = query({
+export const listMy = query({
   args: {
     paginationOpts: paginationOptsValidator,
     order: v.optional(literals('asc', 'desc')),
   },
-  handler: async (ctx, { paginationOpts, order = 'desc' }): Promise<Infer<typeof PaginatedImages>> => {
+  handler: async (ctx, { paginationOpts, order = 'desc' }) => {
     const viewerId = ctx.viewerId
     if (!viewerId) return emptyPage()
 
@@ -35,7 +33,7 @@ export const listMyImages = query({
       .paginate(paginationOpts)
       .map((image) => getImageEdges(ctx, image))
   },
-  returns: PaginatedImages,
+  returns: v.object({ ...paginatedReturnFields, page: v.array(ImageReturn) }),
 })
 
 export const remove = mutation({

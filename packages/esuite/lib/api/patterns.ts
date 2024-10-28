@@ -5,7 +5,7 @@ import { useMutation } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
 export const usePatterns = () => {
-  return useCachedQuery(api.entities.patterns.public.list, {})
+  return useCachedQuery(api.entities.patterns.public.listMy, {})
 }
 
 export const usePattern = (patternId?: string) => {

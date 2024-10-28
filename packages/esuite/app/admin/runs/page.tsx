@@ -25,7 +25,7 @@ function getDuration(startTime = 0, endTime = Date.now()) {
 }
 
 export default function Page() {
-  const runs = usePaginatedQuery(api.entities.runs.public.adminList, {}, { initialNumItems: 50 })
+  const runs = usePaginatedQuery(api.entities.runs.public.adminListAll, {}, { initialNumItems: 50 })
 
   return (
     <AdminPageWrapper className="w-full">

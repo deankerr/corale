@@ -4,7 +4,7 @@ import { useMutation, usePaginatedQuery } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
 export const useGenerations = () => {
-  return usePaginatedQuery(api.entities.generations.public.list, {}, { initialNumItems: 20 })
+  return usePaginatedQuery(api.entities.generations.public.listMy, {}, { initialNumItems: 20 })
 }
 
 export const useGeneration = (generationId: Id<'generations_v2'>) => {

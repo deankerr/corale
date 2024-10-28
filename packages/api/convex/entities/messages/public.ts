@@ -1,6 +1,6 @@
 import { mutation, query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
-import { literals, nullable, paginationOptsValidator, v, type Infer } from '../../values'
+import { literals, nullable, paginationOptsValidator, v } from '../../values'
 import { nullifyDeletedEnt } from '../helpers'
 import { getThread } from '../threads/db'
 import type { Message } from '../types'
@@ -33,15 +33,12 @@ export const getSeries = query({
   returns: nullable(MessageReturn),
 })
 
-export type PaginatedMessages = Infer<typeof PaginatedMessages>
-const PaginatedMessages = v.object({ ...paginatedReturnFields, page: v.array(MessageReturn) })
-
-export const list = query({
+export const listMy = query({
   args: {
     threadId: v.string(),
     paginationOpts: paginationOptsValidator,
   },
-  handler: async (ctx, args): Promise<PaginatedMessages> => {
+  handler: async (ctx, args) => {
     const thread = await getThread(ctx, { threadId: args.threadId })
     if (!thread) return emptyPage()
 
@@ -54,7 +51,7 @@ export const list = query({
 
     return messages
   },
-  returns: PaginatedMessages,
+  returns: v.object({ ...paginatedReturnFields, page: v.array(MessageReturn) }),
 })
 
 export const search = query({

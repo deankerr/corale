@@ -39,7 +39,7 @@ export const getTextStreams = query({
   returns: v.array(v.object({ content: v.string(), _id: v.id('texts') })),
 })
 
-export const adminList = query({
+export const adminListAll = query({
   args: {
     paginationOpts: paginationOptsValidator,
   },

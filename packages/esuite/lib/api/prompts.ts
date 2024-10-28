@@ -2,7 +2,7 @@ import { api } from '@corale/api/convex/_generated/api'
 import { useCachedQuery } from './helpers'
 
 export const usePrompts = () => {
-  const prompts = useCachedQuery(api.entities.texts.public.listPrompts, {})
+  const prompts = useCachedQuery(api.entities.texts.public.listMyPrompts, {})
   return prompts ? prompts.sort((a, b) => b.updatedAt - a.updatedAt) : prompts
 }
 

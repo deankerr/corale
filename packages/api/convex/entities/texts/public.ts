@@ -18,7 +18,7 @@ export const getPrompt = query({
   returns: nullable(TextPromptReturn),
 })
 
-export const listPrompts = query({
+export const listMyPrompts = query({
   args: {},
   handler: async (ctx) => {
     const viewer = await ctx.viewerX()
