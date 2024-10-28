@@ -1,8 +1,4 @@
-import { ConvexError, v, type Infer } from 'convex/values'
-import { internal } from '../../_generated/api'
-import type { ActionCtx } from '../../_generated/server'
-import { internalMutation, mutation, query } from '../../functions'
-import type { MutationCtx } from '../../types'
+import { internalMutation } from '../../functions'
 import { OperationsEventLogSchemaFields } from './validators'
 
 export const log = internalMutation({

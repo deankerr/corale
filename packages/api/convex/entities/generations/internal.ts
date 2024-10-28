@@ -1,7 +1,6 @@
 import { internal } from '../../_generated/api'
 import { internalMutation } from '../../functions'
 import { pick, v } from '../../values'
-import { getGenerationWriterX } from './db'
 import { GenerationSchemaFields } from './validators'
 
 export const activate = internalMutation({
@@ -9,7 +8,7 @@ export const activate = internalMutation({
     generationId: v.id('generations_v2'),
   },
   handler: async (ctx, { generationId }) => {
-    const generation = await getGenerationWriterX(ctx, { generationId })
+    const generation = await ctx.skipRules.table('generations_v2').getX(generationId)
     if (generation.status !== 'queued') {
       throw new Error('Generation is not queued')
     }
