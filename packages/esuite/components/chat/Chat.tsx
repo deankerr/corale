@@ -12,6 +12,7 @@ import { MessageFeed2 } from './panels/MessageFeed2'
 export const Chat = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
   const { isViewer } = useViewer(thread?.userId)
+  const shouldShowComposer = isViewer || threadId === 'new'
 
   if (!thread) return thread === null ? <PanelEmpty /> : <PanelLoading />
   return (
@@ -26,7 +27,7 @@ export const Chat = ({ threadId }: { threadId: string }) => {
       </PanelBodyGrid>
 
       {/* > composer */}
-      {isViewer && <Composer threadId={threadId} />}
+      {shouldShowComposer && <Composer threadId={threadId} />}
     </Panel>
   )
 }

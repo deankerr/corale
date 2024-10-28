@@ -1,10 +1,20 @@
 import { api } from '@corale/api/convex/_generated/api'
 import type { Id } from '@corale/api/convex/_generated/dataModel'
+import type { Thread } from '@corale/api/convex/entities/types'
 import { useMutation, useQuery } from 'convex/react'
 import { useEffect, useRef } from 'react'
 import { useDebounceValue } from 'usehooks-ts'
 import { useRoleQueryParam } from '../searchParams'
 import { useCachedQuery } from './helpers'
+
+const newThread: Thread = {
+  _id: '' as Id<'threads'>,
+  xid: 'new',
+  _creationTime: 0,
+  updatedAtTime: 0,
+  favourite: false,
+  userId: '' as Id<'users'>,
+}
 
 export const useThreads = () => {
   const threads = useCachedQuery(api.entities.threads.public.list, {})
@@ -21,6 +31,7 @@ export const useThread = (id: string) => {
   const userThread = threads ? (threads?.find((thread) => thread.xid === id) ?? null) : undefined
   const otherThread = useCachedQuery(api.entities.threads.public.get, !userThread ? { threadId: id } : 'skip')
 
+  if (id === 'new') return newThread
   return userThread || otherThread
 }
 
