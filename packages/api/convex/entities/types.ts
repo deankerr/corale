@@ -21,3 +21,13 @@ export type Thread = Infer<typeof ThreadReturn>
 export type User = Infer<typeof UserReturn>
 
 export type TextToImageInputs = Infer<typeof TextToImageInputs>
+
+export type XIDTableNames =
+  | 'audio'
+  | 'collections'
+  | 'generations_v2'
+  | 'images_v2'
+  | 'messages'
+  | 'patterns'
+  | 'runs'
+  | 'threads'

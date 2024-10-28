@@ -5,7 +5,7 @@ import type { mutation, query } from './functions'
 import type { entDefinitions } from './schema'
 
 export type { SystemFields, WithOptionalSystemFields, WithoutSystemFields } from 'convex/server'
-export type { Doc, Id } from './_generated/dataModel'
+export type { Doc, Id, TableNames } from './_generated/dataModel'
 
 export type QueryCtx = CustomCtx<typeof query>
 export type MutationCtx = CustomCtx<typeof mutation>
