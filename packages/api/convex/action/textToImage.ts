@@ -17,7 +17,7 @@ export const run = internalAction({
   },
   handler: async (ctx, { generationId }): Promise<void> => {
     try {
-      const generation = await ctx.runMutation(internal.db.generations.activate, {
+      const generation = await ctx.runMutation(internal.entities.generations.action.activate, {
         generationId,
       })
       const runConfig = generation.input as TextToImageInputs
@@ -58,7 +58,7 @@ export const run = internalAction({
       console.log('response', response)
       const output = FalTextToImageResponse.parse(response)
 
-      await ctx.runMutation(internal.db.generations.complete, {
+      await ctx.runMutation(internal.entities.generations.action.complete, {
         generationId,
         results: output.data.images.map((image) => ({
           url: image.url,
@@ -70,7 +70,7 @@ export const run = internalAction({
       })
     } catch (err) {
       console.error(err)
-      await ctx.runMutation(internal.db.generations.fail, {
+      await ctx.runMutation(internal.entities.generations.action.fail, {
         generationId,
         errors: [{ message: getErrorMessage(err), code: 'unknown' }],
       })

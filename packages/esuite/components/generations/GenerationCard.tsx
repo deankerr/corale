@@ -30,7 +30,7 @@ export const GenerationCard = ({
   generation,
   defaultOpen = false,
 }: {
-  generation: UsePaginatedQueryReturnType<typeof api.db.generations.list>['results'][number]
+  generation: UsePaginatedQueryReturnType<typeof api.entities.generations.public.list>['results'][number]
   defaultOpen?: boolean
 }) => {
   const input = generation.input as TextToImageInputs
