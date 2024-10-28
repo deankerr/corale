@@ -1,8 +1,8 @@
 import { paginationOptsValidator } from 'convex/server'
+import { getUser } from '../../entities/users/db'
 import { query } from '../../functions'
 import { createError } from '../../lib/utils'
 import { getEntity } from '../helpers/xid'
-import { getUserPublic } from '../users'
 
 export const list = query({
   args: {
@@ -18,7 +18,7 @@ export const list = query({
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .paginate(args.paginationOpts)
       .map(async (run) => {
-        const user = await getUserPublic(ctx, run.userId)
+        const user = await getUser(ctx, run.userId)
         const thread = await getEntity(ctx, 'threads', run.threadId)
 
         return {
