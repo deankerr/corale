@@ -1,7 +1,5 @@
+import { MyImagesCollection } from '@/components/collections/MyImagesCollection'
+
 export default function Page() {
-  return (
-    <div className="">
-      <p>Collections</p>
-    </div>
-  )
+  return <MyImagesCollection />
 }

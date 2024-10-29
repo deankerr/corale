@@ -1,5 +1,5 @@
-import { XSBChatsSidebar } from '@/app/(beta)/_cmp/XSBChatsSidebar'
 import { SidebarInset } from '@/components/ui/Sidebar'
+import { XSBChatsSidebar } from '../../_cmp/XSBChatsSidebar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

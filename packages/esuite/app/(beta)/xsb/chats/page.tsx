@@ -1,3 +1,5 @@
+import { XSBChat } from '../../_cmp/XSBChat'
+
 export default function Page() {
-  return <div className=""></div>
+  return <XSBChat threadId="new" />
 }

@@ -7,17 +7,16 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-  SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/Sidebar'
 import { useViewer } from '@/lib/api/users'
 import { UserButton } from '@clerk/nextjs'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
+import Link from 'next/link'
 import * as React from 'react'
 
 const config = {
@@ -29,7 +28,7 @@ const config = {
     },
     {
       title: 'Patterns',
-      icon: Icons.Code,
+      icon: Icons.CodesandboxLogo,
       url: '/xsb/patterns',
     },
     {
@@ -39,7 +38,7 @@ const config = {
     },
     {
       title: 'Collections',
-      icon: Icons.ImagesSquare,
+      icon: Icons.FolderStar,
       url: '/xsb/collections',
     },
   ],
@@ -48,7 +47,7 @@ const config = {
 export default function XSBAppSidebar({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider defaultOpen={false} keyboardShortcut="j">
-      <Sidebar collapsible="icon" className="z-20">
+      <Sidebar collapsible="icon" className="">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -70,12 +69,12 @@ export default function XSBAppSidebar({ children }: { children: React.ReactNode 
               {config.navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton isActive={false} tooltip={item.title} asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <div className="flex-center min-w-4">
                         <item.icon className="scale-125" />
                       </div>
                       <span className="font-medium">{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

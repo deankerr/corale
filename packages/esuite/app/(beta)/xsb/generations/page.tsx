@@ -1,7 +1,11 @@
+import { GeneratePanel } from '@/components/generations/GeneratePanel'
+import { Generations } from '@/components/generations/Generations'
+
 export default function Page() {
   return (
-    <div className="">
-      <p>Generations</p>
-    </div>
+    <>
+      <GeneratePanel />
+      <Generations />
+    </>
   )
 }

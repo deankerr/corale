@@ -78,7 +78,7 @@ const XSBChatComposer = ({ thread }: { thread: ThreadWithDetails }) => {
 
       <div className="flex-start px-3 pb-3 pt-1.5">
         <Button color="gray" variant="soft">
-          {thread.model?.name}
+          {thread.model?.name || 'Select model'}
         </Button>
 
         <div className="grow" />
