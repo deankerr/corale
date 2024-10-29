@@ -68,9 +68,9 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
 
         <AdminOnlyUi>
           <div className="space-y-1 py-2">
-            <NavItem href={'/xsb/chats'}>
-              <Icons.ChatsCircle size={20} className="text-accent-11 place-self-center" />
-              <div className="line-clamp-2 select-none overflow-hidden pr-3">(XSB Chats)</div>
+            <NavItem href={'/xsb'}>
+              <Icons.GitBranch size={20} className="text-accent-11 place-self-center" />
+              <div className="line-clamp-2 select-none overflow-hidden pr-3">(XSB)</div>
             </NavItem>
           </div>
         </AdminOnlyUi>

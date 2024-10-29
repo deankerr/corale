@@ -1,9 +1,5 @@
-import * as Icons from '@phosphor-icons/react/dist/ssr'
+import { BlankPage } from '../_layouts/BlankPage'
 
 export default function Page() {
-  return (
-    <main>
-      <h1>Hello</h1>
-    </main>
-  )
+  return <BlankPage />
 }
