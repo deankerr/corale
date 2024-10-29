@@ -7,16 +7,16 @@ import { TextArea } from '@/components/ui/TextArea'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { useThread } from '@/lib/api/threads'
 import { twx } from '@/lib/utils'
-import type { Thread } from '@corale/api'
+import type { ThreadWithDetails } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 
-const XSBChatShell = twx.div`flex h-full min-w-[28rem] w-full flex-col overflow-hidden`
+const XSBChatShell = twx.div`flex h-full min-w-[28rem] w-full flex-col overflow-hidden bg-gray-1`
 
 export function XSBChat({ threadId }: { threadId: string }) {
   const thread = useThread(threadId)
 
   if (!thread) {
-    if (thread === null) return <XSBChatShell>Thread not found</XSBChatShell>
+    if (thread === null) return <XSBChatShell>ThreadWithDetails not found</XSBChatShell>
     return <XSBChatShell>Loading...</XSBChatShell>
   }
 
@@ -29,9 +29,9 @@ export function XSBChat({ threadId }: { threadId: string }) {
   )
 }
 
-const XSBChatHeader = ({ thread }: { thread: Thread }) => {
+const XSBChatHeader = ({ thread }: { thread: ThreadWithDetails }) => {
   return (
-    <header className="flex-start bg-gray-1 h-12 gap-2 border-b px-3">
+    <header className="flex-start bg-gray-a2 h-12 shrink-0 gap-2 border-b px-3">
       <SidebarTrigger />
 
       <span className="text-sm font-medium">{thread.title ?? 'Untitled'}</span>
@@ -39,7 +39,15 @@ const XSBChatHeader = ({ thread }: { thread: Thread }) => {
   )
 }
 
-const XSBChatBody = ({ thread }: { thread: Thread }) => {
+const XSBChatBody = ({ thread }: { thread: ThreadWithDetails }) => {
+  return (
+    <div className="grid flex-1 grow grid-flow-col overflow-hidden [&>*]:col-start-1 [&>*]:row-start-1">
+      <XSBMessageFeed thread={thread} />
+    </div>
+  )
+}
+
+const XSBMessageFeed = ({ thread }: { thread: ThreadWithDetails }) => {
   const messages = useMessageFeedQuery(thread.xid)
 
   return (
@@ -55,19 +63,25 @@ const XSBChatBody = ({ thread }: { thread: Thread }) => {
   )
 }
 
-const XSBChatFooter = ({ thread }: { thread: Thread }) => {
+const XSBChatFooter = ({ thread }: { thread: ThreadWithDetails }) => {
   return (
-    <div className="flex-center bg-gray-1 sticky bottom-0 border-t px-4 py-3">
+    <div className="flex-center bg-gray-1 shrink-0 pb-2 pt-1">
       <XSBChatComposer thread={thread} />
     </div>
   )
 }
 
-const XSBChatComposer = ({ thread }: { thread: Thread }) => {
+const XSBChatComposer = ({ thread }: { thread: ThreadWithDetails }) => {
   return (
-    <div className="bg-gray-1 w-full max-w-2xl overflow-hidden rounded-md border">
+    <div className="bg-black-a1 w-full max-w-2xl overflow-hidden rounded-md border">
       <TextArea placeholder="Type a message..." />
-      <div className="flex-end px-3 pb-3 pt-1.5">
+
+      <div className="flex-start px-3 pb-3 pt-1.5">
+        <Button color="gray" variant="soft">
+          {thread.model?.name}
+        </Button>
+
+        <div className="grow" />
         <div className="flex-end gap-2">
           <IconButton color="gray" variant="surface" aria-label="Add message">
             <Icons.Plus />
