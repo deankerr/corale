@@ -10,7 +10,7 @@ const config: Config = {
     require('@tailwindcss/container-queries'),
     require('tailwindcss-animated'),
     require('tailwindcss-animate'),
-    require('@nauverse/tailwind-dot-grid-backgrounds'),
+    // require('@nauverse/tailwind-dot-grid-backgrounds'),
     plugin(({ addBase }) => {
       addBase({
         // css reset
@@ -127,7 +127,7 @@ const config: Config = {
         '5': 'hsl(var(--chart-5))',
       },
       sidebar: {
-        DEFAULT: radixColors.css.gray[3],
+        DEFAULT: radixColors.css.gray[2],
         foreground: radixColors.css.gray[12],
         primary: radixColors.css.accent.a9,
         'primary-foreground': radixColors.css.accent.a12,

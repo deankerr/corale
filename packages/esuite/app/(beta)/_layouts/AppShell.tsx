@@ -1,10 +1,22 @@
-import { SidebarInset, SidebarProvider } from '@/components/ui/Sidebar'
-import { AppSidebar } from './AppSidebar'
+import { Sidebar, SidebarInset, SidebarProvider } from '@/components/ui/Sidebar'
+import { ResourceSidebarLoader } from './ResourceSidebarLoader'
+import { AppSidebar } from './sidebars/AppSidebar'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider defaultOpen={false} keyboardShortcut="j" className="bg-grid-4-s-1-gray-a3">
-      <AppSidebar />
+    <SidebarProvider
+      keyboardShortcut="j"
+      className="bg-grid-4-s-1-gray-a3"
+      style={
+        {
+          '--sidebar-width': '350px',
+        } as React.CSSProperties
+      }
+    >
+      <Sidebar collapsible="icon" className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row">
+        <AppSidebar />
+        <ResourceSidebarLoader />
+      </Sidebar>
       <SidebarInset className="bg-transparent">{children}</SidebarInset>
     </SidebarProvider>
   )

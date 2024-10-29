@@ -2,8 +2,8 @@ import { api } from '@corale/api'
 import { usePaginatedQuery } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
-export const useCollections = () => {
-  const collections = useCachedQuery(api.entities.collections.public.latest, {})
+export const useCollections = (enabled: boolean = true) => {
+  const collections = useCachedQuery(api.entities.collections.public.latest, enabled ? {} : 'skip')
   return collections
 }
 

@@ -17,22 +17,18 @@ import { UserButton } from '@clerk/nextjs'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 import { useSelectedLayoutSegment } from 'next/navigation'
-import { config } from '../config'
+import { config } from '../../config'
 
 export function AppSidebar() {
   const { user } = useViewer()
   const segment = useSelectedLayoutSegment()
 
   return (
-    <Sidebar collapsible="icon" className="z-20">
+    <Sidebar collapsible="none" className="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              asChild
-            >
+            <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
               <Link href={config.nav.root}>
                 <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 min-w-8 items-center justify-center rounded-md">
                   <AppLogo className="size-4" />
@@ -77,10 +73,7 @@ export function AppSidebar() {
 
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
+            <SidebarMenuButton size="lg" className="md:h-8 md:p-0">
               <div className="flex-center size-8 min-w-8">
                 <UserButton />
               </div>

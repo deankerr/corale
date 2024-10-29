@@ -3,8 +3,8 @@ import { omit } from 'convex-helpers'
 import { useMutation } from 'convex/react'
 import { useCachedQuery } from './helpers'
 
-export const usePatterns = () => {
-  return useCachedQuery(api.entities.patterns.public.listMy, {})
+export const usePatterns = (enabled: boolean = true) => {
+  return useCachedQuery(api.entities.patterns.public.listMy, enabled ? {} : 'skip')
 }
 
 export const usePattern = (patternId?: string) => {
