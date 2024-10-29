@@ -8,7 +8,7 @@ import { XSBSubNavSidebar } from '../../_cmp/XSBSubNavSidebar'
 export default function Layout({ children }: { children: React.ReactNode }) {
   const patterns = usePatterns()
   const params = useParams()
-  const currentId = params.patternId?.[0]
+  const currentId = params.patternId
 
   const items =
     patterns?.map((pattern) => ({

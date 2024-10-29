@@ -8,7 +8,7 @@ import { XSBSubNavSidebar } from '../../_cmp/XSBSubNavSidebar'
 export default function Layout({ children }: { children: React.ReactNode }) {
   const collections = useCollections()
   const params = useParams()
-  const currentId = params.collectionId?.[0]
+  const currentId = params.collectionId
 
   const items =
     collections?.map((collection) => ({
