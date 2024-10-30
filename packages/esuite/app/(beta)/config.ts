@@ -23,6 +23,11 @@ const nav = {
       icon: Icons.FolderStar,
       route: 'collections',
     },
+    {
+      title: 'Models',
+      icon: Icons.Robot,
+      route: 'models',
+    },
   ],
 }
 

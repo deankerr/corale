@@ -201,6 +201,9 @@ importers:
       ldrs:
         specifier: ^1.0.2
         version: 1.0.2
+      match-sorter:
+        specifier: ^7.0.0
+        version: 7.0.0
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
@@ -3726,6 +3729,9 @@ packages:
   markdown-table@3.0.4:
     resolution: {integrity: sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==}
 
+  match-sorter@7.0.0:
+    resolution: {integrity: sha512-J1370vFVhvn81QrUYv54y3IZbsaG1X4otKSwtGZbyfZxgWgjVxdRkASY+uaT2IlQUGeWFBEPbGFVKv1DNnHYKA==}
+
   mdast-util-find-and-replace@3.0.1:
     resolution: {integrity: sha512-SG21kZHGC3XRTSUhtofZkBzZTJNM5ecCi0SK2IMKmSXR8vO3peL+kb1O0z7Zl83jKtutG4k5Wv/W7V3/YHvzPA==}
 
@@ -4414,6 +4420,9 @@ packages:
 
   remeda@2.16.0:
     resolution: {integrity: sha512-HOymkGg58HW4LT8MBEabQEdW76YsqcRNNFPXPrOrnYm+/9Pmk0b9fm8PKgQxoRPa6WDLnRM/LxTXkHdXf9Ab0w==}
+
+  remove-accents@0.5.0:
+    resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
 
   require-in-the-middle@7.4.0:
     resolution: {integrity: sha512-X34iHADNbNDfr6OTStIAHWSAvvKQRYgLO6duASaVf7J2VA3lvmNYboAHOuLC2huav1IwgZJtyEcJCKVzFxOSMQ==}
@@ -8820,6 +8829,11 @@ snapshots:
 
   markdown-table@3.0.4: {}
 
+  match-sorter@7.0.0:
+    dependencies:
+      '@babel/runtime': 7.25.9
+      remove-accents: 0.5.0
+
   mdast-util-find-and-replace@3.0.1:
     dependencies:
       '@types/mdast': 4.0.4
@@ -9682,6 +9696,8 @@ snapshots:
   remeda@2.16.0:
     dependencies:
       type-fest: 4.26.1
+
+  remove-accents@0.5.0: {}
 
   require-in-the-middle@7.4.0:
     dependencies:

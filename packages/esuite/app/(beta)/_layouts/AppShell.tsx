@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <AppSidebar />
         <ResourceSidebarLoader />
       </Sidebar>
-      <SidebarInset className="bg-transparent">{children}</SidebarInset>
+      <SidebarInset className="h-dvh bg-transparent">{children}</SidebarInset>
     </SidebarProvider>
   )
 }

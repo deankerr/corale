@@ -69,7 +69,7 @@ export function ResourceListSidebar({ title, items }: { title: string; items?: R
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="overflow-x-hidden">
+      <SidebarContent className="overflow-x-hidden overscroll-contain">
         <SidebarGroup>
           <SidebarGroupContent>
             {items?.map((item) => (

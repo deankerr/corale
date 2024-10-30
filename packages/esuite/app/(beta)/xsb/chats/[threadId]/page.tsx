@@ -1,5 +1,5 @@
-import { XSBChat } from '@/app/(beta)/_cmp/XSBChat'
+import { ChatCmp } from '@/app/(beta)/_features/chat/ChatCmp'
 
 export default function Page({ params }: { params: { threadId: string } }) {
-  return <XSBChat threadId={params.threadId} />
+  return <ChatCmp threadId={params.threadId} />
 }

@@ -75,7 +75,7 @@ const config: Config = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      midnight: '#090909',
+      midnight: '#0E0E10',
 
       // radix themes
       ...radixColors.css,
@@ -89,7 +89,7 @@ const config: Config = {
       input: radixColors.css.gray[6],
       ring: 'var(--focus-8)',
       background: radixColors.css.gray[1],
-      foreground: radixColors.css.gray[12],
+      foreground: radixColors.css.gray[11],
       primary: {
         DEFAULT: radixColors.css.accent[9],
         foreground: radixColors.css.gray[12],
