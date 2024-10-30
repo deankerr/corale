@@ -1,14 +1,20 @@
 'use client'
 
+import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
+import { ModelLogo } from '@/components/icons/ModelLogo'
 import { Message } from '@/components/message/Message'
 import { Button, IconButton } from '@/components/ui/Button'
 import { SidebarTrigger } from '@/components/ui/Sidebar'
 import { TextArea } from '@/components/ui/TextArea'
 import { useMessageFeedQuery } from '@/lib/api/messages'
+import { useChatModel } from '@/lib/api/models'
 import { useThread } from '@/lib/api/threads'
 import { twx } from '@/lib/utils'
 import type { ThreadWithDetails } from '@corale/api'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
+import { useState } from 'react'
+import { PageHeader, PageLayout } from '../../_ui/PageLayout'
+import { RunButton } from './RunButton'
 
 const ChatShell = twx.div`flex h-full min-w-[28rem] w-full flex-col overflow-hidden bg-gray-1`
 
@@ -21,21 +27,20 @@ export function ChatCmp({ threadId }: { threadId: string }) {
   }
 
   return (
-    <ChatShell>
-      <ChatHeader thread={thread} />
+    <PageLayout header={<ChatHeader thread={thread} />}>
       <ChatBody thread={thread} />
       <ChatFooter thread={thread} />
-    </ChatShell>
+    </PageLayout>
   )
 }
 
 const ChatHeader = ({ thread }: { thread: ThreadWithDetails }) => {
   return (
-    <header className="flex-start bg-gray-a2 h-12 shrink-0 gap-2 border-b px-3">
+    <PageHeader>
       <SidebarTrigger />
 
       <span className="text-sm font-medium">{thread.title ?? 'Untitled'}</span>
-    </header>
+    </PageHeader>
   )
 }
 
@@ -72,21 +77,27 @@ const ChatFooter = ({ thread }: { thread: ThreadWithDetails }) => {
 }
 
 const ChatComposer = ({ thread }: { thread: ThreadWithDetails }) => {
+  const [modelId, setModelId] = useState(thread.model?.modelId ?? '')
+  const model = useChatModel(modelId)
+
   return (
     <div className="bg-black-a1 w-full max-w-2xl overflow-hidden rounded-md border pt-1">
       <TextArea placeholder="Type a message..." />
 
       <div className="flex-start px-3 pb-3 pt-1.5">
-        <Button color="gray" variant="soft">
-          {thread.model?.name || 'Select model'}
-        </Button>
+        <ModelPickerCmd modelId={modelId} onModelIdChange={setModelId}>
+          <Button color="gray" variant="soft">
+            <ModelLogo modelName={model?.name ?? ''} />
+            {model?.name || 'Select model'}
+          </Button>
+        </ModelPickerCmd>
 
         <div className="grow" />
         <div className="flex-end gap-2">
           <IconButton color="gray" variant="surface" aria-label="Add message">
             <Icons.Plus />
           </IconButton>
-          <Button variant="surface">Run</Button>
+          <RunButton />
         </div>
       </div>
     </div>

@@ -132,8 +132,8 @@ function PatternEditor({ pattern, isNew = false }: { pattern: Pattern; isNew?: b
               <div className="space-y-1 p-4">
                 <Label>Model</Label>
                 <ModelPickerCmd
-                  value={patternState.model.id}
-                  onValueChange={(value) => updateField('model', { id: value })}
+                  modelId={patternState.model.id}
+                  onModelIdChange={(value) => updateField('model', { id: value })}
                 >
                   <ModelButton modelId={patternState.model.id} />
                 </ModelPickerCmd>

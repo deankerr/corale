@@ -61,7 +61,7 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
       </div>
 
       <div className="border-gray-a3 flex gap-2 overflow-hidden border-t p-2">
-        <ModelPickerCmd value={modelId} onValueChange={setModelId}>
+        <ModelPickerCmd modelId={modelId} onModelIdChange={setModelId}>
           <ModelButton modelId={modelId} />
         </ModelPickerCmd>
 

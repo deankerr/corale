@@ -10,7 +10,7 @@ export const list = query({
       .filter((q) => q.and(q.eq(q.field('hidden'), false), q.eq(q.field('available'), true)))
       .map((model) => ({ ...model, description: '' }))
 
-    return models.sort((a, b) => a.name.localeCompare(b.name))
+    return models.sort((a, b) => b.created - a.created)
   },
   returns: v.array(ChatModelReturn),
 })

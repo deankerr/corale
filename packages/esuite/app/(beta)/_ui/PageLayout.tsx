@@ -1,12 +1,14 @@
 import { cn } from '@/lib/utils'
 
-type PageLayoutProps = {
+export function PageLayout({
+  header,
+  children,
+  className,
+}: {
   header: React.ReactNode
   children: React.ReactNode
   className?: string
-}
-
-export function PageLayout({ header, children, className }: PageLayoutProps) {
+}) {
   return (
     <div className="bg-background text-foreground flex h-full flex-col" data-testid="page-layout">
       {header}
