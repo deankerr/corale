@@ -1,0 +1,42 @@
+{
+  "name": "@corale/backend",
+  "private": true,
+  "scripts": {
+    "dev": "convex dev",
+    "deploy": "pnpx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd 'pnpm -w build:esuite' --preview-run init",
+    "convex-init": "pnpx convex run init",
+    "convex-deploy": "convex deploy",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "generate-api": "mkdir -p out && convex function-spec > out/fn-spec.json && convex-helpers ts-api-spec --input-file out/fn-spec.json --output-file ${OUTPUT_FILE:-out/convex-api}"
+  },
+  "devDependencies": {
+    "@clerk/nextjs": "^6.0.2",
+    "@eslint/js": "^9.13.0",
+    "@types/node": "^22.8.1",
+    "eslint": "^8.57.1",
+    "globals": "^15.11.0",
+    "type-fest": "^4.26.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.12.2"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^0.0.70",
+    "@clerk/backend": "^1.15.1",
+    "@fal-ai/client": "^1.0.2",
+    "ai": "^3.4.20",
+    "convex": "^1.17.0",
+    "convex-ents": "^0.11.0",
+    "convex-helpers": "^0.1.63",
+    "deep-object-diff": "^1.1.9",
+    "fast-content-type-parse": "^2.0.0",
+    "itty-time": "^1.0.6",
+    "ky": "^1.7.2",
+    "nanoid": "^5.0.7",
+    "remeda": "^2.16.0",
+    "sharp": "^0.33.5",
+    "svix": "^1.37.0",
+    "ufo": "^1.5.4",
+    "zod": "^3.23.8"
+  }
+}
