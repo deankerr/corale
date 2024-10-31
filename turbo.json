@@ -4,7 +4,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["CONVEX_DEPLOY_KEY", "NEXT_PUBLIC_CONVEX_URL", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "SENTRY_AUTH_TOKEN"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": ["$TURBO_DEFAULT$", ".env.local"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "typecheck": {
