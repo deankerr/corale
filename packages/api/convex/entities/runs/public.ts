@@ -103,6 +103,7 @@ export const create = mutation({
       })
     }
 
+    const xid = generateXID()
     const runId = await ctx.table('runs').insert({
       status: 'queued',
       stream: args.stream,
@@ -121,16 +122,14 @@ export const create = mutation({
       userId: thread.userId,
 
       updatedAt: Date.now(),
-      xid: generateXID(),
+      xid,
     })
 
     await ctx.scheduler.runAfter(0, internal.action.run.run, {
       runId,
     })
 
-    return {
-      runId,
-      threadId: thread.xid,
-    }
+    return xid
   },
+  returns: v.string(),
 })

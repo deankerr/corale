@@ -37,16 +37,16 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
       try {
         console.log('append', args)
         const id = await createThread(threadId)
-        const result = await sendAppend({ ...args, threadId: id })
+        await sendAppend({ ...args, threadId: id })
 
         setActionState('rateLimited')
         reset()
 
-        if (result !== threadId) {
-          router.push(`/${baseChatRoute}/${result}`)
+        if (id !== threadId) {
+          router.push(`/${baseChatRoute}/${id}`)
         }
 
-        return result
+        return id
       } catch (err) {
         console.error(err)
         toast.error('An error occurred while trying to append message.')
@@ -71,16 +71,16 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
         console.log('createRun', args)
         const id = await createThread(threadId)
 
-        const result = await sendCreateRun({ ...args, threadId: id, stream: true })
+        await sendCreateRun({ ...args, threadId: id, stream: true })
 
         setActionState('rateLimited')
         reset()
 
-        if (result.threadId !== threadId) {
-          router.push(`/${baseChatRoute}/${result.threadId}`)
+        if (id !== threadId) {
+          router.push(`/${baseChatRoute}/${id}`)
         }
 
-        return result
+        return id
       } catch (err) {
         console.error(err)
         toast.error('An error occurred while trying to create run.')
