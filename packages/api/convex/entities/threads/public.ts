@@ -43,6 +43,7 @@ export const listMy = query({
               }
             : undefined,
           latestMessage,
+          // pleaseerror: 'ok',
         }
       })
 
