@@ -3,7 +3,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["CONVEX_DEPLOY_KEY", "NEXT_PUBLIC_CONVEX_URL", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "SENTRY_AUTH_TOKEN"],
+      "env": [
+        "CLERK_SECRET_KEY",
+        "CONVEX_DEPLOY_KEY",
+        "NEXT_PUBLIC_CONVEX_URL",
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "SENTRY_AUTH_TOKEN"
+      ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "typecheck": {
