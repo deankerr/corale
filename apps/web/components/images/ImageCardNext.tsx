@@ -4,6 +4,7 @@ import { DeleteImageDialog, ImageMetadataDialog } from '@/components/images/dial
 import { IconButton } from '@/components/ui/Button'
 import { useCollections } from '@/lib/api/collections'
 import { useViewer } from '@/lib/api/users'
+import { getConvexSiteUrl } from '@/lib/utils'
 import { api, type Image } from '@corale/backend'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { DropdownMenu } from '@radix-ui/themes'
@@ -53,7 +54,7 @@ export const ImageCardNext = ({
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Content variant="soft">
-          <Link href={`/convex/${image.xid}?download`}>
+          <Link href={`${getConvexSiteUrl()}/i/${image.xid}?download`}>
             <DropdownMenu.Item>
               <Icons.DownloadSimple />
               Download

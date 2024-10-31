@@ -3,12 +3,6 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { withSentryConfig } from '@sentry/nextjs'
 
-function getBackendUrl() {
-  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL
-  if (!convexUrl) throw new Error('NEXT_PUBLIC_CONVEX_URL is not set')
-  return convexUrl.replace('.cloud', '.site')
-}
-
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -21,14 +15,6 @@ const nextConfig = {
       },
     ],
   },
-
-  rewrites: async () => [
-    {
-      source: '/convex/:slug',
-      destination: `${getBackendUrl()}/i/:slug`,
-    },
-  ],
-
   transpilePackages: ['@corale/backend'],
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react', '@remixicon/react'],
