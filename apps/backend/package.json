@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "dev": "convex dev",
-    "deploy": "pnpx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd 'pnpm -w build:esuite' --preview-run init",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "convex-init": "pnpx convex run init",
