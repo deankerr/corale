@@ -29,6 +29,7 @@ export const listMy = query({
         const latestMessage = await thread
           .edge('messages')
           .order('desc')
+          .filter((q) => q.eq(q.field('deletionTime'), undefined))
           .first()
           .then((message) => (message ? { ...message, text: message?.text?.slice(0, 120) } : undefined))
 
@@ -42,6 +43,7 @@ export const listMy = query({
               }
             : undefined,
           latestMessage,
+          // pleaseerror: 'ok',
         }
       })
 

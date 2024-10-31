@@ -10,6 +10,7 @@ const config: Config = {
     require('@tailwindcss/container-queries'),
     require('tailwindcss-animated'),
     require('tailwindcss-animate'),
+    // require('@nauverse/tailwind-dot-grid-backgrounds'),
     plugin(({ addBase }) => {
       addBase({
         // css reset
@@ -74,7 +75,7 @@ const config: Config = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      midnight: '#090909',
+      midnight: '#0E0E10',
 
       // radix themes
       ...radixColors.css,
@@ -87,8 +88,8 @@ const config: Config = {
       border: radixColors.css.gray[5],
       input: radixColors.css.gray[6],
       ring: 'var(--focus-8)',
-      background: radixColors.css.gray,
-      foreground: radixColors.css.gray[12],
+      background: radixColors.css.gray[1],
+      foreground: radixColors.css.gray[11],
       primary: {
         DEFAULT: radixColors.css.accent[9],
         foreground: radixColors.css.gray[12],
@@ -117,6 +118,23 @@ const config: Config = {
         ...radixColors.css.accent,
         DEFAULT: radixColors.css.gray[3],
         foreground: radixColors.css.gray[12],
+      },
+      chart: {
+        '1': 'hsl(var(--chart-1))',
+        '2': 'hsl(var(--chart-2))',
+        '3': 'hsl(var(--chart-3))',
+        '4': 'hsl(var(--chart-4))',
+        '5': 'hsl(var(--chart-5))',
+      },
+      sidebar: {
+        DEFAULT: radixColors.css.gray[1],
+        foreground: radixColors.css.gray[12],
+        primary: radixColors.css.accent.a9,
+        'primary-foreground': radixColors.css.accent.a12,
+        accent: radixColors.css.gray[3],
+        'accent-foreground': radixColors.css.gray[12],
+        border: radixColors.css.gray[5],
+        ring: 'var(--focus-8)',
       },
     },
     container: {

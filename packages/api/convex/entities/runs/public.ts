@@ -9,6 +9,7 @@ import { updateKvMetadata } from '../kvMetadata'
 import { createMessage } from '../messages/db'
 import { getPattern, getPatternWriter } from '../patterns/db'
 import { getThread, getThreadWriter } from '../threads/db'
+import { getRun } from './db'
 import { RunCreate, RunReturn } from './validators'
 
 // * queries
@@ -17,7 +18,7 @@ export const get = query({
     runId: v.string(),
   },
   handler: async (ctx, { runId }) => {
-    return await ctx.table('runs').get(runId as Id<'runs'>)
+    return getRun(ctx, { runId })
   },
   returns: nullable(RunReturn),
 })
@@ -27,7 +28,7 @@ export const getTextStreams = query({
     runId: v.id('runs'),
   },
   handler: async (ctx, { runId }): Promise<{ content: string; _id: Id<'texts'> }[]> => {
-    const run = await ctx.table('runs').get(runId)
+    const run = await getRun(ctx, { runId })
     if (!run) return []
 
     const texts = await ctx
@@ -103,6 +104,7 @@ export const create = mutation({
       })
     }
 
+    const xid = generateXID()
     const runId = await ctx.table('runs').insert({
       status: 'queued',
       stream: args.stream,
@@ -121,16 +123,14 @@ export const create = mutation({
       userId: thread.userId,
 
       updatedAt: Date.now(),
-      xid: generateXID(),
+      xid,
     })
 
     await ctx.scheduler.runAfter(0, internal.action.run.run, {
       runId,
     })
 
-    return {
-      runId,
-      threadId: thread.xid,
-    }
+    return xid
   },
+  returns: v.string(),
 })

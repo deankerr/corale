@@ -3,7 +3,15 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Button } from '@radix-ui/themes'
 import { useEffect } from 'react'
 
-export const ErrorPage = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
+export const ErrorPage = ({
+  error,
+  reset,
+  label,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+  label?: string
+}) => {
   const message = error.message.replaceAll('\n', '\n\n')
 
   useEffect(() => {
@@ -17,6 +25,7 @@ export const ErrorPage = ({ error, reset }: { error: Error & { digest?: string }
       <Icons.SmileyXEyes className="text-red-10 -m-4 size-48 shrink-0 opacity-60" />
 
       <h2 className="text-red-10 font-mono text-xl">error</h2>
+      <h3 className="text-red-10 font-mono text-lg">{label}</h3>
 
       <pre className="border-red-11 bg-red-2 w-full max-w-3xl overflow-y-auto overflow-x-hidden whitespace-pre-wrap rounded-md border p-4 font-mono text-sm">
         {message}

@@ -5,13 +5,15 @@ import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr'
 import { Command as CommandPrimitive } from 'cmdk'
 import { forwardRef } from 'react'
 
-const Command = twx(CommandPrimitive)`flex h-full w-full flex-col overflow-hidden bg-gray-2 outline-none`
+const Command = twx(
+  CommandPrimitive,
+)`flex h-full w-full flex-col overflow-hidden text-foreground bg-gray-1 outline-none`
 
 const Input = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className={cn('border-gray-a3 flex shrink-0 items-center border-b px-3', className)} cmdk-input-wrapper="">
+  <div className={cn('flex shrink-0 items-center border-b px-3', className)} cmdk-input-wrapper="">
     <MagnifyingGlass className="mr-2 size-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
@@ -39,7 +41,7 @@ const Separator = twx(CommandPrimitive.Separator)`-mx-1 h-px bg-gray-a3`
 
 const Item = twx(
   CommandPrimitive.Item,
-)`relative flex cursor-pointer select-none items-center gap-4 rounded px-4 py-2.5 text-sm opacity-85 outline-none aria-selected:bg-gray-a4 aria-selected:text-white aria-selected:opacity-100 data-[disabled="false"]:pointer-events-auto data-[disabled="true"]:opacity-50 [&_svg]:size-[1.125rem] [&_svg]:shrink-0`
+)`relative flex cursor-pointer select-none items-center gap-4 rounded px-4 py-2.5 text-sm opacity-85 outline-none aria-selected:bg-gray-a2 aria-selected:text-gray-12 aria-selected:opacity-100 data-[disabled="false"]:pointer-events-auto data-[disabled="true"]:opacity-50 [&_svg]:size-[1.125rem] [&_svg]:shrink-0`
 
 const Shortcut = twx.span`ml-auto text-xs tracking-widest text-gray-11`
 

@@ -4,8 +4,8 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Code, DropdownMenu } from '@radix-ui/themes'
 import Link from 'next/link'
 import { IconButton } from '../ui/Button'
+import { RelativeTimeAgo } from '../ui/RelativeTimeAgo'
 import { useMessageContext } from './MessageProvider'
-import { TimeSince } from './TimeSince'
 
 export const MessageHeader = () => {
   const {
@@ -61,7 +61,7 @@ export const MessageHeader = () => {
       )}
 
       <div className="flex-center text-gray-10 gap-1 font-mono">
-        <TimeSince time={Math.floor(message._creationTime)} />
+        <RelativeTimeAgo time={Math.floor(message._creationTime)} />
         <div>⋅</div>
         <div>#{message.series}</div>
       </div>

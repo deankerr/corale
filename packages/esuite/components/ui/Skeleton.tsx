@@ -17,3 +17,8 @@ export const SkeletonShimmer = twx.div.attrs({
 })`
   isolate h-8 w-full overflow-hidden rounded-md bg-gray-a2 shimmer
 `
+
+// shadcn/ui
+export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('bg-gray-a3 animate-pulse rounded-md', className)} {...props} />
+}

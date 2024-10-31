@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 
 const runTimeout = 2500
 
-export const useThreadActions = (threadId: string) => {
+export const useThreadActions = (threadId: string, baseChatRoute: string) => {
   const router = useRouter()
   const [actionState, setActionState] = useState<'ready' | 'pending' | 'rateLimited'>('ready')
 
@@ -37,16 +37,16 @@ export const useThreadActions = (threadId: string) => {
       try {
         console.log('append', args)
         const id = await createThread(threadId)
-        const result = await sendAppend({ ...args, threadId: id })
+        await sendAppend({ ...args, threadId: id })
 
         setActionState('rateLimited')
         reset()
 
-        if (result !== threadId) {
-          router.push(`/chats/${result}`)
+        if (id !== threadId) {
+          router.push(`/${baseChatRoute}/${id}`)
         }
 
-        return result
+        return id
       } catch (err) {
         console.error(err)
         toast.error('An error occurred while trying to append message.')
@@ -55,7 +55,7 @@ export const useThreadActions = (threadId: string) => {
         return null
       }
     },
-    [actionState, createThread, sendAppend, threadId, reset, router],
+    [actionState, createThread, threadId, sendAppend, reset, router, baseChatRoute],
   )
 
   const sendCreateRun = useMutation(api.entities.runs.public.create)
@@ -71,16 +71,16 @@ export const useThreadActions = (threadId: string) => {
         console.log('createRun', args)
         const id = await createThread(threadId)
 
-        const result = await sendCreateRun({ ...args, threadId: id, stream: true })
+        await sendCreateRun({ ...args, threadId: id, stream: true })
 
         setActionState('rateLimited')
         reset()
 
-        if (result.threadId !== threadId) {
-          router.push(`/chats/${result.threadId}`)
+        if (id !== threadId) {
+          router.push(`/${baseChatRoute}/${id}`)
         }
 
-        return result
+        return id
       } catch (err) {
         console.error(err)
         toast.error('An error occurred while trying to create run.')
@@ -89,7 +89,7 @@ export const useThreadActions = (threadId: string) => {
         return null
       }
     },
-    [actionState, createThread, reset, router, sendCreateRun, threadId],
+    [actionState, createThread, reset, router, sendCreateRun, threadId, baseChatRoute],
   )
 
   const send = useCallback(

@@ -14,8 +14,8 @@ const newThread: Thread = {
   userId: '' as Id<'users'>,
 }
 
-export const useThreads = () => {
-  const threads = useCachedQuery(api.entities.threads.public.listMy, {})
+export const useThreads = (enabled: boolean = true) => {
+  const threads = useCachedQuery(api.entities.threads.public.listMy, enabled ? {} : 'skip')
   if (!threads) return threads
 
   const favourites = threads.filter((thread) => thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
