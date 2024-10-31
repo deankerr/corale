@@ -25,5 +25,6 @@
     "watchFile": "useFsEventsOnParentDirectory",
     "synchronousWatchDirectory": true,
     "excludeDirectories": ["**/node_modules/**/*"]
-  }
+  },
+  "eslint.workingDirectories": ["./apps/backend", "./apps/web"]
 }

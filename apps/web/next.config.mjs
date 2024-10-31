@@ -17,7 +17,7 @@ const nextConfig = {
   },
   transpilePackages: ['@corale/backend'],
   experimental: {
-    optimizePackageImports: ['@phosphor-icons/react', '@remixicon/react'],
+    optimizePackageImports: ['@phosphor-icons/react'],
   },
 }
 
