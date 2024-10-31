@@ -21,7 +21,7 @@ export type ComposerSend = (args: {
 
 export const Composer = memo(({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
-  const actions = useThreadActions(thread?._id ?? '')
+  const actions = useThreadActions(thread?._id ?? '', 'chats')
   const loading = actions.state !== 'ready'
 
   const [modelId, setModelId] = useState(getModelKey(thread?.kvMetadata ?? {}) ?? 'meta-llama/llama-3.1-70b-instruct')

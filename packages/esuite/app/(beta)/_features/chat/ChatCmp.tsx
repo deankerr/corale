@@ -1,11 +1,13 @@
 'use client'
 
+import { ChatMenu } from '@/components/chat/ChatMenu'
 import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { Message } from '@/components/message/Message'
 import { Button, IconButton } from '@/components/ui/Button'
 import { SidebarTrigger } from '@/components/ui/Sidebar'
 import { TextArea } from '@/components/ui/TextArea'
+import { useThreadActions } from '@/lib/api/actions'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { useChatModel } from '@/lib/api/models'
 import { useThread } from '@/lib/api/threads'
@@ -41,6 +43,7 @@ const ChatHeader = ({ thread }: { thread: ThreadWithDetails }) => {
 
       <Icons.Chat />
       <span className="text-sm font-medium">{thread.title ?? 'Untitled'}</span>
+      <ChatMenu threadId={thread.xid} />
     </PageHeader>
   )
 }
@@ -79,11 +82,42 @@ const ChatFooter = ({ thread }: { thread: ThreadWithDetails }) => {
 
 const ChatComposer = ({ thread }: { thread: ThreadWithDetails }) => {
   const [modelId, setModelId] = useState(thread.model?.modelId ?? '')
+  const [textValue, setTextValue] = useState('')
+
   const model = useChatModel(modelId)
+
+  const actions = useThreadActions(thread?._id ?? '', 'xsb/chats')
+  const loading = actions.state !== 'ready'
+
+  const handleSend = (action: 'append' | 'run') => {
+    if (!modelId) return console.error('No model selected')
+
+    actions
+      .send({
+        text: textValue,
+        model: { provider: 'openrouter', id: modelId },
+        action,
+      })
+      .then((result) => {
+        console.log(result)
+        if (result !== null) setTextValue('')
+      })
+      .catch((err) => console.error(err))
+  }
 
   return (
     <div className="bg-black-a1 w-full max-w-2xl overflow-hidden rounded-md border pt-1">
-      <TextArea placeholder="Type a message..." />
+      <TextArea
+        placeholder="Type a message..."
+        value={textValue}
+        onValueChange={setTextValue}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+            e.preventDefault()
+            handleSend('run')
+          }
+        }}
+      />
 
       <div className="flex-start px-3 pb-3 pt-1.5">
         <ModelPickerCmd modelId={modelId} onModelIdChange={setModelId}>
@@ -95,10 +129,16 @@ const ChatComposer = ({ thread }: { thread: ThreadWithDetails }) => {
 
         <div className="grow" />
         <div className="flex-end gap-2">
-          <IconButton color="gray" variant="surface" aria-label="Add message">
+          <IconButton
+            color="gray"
+            variant="surface"
+            aria-label="Add message"
+            onClick={() => handleSend('append')}
+            loading={loading}
+          >
             <Icons.Plus />
           </IconButton>
-          <RunButton />
+          <RunButton onClick={() => handleSend('run')} loading={loading} />
         </div>
       </div>
     </div>
