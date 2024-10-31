@@ -1,12 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@corale/config-typescript/nextjs.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "esnext",
-    "jsx": "preserve",
-    "noEmit": true,
-    "incremental": true,
-    "allowJs": true,
+    "outDir": "dist",
     "plugins": [
       {
         "name": "next"
