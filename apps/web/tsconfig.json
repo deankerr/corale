@@ -1,7 +1,6 @@
 {
   "extends": "@corale/config-typescript/nextjs.json",
   "compilerOptions": {
-    "outDir": "dist",
     "plugins": [
       {
         "name": "next"
