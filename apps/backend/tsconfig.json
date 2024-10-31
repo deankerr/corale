@@ -1,5 +1,5 @@
 {
   "extends": "@corale/config-typescript/react-app.json",
   "include": ["convex/**/*.ts", "index.ts"],
-  "exclude": ["node_modules", "./convex/_generated", "./out"]
+  "exclude": ["node_modules", "./out"]
 }
