@@ -1,11 +1,11 @@
-import { Sidebar, SidebarInset, SidebarProvider } from '@/components/ui/Sidebar'
+import { Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/Sidebar'
 import { ResourceSidebarLoader } from './ResourceSidebarLoader'
 import { AppSidebar } from './sidebars/AppSidebar'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider
-      keyboardShortcut="j"
+      keyboardShortcut="b"
       style={
         {
           '--sidebar-width': '350px',
@@ -16,7 +16,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <AppSidebar />
         <ResourceSidebarLoader />
       </Sidebar>
-      <SidebarInset className="h-dvh">{children}</SidebarInset>
+      <SidebarInset className="h-dvh">
+        {children}
+        <div className="absolute left-1 top-1 block md:hidden">
+          <SidebarTrigger />
+        </div>
+      </SidebarInset>
     </SidebarProvider>
   )
 }
