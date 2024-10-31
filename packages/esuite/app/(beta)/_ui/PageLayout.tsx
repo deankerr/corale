@@ -25,7 +25,10 @@ export function PageLayout({
 
 export function PageHeader({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <header className={cn('flex h-12 shrink-0 items-center gap-2 border-b px-3', className)} data-testid="page-header">
+    <header
+      className={cn('flex-start h-12 shrink-0 items-center gap-2 border-b px-3', className)}
+      data-testid="page-header"
+    >
       {children}
     </header>
   )

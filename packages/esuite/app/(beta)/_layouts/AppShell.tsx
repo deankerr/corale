@@ -6,7 +6,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider
       keyboardShortcut="j"
-      className="bg-grid-4-s-1-gray-a3"
       style={
         {
           '--sidebar-width': '350px',

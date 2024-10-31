@@ -24,7 +24,7 @@ export function AppSidebar() {
   const segment = useSelectedLayoutSegment()
 
   return (
-    <Sidebar collapsible="none" className="!w-[calc(var(--sidebar-width-icon)_+_1px)]">
+    <Sidebar collapsible="none" className="bg-gray-2 !w-[calc(var(--sidebar-width-icon)_+_1px)]">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

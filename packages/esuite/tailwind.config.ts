@@ -127,11 +127,11 @@ const config: Config = {
         '5': 'hsl(var(--chart-5))',
       },
       sidebar: {
-        DEFAULT: radixColors.css.gray[2],
+        DEFAULT: radixColors.css.gray[1],
         foreground: radixColors.css.gray[12],
         primary: radixColors.css.accent.a9,
         'primary-foreground': radixColors.css.accent.a12,
-        accent: radixColors.css.gray[4],
+        accent: radixColors.css.gray[3],
         'accent-foreground': radixColors.css.gray[12],
         border: radixColors.css.gray[5],
         ring: 'var(--focus-8)',

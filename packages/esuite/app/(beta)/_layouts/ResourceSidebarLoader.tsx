@@ -62,5 +62,13 @@ export function ResourceSidebarLoader() {
     )
   }
 
+  if (segment === 'generations') {
+    return <ResourceListSidebar title="Generations" items={[]} />
+  }
+
+  if (segment === 'models') {
+    return <ResourceListSidebar title="Models" items={[]} />
+  }
+
   return null
 }

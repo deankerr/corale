@@ -39,6 +39,7 @@ const ChatHeader = ({ thread }: { thread: ThreadWithDetails }) => {
     <PageHeader>
       <SidebarTrigger />
 
+      <Icons.Chat />
       <span className="text-sm font-medium">{thread.title ?? 'Untitled'}</span>
     </PageHeader>
   )
@@ -70,7 +71,7 @@ const MessageFeed = ({ thread }: { thread: ThreadWithDetails }) => {
 
 const ChatFooter = ({ thread }: { thread: ThreadWithDetails }) => {
   return (
-    <div className="flex-center bg-gray-1 shrink-0 pb-2 pt-1">
+    <div className="flex-center bg-gray-1 shrink-0 px-3 pb-2 pt-1">
       <ChatComposer thread={thread} />
     </div>
   )
