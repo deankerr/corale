@@ -2,24 +2,20 @@
   "name": "corale",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter api build",
-    "build:esuite": "pnpm --filter esuite build",
-    "dev": "pnpm --parallel dev",
-    "dev:esuite": "pnpm --filter esuite dev",
-    "dev:api": "pnpm --filter api dev",
-    "start": "pnpm --filter esuite start",
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "start": "turbo start",
     "format": "pnpm prettier --write .",
-    "lint": "pnpm eslint .",
-    "typecheck": "pnpm -r typecheck",
-    "convex-deploy": "pnpm --filter api convex-deploy",
-    "generate-api": "pnpm --filter api generate-api"
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "convex-deploy": "pnpm --filter backend convex-deploy",
+    "generate-api": "pnpm --filter backend generate-api"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@types/node": "^22.8.1",
-    "eslint": "^8.57.1",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
-    "typescript": "^5.6.3"
-  }
+    "turbo": "^2.2.3"
+  },
+  "packageManager": "pnpm@9.12.1"
 }
