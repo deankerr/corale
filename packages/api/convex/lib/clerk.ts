@@ -33,11 +33,10 @@ export const handleWebhook = httpAction(async (ctx, request) => {
         break
 
       case 'user.updated':
-        const { imageUrl } = getUserJsonFields(event.data)
         await ctx.runMutation(internal.entities.users.internal.update, {
           tokenIdentifier: `${issuerDomain}|${event.data.id}`,
           fields: {
-            imageUrl,
+            imageUrl: event.data.image_url,
           },
         })
         break

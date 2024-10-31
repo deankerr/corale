@@ -4,17 +4,22 @@
   "private": true,
   "scripts": {
     "dev": "convex dev",
-    "build": "pnpx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd 'pnpm -w build:esuite' --preview-run init",
+    "deploy": "pnpx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd 'pnpm -w build:esuite' --preview-run init",
     "convex-init": "pnpx convex run init",
     "convex-deploy": "convex deploy",
     "typecheck": "tsc --noEmit",
-    "generate-api": "mkdir -p build && convex function-spec > build/fn-spec.json && convex-helpers ts-api-spec --input-file build/fn-spec.json --output-file ${OUTPUT_FILE:-build/convex-api}"
+    "lint": "eslint .",
+    "generate-api": "mkdir -p out && convex function-spec > out/fn-spec.json && convex-helpers ts-api-spec --input-file out/fn-spec.json --output-file ${OUTPUT_FILE:-out/convex-api}"
   },
   "devDependencies": {
     "@clerk/nextjs": "^6.0.2",
+    "@eslint/js": "^9.13.0",
     "@types/node": "^22.8.1",
+    "eslint": "^8.57.1",
+    "globals": "^15.11.0",
     "type-fest": "^4.26.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.12.2"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.70",
