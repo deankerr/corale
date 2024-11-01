@@ -10,7 +10,7 @@ export async function getImage(ctx: QueryCtx, { imageId }: { imageId: string }) 
 
 export async function getImageX(ctx: QueryCtx, { imageId }: { imageId: string }) {
   const image = await getImage(ctx, { imageId })
-  if (!image) throw new ConvexError({ message: `Invalid image id`, id: imageId })
+  if (!image || image.deletionTime) throw new ConvexError({ message: `Invalid image id`, id: imageId })
   return image
 }
 
@@ -22,7 +22,7 @@ export async function getImageWriter(ctx: MutationCtx, { imageId }: { imageId: s
 
 export async function getImageWriterX(ctx: MutationCtx, { imageId }: { imageId: string }) {
   const image = await getImageWriter(ctx, { imageId })
-  if (!image) throw new ConvexError({ message: `Invalid image id`, id: imageId })
+  if (!image || image.deletionTime) throw new ConvexError({ message: `Invalid image id`, id: imageId })
   return image
 }
 

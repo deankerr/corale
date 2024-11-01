@@ -10,7 +10,7 @@ export async function getPattern(ctx: QueryCtx, { patternId }: { patternId: stri
 
 export async function getPatternX(ctx: QueryCtx, { patternId }: { patternId: string }) {
   const pattern = await getPattern(ctx, { patternId })
-  if (!pattern) throw new ConvexError({ message: `Invalid pattern id`, id: patternId })
+  if (!pattern || pattern.deletionTime) throw new ConvexError({ message: `Invalid pattern id`, id: patternId })
   return pattern
 }
 
@@ -22,6 +22,6 @@ export async function getPatternWriter(ctx: MutationCtx, { patternId }: { patter
 
 export async function getPatternWriterX(ctx: MutationCtx, { patternId }: { patternId: string }) {
   const pattern = await getPatternWriter(ctx, { patternId })
-  if (!pattern) throw new ConvexError({ message: `Invalid pattern id`, id: patternId })
+  if (!pattern || pattern.deletionTime) throw new ConvexError({ message: `Invalid pattern id`, id: patternId })
   return pattern
 }

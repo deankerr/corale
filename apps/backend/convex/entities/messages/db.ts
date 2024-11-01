@@ -31,7 +31,7 @@ export async function getMessage(ctx: QueryCtx, { messageId }: { messageId: stri
 
 export async function getMessageX(ctx: QueryCtx, { messageId }: { messageId: string }) {
   const message = await getMessage(ctx, { messageId })
-  if (!message) throw new ConvexError({ message: `Invalid message id`, id: messageId })
+  if (!message || message.deletionTime) throw new ConvexError({ message: `Invalid message id`, id: messageId })
   return message
 }
 
@@ -43,7 +43,7 @@ export async function getMessageWriter(ctx: MutationCtx, { messageId }: { messag
 
 export async function getMessageWriterX(ctx: MutationCtx, { messageId }: { messageId: string }) {
   const message = await getMessageWriter(ctx, { messageId })
-  if (!message) throw new ConvexError({ message: `Invalid message id`, id: messageId })
+  if (!message || message.deletionTime) throw new ConvexError({ message: `Invalid message id`, id: messageId })
   return message
 }
 
