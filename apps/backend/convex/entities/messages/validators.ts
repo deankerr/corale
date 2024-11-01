@@ -1,7 +1,6 @@
-import { literals, v, withSystemFields } from '../../values'
+import { v, withSystemFields } from '../../values'
 import { updateKvValidator } from '../kvMetadata'
-
-export const MessageRoles = literals('system', 'assistant', 'user')
+import { MessageRoles } from '../shared'
 
 export const MessageSchemaFields = {
   role: MessageRoles,

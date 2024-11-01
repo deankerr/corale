@@ -113,6 +113,7 @@ export const create = mutation({
       options: args.options ?? pattern?.options,
       instructions: args.instructions ?? pattern?.instructions,
       additionalInstructions: args.additionalInstructions,
+      dynamicMessage: args.dynamicMessage ?? pattern?.dynamicMessage,
       kvMetadata: args.kvMetadata ?? {},
 
       timings: {

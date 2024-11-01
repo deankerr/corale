@@ -47,7 +47,7 @@ export const activate = internalMutation({
       }),
     })
 
-    const messages: AIChatMessage[] = []
+    let messages: AIChatMessage[] = []
 
     // * pattern initial messages
     if (pattern) {
@@ -66,6 +66,14 @@ export const activate = internalMutation({
       .take(maxMessages)
       .map(formatMessage)
     messages.push(...conversation.reverse())
+
+    if (run.dynamicMessage) {
+      const { role = 'system', name, text, depth = 1 } = run.dynamicMessage
+      const dynamicMessage = formatMessage({ role, name, text })
+      const position = messages.length - depth
+      if (position <= 0) messages.unshift(dynamicMessage)
+      else messages = [...messages.slice(0, position), dynamicMessage, ...messages.slice(position)]
+    }
 
     await run.patch({
       status: 'active',
