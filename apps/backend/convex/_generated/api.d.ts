@@ -101,6 +101,7 @@ import type * as migrations from "../migrations.js";
 import type * as provider_fal_models from "../provider/fal/models.js";
 import type * as provider_openrouter from "../provider/openrouter.js";
 import type * as rules from "../rules.js";
+import type * as tests_helpers from "../tests/helpers.js";
 import type * as types from "../types.js";
 import type * as values from "../values.js";
 
@@ -201,6 +202,7 @@ declare const fullApi: ApiFromModules<{
   "provider/fal/models": typeof provider_fal_models;
   "provider/openrouter": typeof provider_openrouter;
   rules: typeof rules;
+  "tests/helpers": typeof tests_helpers;
   types: typeof types;
   values: typeof values;
 }>;

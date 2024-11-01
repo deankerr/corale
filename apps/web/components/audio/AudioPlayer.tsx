@@ -3,11 +3,10 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Card, IconButton, Inset } from '@radix-ui/themes'
 import AudioMotionAnalyzer from 'audiomotion-analyzer'
 import { Howler } from 'howler'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { Play, useHowl } from 'rehowl'
-import MeshBg from './AudiPlayerMeshBg.svg'
+import { AudioPlayerBg } from './AudioPlayerBg'
 
 export default function AudioPlayer({ url, titleText }: { url: string; titleText: string }) {
   const [playing, setPlaying] = useState(false)
@@ -56,7 +55,7 @@ export default function AudioPlayer({ url, titleText }: { url: string; titleText
   return (
     <Card className="mx-auto aspect-[8/5] w-80">
       <Inset>
-        <Image unoptimized src={MeshBg} alt="" className="-scale-x-100" />
+        <AudioPlayerBg />
       </Inset>
 
       {/* visualizer */}
