@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { internal } from '../../_generated/api'
 import { internalMutation } from '../../functions'
+import { replaceTemplateTags } from '../../lib/parse'
 import type { Ent, MutationCtx } from '../../types'
 import { ConvexError, v } from '../../values'
 import { getChatModel } from '../chatModels/db'
@@ -19,9 +20,20 @@ export const activate = internalMutation({
 
     const pattern = run.patternId ? await getPattern(ctx, { patternId: run.patternId }) : null
 
-    // TODO custom ctx
-    const skipRulesCtx = { ...ctx, table: ctx.skipRules.table }
+    // * system instructions
+    const system = [run.instructions, run.additionalInstructions]
+      .map((text = '') =>
+        replaceTemplateTags(text.trim(), [
+          { tag: 'isodate', value: () => new Date().toISOString() },
+          { tag: 'name', value: pattern?.name ?? '[the model]' },
+          { tag: 'markdown', value: 'Use GFM/Markdown formatting for your response.' },
+        ]),
+      )
+      .join('\n')
+      .trim()
 
+    // NOTE custom ctx override
+    const skipRulesCtx = { ...ctx, table: ctx.skipRules.table }
     // * create response message
     const responseMessage = await createMessage(skipRulesCtx, {
       threadId: run.threadId,
@@ -64,8 +76,10 @@ export const activate = internalMutation({
       },
     })
 
+    // TODO define the props the action actually needs
     return {
       ...run.doc(),
+      system,
       messages,
       messageId: responseMessage._id,
     }

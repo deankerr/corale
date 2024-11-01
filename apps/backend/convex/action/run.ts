@@ -6,6 +6,7 @@ import type { ActionCtx } from '../_generated/server'
 import { internalAction } from '../functions'
 import { createAIProvider } from '../lib/ai'
 import { ENV } from '../lib/env'
+import { truncateText } from '../lib/parse'
 import { getErrorMessage, hasDelimiter } from '../lib/utils'
 
 export const run = internalAction({
@@ -17,10 +18,9 @@ export const run = internalAction({
     try {
       const {
         stream,
-        instructions = '',
-        additionalInstructions = '',
+        system,
         messages,
-        model: { id: modelId, provider: modelProvider, ...modelParameters },
+        model: { id: modelId, provider: modelProvider = 'openrouter', ...modelParameters },
         userId,
         messageId,
         patternId,
@@ -29,8 +29,6 @@ export const run = internalAction({
         runId,
       })
 
-      const system = [instructions, additionalInstructions].join('\n\n').trim() || undefined
-
       const parameters = { ...modelParameters, maxTokens: options?.maxCompletionTokens }
 
       console.log({
@@ -38,10 +36,10 @@ export const run = internalAction({
         patternId,
         modelId,
         parameters,
-        system: system?.slice(0, 500),
+        system: truncateText(system, 400),
         messages: messages.map((message) => ({
           ...message,
-          content: message.content.slice(0, 500),
+          content: truncateText(message.content, 400),
         })),
       })
 
@@ -73,10 +71,12 @@ export const run = internalAction({
       })
 
       // * get openrouter metadata
-      await ctx.scheduler.runAfter(500, internal.action.run.getProviderMetadata, {
-        runId,
-        requestId: response.id,
-      })
+      if (modelProvider === 'openrouter') {
+        await ctx.scheduler.runAfter(500, internal.action.run.getProviderMetadata, {
+          runId,
+          requestId: response.id,
+        })
+      }
     } catch (err) {
       console.error(err)
 
@@ -172,7 +172,7 @@ export const getProviderMetadata = internalAction({
         providerMetadata: metadata,
       })
     } catch (err) {
-      if (attempts >= MAX_ATTEMPTS) throw new ConvexError('failed to fetch openrouter metadata')
+      if (attempts >= MAX_ATTEMPTS) throw err
 
       await ctx.scheduler.runAfter(2000 * attempts, internal.action.run.getProviderMetadata, {
         runId,

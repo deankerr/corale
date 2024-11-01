@@ -48,6 +48,7 @@ export function parseURLs(text: string): URL[] {
     try {
       const url = new URL(match)
       urls.push(url)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Invalid URL
     }
@@ -70,4 +71,29 @@ export function parseURLsFromText(text: string) {
     .filter((block) => block.type === 'text')
     .flatMap((block) => parseURLs(block.content))
     .filter((url) => !isLikeIPAddress(url) && url.hostname !== ENV.APP_HOSTNAME)
+}
+
+type TemplateReplacer = {
+  tag: string
+  value: string | (() => string)
+}
+
+export function replaceTemplateTags(template = '', replacers: TemplateReplacer[]): string {
+  let result = template
+
+  for (const { tag, value } of replacers) {
+    // matches {{tag}} but not \{{tag}}
+    const regex = new RegExp(`(?<!\\\\)\\{\\{${tag}\\}\\}`, 'g')
+
+    const replacement = typeof value === 'function' ? value() : value
+    result = result.replace(regex, replacement)
+  }
+
+  // remove backslash from escaped tags
+  return result.replace(/\\(\{\{.*?\}\})/g, '$1')
+}
+
+export function truncateText(text = '', maxLength: number) {
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength - 3) + '...'
 }
