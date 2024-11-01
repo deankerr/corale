@@ -10,9 +10,9 @@ import { imagesMetadataEnt } from './entities/imagesMetadata/ent'
 import { messagesEnt } from './entities/messages/ent'
 import { operationsEventLogEnt } from './entities/operationsEventLogs/ent'
 import { patternsEnt } from './entities/patterns/ent'
-import { runsEnt } from './entities/runs/ent'
 import { textsEnt } from './entities/texts/ent'
 import { threadsEnt } from './entities/threads/ent'
+import { runsEnt } from './entities/threads/runs/definition'
 import { usersApiKeysEnt, usersEnt } from './entities/users/ent'
 
 const schema = defineEntSchema(

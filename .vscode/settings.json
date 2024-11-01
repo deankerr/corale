@@ -17,7 +17,8 @@
     "node:worker_threads",
     "node:stream/consumers",
     "node:test",
-    "node:console"
+    "node:console",
+    "node:stream"
   ],
   "typescript.tsserver.watchOptions": {
     "watchDirectory": "useFsEvents",
