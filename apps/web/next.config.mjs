@@ -19,6 +19,14 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
   },
+
+  // handled by CI
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 export default withSentryConfig(process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig, {

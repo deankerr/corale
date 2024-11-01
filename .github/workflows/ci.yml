@@ -1,14 +1,10 @@
 name: CI
 
-on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
+on: push
 
 # Cancel in-progress runs on new pushes
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
