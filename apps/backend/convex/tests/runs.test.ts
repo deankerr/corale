@@ -41,8 +41,8 @@ test('user can create and complete a basic run', async () => {
     paginationOpts: { cursor: null, numItems: 10 },
   })
   expect(messages.page).toHaveLength(1)
-  expect(messages.page[0].role).toBe('assistant')
-  expect(messages.page[0].runId).toBeDefined()
+  expect(messages.page[0]?.role).toBe('assistant')
+  expect(messages.page[0]?.runId).toBeDefined()
 })
 
 test('run with streaming creates and updates text entries', async () => {
