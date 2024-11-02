@@ -230,7 +230,7 @@ function formatNamePrefixMessage({ role, name, text = '' }: { role: MessageRoles
   return {
     role,
     content: name && role !== 'system' ? `${name}: ${text}` : text,
-  };
+  }
 }
 
 // * complete run - update message with final result, update run with usage stats/timings
@@ -254,21 +254,7 @@ export const complete = internalMutation({
       throw new ConvexError({ message: 'run is not active', runId: args.runId })
     }
 
-    // Get response message
-    const message = await ctx.skipRules
-      .table('messages')
-      .filter((q) =>
-        q.and(
-          q.eq(q.field('runId'), run._id),
-          q.eq(q.field('role'), 'assistant'),
-          q.eq(q.field('deletionTime'), undefined),
-        ),
-      )
-      .first()
-
-    if (!message) {
-      throw new ConvexError({ message: 'response message not found', runId: args.runId })
-    }
+    const message = await ctx.skipRules.table('messages').getX('runId', run._id)
 
     // Update message
     const kvMetadata = updateKvMetadata(message.kvMetadata ?? {}, {
@@ -336,16 +322,7 @@ export const fail = internalMutation({
     })
 
     // Update message with error
-    const message = await ctx.skipRules
-      .table('messages')
-      .filter((q) =>
-        q.and(
-          q.eq(q.field('runId'), run._id),
-          q.eq(q.field('role'), 'assistant'),
-          q.eq(q.field('deletionTime'), undefined),
-        ),
-      )
-      .first()
+    const message = await ctx.skipRules.table('messages').get('runId', run._id)
 
     if (message) {
       const kvMetadata = updateKvMetadata(message.kvMetadata ?? {}, {
