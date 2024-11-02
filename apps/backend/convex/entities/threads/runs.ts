@@ -36,11 +36,11 @@ export const get = query({
 
 export const getTextStreams = query({
   args: {
-    runId: v.id('runs'),
+    runId: v.string(),
   },
-  handler: async (ctx, { runId }): Promise<{ content: string; _id: Id<'texts'> }[]> => {
+  handler: async (ctx, { runId }) => {
     const run = await getRun(ctx, { runId })
-    if (!run) return []
+    if (!run) return null
 
     const texts = await ctx
       .table('texts', 'runId', (q) => q.eq('runId', run._id))
@@ -48,7 +48,7 @@ export const getTextStreams = query({
       .map((text) => ({ content: text.content, _id: text._id }))
     return texts
   },
-  returns: v.array(v.object({ content: v.string(), _id: v.id('texts') })),
+  returns: nullable(v.array(v.object({ content: v.string(), _id: v.id('texts') }))),
 })
 
 export const adminListAll = query({
