@@ -227,17 +227,10 @@ export type RunActivationData = {
 }
 
 function formatNamePrefixMessage({ role, name, text = '' }: { role: MessageRoles; name?: string; text?: string }) {
-  if (name && role !== 'system') {
-    return {
-      role,
-      content: `${name}: ${text}`,
-    }
-  }
-
   return {
     role,
-    content: text,
-  }
+    content: name && role !== 'system' ? `${name}: ${text}` : text,
+  };
 }
 
 // * complete run - update message with final result, update run with usage stats/timings
