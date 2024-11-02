@@ -1,3 +1,4 @@
+import { defineEnt } from 'convex-ents'
 import { omit } from 'convex-helpers'
 import { literals, pick, v, withSystemFields } from '../../../values'
 import { MessageCreate } from '../../messages/validators'
@@ -106,3 +107,10 @@ export const RunReturn = v.object(
     userId: v.id('users'),
   }),
 )
+
+export const runsEnt = defineEnt(RunSchemaFields)
+  .deletion('soft')
+  .field('xid', v.string(), { unique: true })
+  .field('updatedAt', v.number())
+  .edge('thread')
+  .edge('user')

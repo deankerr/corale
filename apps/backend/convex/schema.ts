@@ -12,7 +12,7 @@ import { operationsEventLogEnt } from './entities/operationsEventLogs/ent'
 import { patternsEnt } from './entities/patterns/ent'
 import { textsEnt } from './entities/texts/ent'
 import { threadsEnt } from './entities/threads/ent'
-import { runsEnt } from './entities/threads/runs/definition'
+import { runsEnt } from './entities/threads/runs/models'
 import { usersApiKeysEnt, usersEnt } from './entities/users/ent'
 
 const schema = defineEntSchema(

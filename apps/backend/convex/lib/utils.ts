@@ -70,16 +70,3 @@ export function getErrorMessage(error: unknown) {
   console.error('Unable to get error message for error', error)
   return 'Unknown Error'
 }
-
-export function parseJson(input: string): unknown {
-  try {
-    return JSON.parse(input)
-  } catch (error) {
-    console.error('Unable to parse JSON', input, error)
-    return undefined
-  }
-}
-
-export function hasDelimiter(text: string) {
-  return text.includes('\n') || text.includes('.') || text.includes('?') || text.includes('!') || text.length >= 200
-}

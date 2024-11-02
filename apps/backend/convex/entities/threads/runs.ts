@@ -13,7 +13,7 @@ import type { MessageRoles, Run } from '../types'
 import { getUser } from '../users/db'
 import { getRun } from './runs/entity'
 import { generateAIText } from './runs/generate'
-import { RunCreate, RunReturn, RunSchemaFields } from './runs/validators'
+import { RunCreate, RunReturn, RunSchemaFields } from './runs/models'
 
 export const generate = internalAction({
   args: {

@@ -72,11 +72,10 @@ import type * as entities_texts_validators from "../entities/texts/validators.js
 import type * as entities_threads_db from "../entities/threads/db.js";
 import type * as entities_threads_ent from "../entities/threads/ent.js";
 import type * as entities_threads_public from "../entities/threads/public.js";
-import type * as entities_threads_runs_definition from "../entities/threads/runs/definition.js";
 import type * as entities_threads_runs_entity from "../entities/threads/runs/entity.js";
 import type * as entities_threads_runs_generate from "../entities/threads/runs/generate.js";
+import type * as entities_threads_runs_models from "../entities/threads/runs/models.js";
 import type * as entities_threads_runs_streamAIText from "../entities/threads/runs/streamAIText.js";
-import type * as entities_threads_runs_validators from "../entities/threads/runs/validators.js";
 import type * as entities_threads_runs from "../entities/threads/runs.js";
 import type * as entities_threads_validators from "../entities/threads/validators.js";
 import type * as entities_types from "../entities/types.js";
@@ -174,11 +173,10 @@ declare const fullApi: ApiFromModules<{
   "entities/threads/db": typeof entities_threads_db;
   "entities/threads/ent": typeof entities_threads_ent;
   "entities/threads/public": typeof entities_threads_public;
-  "entities/threads/runs/definition": typeof entities_threads_runs_definition;
   "entities/threads/runs/entity": typeof entities_threads_runs_entity;
   "entities/threads/runs/generate": typeof entities_threads_runs_generate;
+  "entities/threads/runs/models": typeof entities_threads_runs_models;
   "entities/threads/runs/streamAIText": typeof entities_threads_runs_streamAIText;
-  "entities/threads/runs/validators": typeof entities_threads_runs_validators;
   "entities/threads/runs": typeof entities_threads_runs;
   "entities/threads/validators": typeof entities_threads_validators;
   "entities/types": typeof entities_types;

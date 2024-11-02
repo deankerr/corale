@@ -1,5 +1,14 @@
 import { ENV } from './env'
 
+export function parseJson(input: string): unknown {
+  try {
+    return JSON.parse(input)
+  } catch (error) {
+    console.error('Unable to parse JSON', input, error)
+    return undefined
+  }
+}
+
 type MarkdownBlock =
   | {
       type: 'text'
@@ -96,4 +105,8 @@ export function replaceTemplateTags(template = '', replacers: TemplateReplacer[]
 export function truncateText(text = '', maxLength: number) {
   if (text.length <= maxLength) return text
   return text.slice(0, maxLength - 3) + '...'
+}
+
+export function hasDelimiter(text: string) {
+  return text.includes('\n') || text.includes('.') || text.includes('?') || text.includes('!') || text.length >= 200
 }
