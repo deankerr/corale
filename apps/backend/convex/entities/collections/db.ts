@@ -13,7 +13,8 @@ export async function getCollection(ctx: QueryCtx, { collectionId }: { collectio
 
 export async function getCollectionX(ctx: QueryCtx, { collectionId }: { collectionId: string }) {
   const collection = await getCollection(ctx, { collectionId })
-  if (!collection) throw new ConvexError({ message: `Invalid collection id`, id: collectionId })
+  if (!collection || collection.deletionTime)
+    throw new ConvexError({ message: `Invalid collection id`, id: collectionId })
   return collection
 }
 
@@ -27,7 +28,8 @@ export async function getCollectionWriter(ctx: MutationCtx, { collectionId }: { 
 
 export async function getCollectionWriterX(ctx: MutationCtx, { collectionId }: { collectionId: string }) {
   const collection = await getCollectionWriter(ctx, { collectionId })
-  if (!collection) throw new ConvexError({ message: `Invalid collection id`, id: collectionId })
+  if (!collection || collection.deletionTime)
+    throw new ConvexError({ message: `Invalid collection id`, id: collectionId })
   return collection
 }
 

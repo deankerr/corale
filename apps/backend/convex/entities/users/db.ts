@@ -12,6 +12,6 @@ export const getUser = async (ctx: QueryCtx, userId: Id<'users'>) => {
 
 export const getUserX = async (ctx: QueryCtx, userId: Id<'users'>) => {
   const user = await getUser(ctx, userId)
-  if (!user) throw new ConvexError({ message: 'invalid user id', xid: userId })
+  if (!user || user.deletionTime) throw new ConvexError({ message: 'invalid user id', xid: userId })
   return user
 }

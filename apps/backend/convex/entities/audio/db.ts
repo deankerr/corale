@@ -10,7 +10,7 @@ export async function getAudio(ctx: QueryCtx, { audioId }: { audioId: string }) 
 
 export async function getAudioX(ctx: QueryCtx, { audioId }: { audioId: string }) {
   const audio = await getAudio(ctx, { audioId })
-  if (!audio) throw new ConvexError({ message: `Invalid audio id`, id: audioId })
+  if (!audio || audio.deletionTime) throw new ConvexError({ message: `Invalid audio id`, id: audioId })
   return audio
 }
 
@@ -22,6 +22,6 @@ export async function getAudioWriter(ctx: MutationCtx, { audioId }: { audioId: s
 
 export async function getAudioWriterX(ctx: MutationCtx, { audioId }: { audioId: string }) {
   const audio = await getAudioWriter(ctx, { audioId })
-  if (!audio) throw new ConvexError({ message: `Invalid audio id`, id: audioId })
+  if (!audio || audio.deletionTime) throw new ConvexError({ message: `Invalid audio id`, id: audioId })
   return audio
 }

@@ -4,10 +4,10 @@ import { updatedDiff } from 'deep-object-diff'
 import ky from 'ky'
 import { mergeDeep } from 'remeda'
 import { z } from 'zod'
-import { internal } from '../_generated/api'
-import type { Doc } from '../_generated/dataModel'
-import { logActionOpsEvent } from '../entities/operationsEventLogs/db'
-import { internalAction } from '../functions'
+import { internal } from '../../_generated/api'
+import type { Doc } from '../../_generated/dataModel'
+import { logActionOpsEvent } from '../../entities/operationsEventLogs/db'
+import { internalAction } from '../../functions'
 
 type ModelDoc = WithoutSystemFields<Doc<'chat_models'>>
 type ModelDocKey = keyof WithoutSystemFields<Doc<'chat_models'>>
@@ -22,7 +22,7 @@ async function fetchModelRecords() {
   return parsed.data
 }
 
-export const updateOpenRouterModels = internalAction({
+export const importModels = internalAction({
   args: {},
   handler: async (ctx) => {
     const existingModels = await ctx.runQuery(internal.entities.chatModels.internal.listAll, {})

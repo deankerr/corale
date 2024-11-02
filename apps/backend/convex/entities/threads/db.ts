@@ -14,7 +14,7 @@ export async function getThread(ctx: QueryCtx, args: { threadId: string }) {
 
 export async function getThreadX(ctx: QueryCtx, args: { threadId: string }) {
   const thread = await getThread(ctx, args)
-  if (!thread) throw new ConvexError({ message: `Invalid thread id`, id: args.threadId })
+  if (!thread || thread.deletionTime) throw new ConvexError({ message: `Invalid thread id`, id: args.threadId })
   return thread
 }
 
@@ -26,7 +26,7 @@ export async function getThreadWriter(ctx: MutationCtx, args: { threadId: string
 
 export async function getThreadWriterX(ctx: MutationCtx, args: { threadId: string }) {
   const thread = await getThreadWriter(ctx, args)
-  if (!thread) throw new ConvexError({ message: `Invalid thread id`, id: args.threadId })
+  if (!thread || thread.deletionTime) throw new ConvexError({ message: `Invalid thread id`, id: args.threadId })
   return thread
 }
 

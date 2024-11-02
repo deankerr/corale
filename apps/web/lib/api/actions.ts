@@ -58,7 +58,7 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
     [actionState, createThread, threadId, sendAppend, reset, router, baseChatRoute],
   )
 
-  const sendCreateRun = useMutation(api.entities.runs.public.create)
+  const sendCreateRun = useMutation(api.entities.threads.runs.create)
   const createRun = useCallback(
     async (args: Omit<Parameters<typeof sendCreateRun>[0], 'threadId'>) => {
       if (actionState !== 'ready') {

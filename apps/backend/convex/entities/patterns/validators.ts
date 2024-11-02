@@ -1,5 +1,5 @@
-import { literals, v, withSystemFields } from '../../values'
-import { ModelParametersSchemaFields } from '../shared'
+import { v, withSystemFields } from '../../values'
+import { MessageRoles, ModelParametersSchemaFields } from '../shared'
 
 export const PatternSchemaFields = {
   name: v.string(),
@@ -14,16 +14,28 @@ export const PatternSchemaFields = {
   instructions: v.string(),
   initialMessages: v.array(
     v.object({
-      role: literals('system', 'assistant', 'user'),
+      role: MessageRoles,
       name: v.optional(v.string()),
       text: v.string(),
       channel: v.optional(v.string()),
     }),
   ),
+
+  dynamicMessage: v.optional(
+    v.object({
+      role: v.optional(MessageRoles),
+      name: v.optional(v.string()),
+      text: v.string(),
+      channel: v.optional(v.string()),
+
+      depth: v.optional(v.number()), // 0 = last message, 1 = one message back, etc.
+    }),
+  ),
+
   dynamicMessages: v.array(
     v.object({
       message: v.object({
-        role: literals('system', 'assistant', 'user'),
+        role: MessageRoles,
         name: v.optional(v.string()),
         text: v.string(),
         channel: v.optional(v.string()),

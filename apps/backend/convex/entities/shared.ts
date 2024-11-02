@@ -1,4 +1,6 @@
-import { v } from '../values'
+import { literals, v } from '../values'
+
+export const MessageRoles = literals('system', 'assistant', 'user')
 
 export const ModelParametersSchemaFields = {
   maxTokens: v.optional(v.number()),
