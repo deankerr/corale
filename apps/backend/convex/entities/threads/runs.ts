@@ -1,24 +1,83 @@
 import { internal } from '../../_generated/api'
 import type { Id } from '../../_generated/dataModel'
 import { maxConversationMessages } from '../../constants'
-import { internalAction, internalMutation, mutation } from '../../functions'
+import { internalAction, internalMutation, mutation, query } from '../../functions'
 import { replaceTemplateTags } from '../../lib/parse'
-import { ConvexError, pick, v } from '../../values'
+import { ConvexError, nullable, paginationOptsValidator, pick, v } from '../../values'
 import { generateXID } from '../helpers'
 import { createKvMetadata, updateKvMetadata } from '../kvMetadata'
 import { createMessage } from '../messages/db'
-import { getPatternWriterX, getPatternX } from '../patterns/db'
-import { RunCreate } from '../runs/validators'
-import { getThreadWriterX } from '../threads/db'
-import type { MessageRoles } from '../types'
+import { getPattern, getPatternWriterX, getPatternX } from '../patterns/db'
+import { getThread, getThreadWriterX } from '../threads/db'
+import type { MessageRoles, Run } from '../types'
+import { getUser } from '../users/db'
+import { getRun } from './runs/entity'
 import { generateAIText } from './runs/generate'
-import { RunSchemaFields } from './runs/validators'
+import { RunCreate, RunReturn, RunSchemaFields } from './runs/validators'
 
 export const generate = internalAction({
   args: {
     runId: v.id('runs'),
   },
   handler: generateAIText,
+  returns: v.null(),
+})
+
+// * queries
+export const get = query({
+  args: {
+    runId: v.string(),
+  },
+  handler: async (ctx, { runId }) => {
+    return getRun(ctx, { runId })
+  },
+  returns: nullable(RunReturn),
+})
+
+export const getTextStreams = query({
+  args: {
+    runId: v.id('runs'),
+  },
+  handler: async (ctx, { runId }): Promise<{ content: string; _id: Id<'texts'> }[]> => {
+    const run = await getRun(ctx, { runId })
+    if (!run) return []
+
+    const texts = await ctx
+      .table('texts', 'runId', (q) => q.eq('runId', run._id))
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .map((text) => ({ content: text.content, _id: text._id }))
+    return texts
+  },
+  returns: v.array(v.object({ content: v.string(), _id: v.id('texts') })),
+})
+
+export const adminListAll = query({
+  args: {
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.viewerX()
+    if (user.role !== 'admin') throw new ConvexError('Unauthorized')
+
+    return await ctx
+      .table('runs')
+      .order('desc')
+      .filter((q) => q.eq(q.field('deletionTime'), undefined))
+      .paginate(args.paginationOpts)
+      .map(async (run) => {
+        const { userId, threadId, patternId } = run
+        const user = await getUser(ctx, userId)
+        const thread = await getThread(ctx, { threadId })
+
+        return {
+          ...run,
+          pattern: patternId ? await getPattern(ctx, { patternId }) : undefined,
+          instructions: run.instructions?.slice(0, 20),
+          username: user?.name ?? 'Unknown',
+          threadTitle: thread?.title ?? 'Unknown',
+        }
+      })
+  },
 })
 
 // * create run - called by frontend with config options to request a run
@@ -161,7 +220,7 @@ export const activate = internalMutation({
 export type RunActivationData = {
   stream: boolean
   modelId: string
-  modelParameters: Record<string, any>
+  modelParameters: Omit<Run['model'], 'id'>
   system: string
   messages: { role: 'user' | 'system' | 'assistant'; content: string }[]
   userId: Id<'users'>

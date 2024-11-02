@@ -34,11 +34,11 @@ export const useThread = (id: string) => {
 }
 
 export const useRun = (runId: string | undefined) => {
-  return useCachedQuery(api.entities.runs.public.get, runId ? { runId } : 'skip')
+  return useCachedQuery(api.entities.threads.runs.get, runId ? { runId } : 'skip')
 }
 
 export const useTextStreams = (runId: Id<'runs'> | undefined) => {
-  const textStreams = useQuery(api.entities.runs.public.getTextStreams, runId ? { runId } : 'skip')
+  const textStreams = useQuery(api.entities.threads.runs.getTextStreams, runId ? { runId } : 'skip')
   return textStreams?.[0]?.content
 }
 
