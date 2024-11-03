@@ -1,4 +1,4 @@
-import { fal } from '@fal-ai/client'
+import { ApiError, fal, ValidationError } from '@fal-ai/client'
 import { generateObject } from 'ai'
 import { omit } from 'convex-helpers'
 import { v } from 'convex/values'
@@ -70,9 +70,30 @@ export const run = internalAction({
       })
     } catch (err) {
       console.error(err)
+
+      if (err instanceof ApiError) {
+        if ('detail' in err.body && typeof err.body.detail === 'string') {
+          const message = `[API Error] ${err.message}: ${err.body.detail}`
+          await ctx.runMutation(internal.entities.generations.internal.fail, {
+            generationId,
+            errors: [{ message, code: 'api_error', status: err.status }],
+          })
+          return
+        }
+      }
+
+      if (err instanceof ValidationError) {
+        const message = `[Validation Error] ${err.message}: ${err.fieldErrors.map((e) => `${e.loc.join('.')}: ${e.msg}`).join('; ')}`
+        await ctx.runMutation(internal.entities.generations.internal.fail, {
+          generationId,
+          errors: [{ message, code: 'validation_error', status: err.status }],
+        })
+        return
+      }
+
       await ctx.runMutation(internal.entities.generations.internal.fail, {
         generationId,
-        errors: [{ message: getErrorMessage(err), code: 'unknown' }],
+        errors: [{ message: getErrorMessage(err), code: 'unknown', status: 500 }],
       })
     }
   },
