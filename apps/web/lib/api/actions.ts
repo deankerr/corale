@@ -5,6 +5,7 @@ import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
+import { useUpdateThread } from './threads'
 
 const runTimeout = 2500
 
@@ -25,6 +26,7 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
     },
     [sendCreateThread],
   )
+  const updateThread = useUpdateThread()
 
   const sendAppend = useMutation(api.entities.messages.public.create)
   const append = useCallback(
@@ -76,6 +78,22 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
         setActionState('rateLimited')
         reset()
 
+        // add pattern and model to thread metadata if they were used
+        if (args.patternId || args.model) {
+          const set: Record<string, string> = {}
+          if (args.patternId) set['esuite:pattern:xid'] = args.patternId
+          if (args.model) set['esuite:model:id'] = args.model.id
+
+          await updateThread({
+            threadId: id,
+            fields: {
+              kvMetadata: {
+                set,
+              },
+            },
+          })
+        }
+
         if (id !== threadId) {
           router.push(`/${baseChatRoute}/${id}`)
         }
@@ -89,7 +107,7 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
         return null
       }
     },
-    [actionState, createThread, reset, router, sendCreateRun, threadId, baseChatRoute],
+    [actionState, createThread, reset, router, sendCreateRun, threadId, baseChatRoute, updateThread],
   )
 
   const send = useCallback(
