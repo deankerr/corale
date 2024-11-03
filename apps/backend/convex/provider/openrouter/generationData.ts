@@ -10,7 +10,10 @@ const OpenRouterMetadata = z.object({
   id: z.string(),
   model: z.string(),
   total_cost: z.number(),
-  finish_reason: z.string(),
+  finish_reason: z
+    .string()
+    .nullable()
+    .transform((val) => (val === null ? '[null]' : val)),
   native_tokens_prompt: z.number(),
   native_tokens_completion: z.number(),
 })
@@ -44,17 +47,24 @@ export const retrieve = internalAction({
       const providerMetadata = await fetchOpenRouterMetadata(requestId)
       if (!providerMetadata) throw new ConvexError('failed to fetch openrouter metadata')
 
-      const parsed = OpenRouterMetadata.parse(providerMetadata)
+      const parsed = OpenRouterMetadata.safeParse(providerMetadata)
+      if (!parsed.success) {
+        console.error('failed to parse openrouter metadata', providerMetadata, parsed.error.flatten())
+        throw new ConvexError({
+          message: 'failed to parse openrouter metadata',
+          issues: parsed.error.issues.map((issue) => issue.message),
+        })
+      }
 
       await ctx.runMutation(internal.entities.threads.runs.updateProviderMetadata, {
         runId,
         usage: {
-          cost: parsed.total_cost,
-          finishReason: parsed.finish_reason,
-          promptTokens: parsed.native_tokens_prompt,
-          completionTokens: parsed.native_tokens_completion,
-          modelId: parsed.model,
-          requestId: parsed.id,
+          cost: parsed.data.total_cost,
+          finishReason: parsed.data.finish_reason,
+          promptTokens: parsed.data.native_tokens_prompt,
+          completionTokens: parsed.data.native_tokens_completion,
+          modelId: parsed.data.model,
+          requestId: parsed.data.id,
         },
         providerMetadata,
       })
