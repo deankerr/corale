@@ -173,7 +173,7 @@ export const activate = internalMutation({
 
     const conversationMessages = await ctx.skipRules
       .table('messages', 'threadId_channel', (q) =>
-        q.eq('threadId', run.threadId).eq('channel', undefined).lt('_creationTime', run.timings.queuedAt),
+        q.eq('threadId', run.threadId).eq('channel', undefined).lte('_creationTime', Math.ceil(run.timings.queuedAt)),
       )
       .order('desc')
       .filter((q) => q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)))

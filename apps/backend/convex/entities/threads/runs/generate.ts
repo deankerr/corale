@@ -22,10 +22,12 @@ export async function generateAIText(ctx: ActionCtx, { runId }: { runId: Id<'run
       messages,
       ...modelParameters,
     }
+    console.debug('generateAIText', input)
 
     const result = stream ? await streamAIText(ctx, { runId, userId }, input) : await generateText(input)
 
     const { text, finishReason, usage, response } = result
+    console.debug('generateAIText result', result)
 
     // * complete run and update message
     await ctx.runMutation(internal.entities.threads.runs.complete, {
