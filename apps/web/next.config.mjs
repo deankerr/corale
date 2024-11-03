@@ -20,7 +20,7 @@ const nextConfig = {
     optimizePackageImports: ['@phosphor-icons/react'],
   },
 
-  // handled by CI
+  // handled in CI
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -32,11 +32,8 @@ const nextConfig = {
 export default withSentryConfig(process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
-
-  org: 'deanco',
-  project: 'corale-esuite',
-
-  // Only print logs for uploading source maps in CI
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   silent: !process.env.CI,
 
   // For all available options, see:
@@ -51,9 +48,6 @@ export default withSentryConfig(process.env.ANALYZE === 'true' ? withBundleAnaly
   },
 
   // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
   tunnelRoute: '/monitoring',
 
   // Hides source maps from generated client bundles
@@ -63,8 +57,5 @@ export default withSentryConfig(process.env.ANALYZE === 'true' ? withBundleAnaly
   disableLogger: true,
 
   // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 })

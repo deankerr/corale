@@ -4,6 +4,7 @@ import { internal } from './_generated/api'
 import type { Id, TableNames } from './_generated/dataModel'
 import { deletionDelayTime } from './constants'
 import { internalMutation } from './functions'
+import { getErrorMessage } from './lib/utils'
 import type { MutationCtx } from './types'
 import { v } from './values'
 
@@ -92,7 +93,14 @@ export const deleteDocFile = internalMutation({
     const doc = await ctx.db.get(docId as Id<any>)
     if (doc) return await scheduleValidFileDoc(ctx, doc)
 
-    await ctx.storage.delete(fileId as Id<'_storage'>)
-    console.debug('deleted', docId, ':', fileId)
+    try {
+      await ctx.storage.delete(fileId as Id<'_storage'>)
+      console.debug('deleted', docId, ':', fileId)
+    } catch (err) {
+      const message = getErrorMessage(err)
+      // may have already been deleted, which is fine
+      if (message.endsWith('not found')) console.warn(message)
+      else throw err
+    }
   },
 })

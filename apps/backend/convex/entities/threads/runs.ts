@@ -163,17 +163,18 @@ export const activate = internalMutation({
 
     const pattern = run.patternId ? await getPatternX(ctx, { patternId: run.patternId }) : null
 
-    const system = replaceTemplateTags([run.instructions, run.additionalInstructions].join('\n'), [
-      { tag: 'isodate', value: () => new Date().toISOString() },
-      { tag: 'name', value: pattern?.name ?? '[the model]' },
-      { tag: 'markdown', value: 'Use GFM/Markdown formatting for your response.' },
-    ]).trim()
+    const system =
+      replaceTemplateTags([run.instructions, run.additionalInstructions].join('\n'), [
+        { tag: 'isodate', value: () => new Date().toISOString() },
+        { tag: 'name', value: pattern?.name ?? '[the model]' },
+        { tag: 'markdown', value: 'Use GFM/Markdown formatting for your response.' },
+      ]).trim() || undefined
 
     const initialMessages = pattern?.initialMessages.map(formatNamePrefixMessage) ?? []
 
     const conversationMessages = await ctx.skipRules
       .table('messages', 'threadId_channel', (q) =>
-        q.eq('threadId', run.threadId).eq('channel', undefined).lt('_creationTime', run.timings.queuedAt),
+        q.eq('threadId', run.threadId).eq('channel', undefined).lte('_creationTime', Math.ceil(run.timings.queuedAt)),
       )
       .order('desc')
       .filter((q) => q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined)))
@@ -221,7 +222,7 @@ export type RunActivationData = {
   stream: boolean
   modelId: string
   modelParameters: Omit<Run['model'], 'id'>
-  system: string
+  system: string | undefined
   messages: { role: 'user' | 'system' | 'assistant'; content: string }[]
   userId: Id<'users'>
 }

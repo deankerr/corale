@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["CLERK_SECRET_KEY", "CONVEX_DEPLOY_KEY", "SENTRY_AUTH_TOKEN"],
+      "env": ["CLERK_SECRET_KEY", "CONVEX_DEPLOY_KEY", "SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "typecheck": {
