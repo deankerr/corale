@@ -90,6 +90,7 @@ import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as init from "../init.js";
 import type * as lib_ai from "../lib/ai.js";
+import type * as lib_aiErrors from "../lib/aiErrors.js";
 import type * as lib_clerk from "../lib/clerk.js";
 import type * as lib_env from "../lib/env.js";
 import type * as lib_fetch from "../lib/fetch.js";
@@ -191,6 +192,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   init: typeof init;
   "lib/ai": typeof lib_ai;
+  "lib/aiErrors": typeof lib_aiErrors;
   "lib/clerk": typeof lib_clerk;
   "lib/env": typeof lib_env;
   "lib/fetch": typeof lib_fetch;
