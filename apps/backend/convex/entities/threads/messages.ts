@@ -33,17 +33,18 @@ export const getSeries = query({
   returns: nullable(MessageReturn),
 })
 
-export const listMy = query({
+export const list = query({
   args: {
     threadId: v.string(),
+    channel: v.optional(v.string()),
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
     const thread = await getThread(ctx, { threadId: args.threadId })
     if (!thread) return emptyPage()
 
-    const messages = await thread
-      .edge('messages')
+    const messages = await ctx
+      .table('messages', 'threadId_channel', (q) => q.eq('threadId', thread._id).eq('channel', args.channel))
       .order('desc')
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .paginate(args.paginationOpts)

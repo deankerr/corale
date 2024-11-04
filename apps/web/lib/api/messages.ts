@@ -41,7 +41,7 @@ export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
 
 export function useMessageFeed(threadId: string, initialNumItems = 25) {
   const messages = usePaginatedQuery(
-    api.entities.threads.messages.listMy,
+    api.entities.threads.messages.list,
     { threadId },
     {
       initialNumItems,

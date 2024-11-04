@@ -27,7 +27,7 @@ test('user can create threads and messages', async () => {
   const threads = await asSarah.query(api.entities.threads.public.listMy, {})
   expect(threads).toHaveLength(1)
 
-  const messages = await asSarah.query(api.entities.threads.messages.listMy, {
+  const messages = await asSarah.query(api.entities.threads.messages.list, {
     threadId,
     paginationOpts: { cursor: null, numItems: 10 },
   })
