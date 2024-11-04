@@ -10,7 +10,7 @@ test('user can create threads and messages', async () => {
 
   const { identity: asSarah } = await createTestUser(t, 'Sarah')
 
-  const threadId = await asSarah.mutation(api.entities.threads.public.create, { title: "Sarah's Thread" })
+  const threadId = await asSarah.mutation(api.entities.threads.create, { title: "Sarah's Thread" })
 
   await asSarah.mutation(api.entities.threads.messages.create, {
     threadId,
@@ -24,7 +24,7 @@ test('user can create threads and messages', async () => {
     role: 'user',
   })
 
-  const threads = await asSarah.query(api.entities.threads.public.listMy, {})
+  const threads = await asSarah.query(api.entities.threads.listMy, {})
   expect(threads).toHaveLength(1)
 
   const messages = await asSarah.query(api.entities.threads.messages.list, {

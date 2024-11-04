@@ -17,7 +17,7 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
     setActionState('ready')
   }, runTimeout)
 
-  const sendCreateThread = useMutation(api.entities.threads.public.create)
+  const sendCreateThread = useMutation(api.entities.threads.create)
   const createThread = useCallback(
     async (threadId: string) => {
       if (threadId && threadId !== 'new') return threadId

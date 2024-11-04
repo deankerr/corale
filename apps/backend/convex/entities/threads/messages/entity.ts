@@ -6,7 +6,7 @@ import type { Ent, Id, MutationCtx, QueryCtx } from '../../../types'
 import type { Infer } from '../../../values'
 import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../../helpers'
 import { updateKvMetadata } from '../../kvMetadata'
-import { getThreadX } from '../db'
+import { getThreadX } from '../entity'
 import { MessageCreate, type MessageUpdate } from './models'
 
 // * helpers

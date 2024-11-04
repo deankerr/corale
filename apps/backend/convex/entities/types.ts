@@ -6,8 +6,8 @@ import type { ImageReturn } from './images/validators'
 import type { PatternReturn } from './patterns/validators'
 import type { MessageRoles, TextToImageInputs } from './shared'
 import type { MessageReturn } from './threads/messages/models'
+import type { ThreadReturn, ThreadWithDetailsReturn } from './threads/models'
 import type { RunReturn } from './threads/runs/models'
-import type { ThreadReturn, ThreadWithDetailsReturn } from './threads/validators'
 import type { UserReturn } from './users/validators'
 
 export type ChatModel = Infer<typeof ChatModelReturn>
