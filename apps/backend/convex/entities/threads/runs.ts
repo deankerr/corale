@@ -135,6 +135,7 @@ export const create = mutation({
       threadId: thread._id,
       userId: thread.userId,
       role: 'assistant',
+      channel: args.options?.resultChannel,
       runId,
       kvMetadata: createKvMetadata({
         'esuite:run:active': params.stream ? 'stream' : 'get',

@@ -19,6 +19,7 @@ export const RunSchemaFields = {
     v.object({
       maxMessages: v.optional(v.number()),
       maxCompletionTokens: v.optional(v.number()),
+      resultChannel: v.optional(v.string()),
     }),
   ),
 
