@@ -28,7 +28,7 @@ export const useThreadActions = (threadId: string, baseChatRoute: string) => {
   )
   const updateThread = useUpdateThread()
 
-  const sendAppend = useMutation(api.entities.messages.public.create)
+  const sendAppend = useMutation(api.entities.threads.messages.create)
   const append = useCallback(
     async (args: Omit<Parameters<typeof sendAppend>[0], 'threadId'>) => {
       if (actionState !== 'ready') {

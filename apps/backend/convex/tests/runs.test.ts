@@ -36,7 +36,7 @@ test('user can create and complete a basic run', async () => {
   expect(run?.instructions).toBe('Test instructions')
 
   // Verify message was created
-  const messages = await asUser.query(api.entities.messages.public.listMy, {
+  const messages = await asUser.query(api.entities.threads.messages.listMy, {
     threadId,
     paginationOpts: { cursor: null, numItems: 10 },
   })

@@ -1,8 +1,8 @@
 import { defineEnt } from 'convex-ents'
 import { omit } from 'convex-helpers'
 import { literals, pick, v, withSystemFields } from '../../../values'
-import { MessageCreate } from '../../messages/validators'
 import { MessageRoles, ModelParametersSchemaFields } from '../../shared'
+import { MessageCreate } from '../messages/models'
 
 export const RunSchemaFields = {
   status: literals('queued', 'active', 'done', 'failed'),

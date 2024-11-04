@@ -4,8 +4,8 @@ import { literals, nullable, paginationOptsValidator, v } from '../../values'
 import { nullifyDeletedEnt } from '../helpers'
 import { getThread } from '../threads/db'
 import type { Message } from '../types'
-import { createMessage, getMessage, removeMessage, updateMessage } from './db'
-import { MessageCreate, MessageReturn, MessageUpdate } from './validators'
+import { createMessage, getMessage, removeMessage, updateMessage } from './messages/entity'
+import { MessageCreate, MessageReturn, MessageUpdate } from './messages/models'
 
 // * queries
 export const get = query({

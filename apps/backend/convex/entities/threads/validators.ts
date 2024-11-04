@@ -1,7 +1,7 @@
 import { pick, v, withSystemFields } from '../../values'
 import { ChatModelReturn } from '../chatModels/validators'
 import { updateKvValidator } from '../kvMetadata'
-import { MessageReturn } from '../messages/validators'
+import { MessageReturn } from './messages/models'
 
 export const ThreadSchemaFields = {
   title: v.optional(v.string()),

@@ -12,13 +12,13 @@ test('user can create threads and messages', async () => {
 
   const threadId = await asSarah.mutation(api.entities.threads.public.create, { title: "Sarah's Thread" })
 
-  await asSarah.mutation(api.entities.messages.public.create, {
+  await asSarah.mutation(api.entities.threads.messages.create, {
     threadId,
     text: 'Hello, world!',
     role: 'user',
   })
 
-  await asSarah.mutation(api.entities.messages.public.create, {
+  await asSarah.mutation(api.entities.threads.messages.create, {
     threadId,
     text: 'Hello, again.',
     role: 'user',
@@ -27,7 +27,7 @@ test('user can create threads and messages', async () => {
   const threads = await asSarah.query(api.entities.threads.public.listMy, {})
   expect(threads).toHaveLength(1)
 
-  const messages = await asSarah.query(api.entities.messages.public.listMy, {
+  const messages = await asSarah.query(api.entities.threads.messages.listMy, {
     threadId,
     paginationOpts: { cursor: null, numItems: 10 },
   })

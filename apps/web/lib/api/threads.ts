@@ -70,7 +70,7 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
     ...(name && { name }),
   }
 
-  const results = useQuery(api.entities.messages.public.searchText, text ? queryArgs : 'skip')
+  const results = useQuery(api.entities.threads.messages.searchText, text ? queryArgs : 'skip')
   const stored = useRef(results)
 
   if (results !== undefined) {
@@ -95,9 +95,9 @@ export const useDeleteThread = () => {
 }
 
 export const useUpdateMessage = () => {
-  return useMutation(api.entities.messages.public.update)
+  return useMutation(api.entities.threads.messages.update)
 }
 
 export const useDeleteMessage = () => {
-  return useMutation(api.entities.messages.public.remove)
+  return useMutation(api.entities.threads.messages.remove)
 }
