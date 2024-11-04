@@ -3,6 +3,7 @@ import { internal } from '../../../_generated/api'
 import type { ActionCtx } from '../../../_generated/server'
 import { createAIProvider } from '../../../lib/ai'
 import { parseAIError } from '../../../lib/aiErrors'
+import { truncateText } from '../../../lib/parse'
 import type { Id } from '../../../types'
 import type { RunActivationData } from '../runs'
 import { streamAIText } from './streamAIText'
@@ -22,7 +23,12 @@ export async function generateAIText(ctx: ActionCtx, { runId }: { runId: Id<'run
       messages,
       ...modelParameters,
     }
-    console.debug('generateAIText', input)
+
+    console.debug('generateAIText', {
+      ...input,
+      system: system ? truncateText(system, 200) : undefined,
+      messages: messages.map((m) => [m.role, truncateText(m.content, 200)]),
+    })
 
     const result = stream ? await streamAIText(ctx, { runId, userId }, input) : await generateText(input)
 
