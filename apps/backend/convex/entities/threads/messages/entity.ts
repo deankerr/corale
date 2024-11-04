@@ -1,13 +1,13 @@
 import { ConvexError } from 'convex/values'
-import { internal } from '../../_generated/api'
-import { parseURLsFromText } from '../../lib/parse'
-import { raise } from '../../lib/utils'
-import type { Ent, Id, MutationCtx, QueryCtx } from '../../types'
-import type { Infer } from '../../values'
-import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
-import { updateKvMetadata } from '../kvMetadata'
-import { getThreadX } from '../threads/db'
-import { MessageCreate, type MessageUpdate } from './validators'
+import { internal } from '../../../_generated/api'
+import { parseURLsFromText } from '../../../lib/parse'
+import { raise } from '../../../lib/utils'
+import type { Ent, Id, MutationCtx, QueryCtx } from '../../../types'
+import type { Infer } from '../../../values'
+import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../../helpers'
+import { updateKvMetadata } from '../../kvMetadata'
+import { getThreadX } from '../entity'
+import { MessageCreate, type MessageUpdate } from './models'
 
 // * helpers
 async function processMessageURLs(ctx: MutationCtx, message: Ent<'messages'>) {

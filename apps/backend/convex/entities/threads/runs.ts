@@ -6,11 +6,11 @@ import { replaceTemplateTags } from '../../lib/parse'
 import { ConvexError, nullable, paginationOptsValidator, pick, v } from '../../values'
 import { generateXID } from '../helpers'
 import { createKvMetadata, updateKvMetadata } from '../kvMetadata'
-import { createMessage } from '../messages/db'
 import { getPattern, getPatternWriterX, getPatternX } from '../patterns/db'
-import { getThread, getThreadWriterX } from '../threads/db'
 import type { MessageRoles, Run } from '../types'
 import { getUser } from '../users/db'
+import { getThread, getThreadWriterX } from './entity'
+import { createMessage } from './messages/entity'
 import { getRun } from './runs/entity'
 import { generateAIText } from './runs/generate'
 import { RunCreate, RunReturn, RunSchemaFields } from './runs/models'
@@ -135,6 +135,7 @@ export const create = mutation({
       threadId: thread._id,
       userId: thread.userId,
       role: 'assistant',
+      channel: args.options?.resultChannel,
       runId,
       kvMetadata: createKvMetadata({
         'esuite:run:active': params.stream ? 'stream' : 'get',

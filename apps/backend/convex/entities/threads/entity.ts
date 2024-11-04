@@ -3,7 +3,7 @@ import type { Id, MutationCtx, QueryCtx } from '../../types'
 import { ConvexError, type Infer } from '../../values'
 import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
 import { updateKvMetadata } from '../kvMetadata'
-import { ThreadCreate, ThreadUpdate } from './validators'
+import { ThreadCreate, ThreadUpdate } from './models'
 
 // * queries
 export async function getThread(ctx: QueryCtx, args: { threadId: string }) {

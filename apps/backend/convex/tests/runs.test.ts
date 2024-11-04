@@ -11,7 +11,7 @@ test('user can create and complete a basic run', async () => {
   const { identity: asUser } = await createTestUser(t, 'TestUser')
 
   // Create a thread first
-  const threadId = await asUser.mutation(api.entities.threads.public.create, {
+  const threadId = await asUser.mutation(api.entities.threads.create, {
     title: 'Test Thread',
   })
 
@@ -36,7 +36,7 @@ test('user can create and complete a basic run', async () => {
   expect(run?.instructions).toBe('Test instructions')
 
   // Verify message was created
-  const messages = await asUser.query(api.entities.messages.public.listMy, {
+  const messages = await asUser.query(api.entities.threads.messages.list, {
     threadId,
     paginationOpts: { cursor: null, numItems: 10 },
   })
@@ -49,7 +49,7 @@ test('run with streaming creates and updates text entries', async () => {
   // Arrange
   const t = convexTest(schema, modules)
   const { identity: asUser } = await createTestUser(t, 'StreamUser')
-  const threadId = await asUser.mutation(api.entities.threads.public.create, {
+  const threadId = await asUser.mutation(api.entities.threads.create, {
     title: 'Streaming Thread',
   })
 

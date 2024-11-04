@@ -1,7 +1,9 @@
+import { defineEnt } from 'convex-ents'
+import { deletionDelayTime } from '../../constants'
 import { pick, v, withSystemFields } from '../../values'
 import { ChatModelReturn } from '../chatModels/validators'
 import { updateKvValidator } from '../kvMetadata'
-import { MessageReturn } from '../messages/validators'
+import { MessageReturn } from './messages/models'
 
 export const ThreadSchemaFields = {
   title: v.optional(v.string()),
@@ -42,3 +44,11 @@ export const ThreadWithDetailsReturn = v.object({
   latestMessage: v.optional(MessageReturn),
   model: v.optional(v.object({ ...pick(ChatModelReturn.fields, ['modelId', 'name', 'creatorName']) })),
 })
+
+export const threadsEnt = defineEnt(ThreadSchemaFields)
+  .deletion('scheduled', { delayMs: deletionDelayTime })
+  .field('xid', v.string(), { unique: true })
+  .field('updatedAtTime', v.number())
+  .edges('messages', { ref: true, deletion: 'soft' })
+  .edges('runs', { ref: true, deletion: 'soft' })
+  .edge('user')

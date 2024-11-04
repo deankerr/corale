@@ -1,8 +1,8 @@
 import { defineEnt } from 'convex-ents'
 import { omit } from 'convex-helpers'
 import { literals, pick, v, withSystemFields } from '../../../values'
-import { MessageCreate } from '../../messages/validators'
 import { MessageRoles, ModelParametersSchemaFields } from '../../shared'
+import { MessageCreate } from '../messages/models'
 
 export const RunSchemaFields = {
   status: literals('queued', 'active', 'done', 'failed'),
@@ -19,6 +19,7 @@ export const RunSchemaFields = {
     v.object({
       maxMessages: v.optional(v.number()),
       maxCompletionTokens: v.optional(v.number()),
+      resultChannel: v.optional(v.string()),
     }),
   ),
 

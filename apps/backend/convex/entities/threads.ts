@@ -1,9 +1,9 @@
-import { mutation, query } from '../../functions'
-import { nullable, v } from '../../values'
-import { getChatModel } from '../chatModels/db'
-import type { Thread } from '../types'
-import { createThread, getThread, removeThread, updateThread } from './db'
-import { ThreadCreate, ThreadReturn, ThreadUpdate, ThreadWithDetailsReturn } from './validators'
+import { mutation, query } from '../functions'
+import { nullable, v } from '../values'
+import { getChatModel } from './chatModels/db'
+import { createThread, getThread, removeThread, updateThread } from './threads/entity'
+import { ThreadCreate, ThreadReturn, ThreadUpdate, ThreadWithDetailsReturn } from './threads/models'
+import type { Thread } from './types'
 
 // * queries
 export const get = query({

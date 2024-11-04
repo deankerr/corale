@@ -5,18 +5,18 @@ import { useMemo, useRef } from 'react'
 import { useCachedQuery } from './helpers'
 
 export const useMessageBySeries = (threadId: string, series: string) => {
-  return useCachedQuery(api.entities.messages.public.getSeries, { threadId, series: parseInt(series) })
+  return useCachedQuery(api.entities.threads.messages.getSeries, { threadId, series: parseInt(series) })
 }
 
 export const useMessageById = (id: string) => {
-  return useCachedQuery(api.entities.messages.public.get, { messageId: id })
+  return useCachedQuery(api.entities.threads.messages.get, { messageId: id })
 }
 
 export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
   const [roleQueryParam] = useRoleQueryParam()
 
   const messages = usePaginatedQuery(
-    api.entities.messages.public.search,
+    api.entities.threads.messages.search,
     { threadId, role: roleQueryParam || undefined },
     {
       initialNumItems,
@@ -41,7 +41,7 @@ export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
 
 export function useMessageFeed(threadId: string, initialNumItems = 25) {
   const messages = usePaginatedQuery(
-    api.entities.messages.public.listMy,
+    api.entities.threads.messages.list,
     { threadId },
     {
       initialNumItems,

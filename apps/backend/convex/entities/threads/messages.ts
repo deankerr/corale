@@ -2,10 +2,10 @@ import { mutation, query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { literals, nullable, paginationOptsValidator, v } from '../../values'
 import { nullifyDeletedEnt } from '../helpers'
-import { getThread } from '../threads/db'
 import type { Message } from '../types'
-import { createMessage, getMessage, removeMessage, updateMessage } from './db'
-import { MessageCreate, MessageReturn, MessageUpdate } from './validators'
+import { getThread } from './entity'
+import { createMessage, getMessage, removeMessage, updateMessage } from './messages/entity'
+import { MessageCreate, MessageReturn, MessageUpdate } from './messages/models'
 
 // * queries
 export const get = query({
@@ -33,17 +33,18 @@ export const getSeries = query({
   returns: nullable(MessageReturn),
 })
 
-export const listMy = query({
+export const list = query({
   args: {
     threadId: v.string(),
+    channel: v.optional(v.string()),
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
     const thread = await getThread(ctx, { threadId: args.threadId })
     if (!thread) return emptyPage()
 
-    const messages = await thread
-      .edge('messages')
+    const messages = await ctx
+      .table('messages', 'threadId_channel', (q) => q.eq('threadId', thread._id).eq('channel', args.channel))
       .order('desc')
       .filter((q) => q.eq(q.field('deletionTime'), undefined))
       .paginate(args.paginationOpts)

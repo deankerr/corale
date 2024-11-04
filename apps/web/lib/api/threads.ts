@@ -15,7 +15,7 @@ const newThread: Thread = {
 }
 
 export const useThreads = (enabled: boolean = true) => {
-  const threads = useCachedQuery(api.entities.threads.public.listMy, enabled ? {} : 'skip')
+  const threads = useCachedQuery(api.entities.threads.listMy, enabled ? {} : 'skip')
   if (!threads) return threads
 
   const favourites = threads.filter((thread) => thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
@@ -27,7 +27,7 @@ export const useThreads = (enabled: boolean = true) => {
 export const useThread = (id: string) => {
   const threads = useThreads()
   const userThread = threads ? (threads?.find((thread) => thread.xid === id) ?? null) : undefined
-  const otherThread = useCachedQuery(api.entities.threads.public.get, !userThread ? { threadId: id } : 'skip')
+  const otherThread = useCachedQuery(api.entities.threads.get, !userThread ? { threadId: id } : 'skip')
 
   if (id === 'new') return newThread
   return userThread || otherThread
@@ -70,7 +70,7 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
     ...(name && { name }),
   }
 
-  const results = useQuery(api.entities.messages.public.searchText, text ? queryArgs : 'skip')
+  const results = useQuery(api.entities.threads.messages.searchText, text ? queryArgs : 'skip')
   const stored = useRef(results)
 
   if (results !== undefined) {
@@ -87,17 +87,17 @@ export const useThreadSearch = (threadId: string, textSearchValue: string) => {
 }
 
 export const useUpdateThread = () => {
-  return useMutation(api.entities.threads.public.update)
+  return useMutation(api.entities.threads.update)
 }
 
 export const useDeleteThread = () => {
-  return useMutation(api.entities.threads.public.remove)
+  return useMutation(api.entities.threads.remove)
 }
 
 export const useUpdateMessage = () => {
-  return useMutation(api.entities.messages.public.update)
+  return useMutation(api.entities.threads.messages.update)
 }
 
 export const useDeleteMessage = () => {
-  return useMutation(api.entities.messages.public.remove)
+  return useMutation(api.entities.threads.messages.remove)
 }
