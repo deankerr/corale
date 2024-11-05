@@ -15,8 +15,6 @@ export async function generateAIText(ctx: ActionCtx, { runId }: { runId: Id<'run
     // * run is still queued or has timed out
     if (!run) return
 
-    await new Promise((resolve) => setTimeout(resolve, 5000))
-
     const { stream, system, messages, modelId, modelParameters, userId } = run
 
     const ai = createAIProvider({ id: modelId })

@@ -4,7 +4,7 @@ import {
   maxConcurrentRunsPerThread,
   maxConversationMessages,
   maxQueuedRunsPerThread,
-  maxRunQueueTime,
+  maxRunQueuedTimeDuration,
   runQueueDelayBase,
 } from '../../constants'
 import { internalAction, internalMutation, mutation, query } from '../../functions'
@@ -89,10 +89,10 @@ export const adminListAll = query({
 
 async function getCurrentRunsForThread(
   ctx: QueryCtx,
-  { threadId, maxAge }: { threadId: Id<'threads'>; maxAge: number },
+  { threadId, createdAfter }: { threadId: Id<'threads'>; createdAfter: number },
 ) {
   return await ctx
-    .table('runs', 'threadId', (q) => q.eq('threadId', threadId).gte('_creationTime', Date.now() - maxAge))
+    .table('runs', 'threadId', (q) => q.eq('threadId', threadId).gt('_creationTime', createdAfter))
     .filter((q) => q.or(q.eq(q.field('status'), 'active'), q.eq(q.field('status'), 'queued')))
 }
 
@@ -104,7 +104,7 @@ export const create = mutation({
 
     const currentRuns = await getCurrentRunsForThread(ctx, {
       threadId: thread._id,
-      maxAge: Date.now() - maxRunQueueTime,
+      createdAfter: Date.now() - maxRunQueuedTimeDuration,
     })
     if (currentRuns.length >= maxQueuedRunsPerThread) {
       throw new ConvexError({ message: 'max queued runs per thread exceeded', threadId: args.threadId })
@@ -187,10 +187,10 @@ export const activate = internalMutation({
     if (run.status !== 'queued') throw new ConvexError({ message: 'run is not queued', runId })
 
     // * check for other currently active/queued runs
-    const maxAge = Date.now() - maxRunQueueTime
+    const maxAge = Date.now() - maxRunQueuedTimeDuration
     const currentThreadRuns = await getCurrentRunsForThread(ctx, {
       threadId: run.threadId,
-      maxAge,
+      createdAfter: maxAge,
     })
 
     const position = currentThreadRuns.findIndex((r) => r._id === run._id)
