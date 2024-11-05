@@ -1,8 +1,15 @@
 import { internal } from '../../_generated/api'
 import type { Id } from '../../_generated/dataModel'
-import { maxConversationMessages } from '../../constants'
+import {
+  maxConcurrentRunsPerThread,
+  maxConversationMessages,
+  maxQueuedRunsPerThread,
+  maxRunQueuedTimeDuration,
+  runQueueDelayBase,
+} from '../../constants'
 import { internalAction, internalMutation, mutation, query } from '../../functions'
 import { replaceTemplateTags } from '../../lib/parse'
+import type { QueryCtx } from '../../types'
 import { ConvexError, nullable, paginationOptsValidator, pick, v } from '../../values'
 import { generateXID } from '../helpers'
 import { createKvMetadata, updateKvMetadata } from '../kvMetadata'
@@ -80,11 +87,29 @@ export const adminListAll = query({
   },
 })
 
+async function getCurrentRunsForThread(
+  ctx: QueryCtx,
+  { threadId, createdAfter }: { threadId: Id<'threads'>; createdAfter: number },
+) {
+  return await ctx
+    .table('runs', 'threadId', (q) => q.eq('threadId', threadId).gt('_creationTime', createdAfter))
+    .filter((q) => q.or(q.eq(q.field('status'), 'active'), q.eq(q.field('status'), 'queued')))
+}
+
 // * create run - called by frontend with config options to request a run
 export const create = mutation({
   args: RunCreate,
   handler: async (ctx, args) => {
     const thread = await getThreadWriterX(ctx, { threadId: args.threadId })
+
+    const currentRuns = await getCurrentRunsForThread(ctx, {
+      threadId: thread._id,
+      createdAfter: Date.now() - maxRunQueuedTimeDuration,
+    })
+    if (currentRuns.length >= maxQueuedRunsPerThread) {
+      throw new ConvexError({ message: 'max queued runs per thread exceeded', threadId: args.threadId })
+    }
+
     const pattern = args.patternId ? await getPatternWriterX(ctx, { patternId: args.patternId }) : null
 
     // * merge pattern (if present) with run params
@@ -104,8 +129,17 @@ export const create = mutation({
     const model = params.model
     if (!model) throw new ConvexError({ message: 'no model specified' })
 
+    if (args.appendMessages) {
+      for (const message of args.appendMessages) {
+        await createMessage(ctx, {
+          threadId: thread._id,
+          userId: thread.userId,
+          ...message,
+        })
+      }
+    }
+
     const runXID = generateXID()
-    // * run queued, any further errors will safely undo this mutation
     const runId = await ctx.table('runs').insert({
       ...params,
       model,
@@ -119,16 +153,6 @@ export const create = mutation({
       },
       updatedAt: Date.now(),
     })
-
-    if (args.appendMessages) {
-      for (const message of args.appendMessages) {
-        await createMessage(ctx, {
-          threadId: thread._id,
-          userId: thread.userId,
-          ...message,
-        })
-      }
-    }
 
     // * ai response message
     await createMessage(ctx, {
@@ -162,6 +186,30 @@ export const activate = internalMutation({
     const run = await ctx.skipRules.table('runs').getX(runId)
     if (run.status !== 'queued') throw new ConvexError({ message: 'run is not queued', runId })
 
+    // * check for other currently active/queued runs
+    const maxAge = Date.now() - maxRunQueuedTimeDuration
+    const currentThreadRuns = await getCurrentRunsForThread(ctx, {
+      threadId: run.threadId,
+      createdAfter: maxAge,
+    })
+
+    const position = currentThreadRuns.findIndex((r) => r._id === run._id)
+    if (position >= maxConcurrentRunsPerThread) {
+      // * check for timeout
+      if (run._creationTime < maxAge) {
+        console.error('max time in queue exceeded', run._id, position)
+        await ctx.runMutation(internal.entities.threads.runs.fail, {
+          runId,
+          errors: [{ code: 'timeout', message: 'max time in queue exceeded' }],
+        })
+      } else {
+        // * reschedule run to try again based on position
+        await ctx.scheduler.runAfter(runQueueDelayBase * position, internal.entities.threads.runs.generate, { runId })
+      }
+      return null
+    }
+
+    // * start run setup
     const pattern = run.patternId ? await getPatternX(ctx, { patternId: run.patternId }) : null
 
     const system =
@@ -226,7 +274,7 @@ export type RunActivationData = {
   system: string | undefined
   messages: { role: 'user' | 'system' | 'assistant'; content: string }[]
   userId: Id<'users'>
-}
+} | null
 
 function formatNamePrefixMessage({ role, name, text = '' }: { role: MessageRoles; name?: string; text?: string }) {
   return {
