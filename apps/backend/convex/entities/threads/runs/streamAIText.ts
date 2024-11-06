@@ -1,8 +1,8 @@
+import { internal } from '~/_generated/api'
+import type { Id } from '~/_generated/dataModel'
+import type { ActionCtx } from '~/_generated/server'
+import { hasDelimiter } from '~/lib/parse'
 import { streamText } from 'ai'
-import { internal } from '../../../_generated/api'
-import type { Id } from '../../../_generated/dataModel'
-import type { ActionCtx } from '../../../_generated/server'
-import { hasDelimiter } from '../../../lib/parse'
 
 export async function streamAIText(
   ctx: ActionCtx,
