@@ -9,6 +9,7 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "test:once": "turbo test --filter=@corale/backend -- run",
+    "analyze": "turbo analyze",
     "typecheck": "turbo typecheck",
     "convex-deploy": "pnpm --filter backend convex-deploy",
     "generate-api": "pnpm --filter backend generate-api",

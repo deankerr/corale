@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "analyze": "ANALYZE=true pnpm build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

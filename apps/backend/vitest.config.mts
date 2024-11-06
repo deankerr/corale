@@ -6,5 +6,8 @@ export default defineConfig(({ mode }) => ({
     environment: 'edge-runtime',
     server: { deps: { inline: ['convex-test'] } },
     env: loadEnv(mode, process.cwd(), ''),
+    alias: {
+      '~/': new URL('./convex/', import.meta.url).pathname,
+    },
   },
 }))

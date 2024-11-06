@@ -18,7 +18,12 @@
     "strict": true,
     "noEmit": true,
     "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+
+    "paths": {
+      "@/*": ["../../apps/web/*"],
+      "~/*": ["../../apps/backend/convex/*"]
+    }
   },
   "exclude": ["node_modules"]
 }
