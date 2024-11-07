@@ -1,41 +1,33 @@
 import { internal } from '~/_generated/api'
 import type { ActionCtx } from '~/_generated/server'
-import { createAIProvider } from '~/lib/ai'
+import { generateCompletion } from '~/features/completion/completionService'
 import { parseAIError } from '~/lib/aiErrors'
-import { truncateText } from '~/lib/parse'
 import type { Id } from '~/types'
-import { generateText } from 'ai'
+import { ms } from 'itty-time'
 import type { RunActivationData } from '../runs'
-import { streamAIText } from './streamAIText'
 
-export async function generateAIText(ctx: ActionCtx, { runId }: { runId: Id<'runs'> }) {
+const completionProviderId = 'ai-sdk-openai'
+
+export async function generateCompletionText(ctx: ActionCtx, { runId }: { runId: Id<'runs'> }) {
   try {
     const run: RunActivationData = await ctx.runMutation(internal.entities.threads.runs.activate, { runId })
-
     // * run is still queued or has timed out
     if (!run) return
 
     const { stream, system, messages, modelId, modelParameters, userId } = run
 
-    const ai = createAIProvider({ id: modelId })
+    const textId = stream
+      ? await ctx.runMutation(internal.entities.texts.internal.createMessageText, {
+          runId,
+          userId,
+        })
+      : undefined
 
-    const input = {
-      model: ai,
-      system,
-      messages,
-      ...modelParameters,
-    }
-
-    console.debug('generateAIText', {
-      ...input,
-      system: system ? truncateText(system, 200) : undefined,
-      messages: messages.map((m) => [m.role, truncateText(m.content, 200)]),
+    const { text, finishReason, usage, response, firstTokenAt } = await generateCompletion(ctx, {
+      completionProviderId,
+      stream,
+      input: { system, messages, modelId, parameters: modelParameters, textId },
     })
-
-    const result = stream ? await streamAIText(ctx, { runId, userId }, input) : await generateText(input)
-
-    const { text, finishReason, usage, response } = result
-    console.debug('generateAIText result', { text, finishReason, usage })
 
     // * complete run and update message
     await ctx.runMutation(internal.entities.threads.runs.complete, {
@@ -45,14 +37,32 @@ export async function generateAIText(ctx: ActionCtx, { runId }: { runId: Id<'run
       usage,
       modelId: response.modelId,
       requestId: response.id,
-      firstTokenAt: 'firstTokenAt' in result ? result.firstTokenAt : undefined,
+      firstTokenAt,
     })
 
-    // * fetch openrouter metadata - it can take a moment to become available
-    await ctx.scheduler.runAfter(1000, internal.provider.openrouter.generationData.retrieve, {
-      runId,
-      requestId: response.id,
-    })
+    // * post run cleanup
+
+    if (textId) {
+      // * schedule text deletion - frontend will still need it until the result has been added
+      // * to the response message, to avoid it flashing in and out
+      try {
+        await ctx.scheduler.runAfter(ms('1 minute'), internal.entities.texts.internal.deleteText, {
+          textId,
+        })
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    try {
+      // * fetch openrouter metadata - it can take a moment to become available
+      await ctx.scheduler.runAfter(1000, internal.provider.openrouter.generationData.retrieve, {
+        runId,
+        requestId: response.id,
+      })
+    } catch (err) {
+      console.error(err)
+    }
   } catch (err) {
     console.error('AI Generation Error:', err)
     const structuredError = parseAIError(err)

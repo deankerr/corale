@@ -1,7 +1,7 @@
 import { defineEnt } from 'convex-ents'
 import { omit } from 'convex-helpers'
 import { literals, pick, v, withSystemFields } from '../../../values'
-import { MessageRoles, ModelParametersSchemaFields } from '../../shared'
+import { MessageRoles, ModelParameters } from '../../shared'
 import { MessageCreate } from '../messages/models'
 
 export const RunSchemaFields = {
@@ -12,7 +12,7 @@ export const RunSchemaFields = {
   model: v.object({
     id: v.string(),
     provider: v.optional(v.string()),
-    ...ModelParametersSchemaFields,
+    ...ModelParameters,
   }),
 
   options: v.optional(

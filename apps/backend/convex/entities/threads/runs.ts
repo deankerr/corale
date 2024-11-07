@@ -19,14 +19,14 @@ import { getUser } from '../users/db'
 import { getThread, getThreadWriterX } from './entity'
 import { createMessage } from './messages/entity'
 import { getRun } from './runs/entity'
-import { generateAIText } from './runs/generate'
+import { generateCompletionText } from './runs/generate'
 import { RunCreate, RunReturn, RunSchemaFields } from './runs/models'
 
 export const generate = internalAction({
   args: {
     runId: v.id('runs'),
   },
-  handler: generateAIText,
+  handler: generateCompletionText,
   returns: v.null(),
 })
 

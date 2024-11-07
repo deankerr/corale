@@ -18,7 +18,8 @@
     "node:stream/consumers",
     "node:test",
     "node:console",
-    "node:stream"
+    "node:stream",
+    "stream"
   ],
   "typescript.tsserver.watchOptions": {
     "watchDirectory": "useFsEvents",

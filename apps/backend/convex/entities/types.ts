@@ -1,10 +1,10 @@
-import type { Infer } from 'convex/values'
+import type { AsObjectValidator, Infer } from 'convex/values'
 import type { ChatModelReturn } from './chatModels/validators'
 import type { CollectionReturn } from './collections/validators'
 import type { GenerationReturn } from './generations/validators'
 import type { ImageReturn } from './images/validators'
 import type { PatternReturn } from './patterns/validators'
-import type { MessageRoles, TextToImageInputs } from './shared'
+import type { MessageRoles, ModelParameters, TextToImageInputs } from './shared'
 import type { MessageReturn } from './threads/messages/models'
 import type { ThreadReturn, ThreadWithDetailsReturn } from './threads/models'
 import type { RunReturn } from './threads/runs/models'
@@ -22,6 +22,7 @@ export type ThreadWithDetails = Infer<typeof ThreadWithDetailsReturn>
 export type User = Infer<typeof UserReturn>
 
 export type MessageRoles = Infer<typeof MessageRoles>
+export type ModelParameters = Infer<AsObjectValidator<typeof ModelParameters>>
 export type TextToImageInputs = Infer<typeof TextToImageInputs>
 
 export type XIDTableNames =
