@@ -1,5 +1,5 @@
 import { v, withSystemFields } from '../../values'
-import { MessageRoles, ModelParametersSchemaFields } from '../shared'
+import { MessageRoles, ModelParameters } from '../shared'
 
 export const PatternSchemaFields = {
   name: v.string(),
@@ -8,7 +8,7 @@ export const PatternSchemaFields = {
   model: v.object({
     id: v.string(),
     provider: v.optional(v.string()),
-    ...ModelParametersSchemaFields,
+    ...ModelParameters,
   }),
 
   instructions: v.string(),

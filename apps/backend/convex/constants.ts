@@ -8,3 +8,5 @@ export const maxQueuedRunsPerThread = 4
 export const maxConcurrentRunsPerThread = 1
 export const maxRunQueuedTimeDuration = ms('10 minutes')
 export const runQueueDelayBase = ms('4 seconds')
+
+export const runsCompletionProviderId = 'ai-sdk-openai'

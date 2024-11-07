@@ -108,5 +108,5 @@ export function truncateText(text = '', maxLength: number) {
 }
 
 export function hasDelimiter(text: string) {
-  return text.includes('\n') || text.includes('.') || text.includes('?') || text.includes('!') || text.length >= 200
+  return text.includes('\n') || text.includes('.') || text.includes('?') || text.includes('!')
 }

@@ -2,7 +2,7 @@ import { literals, v } from '../values'
 
 export const MessageRoles = literals('system', 'assistant', 'user')
 
-export const ModelParametersSchemaFields = {
+export const ModelParameters = {
   maxTokens: v.optional(v.number()),
   temperature: v.optional(v.number()),
   topP: v.optional(v.number()),
