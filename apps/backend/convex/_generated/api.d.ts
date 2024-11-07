@@ -83,6 +83,7 @@ import type * as entities_users_keys from "../entities/users/keys.js";
 import type * as entities_users_public from "../entities/users/public.js";
 import type * as entities_users_validators from "../entities/users/validators.js";
 import type * as features_completion_completionProviders_AISDKOpenAI from "../features/completion/completionProviders/AISDKOpenAI.js";
+import type * as features_completion_completionProviders_OpenAINode from "../features/completion/completionProviders/OpenAINode.js";
 import type * as features_completion_completionService from "../features/completion/completionService.js";
 import type * as features_completion_types from "../features/completion/types.js";
 import type * as files from "../files.js";
@@ -185,6 +186,7 @@ declare const fullApi: ApiFromModules<{
   "entities/users/public": typeof entities_users_public;
   "entities/users/validators": typeof entities_users_validators;
   "features/completion/completionProviders/AISDKOpenAI": typeof features_completion_completionProviders_AISDKOpenAI;
+  "features/completion/completionProviders/OpenAINode": typeof features_completion_completionProviders_OpenAINode;
   "features/completion/completionService": typeof features_completion_completionService;
   "features/completion/types": typeof features_completion_types;
   files: typeof files;

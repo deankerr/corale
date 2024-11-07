@@ -254,7 +254,8 @@ export const activate = internalMutation({
     const { id: modelId, ...modelParameters } = run.model
 
     return {
-      stream: run.stream,
+      // stream: run.stream, // ! TEMPORARY
+      stream: false,
       modelId,
       modelParameters: {
         ...modelParameters,

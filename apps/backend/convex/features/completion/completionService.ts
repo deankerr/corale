@@ -1,9 +1,11 @@
 import type { ActionCtx } from '~/_generated/server'
 import { createAISDKOpenAIProvider } from './completionProviders/AISDKOpenAI'
+import { createOpenAINodeProvider } from './completionProviders/OpenAINode'
 import type { CompletionInput } from './types'
 
 const providers = {
   'ai-sdk-openai': createAISDKOpenAIProvider,
+  'openai-node': createOpenAINodeProvider,
 } as const
 
 export async function generateCompletion(
@@ -17,8 +19,8 @@ export async function generateCompletion(
   const provider = providers[completionProviderId](ctx)
 
   if (stream && provider?.stream) {
-    return provider.stream(input)
+    return await provider.stream(input)
   }
 
-  return provider.get(input)
+  return await provider.get(input)
 }

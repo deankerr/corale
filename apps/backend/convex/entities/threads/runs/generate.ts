@@ -6,7 +6,7 @@ import type { Id } from '~/types'
 import { ms } from 'itty-time'
 import type { RunActivationData } from '../runs'
 
-const completionProviderId = 'ai-sdk-openai'
+const completionProviderId = 'openai-node'
 
 export async function generateCompletionText(ctx: ActionCtx, { runId }: { runId: Id<'runs'> }) {
   try {
