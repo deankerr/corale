@@ -1,12 +1,11 @@
 import { internal } from '~/_generated/api'
 import type { ActionCtx } from '~/_generated/server'
+import { runsCompletionProviderId } from '~/constants'
 import { generateCompletion } from '~/features/completion/completionService'
 import { parseAIError } from '~/lib/aiErrors'
 import type { Id } from '~/types'
 import { ms } from 'itty-time'
 import type { RunActivationData } from '../runs'
-
-const completionProviderId = 'openai-node'
 
 export async function generateCompletionText(ctx: ActionCtx, { runId }: { runId: Id<'runs'> }) {
   try {
@@ -24,7 +23,7 @@ export async function generateCompletionText(ctx: ActionCtx, { runId }: { runId:
       : undefined
 
     const { text, finishReason, usage, response, firstTokenAt } = await generateCompletion(ctx, {
-      completionProviderId,
+      completionProviderId: runsCompletionProviderId,
       stream,
       input: { system, messages, modelId, parameters: modelParameters, textId },
     })
