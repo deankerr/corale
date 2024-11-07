@@ -57,12 +57,12 @@ export function createOpenAINodeProvider(ctx: ActionCtx): CompletionProvider {
       let model: OpenAI.Chat.Completions.ChatCompletionChunk['model'] | null = null
 
       for await (const chunk of result) {
-        if (chunk.choices[0].finish_reason) finishReason = chunk.choices[0].finish_reason
+        if (chunk.choices[0]?.finish_reason) finishReason = chunk.choices[0].finish_reason
         if (chunk.usage) usage = chunk.usage
         if (chunk.id) id = chunk.id
         if (chunk.model) model = chunk.model
 
-        const text = chunk.choices[0].delta.content
+        const text = chunk.choices[0]?.delta.content
         if (!text) continue
         if (!firstTokenAt) firstTokenAt = Date.now()
         totalText += text
