@@ -10,11 +10,13 @@ export const ThreadSchemaFields = {
   instructions: v.optional(v.string()), // TODO deprecate
   favourite: v.optional(v.boolean()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
+  category: v.optional(v.string()),
 }
 
 export const ThreadCreate = v.object({
   title: v.optional(v.string()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
+  category: v.optional(v.string()),
 })
 
 export const ThreadUpdate = v.object({
@@ -23,6 +25,7 @@ export const ThreadUpdate = v.object({
     title: v.optional(v.string()),
     favourite: v.optional(v.boolean()),
     kvMetadata: v.optional(updateKvValidator),
+    category: v.optional(v.string()),
   }),
 })
 
@@ -32,6 +35,8 @@ export const ThreadReturn = v.object(
     favourite: v.optional(v.boolean()),
     kvMetadata: v.optional(v.record(v.string(), v.string())),
     instructions: v.optional(v.string()),
+    category: v.optional(v.string()),
+
     // ent fields
     xid: v.string(),
     updatedAtTime: v.number(),
