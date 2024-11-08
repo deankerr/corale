@@ -16,6 +16,7 @@ import { createKvMetadata, updateKvMetadata } from '../kvMetadata'
 import { getPattern, getPatternWriterX, getPatternX } from '../patterns/db'
 import type { MessageRoles, Run } from '../types'
 import { getUser } from '../users/db'
+import { ensureThreadHasTitle } from './actions'
 import { getThread, getThreadWriterX } from './entity'
 import { createMessage } from './messages/entity'
 import { getRun } from './runs/entity'
@@ -340,6 +341,12 @@ export const complete = internalMutation({
         },
       ],
     })
+
+    try {
+      await ensureThreadHasTitle(ctx, run.threadId)
+    } catch (err) {
+      console.error(err)
+    }
   },
   returns: v.null(),
 })

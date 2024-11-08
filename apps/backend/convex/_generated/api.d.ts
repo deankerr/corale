@@ -14,7 +14,6 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as action_evaluateMessageUrls from "../action/evaluateMessageUrls.js";
-import type * as action_generateThreadTitle from "../action/generateThreadTitle.js";
 import type * as action_ingestImageUrl from "../action/ingestImageUrl.js";
 import type * as action_textToImage from "../action/textToImage.js";
 import type * as constants from "../constants.js";
@@ -65,6 +64,7 @@ import type * as entities_texts_ent from "../entities/texts/ent.js";
 import type * as entities_texts_internal from "../entities/texts/internal.js";
 import type * as entities_texts_public from "../entities/texts/public.js";
 import type * as entities_texts_validators from "../entities/texts/validators.js";
+import type * as entities_threads_actions from "../entities/threads/actions.js";
 import type * as entities_threads_entity from "../entities/threads/entity.js";
 import type * as entities_threads_messages_entity from "../entities/threads/messages/entity.js";
 import type * as entities_threads_messages_models from "../entities/threads/messages/models.js";
@@ -117,7 +117,6 @@ import type * as values from "../values.js";
  */
 declare const fullApi: ApiFromModules<{
   "action/evaluateMessageUrls": typeof action_evaluateMessageUrls;
-  "action/generateThreadTitle": typeof action_generateThreadTitle;
   "action/ingestImageUrl": typeof action_ingestImageUrl;
   "action/textToImage": typeof action_textToImage;
   constants: typeof constants;
@@ -168,6 +167,7 @@ declare const fullApi: ApiFromModules<{
   "entities/texts/internal": typeof entities_texts_internal;
   "entities/texts/public": typeof entities_texts_public;
   "entities/texts/validators": typeof entities_texts_validators;
+  "entities/threads/actions": typeof entities_threads_actions;
   "entities/threads/entity": typeof entities_threads_entity;
   "entities/threads/messages/entity": typeof entities_threads_messages_entity;
   "entities/threads/messages/models": typeof entities_threads_messages_models;
