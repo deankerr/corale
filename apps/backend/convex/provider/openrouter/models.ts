@@ -232,5 +232,10 @@ const excludedModelIds = [
   'anthropic/claude-3-haiku',
   'anthropic/claude-3-opus',
   'anthropic/claude-3-sonnet',
+
   'anthropic/claude-3.5-sonnet',
+  'anthropic/claude-3.5-sonnet-20240620',
+
+  'anthropic/claude-3-5-haiku',
+  'anthropic/claude-3-5-haiku-20241022',
 ]
