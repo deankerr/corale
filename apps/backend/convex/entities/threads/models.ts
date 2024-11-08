@@ -1,9 +1,9 @@
 import { defineEnt } from 'convex-ents'
 import { deletionDelayTime } from '../../constants'
-import { pick, v, withSystemFields } from '../../values'
+import { omit, pick, v, withSystemFields } from '../../values'
 import { ChatModelReturn } from '../chatModels/validators'
 import { updateKvValidator } from '../kvMetadata'
-import { MessageReturn } from './messages/models'
+import { MessageCreate, MessageReturn } from './messages/models'
 
 export const ThreadSchemaFields = {
   title: v.optional(v.string()),
@@ -17,6 +17,8 @@ export const ThreadCreate = v.object({
   title: v.optional(v.string()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
   category: v.optional(v.string()),
+
+  messages: v.optional(v.array(v.object(omit(MessageCreate.fields, ['threadId', 'runId'])))),
 })
 
 export const ThreadUpdate = v.object({
