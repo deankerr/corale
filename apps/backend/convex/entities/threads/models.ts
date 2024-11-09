@@ -1,27 +1,27 @@
 import { defineEnt } from 'convex-ents'
 import { deletionDelayTime } from '../../constants'
-import { pick, v, withSystemFields } from '../../values'
+import { literals, omit, pick, v, withSystemFields } from '../../values'
 import { ChatModelReturn } from '../chatModels/validators'
 import { updateKvValidator } from '../kvMetadata'
-import { MessageReturn } from './messages/models'
+import { MessageCreate, MessageReturn } from './messages/models'
 
 export const ThreadSchemaFields = {
   title: v.optional(v.string()),
-  instructions: v.optional(v.string()), // TODO deprecate
+  instructions: v.optional(v.string()),
   favourite: v.optional(v.boolean()),
   kvMetadata: v.optional(v.record(v.string(), v.string())),
+  type: v.optional(literals('chat', 'artifact', 'machine')), // * default = chat
 }
 
 export const ThreadCreate = v.object({
-  title: v.optional(v.string()),
-  kvMetadata: v.optional(v.record(v.string(), v.string())),
+  ...ThreadSchemaFields,
+  messages: v.optional(v.array(v.object(omit(MessageCreate.fields, ['threadId', 'runId'])))),
 })
 
 export const ThreadUpdate = v.object({
   threadId: v.string(),
   fields: v.object({
-    title: v.optional(v.string()),
-    favourite: v.optional(v.boolean()),
+    ...ThreadSchemaFields,
     kvMetadata: v.optional(updateKvValidator),
   }),
 })
@@ -32,7 +32,9 @@ export const ThreadReturn = v.object(
     favourite: v.optional(v.boolean()),
     kvMetadata: v.optional(v.record(v.string(), v.string())),
     instructions: v.optional(v.string()),
-    // ent fields
+    category: v.optional(v.string()),
+
+    // * ent
     xid: v.string(),
     updatedAtTime: v.number(),
     userId: v.id('users'),

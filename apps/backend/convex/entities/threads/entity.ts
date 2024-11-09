@@ -3,6 +3,7 @@ import type { Id, MutationCtx, QueryCtx } from '../../types'
 import { ConvexError, type Infer } from '../../values'
 import { generateXID, nullifyDeletedEnt, nullifyDeletedEntWriter } from '../helpers'
 import { updateKvMetadata } from '../kvMetadata'
+import { createMessage } from './messages/entity'
 import { ThreadCreate, ThreadUpdate } from './models'
 
 // * queries
@@ -31,7 +32,10 @@ export async function getThreadWriterX(ctx: MutationCtx, args: { threadId: strin
 }
 
 // * mutations
-export async function createThread(ctx: MutationCtx, fields: Infer<typeof ThreadCreate> & { userId?: Id<'users'> }) {
+export async function createThread(
+  ctx: MutationCtx,
+  { messages = [], ...fields }: Infer<typeof ThreadCreate> & { userId?: Id<'users'> },
+) {
   const userId = fields.userId ?? ctx.viewerId ?? raise('No user ID provided')
   const xid = generateXID()
 
@@ -39,6 +43,10 @@ export async function createThread(ctx: MutationCtx, fields: Infer<typeof Thread
     .table('threads')
     .insert({ ...fields, xid, userId, updatedAtTime: Date.now() })
     .get()
+
+  for (const message of messages) {
+    await createMessage(ctx, { ...message, threadId: thread._id, userId })
+  }
 
   return thread
 }
