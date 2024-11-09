@@ -7,10 +7,12 @@ type TextAreaProps = TextareaAutosizeProps & {
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ onValueChange, onChange, className, ...props }, ref) => {
+  ({ onValueChange, onChange, className, minRows = 1, ...props }, ref) => {
     return (
       <ReactTextareaAutosize
         ref={ref}
+        minRows={minRows}
+        rows={minRows}
         onChange={(e) => {
           onChange?.(e)
           onValueChange?.(e.target.value)
