@@ -199,36 +199,6 @@
   @apply overflow-hidden;
 }
 
-.markdown-root h1 {
-  @apply text-4xl font-bold tracking-tight;
-  @apply pb-6 pt-10 first:pt-4;
-}
-
-.markdown-root h2 {
-  @apply text-3xl font-semibold tracking-tight;
-  @apply pb-4 pt-8;
-}
-
-.markdown-root h3 {
-  @apply text-2xl font-semibold tracking-tight;
-  @apply pb-4 pt-6;
-}
-
-.markdown-root h4 {
-  @apply text-xl font-semibold tracking-tight;
-  @apply pb-4 pt-6;
-}
-
-.markdown-root h5 {
-  @apply text-lg font-semibold;
-  @apply pb-3 pt-4;
-}
-
-.markdown-root h6 {
-  @apply font-semibold;
-  @apply pb-3 pt-4;
-}
-
 .markdown-root p {
   @apply pb-3 pt-3 leading-7 first:pt-0 last:pb-0;
 }
@@ -285,34 +255,4 @@
   @apply text-gray-a11 leading-5;
   font-size: 13px;
   line-height: 1.2;
-}
-
-.header-markers h1::before {
-  content: '⋅ ';
-  @apply text-gray-8;
-}
-
-.header-markers h2::before {
-  content: '∶ ';
-  @apply text-gray-8;
-}
-
-.header-markers h3::before {
-  content: '∴ ';
-  @apply text-gray-8;
-}
-
-.header-markers h4::before {
-  content: '∷ ';
-  @apply text-gray-8;
-}
-
-.header-markers h5::before {
-  content: '∵ ';
-  @apply text-gray-8;
-}
-
-.header-markers h6::before {
-  content: '∵ ';
-  @apply text-gray-8;
 }
