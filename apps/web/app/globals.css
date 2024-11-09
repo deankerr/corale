@@ -254,7 +254,7 @@
 }
 
 .markdown-root table {
-  @apply w-full border-separate border-spacing-0;
+  @apply block w-full border-separate border-spacing-0 overflow-x-auto;
 }
 
 .markdown-root thead {
