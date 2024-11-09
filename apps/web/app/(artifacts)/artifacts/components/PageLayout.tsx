@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 
 export function PageLayout({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('bg-background text-foreground flex h-full flex-col overflow-hidden text-sm', className)}>
+    <div className={cn('bg-background text-foreground flex h-full grow flex-col overflow-hidden text-sm', className)}>
       {children}
     </div>
   )
