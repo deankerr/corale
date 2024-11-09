@@ -18,7 +18,7 @@
   --cursor-switch: pointer;
 }
 
-/* add transitions */
+/* radix themes components transitions */
 .rt-BaseButton,
 .rt-TabsTrigger,
 .rt-Link,
@@ -33,47 +33,19 @@
 
 @tailwind utilities;
 
-:root {
-  --nav-rail-height: 3rem;
-  --card-1: #1b1d1eb3;
-  --card-1-light: #3f4547b3;
-
-  --card-2: #1e1d1bb3;
-}
-
-.jotai-devtools-trigger-button {
-  width: 0.5rem !important;
-  height: 0.5rem !important;
-  opacity: 0.1;
-}
-
-.colorize-pink {
-  filter: invert(100%) brightness(0.5) sepia(1) hue-rotate(-70deg) saturate(5);
-}
-
-.colorize-orange {
-  filter: invert(100%) brightness(0.5) sepia(1) hue-rotate(-6deg) saturate(5);
-}
-
-.phosphor {
-  display: inline-block;
-  vertical-align: text-top;
-  width: 1.2em;
-  height: 1.2em;
-}
-
 .cmdk-animate-list {
   transition: height 100ms ease;
 }
 
-.shimmer {
+.loading-shimmer {
   @apply before:via-gray-a3 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:to-transparent;
 }
 
-.shimmer-b {
+.loading-shimmer-with-border {
   @apply before:border-gray-a3 before:via-gray-a3 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:border-t before:bg-gradient-to-r before:from-transparent before:to-transparent;
 }
 
+/* custom radix-ui colors */
 .dark,
 .dark-theme {
   --orange-1: #15100d;
@@ -146,6 +118,7 @@
   }
 }
 
+/* shadcn/ui */
 @layer base {
   :root {
     --background: 20 14.3% 4.1%;
@@ -185,8 +158,9 @@
 }
 
 @layer base {
+  /* css reset */
   * {
-    @apply border-border;
+    @apply border-border relative min-w-0;
   }
   body {
     font-feature-settings:
@@ -195,6 +169,7 @@
   }
 }
 
+/* react-markdown */
 .markdown-root {
   @apply overflow-hidden;
 }

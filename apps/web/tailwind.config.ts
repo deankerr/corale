@@ -10,15 +10,9 @@ const config: Config = {
     require('@tailwindcss/container-queries'),
     require('tailwindcss-animated'),
     require('tailwindcss-animate'),
-    // require('@nauverse/tailwind-dot-grid-backgrounds'),
-    plugin(({ addBase }) => {
-      addBase({
-        // css reset
-        '*': { position: 'relative', minWidth: '0' },
-      })
-    }),
+
+    // flex utilities
     plugin(({ addComponents }) => {
-      // flex utilities
       addComponents({
         '.flex-start': {
           display: 'flex',

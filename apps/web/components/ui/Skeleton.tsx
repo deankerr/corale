@@ -15,7 +15,7 @@ export const SkeletonShimmer = twx.div.attrs({
   tabIndex: -1,
   'aria-hidden': true,
 })`
-  isolate h-8 w-full overflow-hidden rounded-md bg-gray-a2 shimmer
+  isolate h-8 w-full overflow-hidden rounded-md bg-gray-a2 loading-shimmer
 `
 
 // shadcn/ui
