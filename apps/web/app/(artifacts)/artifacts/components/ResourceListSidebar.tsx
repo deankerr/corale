@@ -75,7 +75,7 @@ export function ResourceListSidebar({
       : items
 
   return (
-    <Sidebar collapsible="none" className="!w-80 shrink-0 border-r">
+    <Sidebar collapsible="none" className="!w-72 shrink-0 border-r">
       <SidebarHeader className={cn('border-b', !hasItems && 'h-12')}>
         <SidebarMenu>
           <SidebarMenuItem>

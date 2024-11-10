@@ -1,5 +1,7 @@
+import { artifactAtom } from '@/app/(artifacts)/artifacts/[id]/atoms'
 import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
+import { useAtom } from 'jotai'
 import { memo, type ComponentPropsWithoutRef } from 'react'
 import type { ExtraProps } from 'react-markdown'
 import { toast } from 'sonner'
@@ -20,14 +22,31 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
     toast('Copied to clipboard')
   }
 
+  const [artifact, setArtifact] = useAtom(artifactAtom)
+  const handleArtifact = () => {
+    const textNode = (node?.children[0] as any).children[0]
+    const text = textNode?.value || ''
+    if (language === 'svg') {
+      setArtifact({ type: 'svg', content: text })
+    } else {
+      setArtifact({ type: 'html', content: text })
+    }
+  }
+
   return (
     <pre
       className={cn('bg-black-a3 text-gray-10 mb-4 mt-2 overflow-hidden rounded-lg border font-mono', className)}
       {...props}
     >
       {isCodeBlock && (
-        <div className="flex-between border-gray-a3 border-b px-3 py-1">
+        <div className="flex-start border-gray-a3 border-b px-3 py-1">
           <span className="text-xs">{language}</span>
+          <div className="grow" />
+          {language && (
+            <IconButton variant="ghost" size="1" onClick={handleArtifact} aria-label="Save as artifact">
+              <Icons.Graph />
+            </IconButton>
+          )}
           <IconButton variant="ghost" size="1" onClick={handleCopy} aria-label="Copy code">
             <Icons.Copy />
           </IconButton>

@@ -1,12 +1,18 @@
 'use client'
 
+import { HTMLRenderer } from '@/components/artifacts/HTMLRenderer'
+import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
+import { IconButton } from '@/components/ui/Button'
 import { useMessageFeed } from '@/lib/api/messages'
 import { useThread } from '@/lib/api/threads'
+import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { api } from '~/_generated/api'
 import { useMutation } from 'convex/react'
+import { useAtom } from 'jotai'
 import { Composer } from '../components/Composer'
 import { MessageFeed } from '../components/MessageFeed'
 import { PageContent, PageFooter, PageHeader, PageLayout } from '../components/PageLayout'
+import { artifactAtom } from './atoms'
 
 export default function Page({ params }: { params: { id: string } }) {
   const thread = useThread(params.id)
@@ -23,6 +29,8 @@ export default function Page({ params }: { params: { id: string } }) {
     })
   }
 
+  const [artifact, setArtifact] = useAtom(artifactAtom)
+
   return (
     <PageLayout className="flex-row divide-x">
       <PageLayout>
@@ -35,15 +43,24 @@ export default function Page({ params }: { params: { id: string } }) {
         </PageFooter>
       </PageLayout>
 
-      <PageLayout>
-        <PageHeader>{thread?.title ?? 'Untitled'}</PageHeader>
-        <PageContent>
-          <MessageFeed messages={messages} />
-        </PageContent>
-        <PageFooter>
-          <Composer onRunSubmit={handleRunSubmit} />
-        </PageFooter>
-      </PageLayout>
+      {artifact && (
+        <PageLayout>
+          <PageHeader>
+            Artifact ({artifact.type})
+            <div className="grow" />
+            <IconButton variant="ghost" size="2" onClick={() => setArtifact(null)} aria-label="Close">
+              <Icons.X />
+            </IconButton>
+          </PageHeader>
+          <PageContent>
+            {artifact.type === 'svg' ? (
+              <SVGRenderer svgText={artifact.content} />
+            ) : (
+              <HTMLRenderer htmlText={artifact.content} />
+            )}
+          </PageContent>
+        </PageLayout>
+      )}
     </PageLayout>
   )
 }
