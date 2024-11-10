@@ -9,7 +9,10 @@ import { MessageProvider } from './MessageProvider'
 export const Message = ({ message }: { message: MessageType }) => {
   return (
     <MessageProvider message={message}>
-      <div className="bg-gray-2 flex shrink-0 flex-col overflow-hidden rounded border" style={{ contain: 'paint' }}>
+      <div
+        className="bg-gray-2 flex w-full shrink-0 flex-col overflow-hidden rounded border"
+        style={{ contain: 'paint' }}
+      >
         <MessageHeader />
         <MessageBody />
         <MessageFooter />

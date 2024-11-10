@@ -6,7 +6,7 @@ import { ModelLogo } from '@/components/icons/ModelLogo'
 import { Button, IconButton } from '@/components/ui/Button'
 import { TextArea } from '@/components/ui/TextArea'
 import { useChatModel } from '@/lib/api/models'
-import { cn, twx } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 
@@ -35,7 +35,7 @@ export function Composer({
   }
 
   return (
-    <div className={cn('bg-black-a1 w-full max-w-2xl overflow-hidden rounded-md border pt-1 shadow-xl', className)}>
+    <div className={cn('bg-black-a1 w-full overflow-hidden rounded-md border pt-1 shadow-xl', className)}>
       <TextArea
         placeholder="Where do you want to go today?"
         value={textValue}
@@ -46,6 +46,7 @@ export function Composer({
             handleRun()
           }
         }}
+        autoFocus
       />
 
       <div className="flex-start px-3 pb-3 pt-1.5">
@@ -56,7 +57,7 @@ export function Composer({
           </Button>
         </ModelPickerCmd>
 
-        <div className="grow" />
+        <div className="mx-1 grow" />
         <div className="flex-end gap-2">
           <IconButton color="gray" variant="surface" aria-label="Add message" disabled loading={state === 'pending'}>
             <Icons.Plus />

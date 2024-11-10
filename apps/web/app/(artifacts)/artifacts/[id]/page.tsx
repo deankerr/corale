@@ -34,18 +34,18 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <PageLayout className="flex-row divide-x">
       <PageLayout>
-        <PageHeader>{thread?.title ?? 'Untitled'}</PageHeader>
-        <PageContent className="">
+        <PageHeader className="border-b">{thread?.title ?? 'Untitled'}</PageHeader>
+        <PageContent className="items-center [&>div]:max-w-3xl">
           <MessageFeed messages={messages} />
         </PageContent>
-        <PageFooter>
+        <PageFooter className="[&>div]:max-w-3xl">
           <Composer onRunSubmit={handleRunSubmit} />
         </PageFooter>
       </PageLayout>
 
       {artifact && (
         <PageLayout>
-          <PageHeader>
+          <PageHeader className="border-b">
             Artifact ({artifact.type})
             <div className="grow" />
             <IconButton variant="ghost" size="2" onClick={() => setArtifact(null)} aria-label="Close">

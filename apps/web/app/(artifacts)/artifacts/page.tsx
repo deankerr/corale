@@ -28,7 +28,7 @@ export default function Page() {
   return (
     <PageLayout>
       <PageContent>
-        <div className="flex-center m-auto w-full">
+        <div className="m-auto w-full max-w-3xl">
           <Composer onRunSubmit={handleRunSubmit} state={isCreatingThread ? 'pending' : 'ready'} />
         </div>
       </PageContent>

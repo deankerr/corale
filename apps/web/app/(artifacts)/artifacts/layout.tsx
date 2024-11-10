@@ -15,6 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           '--sidebar-width': '250px',
         } as React.CSSProperties
       }
+      defaultOpen={false}
     >
       <AppSidebar />
       <SidebarInset className="h-dvh flex-row">
