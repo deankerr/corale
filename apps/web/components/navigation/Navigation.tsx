@@ -45,8 +45,18 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Chats</div>
             </NavItem>
 
+            <NavItem href={'/patterns'}>
+              <Icons.Robot size={20} className="text-accent-11 place-self-center" />
+              <div className="line-clamp-2 select-none overflow-hidden pr-3">Patterns</div>
+            </NavItem>
+
+            <NavItem href={'/artifacts'}>
+              <Icons.CodeBlock size={20} className="text-accent-11 place-self-center" />
+              <div className="line-clamp-2 select-none overflow-hidden pr-3">Artifacts</div>
+            </NavItem>
+
             <NavItem href={'/generations'}>
-              <Icons.FlowerLotus size={20} className="text-accent-11 place-self-center" />
+              <Icons.Images size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Generate</div>
             </NavItem>
 
@@ -55,10 +65,6 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Collections</div>
             </NavItem>
 
-            <NavItem href={'/patterns'}>
-              <Icons.Robot size={20} className="text-accent-11 place-self-center" />
-              <div className="line-clamp-2 select-none overflow-hidden pr-3">Patterns</div>
-            </NavItem>
             <NavItem href={'/prompts'}>
               <Icons.NotePencil size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Prompts</div>

@@ -1,4 +1,4 @@
-import { artifactAtom } from '@/app/(artifacts)/artifacts/[id]/atoms'
+import { artifactDisplayAtom } from '@/app/(preview)/artifacts/components/atoms'
 import { createArtifact, extractCodeBlockText } from '@/lib/code-block'
 import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
@@ -22,7 +22,7 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
     toast('Copied to clipboard')
   }
 
-  const [artifact, setArtifact] = useAtom(artifactAtom)
+  const [artifact, setArtifact] = useAtom(artifactDisplayAtom)
   const handleArtifact = () => {
     const text = extractCodeBlockText(node)
     if (language === 'svg') {
@@ -34,7 +34,7 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
 
   return (
     <pre
-      className={cn('bg-black-a3 text-gray-10 mb-4 mt-2 overflow-hidden rounded-lg border font-mono', className)}
+      className={cn('bg-black-a3 text-gray-11 mb-4 mt-2 overflow-hidden rounded-lg border font-mono', className)}
       {...props}
     >
       {isCodeBlock && (

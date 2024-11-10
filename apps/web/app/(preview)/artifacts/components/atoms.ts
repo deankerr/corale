@@ -7,4 +7,4 @@ export type Artifact = {
   content: string
 }
 
-export const artifactAtom = atom<Artifact | null>(null)
+export const artifactDisplayAtom = atom<Artifact | null>(null)

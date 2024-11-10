@@ -4,8 +4,9 @@ import { api } from '@corale/backend'
 import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { PageContent, PageLayout } from '../shared/PageLayout'
+import { ArtifactThreadsList } from './components/ArtifactThreadsList'
 import { Composer } from './components/Composer'
-import { PageContent, PageLayout } from './components/PageLayout'
 
 export default function Page() {
   const createThread = useMutation(api.entities.threads.create)
@@ -26,12 +27,15 @@ export default function Page() {
   }
 
   return (
-    <PageLayout>
-      <PageContent>
-        <div className="m-auto w-full max-w-3xl">
-          <Composer onRunSubmit={handleRunSubmit} state={isCreatingThread ? 'pending' : 'ready'} />
-        </div>
-      </PageContent>
-    </PageLayout>
+    <>
+      <ArtifactThreadsList />
+      <PageLayout>
+        <PageContent>
+          <div className="m-auto w-full max-w-2xl">
+            <Composer onRunSubmit={handleRunSubmit} state={isCreatingThread ? 'pending' : 'ready'} />
+          </div>
+        </PageContent>
+      </PageLayout>
+    </>
   )
 }

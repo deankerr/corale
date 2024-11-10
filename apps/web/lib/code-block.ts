@@ -1,4 +1,4 @@
-import type { Artifact } from '@/app/(artifacts)/artifacts/[id]/atoms'
+import type { Artifact } from '@/app/(preview)/artifacts/components/atoms'
 
 /**
  * Extracts text content from a markdown code block node

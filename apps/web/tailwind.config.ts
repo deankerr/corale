@@ -83,7 +83,7 @@ const config: Config = {
       input: radixColors.css.gray[6],
       ring: 'var(--focus-8)',
       background: radixColors.css.gray[1],
-      foreground: radixColors.css.gray[11],
+      foreground: radixColors.css.gray[12],
       primary: {
         DEFAULT: radixColors.css.accent[9],
         foreground: radixColors.css.gray[12],
@@ -126,7 +126,7 @@ const config: Config = {
         primary: radixColors.css.accent.a9,
         'primary-foreground': radixColors.css.accent.a12,
         accent: radixColors.css.gray[3],
-        'accent-foreground': radixColors.css.gray[11],
+        'accent-foreground': radixColors.css.gray[12],
         border: radixColors.css.gray[5],
         ring: 'var(--focus-8)',
       },

@@ -19,7 +19,7 @@ export const ErrorPage = ({
   }, [error])
 
   return (
-    <div className="flex-col-center h-full min-h-fit w-full gap-4 overflow-hidden p-4">
+    <div className="flex-col-center h-full min-h-fit w-full items-center gap-4 overflow-hidden p-4">
       <Scanlines className="animate-scanlinesDown text-ruby-6 pointer-events-none absolute bottom-0 h-[110%] w-full opacity-60" />
 
       <Icons.SmileyXEyes className="text-red-10 -m-4 size-48 shrink-0 opacity-60" />

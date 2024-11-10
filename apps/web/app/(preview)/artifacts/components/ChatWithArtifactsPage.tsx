@@ -9,14 +9,14 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { api } from '~/_generated/api'
 import { useMutation } from 'convex/react'
 import { useAtom } from 'jotai'
+import { PageContent, PageFooter, PageHeader, PageLayout } from '../../shared/PageLayout'
 import { Composer } from '../components/Composer'
 import { MessageFeed } from '../components/MessageFeed'
-import { PageContent, PageFooter, PageHeader, PageLayout } from '../components/PageLayout'
-import { artifactAtom, type Artifact } from './atoms'
+import { artifactDisplayAtom, type Artifact } from './atoms'
 
-export default function Page({ params }: { params: { id: string } }) {
-  const thread = useThread(params.id)
-  const messages = useMessageFeed(params.id, 40)
+export default function ChatWithArtifactsPage({ threadId }: { threadId: string }) {
+  const thread = useThread(threadId)
+  const messages = useMessageFeed(threadId, 40)
 
   const createRun = useMutation(api.entities.threads.runs.create)
   const handleRunSubmit = async (args: { modelId: string; text: string }) => {
@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { id: string } }) {
     })
   }
 
-  const [artifact, setArtifact] = useAtom(artifactAtom)
+  const [artifact, setArtifact] = useAtom(artifactDisplayAtom)
 
   return (
     <PageLayout className="flex-row divide-x">

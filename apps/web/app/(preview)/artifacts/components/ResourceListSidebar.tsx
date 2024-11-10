@@ -15,6 +15,7 @@ import type { Icon } from '@phosphor-icons/react'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import fuzzysort from 'fuzzysort'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 type ResourceItem = {
@@ -49,6 +50,20 @@ function ResourceNavItem({ path, name, title, time, content, isActive }: Resourc
   )
 }
 
+function ResourceNavButton({ path, name, title }: ResourceItem) {
+  const pathname = usePathname()
+
+  return (
+    <SidebarMenuItem key={path}>
+      <SidebarMenuButton isActive={pathname.startsWith(path)} tooltip={name} asChild>
+        <Link href={path}>
+          <span>{title}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  )
+}
+
 export function ResourceListSidebar({
   title,
   items,
@@ -75,7 +90,7 @@ export function ResourceListSidebar({
       : items
 
   return (
-    <Sidebar collapsible="none" className="text-foreground !w-72 shrink-0 border-r">
+    <Sidebar collapsible="none" className="!w-64 shrink-0 border-r">
       <SidebarHeader className={cn('border-b', !hasItems && 'h-12')}>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -93,9 +108,22 @@ export function ResourceListSidebar({
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="text-foreground overflow-x-hidden overscroll-contain">
-        <SidebarGroup className="p-0">
-          <SidebarGroupContent>
+      <SidebarContent className="overflow-x-hidden overscroll-contain">
+        <SidebarGroup>
+          <SidebarMenu>
+            {filteredItems?.map((item) => (
+              <ResourceNavButton
+                key={item.path}
+                path={item.path}
+                title={item.title}
+                name={item.name}
+                time={item.time}
+                content={item.content}
+                isActive={item.isActive}
+              />
+            ))}
+          </SidebarMenu>
+          {/* <SidebarGroupContent>
             {filteredItems?.map((item) => (
               <ResourceNavItem
                 key={item.path}
@@ -107,7 +135,7 @@ export function ResourceListSidebar({
                 time={item.time}
               />
             ))}
-          </SidebarGroupContent>
+          </SidebarGroupContent> */}
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
