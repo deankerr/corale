@@ -222,12 +222,14 @@
   @apply [&>a]:text-xs [&>a]:no-underline;
 }
 
-.markdown-root pre {
-  @apply border-gray-a3 bg-black-a4 overflow-x-auto rounded-md border p-3;
+.markdown-root code {
+  @apply font-mono text-[95%];
 }
 
-.markdown-root code {
-  @apply text-gray-a11 leading-5;
-  font-size: 13px;
-  line-height: 1.2;
+.markdown-root pre > code {
+  @apply block w-full overflow-x-auto p-3 leading-relaxed;
+}
+
+.markdown-root :not(pre) > code {
+  @apply bg-black-a3 text-gray-10 mx-0.5 inline-block rounded-md px-1;
 }

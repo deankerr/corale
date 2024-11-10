@@ -1,53 +1,39 @@
-import { htmlTextAtom } from '@/components/artifacts/atoms'
-import { IconButton } from '@/components/ui/Button'
-import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
+import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
-import { useSetAtom } from 'jotai'
-import { memo } from 'react'
+import { memo, type ComponentPropsWithoutRef } from 'react'
+import type { ExtraProps } from 'react-markdown'
+import { toast } from 'sonner'
+import { IconButton } from '../ui/Button'
 
-export const Pre = memo(({ children, ...props }: React.ComponentProps<'pre'>) => {
-  let text = ''
+type PreProps = ComponentPropsWithoutRef<'pre'> & ExtraProps
 
-  if (children && typeof children === 'object' && 'props' in children) {
-    if (children.props.children && typeof children.props.children === 'string') {
-      text = children.props.children
-    }
+export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
+  // Check if the first child is a code element
+  const codeNode = node?.children[0] as { tagName?: string; properties?: { className?: string[] } }
+  const isCodeBlock = codeNode?.tagName === 'code'
+  const language = isCodeBlock ? codeNode?.properties?.className?.[0]?.replace('language-', '') : null
+
+  const handleCopy = () => {
+    const textNode = (node?.children[0] as any).children[0]
+    const text = textNode?.value || ''
+    navigator.clipboard.writeText(text)
+    toast('Copied to clipboard')
   }
 
   return (
-    <pre {...props} className="bg-gray-a2 group overflow-auto rounded-md p-2 has-[code]:overflow-hidden [&>code]:block">
-      {children}
-      <div className="absolute right-2 top-2 hidden space-x-2 group-has-[code]:block">
-        <AdminOnlyUi>
-          <CopyToHTMLArtifactButton text={text} />
-        </AdminOnlyUi>
-        <CopyToClipboardButton text={text} />
-      </div>
+    <pre
+      className={cn('bg-black-a3 text-gray-10 mb-4 mt-2 overflow-hidden rounded-lg border font-mono', className)}
+      {...props}
+    >
+      {isCodeBlock && (
+        <div className="flex-between border-gray-a3 border-b px-3 py-1">
+          <span className="text-xs">{language}</span>
+          <IconButton variant="ghost" size="1" onClick={handleCopy} aria-label="Copy code">
+            <Icons.Copy />
+          </IconButton>
+        </div>
+      )}
+      {props.children}
     </pre>
   )
 })
-
-Pre.displayName = 'Pre'
-
-const CopyToClipboardButton = ({ text }: { text: string }) => {
-  return (
-    <IconButton
-      aria-label="Copy to clipboard"
-      onClick={() => navigator.clipboard.writeText(text)}
-      variant="soft"
-      disabled={!text}
-    >
-      <Icons.Copy size={18} />
-    </IconButton>
-  )
-}
-
-const CopyToHTMLArtifactButton = ({ text }: { text: string }) => {
-  const setHtmlText = useSetAtom(htmlTextAtom)
-
-  return (
-    <IconButton aria-label="Copy to HTML artifact" onClick={() => setHtmlText(text)} variant="soft">
-      <Icons.FileHtml size={18} />
-    </IconButton>
-  )
-}
