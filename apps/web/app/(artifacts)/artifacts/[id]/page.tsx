@@ -12,11 +12,11 @@ import { useAtom } from 'jotai'
 import { Composer } from '../components/Composer'
 import { MessageFeed } from '../components/MessageFeed'
 import { PageContent, PageFooter, PageHeader, PageLayout } from '../components/PageLayout'
-import { artifactAtom } from './atoms'
+import { artifactAtom, type Artifact } from './atoms'
 
 export default function Page({ params }: { params: { id: string } }) {
   const thread = useThread(params.id)
-  const messages = useMessageFeed(params.id)
+  const messages = useMessageFeed(params.id, 40)
 
   const createRun = useMutation(api.entities.threads.runs.create)
   const handleRunSubmit = async (args: { modelId: string; text: string }) => {
@@ -46,7 +46,8 @@ export default function Page({ params }: { params: { id: string } }) {
       {artifact && (
         <PageLayout>
           <PageHeader className="border-b">
-            Artifact ({artifact.type})
+            {getArtifactIcon(artifact)}
+            {artifact.title}
             <div className="grow" />
             <IconButton variant="ghost" size="2" onClick={() => setArtifact(null)} aria-label="Close">
               <Icons.X />
@@ -63,4 +64,10 @@ export default function Page({ params }: { params: { id: string } }) {
       )}
     </PageLayout>
   )
+}
+
+function getArtifactIcon(artifact: Artifact) {
+  if (artifact.type === 'svg') return <Icons.FileSvg size={20} />
+  if (artifact.type === 'html') return <Icons.FileHtml size={20} />
+  return <Icons.FileCode size={20} />
 }

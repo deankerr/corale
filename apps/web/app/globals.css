@@ -174,8 +174,12 @@
   @apply overflow-hidden;
 }
 
+.markdown-root > *:first-child {
+  @apply mt-0 pt-0;
+}
+
 .markdown-root p {
-  @apply pb-3 pt-3 leading-7 first:pt-0 last:pb-0;
+  @apply pb-3 pt-3 leading-relaxed first:pt-0 last:pb-0;
 }
 
 .markdown-root a {

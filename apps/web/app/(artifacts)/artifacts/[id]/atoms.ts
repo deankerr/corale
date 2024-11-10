@@ -1,3 +1,10 @@
 import { atom } from 'jotai'
 
-export const artifactAtom = atom<{ type: 'svg' | 'html'; content: string } | null>(null)
+export type Artifact = {
+  type: 'svg' | 'html'
+  title: string
+  version: string
+  content: string
+}
+
+export const artifactAtom = atom<Artifact | null>(null)

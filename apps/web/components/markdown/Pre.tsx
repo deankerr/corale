@@ -1,4 +1,5 @@
 import { artifactAtom } from '@/app/(artifacts)/artifacts/[id]/atoms'
+import { createArtifact, extractCodeBlockText } from '@/lib/code-block'
 import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useAtom } from 'jotai'
@@ -16,20 +17,18 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
   const language = isCodeBlock ? codeNode?.properties?.className?.[0]?.replace('language-', '') : null
 
   const handleCopy = () => {
-    const textNode = (node?.children[0] as any).children[0]
-    const text = textNode?.value || ''
+    const text = extractCodeBlockText(node)
     navigator.clipboard.writeText(text)
     toast('Copied to clipboard')
   }
 
   const [artifact, setArtifact] = useAtom(artifactAtom)
   const handleArtifact = () => {
-    const textNode = (node?.children[0] as any).children[0]
-    const text = textNode?.value || ''
+    const text = extractCodeBlockText(node)
     if (language === 'svg') {
-      setArtifact({ type: 'svg', content: text })
+      setArtifact(createArtifact('svg', text))
     } else {
-      setArtifact({ type: 'html', content: text })
+      setArtifact(createArtifact('html', text))
     }
   }
 
