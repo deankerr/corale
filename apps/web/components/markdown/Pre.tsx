@@ -16,7 +16,13 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(codeBlockInfo.content)
-    toast('Copied to clipboard')
+      .then(() => {
+        toast('Copied to clipboard')
+      })
+      .catch((error) => {
+        toast.error('Failed to copy to clipboard')
+        console.error('Clipboard copy failed:', error)
+      })
   }
 
   const setArtifact = useSetAtom(artifactDisplayAtom)

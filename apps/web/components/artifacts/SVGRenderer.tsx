@@ -10,21 +10,25 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
   useEffect(() => {
     setError(null)
 
+    let url: string | null = null
+
     try {
       const processedSVG = sanitize ? sanitizeSVGString(svgText) : svgText
 
       const blob = new Blob([processedSVG], { type: 'image/svg+xml' })
-      const url = URL.createObjectURL(blob)
+      url = URL.createObjectURL(blob)
       setBlobUrl(url)
-
-      return () => {
-        URL.revokeObjectURL(url)
-        setBlobUrl('')
-      }
     } catch (error) {
       console.error('Error processing SVG:', error)
       setError('Failed to process SVG content')
       return
+    }
+
+    return () => {
+      if (url) {
+        URL.revokeObjectURL(url)
+        setBlobUrl('')
+      }
     }
   }, [svgText, sanitize])
 
