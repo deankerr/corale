@@ -85,23 +85,14 @@ export function wrapBodyInHTMLWithCSP(partialHTML: string): string {
     <!DOCTYPE html>
     <html lang="en">
       <head>
-        <!-- Security -->
         <meta charset="UTF-8">
         <meta http-equiv="Content-Security-Policy" content="${iframeCSPContent}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="referrer" content="no-referrer">
-        
-        <!-- Viewport and compatibility -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="color-scheme" content="light dark">
-        
-        <!-- Resource hints -->
         <meta http-equiv="x-dns-prefetch-control" content="off">
-        
-        <!-- Content behavior -->
         <meta name="format-detection" content="telephone=no">
         <meta http-equiv="Cache-Control" content="no-store">
-        
         <script>
           setTimeout(() => {
             window.stop();

@@ -1,4 +1,5 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/Sidebar'
+import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
 import { AppSidebar } from './shared/AppSidebar'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -15,9 +16,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <SidebarInset className="h-dvh flex-row">
         {children}
-        <div className="absolute z-40 block opacity-50 md:hidden">
-          <SidebarTrigger />
-        </div>
+        <AdminOnlyUi>
+          <div className="absolute z-40 block opacity-50 md:hidden">
+            <SidebarTrigger />
+          </div>
+        </AdminOnlyUi>
       </SidebarInset>
     </SidebarProvider>
   )

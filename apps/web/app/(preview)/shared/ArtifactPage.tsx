@@ -2,6 +2,7 @@
 
 import { ArtifactRenderer, type Artifact } from '@/components/artifacts/ArtifactRenderer'
 import { artifactDisplayAtom } from '@/components/artifacts/atoms'
+import { LoadingPage } from '@/components/pages/LoadingPage'
 import { IconButton } from '@/components/ui/Button'
 import { useMessageById } from '@/lib/api/messages'
 import { extractCodeBlocks, type CodeBlockInfo } from '@/lib/code-block'
@@ -20,6 +21,9 @@ export function ArtifactPage({ params }: { params: { id: string } }) {
           <Icons.CircleNotch className="animate-spin" size={16} />
           Loading...
         </PageHeader>
+        <PageContent>
+          <LoadingPage />
+        </PageContent>
       </PageLayout>
     )
   }
