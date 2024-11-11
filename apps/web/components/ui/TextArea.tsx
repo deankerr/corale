@@ -7,16 +7,18 @@ type TextAreaProps = TextareaAutosizeProps & {
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ onValueChange, onChange, className, ...props }, ref) => {
+  ({ onValueChange, onChange, className, minRows = 1, ...props }, ref) => {
     return (
       <ReactTextareaAutosize
         ref={ref}
+        minRows={minRows}
+        rows={minRows}
         onChange={(e) => {
           onChange?.(e)
           onValueChange?.(e.target.value)
         }}
         className={cn(
-          'placeholder:text-gray-10 w-full resize-none bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          'placeholder:text-gray-7 w-full resize-none bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
         {...props}

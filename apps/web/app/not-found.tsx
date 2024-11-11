@@ -3,7 +3,7 @@ import { Link } from '@radix-ui/themes'
 
 export default function NotFound() {
   return (
-    <div className="flex-col-center h-dvh w-full gap-4">
+    <div className="flex-col-center h-dvh w-full items-center gap-4">
       <Icons.Ghost
         weight="thin"
         className="text-gray-a11 pointer-events-none fixed aspect-square h-[120vh] w-[120vw] shrink-0 opacity-[0.02]"

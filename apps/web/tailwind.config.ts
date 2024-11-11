@@ -42,25 +42,25 @@ const config: Config = {
           display: 'flex',
           'flex-direction': 'column',
           'justify-content': 'flex-start',
-          'align-items': 'center',
+          'align-items': 'stretch',
         },
         '.flex-col-center': {
           display: 'flex',
           'flex-direction': 'column',
           'justify-content': 'center',
-          'align-items': 'center',
+          'align-items': 'stretch',
         },
         '.flex-col-end': {
           display: 'flex',
           'flex-direction': 'column',
           'justify-content': 'flex-end',
-          'align-items': 'center',
+          'align-items': 'stretch',
         },
         '.flex-col-between': {
           display: 'flex',
           'flex-direction': 'column',
           'justify-content': 'space-between',
-          'align-items': 'center',
+          'align-items': 'stretch',
         },
       })
     }),
@@ -83,7 +83,7 @@ const config: Config = {
       input: radixColors.css.gray[6],
       ring: 'var(--focus-8)',
       background: radixColors.css.gray[1],
-      foreground: radixColors.css.gray[11],
+      foreground: radixColors.css.gray[12],
       primary: {
         DEFAULT: radixColors.css.accent[9],
         foreground: radixColors.css.gray[12],

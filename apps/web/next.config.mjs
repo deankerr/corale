@@ -14,6 +14,15 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@phosphor-icons/react'],
   },
+  redirects: async () => {
+    return [
+      {
+        source: '/drawing/:id',
+        destination: '/artifact/:id',
+        permanent: true,
+      },
+    ]
+  },
 
   // handled in CI
   typescript: {

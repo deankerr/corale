@@ -53,7 +53,7 @@ export const MessageHeader = () => {
 
       <div className="grow" />
       {hasSVG && (
-        <Link href={`/drawing/${message._id}`} target="_blank">
+        <Link href={`/artifact/${message.xid}`} target="_blank">
           <IconButton variant="ghost" size="1" aria-label="Open SVG">
             <Icons.Graph size={18} />
           </IconButton>

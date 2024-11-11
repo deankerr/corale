@@ -1,34 +1,39 @@
 'use client'
 
+import { isCompleteHTML, processHTML, wrapBodyInHTMLWithCSP } from '@/lib/html-parsing'
 import { useEffect, useRef } from 'react'
+
+function processHTMLText(htmlText: string) {
+  if (!isCompleteHTML(htmlText)) return null
+
+  const { metadata, body } = processHTML(htmlText)
+  const srcdoc = wrapBodyInHTMLWithCSP(body)
+
+  return { metadata, srcdoc }
+}
 
 export const HTMLRenderer = ({ htmlText }: { htmlText: string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const processedHtml = htmlText
+  const { srcdoc } = processHTMLText(htmlText) ?? {}
 
   useEffect(() => {
     const iframe = iframeRef.current
     if (!iframe) return
 
-    const csp = `default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self';`
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta http-equiv="Content-Security-Policy" content="${csp}">
-        </head>
-        <body>${processedHtml}</body>
-      </html>
-    `
+    iframe.srcdoc = srcdoc ?? wrapBodyInHTMLWithCSP('Invalid HTML')
 
-    iframe.srcdoc = htmlContent
-  }, [processedHtml])
+    return () => {
+      iframe.srcdoc = ''
+    }
+  }, [srcdoc])
 
   return (
     <iframe
       ref={iframeRef}
       title="Rendered HTML Content"
       sandbox="allow-scripts"
+      referrerPolicy="no-referrer"
+      loading="lazy"
       className="h-full w-full"
       tabIndex={0}
       aria-label="Rendered HTML content"
