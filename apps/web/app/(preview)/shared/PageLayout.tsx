@@ -20,7 +20,7 @@ export function PageHeader({ children, className }: { children?: React.ReactNode
 export function PageContent({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
     <ScrollArea className="flex-1">
-      <div className={cn('flex h-full flex-col items-stretch gap-3 px-3 py-3', className)}>{children}</div>
+      <div className={cn('flex-col-center h-full gap-3 p-3', className)}>{children}</div>
     </ScrollArea>
   )
 }
