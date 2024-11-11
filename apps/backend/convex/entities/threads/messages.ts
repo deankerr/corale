@@ -1,3 +1,4 @@
+import { extractHTMLTitle } from '~/lib/parse'
 import { mutation, query } from '../../functions'
 import { emptyPage, paginatedReturnFields } from '../../lib/utils'
 import { literals, nullable, paginationOptsValidator, v } from '../../values'
@@ -146,6 +147,17 @@ export const searchText = query({
     return messages
   },
   returns: nullable(v.array(MessageReturn)),
+})
+
+export const getArtifactTitle = query({
+  args: {
+    messageId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const message = await getMessage(ctx, args)
+    return extractHTMLTitle(message?.text ?? '') ?? null
+  },
+  returns: nullable(v.string()),
 })
 
 // * mutations

@@ -110,3 +110,8 @@ export function truncateText(text = '', maxLength: number) {
 export function hasDelimiter(text: string) {
   return text.includes('\n') || text.includes('.') || text.includes('?') || text.includes('!')
 }
+
+export function extractHTMLTitle(content: string): string | undefined {
+  const titleMatch = content.match(/<title[^>]*>(.*?)<\/title>/i)
+  return titleMatch?.[1]?.trim()
+}
