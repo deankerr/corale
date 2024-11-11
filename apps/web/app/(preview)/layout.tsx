@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <SidebarInset className="h-dvh flex-row">
         {children}
-        <div className="absolute left-1 top-1 block md:hidden">
+        <div className="absolute z-40 block opacity-50 md:hidden">
           <SidebarTrigger />
         </div>
       </SidebarInset>

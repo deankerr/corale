@@ -1,8 +1,8 @@
-import { artifactDisplayAtom } from '@/app/(preview)/artifacts/components/atoms'
-import { createArtifact, extractCodeBlockInfoFromNode } from '@/lib/code-block'
+import { artifactDisplayAtom } from '@/components/artifacts/atoms'
+import { extractCodeBlockInfoFromNode } from '@/lib/code-block'
 import { cn } from '@/lib/utils'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { memo, type ComponentPropsWithoutRef } from 'react'
 import type { ExtraProps } from 'react-markdown'
 import { toast } from 'sonner'
@@ -19,13 +19,14 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
     toast('Copied to clipboard')
   }
 
-  const [artifact, setArtifact] = useAtom(artifactDisplayAtom)
+  const setArtifact = useSetAtom(artifactDisplayAtom)
   const handleArtifact = () => {
-    if (codeBlockInfo.language === 'svg') {
-      setArtifact(createArtifact('svg', codeBlockInfo.content))
-    } else {
-      setArtifact(createArtifact('html', codeBlockInfo.content))
-    }
+    setArtifact({
+      language: codeBlockInfo.language ?? 'plaintext',
+      content: codeBlockInfo.content,
+      title: codeBlockInfo.title ?? 'Untitled',
+      version: 'v1',
+    })
   }
 
   return (

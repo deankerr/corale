@@ -45,7 +45,7 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={blobUrl}
-        className="h-auto max-h-[90vh] w-full object-contain"
+        className="h-auto max-h-[90vh] w-full select-none object-contain"
         alt="SVG content"
         role="img"
         onError={() => setError('Failed to load SVG')}
