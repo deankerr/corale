@@ -11,7 +11,7 @@ export function PageLayout({ children, className }: { children?: React.ReactNode
 
 export function PageHeader({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <header className={cn('flex-start border-gray-a3 z-10 h-12 shrink-0 gap-2 px-4 shadow-lg', className)}>
+    <header className={cn('flex-start border-gray-a3 z-10 h-12 shrink-0 gap-2 border-b px-4 shadow-lg', className)}>
       {children}
     </header>
   )
