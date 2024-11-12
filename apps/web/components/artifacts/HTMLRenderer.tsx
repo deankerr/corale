@@ -27,14 +27,14 @@ function processHTMLText(htmlText: string) {
 }
 
 export const HTMLRenderer = ({
-  htmlText,
+  codeString,
   onIFrameInternalError,
 }: {
-  htmlText: string
+  codeString: string
   onIFrameInternalError?: (error: IFrameInternalError) => void
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const processedHTMLText = processHTMLText(htmlText)
+  const processedHTMLText = processHTMLText(codeString)
 
   useEffect(() => {
     const iframe = iframeRef.current

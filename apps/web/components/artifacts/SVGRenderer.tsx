@@ -1,10 +1,9 @@
 'use client'
 
 import { CalloutErrorBasic } from '@/components/ui/Callouts'
-import DOMPurify from 'dompurify'
 import { useEffect, useState } from 'react'
 
-export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; sanitize?: boolean }) => {
+export const SVGRenderer = ({ codeString }: { codeString: string }) => {
   const [blobUrl, setBlobUrl] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
 
@@ -14,15 +13,12 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
     let url: string | null = null
 
     try {
-      const processedSVG = sanitize ? sanitizeSVGString(svgText) : svgText
-
-      const blob = new Blob([processedSVG], { type: 'image/svg+xml' })
+      const blob = new Blob([codeString], { type: 'image/svg+xml' })
       url = URL.createObjectURL(blob)
       setBlobUrl(url)
     } catch (error) {
       console.error('Error processing SVG:', error)
       setError('An error occurred while attempting to process the SVG content.')
-      return
     }
 
     return () => {
@@ -31,7 +27,7 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
         setBlobUrl('')
       }
     }
-  }, [svgText, sanitize])
+  }, [codeString])
 
   if (error) {
     return <CalloutErrorBasic>{error}</CalloutErrorBasic>
@@ -53,14 +49,4 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
       />
     </div>
   )
-}
-
-function sanitizeSVGString(svgString: string) {
-  const options = {
-    USE_PROFILES: { svg: true, svgFilters: true },
-    ADD_TAGS: ['animate', 'use'],
-    ADD_ATTR: ['to', 'from', 'dominant-baseline'],
-  }
-
-  return DOMPurify.sanitize(svgString, options)
 }

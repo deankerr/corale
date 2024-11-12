@@ -33,7 +33,7 @@ export default function Page({ params }: { params: { messageId: string } }) {
       <ScrollArea>
         <div className="flex-col-center h-full gap-4">
           {svgContents.length > 0 ? (
-            svgContents.map((svg, index) => <SVGRenderer key={index} svgText={svg} sanitize={false} />)
+            svgContents.map((svg, index) => <SVGRenderer key={index} codeString={svg} sanitize={false} />)
           ) : (
             <p className="text-gray-600">No SVG content found in the message.</p>
           )}

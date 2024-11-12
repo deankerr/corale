@@ -1,7 +1,8 @@
 'use client'
 
-import { ArtifactRenderer, type Artifact } from '@/components/artifacts/ArtifactRenderer'
+import { ArtifactRenderer } from '@/components/artifacts/ArtifactRenderer'
 import { artifactDisplayAtom } from '@/components/artifacts/atoms'
+import type { Artifact } from '@/components/artifacts/types'
 import { LoadingPage } from '@/components/pages/LoadingPage'
 import { IconButton } from '@/components/ui/Button'
 import { CalloutErrorBasic } from '@/components/ui/Callouts'
@@ -78,7 +79,7 @@ export function ArtifactRendererPage({ content, language, title, onClose }: Arti
         )}
       </PageHeader>
       <PageContent className="p-0">
-        <ArtifactRenderer content={content} language={language} />
+        <ArtifactRenderer content={content} language={language} title={title} />
       </PageContent>
     </PageLayout>
   )

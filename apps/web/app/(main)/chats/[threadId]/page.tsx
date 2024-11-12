@@ -25,7 +25,7 @@ export default function Page({ params }: { params: { threadId: string } }) {
             </IconButton>
           </PanelHeader>
           <div className="grow">
-            <HTMLRenderer htmlText={htmlText} />
+            <HTMLRenderer codeString={htmlText} />
           </div>
         </Panel>
       )}
