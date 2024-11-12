@@ -4,10 +4,10 @@ import { ArtifactRenderer, type Artifact } from '@/components/artifacts/Artifact
 import { artifactDisplayAtom } from '@/components/artifacts/atoms'
 import { LoadingPage } from '@/components/pages/LoadingPage'
 import { IconButton } from '@/components/ui/Button'
+import { CalloutErrorBasic } from '@/components/ui/Callouts'
 import { useMessageById } from '@/lib/api/messages'
 import { extractCodeBlocks, type CodeBlockInfo } from '@/lib/code-block'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
-import { Callout } from '@radix-ui/themes'
 import { useAtom } from 'jotai'
 import { PageContent, PageHeader, PageLayout } from './PageLayout'
 
@@ -38,13 +38,8 @@ export function ArtifactPage({ params }: { params: { id: string } }) {
           <Icons.WarningOctagon size={16} />
           Artifact
         </PageHeader>
-        <PageContent className="items-center">
-          <Callout.Root color="gray" variant="outline">
-            <Callout.Icon>
-              <Icons.WarningOctagon size={16} />
-            </Callout.Icon>
-            <Callout.Text>No code block found</Callout.Text>
-          </Callout.Root>
+        <PageContent>
+          <CalloutErrorBasic>No artifacts found.</CalloutErrorBasic>
         </PageContent>
       </PageLayout>
     )

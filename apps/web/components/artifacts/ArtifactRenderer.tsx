@@ -1,6 +1,7 @@
 'use client'
 
 import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
+import { ArtifactErrorBoundary } from './ArtifactErrorBoundary'
 import { HTMLRenderer } from './HTMLRenderer'
 
 export type Artifact = {
@@ -12,13 +13,15 @@ export type Artifact = {
 }
 
 export const ArtifactRenderer = ({ content, language }: Artifact) => {
-  if (language === 'svg') {
-    return <SVGRenderer svgText={content} sanitize={false} />
-  }
-
-  if (language === 'html') {
-    return <HTMLRenderer htmlText={content} />
-  }
-
-  return <pre>{content}</pre>
+  return (
+    <ArtifactErrorBoundary>
+      {language === 'svg' ? (
+        <SVGRenderer svgText={content} sanitize={false} />
+      ) : language === 'html' ? (
+        <HTMLRenderer htmlText={content} />
+      ) : (
+        <pre>{content}</pre>
+      )}
+    </ArtifactErrorBoundary>
+  )
 }

@@ -2,6 +2,7 @@
 
 import { isCompleteHTML, processHTML, wrapBodyInHTMLWithCSP } from '@/lib/html-parsing'
 import { useEffect, useRef } from 'react'
+import { CalloutErrorBasic } from '../ui/Callouts'
 
 function processHTMLText(htmlText: string) {
   if (!isCompleteHTML(htmlText)) return null
@@ -18,14 +19,18 @@ export const HTMLRenderer = ({ htmlText }: { htmlText: string }) => {
 
   useEffect(() => {
     const iframe = iframeRef.current
-    if (!iframe) return
+    if (!iframe || !srcdoc) return
 
-    iframe.srcdoc = srcdoc ?? wrapBodyInHTMLWithCSP('Invalid HTML')
+    iframe.srcdoc = srcdoc
 
     return () => {
       iframe.srcdoc = ''
     }
   }, [srcdoc])
+
+  if (!srcdoc) {
+    return <CalloutErrorBasic>Invalid HTML structure.</CalloutErrorBasic>
+  }
 
   return (
     <iframe

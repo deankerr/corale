@@ -1,5 +1,6 @@
 'use client'
 
+import { CalloutErrorBasic } from '@/components/ui/Callouts'
 import DOMPurify from 'dompurify'
 import { useEffect, useState } from 'react'
 
@@ -20,7 +21,7 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
       setBlobUrl(url)
     } catch (error) {
       console.error('Error processing SVG:', error)
-      setError('Failed to process SVG content')
+      setError('An error occurred while attempting to process the SVG content.')
       return
     }
 
@@ -33,11 +34,7 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
   }, [svgText, sanitize])
 
   if (error) {
-    return (
-      <div className="flex h-32 items-center justify-center rounded border p-4 text-sm">
-        <p>{error}</p>
-      </div>
-    )
+    return <CalloutErrorBasic>{error}</CalloutErrorBasic>
   }
 
   if (!blobUrl) {
@@ -52,7 +49,7 @@ export const SVGRenderer = ({ svgText, sanitize = true }: { svgText: string; san
         className="h-auto max-h-[90vh] w-full select-none object-contain"
         alt="SVG content"
         role="img"
-        onError={() => setError('Failed to load SVG')}
+        onError={() => setError('An error occurred while attempting to render the SVG.')}
       />
     </div>
   )
