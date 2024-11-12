@@ -1,34 +1,38 @@
 'use client'
 
-import { isCompleteHTML, processHTML, wrapBodyInHTMLWithCSP } from '@/lib/html-parsing'
+import { createHTMLDocument, isCompleteHTML, wrapHTMLBodyContent } from '@corale/shared/parsing/html'
 import { useEffect, useRef } from 'react'
 import { CalloutErrorBasic } from '../ui/Callouts'
 
 function processHTMLText(htmlText: string) {
-  if (!isCompleteHTML(htmlText)) return null
+  if (!isCompleteHTML(htmlText)) return
 
-  const { metadata, body } = processHTML(htmlText)
-  const srcdoc = wrapBodyInHTMLWithCSP(body)
+  const doc = createHTMLDocument(htmlText)
 
-  return { metadata, srcdoc }
+  // Move head elements to body
+  const headElements = Array.from(doc.head.children)
+  headElements.filter((el) => el.tagName === 'SCRIPT' || el.tagName === 'STYLE').forEach((el) => doc.body.prepend(el))
+
+  const body = doc.body.innerHTML
+  return wrapHTMLBodyContent(body)
 }
 
 export const HTMLRenderer = ({ htmlText }: { htmlText: string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
-  const { srcdoc } = processHTMLText(htmlText) ?? {}
+  const processedHTMLText = processHTMLText(htmlText)
 
   useEffect(() => {
     const iframe = iframeRef.current
-    if (!iframe || !srcdoc) return
+    if (!iframe || !processedHTMLText) return
 
-    iframe.srcdoc = srcdoc
+    iframe.srcdoc = processedHTMLText
 
     return () => {
       iframe.srcdoc = ''
     }
-  }, [srcdoc])
+  }, [processedHTMLText])
 
-  if (!srcdoc) {
+  if (!processedHTMLText) {
     return <CalloutErrorBasic>Invalid HTML structure.</CalloutErrorBasic>
   }
 

@@ -33,3 +33,100 @@ export function extractHTMLTitleValue(input: string): string | undefined {
   const titleMatch = input.match(/<title[^>]*>(.*?)<\/title>/i)
   return titleMatch?.[1]?.trim()
 }
+
+/**
+ * Creates an in-memory DOM from HTML string
+ */
+export function createHTMLDocument(input: string) {
+  const parser = new DOMParser()
+  return parser.parseFromString(input, 'text/html')
+}
+
+/**
+ * Extracts metadata from document head
+ */
+export function extractHTMLDocumentMetadata(doc: Document) {
+  return {
+    title: doc.title,
+    description: doc.querySelector('meta[name="description"]')?.getAttribute('content') ?? undefined,
+    charset: doc.querySelector('meta[charset]')?.getAttribute('charset') ?? undefined,
+    viewport: doc.querySelector('meta[name="viewport"]')?.getAttribute('content') ?? undefined,
+    styles: Array.from(doc.querySelectorAll('style, link[rel="stylesheet"]')).map((el) => el.outerHTML),
+    scripts: Array.from(doc.querySelectorAll('script')).map((el) => el.outerHTML),
+    links: Array.from(doc.querySelectorAll('link')).map((el) => ({
+      rel: el.getAttribute('rel') ?? '',
+      href: el.getAttribute('href') ?? '',
+    })),
+  }
+}
+
+/**
+ * Creates a complete HTML document from partial HTML
+ */
+export function wrapHTMLBodyContent(body: string): string {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Security-Policy" content="${iframeHTMLCSPContent}">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="referrer" content="no-referrer">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="x-dns-prefetch-control" content="off">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Cache-Control" content="no-store">
+        <script>
+          setTimeout(() => {
+            window.stop();
+          }, 5000);
+        </script>
+      </head>
+      <body>${body}</body>
+    </html>
+  `
+}
+
+export const iframeHTMLCSPContent = `
+default-src 'self';
+
+script-src 
+    'self' 
+    https://cdnjs.cloudflare.com 
+    https://cdn.jsdelivr.net 
+    https://unpkg.com 
+    'unsafe-inline';
+
+style-src 
+    'self' 
+    https://cdnjs.cloudflare.com 
+    https://fonts.googleapis.com 
+    'unsafe-inline';
+
+img-src 
+    'self' 
+    https:;
+
+font-src 
+    'self' 
+    https://fonts.gstatic.com;
+
+connect-src 
+    'none';
+
+frame-src 
+    'none';
+
+object-src 
+    'none';
+
+worker-src 
+    'none';
+
+base-uri 
+    'self';
+
+form-action 
+    'self';
+
+upgrade-insecure-requests;`
