@@ -13,6 +13,7 @@
     "@clerk/nextjs": "^6.0.2",
     "@clerk/themes": "^2.1.39",
     "@corale/backend": "workspace:*",
+    "@corale/shared": "workspace:*",
     "@formkit/auto-animate": "^0.8.2",
     "@openpanel/nextjs": "^1.0.5",
     "@phosphor-icons/react": "^2.1.7",

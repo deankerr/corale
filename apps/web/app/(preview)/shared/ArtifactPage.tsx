@@ -6,7 +6,8 @@ import { LoadingPage } from '@/components/pages/LoadingPage'
 import { IconButton } from '@/components/ui/Button'
 import { CalloutErrorBasic } from '@/components/ui/Callouts'
 import { useMessageById } from '@/lib/api/messages'
-import { extractCodeBlocks, type CodeBlockInfo } from '@/lib/code-block'
+import { parseCodeBlocks } from '@corale/shared/parsing/code'
+import { extractHTMLTitleValue, isCompleteDocument } from '@corale/shared/parsing/html'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useAtom } from 'jotai'
 import { PageContent, PageHeader, PageLayout } from './PageLayout'
@@ -28,10 +29,23 @@ export function ArtifactPage({ params }: { params: { id: string } }) {
     )
   }
 
-  const codeBlocks = extractCodeBlocks(message?.text ?? '')
-  const codeBlockData = getFirstCodeBlockData(codeBlocks)
+  if (message === null) {
+    return (
+      <PageLayout>
+        <PageHeader>
+          <Icons.WarningOctagon size={16} />
+          Artifact
+        </PageHeader>
+        <PageContent>
+          <CalloutErrorBasic>Artifact not found.</CalloutErrorBasic>
+        </PageContent>
+      </PageLayout>
+    )
+  }
 
-  if (!codeBlockData || codeBlockData.content === '') {
+  const artifact = getArtifact(message.text ?? '')
+
+  if (!artifact) {
     return (
       <PageLayout>
         <PageHeader>
@@ -45,7 +59,7 @@ export function ArtifactPage({ params }: { params: { id: string } }) {
     )
   }
 
-  return <ArtifactRendererPage {...codeBlockData} />
+  return <ArtifactRendererPage {...artifact} />
 }
 
 export function ArtifactRendererPage({ content, language, title, onClose }: Artifact & { onClose?: () => void }) {
@@ -77,13 +91,6 @@ export function ArtifactPreviewSidePage() {
   return <ArtifactRendererPage {...artifact} onClose={() => setArtifact(undefined)} />
 }
 
-function getFirstCodeBlockData(codeBlocks: CodeBlockInfo[]) {
-  const codeBlock = codeBlocks?.[0]
-  if (!codeBlock) return null
-  const { title = 'Artifact', language = 'plaintext', content } = codeBlock
-  return { title, language, content }
-}
-
 const languageIcons = {
   html: Icons.FileHtml,
   svg: Icons.FileSvg,
@@ -92,4 +99,18 @@ const languageIcons = {
 
 function getLanguageIcon(language: string) {
   return languageIcons[language as keyof typeof languageIcons] ?? Icons.FileText
+}
+
+function getArtifact(input: string): Artifact | undefined {
+  const codeBlocks = parseCodeBlocks(input)
+
+  for (const codeBlock of codeBlocks) {
+    if (!isCompleteDocument(codeBlock.content, codeBlock.language)) continue
+
+    return {
+      title: extractHTMLTitleValue(codeBlock.content) ?? 'Untitled',
+      language: codeBlock.language ?? 'plaintext',
+      content: codeBlock.content,
+    }
+  }
 }

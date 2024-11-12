@@ -1,0 +1,17 @@
+{
+  "name": "@corale/shared",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./parsing/*": {
+      "types": "./src/parsing/*.ts",
+      "import": "./src/parsing/*.ts"
+    }
+  },
+  "devDependencies": {
+    "@corale/config-typescript": "workspace:*",
+    "@types/node": "^22.8.1",
+    "typescript": "^5.6.3"
+  }
+}
