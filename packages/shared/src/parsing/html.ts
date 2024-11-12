@@ -61,9 +61,42 @@ export function extractHTMLDocumentMetadata(doc: Document) {
 }
 
 /**
- * Creates a complete HTML document from partial HTML
+ * Creates a complete HTML document from partial HTML with optional error tracking
  */
-export function wrapHTMLBodyContent(body: string): string {
+export function createHTMLRendererString(body: string): string {
+  const iframeHTMLCSPContent = `default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' https:; font-src 'self' https://fonts.gstatic.com; connect-src 'none'; frame-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`
+
+  const errorTrackingScript = `
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        window.parent.postMessage({
+          type: 'iframe-error',
+          error: {
+            name: error?.name || 'Error',
+            message,
+            source,
+            lineno,
+            colno,
+            stack: error?.stack
+          }
+        }, '*');
+        return false;
+      };
+
+      window.addEventListener('unhandledrejection', function(event) {
+        const error = event.reason;
+        window.parent.postMessage({
+          type: 'iframe-promise-error',
+          error: {
+            name: error?.name || 'UnhandledPromiseRejection',
+            message: event.reason?.message || event.reason,
+            stack: event.reason?.stack
+          }
+        }, '*');
+      });
+    </script>
+  `
+
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -76,6 +109,7 @@ export function wrapHTMLBodyContent(body: string): string {
         <meta http-equiv="x-dns-prefetch-control" content="off">
         <meta name="format-detection" content="telephone=no">
         <meta http-equiv="Cache-Control" content="no-store">
+        ${errorTrackingScript}
         <script>
           setTimeout(() => {
             window.stop();
@@ -84,49 +118,5 @@ export function wrapHTMLBodyContent(body: string): string {
       </head>
       <body>${body}</body>
     </html>
-  `
+  `.trim()
 }
-
-export const iframeHTMLCSPContent = `
-default-src 'self';
-
-script-src 
-    'self' 
-    https://cdnjs.cloudflare.com 
-    https://cdn.jsdelivr.net 
-    https://unpkg.com 
-    'unsafe-inline';
-
-style-src 
-    'self' 
-    https://cdnjs.cloudflare.com 
-    https://fonts.googleapis.com 
-    'unsafe-inline';
-
-img-src 
-    'self' 
-    https:;
-
-font-src 
-    'self' 
-    https://fonts.gstatic.com;
-
-connect-src 
-    'none';
-
-frame-src 
-    'none';
-
-object-src 
-    'none';
-
-worker-src 
-    'none';
-
-base-uri 
-    'self';
-
-form-action 
-    'self';
-
-upgrade-insecure-requests;`
