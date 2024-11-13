@@ -89,7 +89,7 @@ const SVGContainer = ({
 } & ExtractedSVG) => {
   return (
     <div className="flex-center overflow-hidden p-1" style={{ width, height }} title={title}>
-      <SVGRenderer codeString={svgText} sanitize={false} />
+      <SVGRenderer codeString={svgText} />
     </div>
   )
 }
