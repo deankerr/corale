@@ -1,24 +1,29 @@
 'use client'
 
 import { SVGRenderer } from '@/components/artifacts/SVGRenderer'
-import { HTMLRenderer } from './HTMLRenderer'
+import { memo } from 'react'
+import { toast } from 'sonner'
+import { ArtifactErrorBoundary } from './ArtifactErrorBoundary'
+import { HTMLRenderer, type IFrameInternalError } from './HTMLRenderer'
+import type { Artifact } from './types'
 
-export type Artifact = {
-  content: string
-  language: string
-  metadata?: string[]
-  title?: string
-  version?: string
-}
+export const ArtifactRenderer = memo(({ content, language }: Artifact) => {
+  return (
+    <ArtifactErrorBoundary>
+      {language === 'svg' ? (
+        <SVGRenderer codeString={content} />
+      ) : language === 'html' ? (
+        <HTMLRenderer codeString={content} onIFrameInternalError={handleIFrameInternalError} />
+      ) : (
+        <pre>{content}</pre>
+      )}
+    </ArtifactErrorBoundary>
+  )
+})
 
-export const ArtifactRenderer = ({ content, language }: Artifact) => {
-  if (language === 'svg') {
-    return <SVGRenderer svgText={content} sanitize={false} />
-  }
+ArtifactRenderer.displayName = 'ArtifactRenderer'
 
-  if (language === 'html') {
-    return <HTMLRenderer htmlText={content} />
-  }
-
-  return <pre>{content}</pre>
+function handleIFrameInternalError(error: IFrameInternalError) {
+  console.warn(error)
+  toast.warning(`Artifact HTMLRenderer error`, { description: `${error.name}: ${error.message}` })
 }

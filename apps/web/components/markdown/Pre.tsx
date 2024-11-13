@@ -1,6 +1,7 @@
 import { artifactDisplayAtom } from '@/components/artifacts/atoms'
-import { extractCodeBlockInfoFromNode } from '@/lib/code-block'
 import { cn } from '@/lib/utils'
+import { parseCodeBlockFromNode } from '@corale/shared/parsing/code'
+import { extractHTMLTitleValue } from '@corale/shared/parsing/html'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useSetAtom } from 'jotai'
 import { memo, type ComponentPropsWithoutRef } from 'react'
@@ -11,11 +12,12 @@ import { IconButton } from '../ui/Button'
 type PreProps = ComponentPropsWithoutRef<'pre'> & ExtraProps
 
 export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
-  const codeBlockInfo = extractCodeBlockInfoFromNode(node)
-  const isCodeBlock = !!codeBlockInfo.language
+  const codeBlock = parseCodeBlockFromNode(node)
+  const isCodeBlock = !!codeBlock.language
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(codeBlockInfo.content)
+    navigator.clipboard
+      .writeText(codeBlock.content)
       .then(() => {
         toast('Copied to clipboard')
       })
@@ -28,9 +30,9 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
   const setArtifact = useSetAtom(artifactDisplayAtom)
   const handleArtifact = () => {
     setArtifact({
-      language: codeBlockInfo.language ?? 'plaintext',
-      content: codeBlockInfo.content,
-      title: codeBlockInfo.title ?? 'Untitled',
+      language: codeBlock.language ?? 'plaintext',
+      content: codeBlock.content,
+      title: extractHTMLTitleValue(codeBlock.content) ?? 'Code Block',
       version: 'v1',
     })
   }
@@ -42,9 +44,9 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
     >
       {isCodeBlock && (
         <div className="flex-start border-gray-a3 border-b px-3 py-1">
-          <span className="text-xs">{codeBlockInfo.language}</span>
+          <span className="text-xs">{codeBlock.language}</span>
           <div className="grow" />
-          {codeBlockInfo.language && (
+          {codeBlock.language && (
             <IconButton variant="ghost" size="1" onClick={handleArtifact} aria-label="Save as artifact">
               <Icons.Graph />
             </IconButton>

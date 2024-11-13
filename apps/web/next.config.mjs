@@ -11,9 +11,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    optimizePackageImports: ['@phosphor-icons/react'],
-  },
+
   redirects: async () => {
     return [
       {
@@ -24,10 +22,17 @@ const nextConfig = {
     ]
   },
 
+  experimental: {
+    optimizePackageImports: ['@phosphor-icons/react'],
+  },
+
+  transpilePackages: ['@corale/backend', '@corale/shared'],
+
   // handled in CI
   typescript: {
     ignoreBuildErrors: true,
   },
+
   eslint: {
     ignoreDuringBuilds: true,
   },
