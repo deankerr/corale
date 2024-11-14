@@ -1,5 +1,4 @@
-import { createClerkClient } from '@clerk/backend'
-import type { User, UserJSON, WebhookEvent } from '@clerk/nextjs/server'
+import { createClerkClient, type User, type UserJSON, type WebhookEvent } from '@clerk/backend'
 import { ConvexError } from 'convex/values'
 import { Webhook } from 'svix'
 import { internal } from '../_generated/api'
