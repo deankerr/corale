@@ -47,7 +47,7 @@
     "ldrs": "^1.0.2",
     "match-sorter": "^7.0.0",
     "nanoid": "^5.0.7",
-    "next": "14.2.15",
+    "next": "14.2.18",
     "nuqs": "^2.0.4",
     "prism-react-renderer": "^2.4.0",
     "react": "^18.3.1",
