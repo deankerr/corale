@@ -254,6 +254,14 @@ export const activate = internalMutation({
       },
     })
 
+    console.debug('run', {
+      pattern: {
+        id: run.patternId,
+        name: pattern?.name,
+      },
+      system,
+    })
+
     const { id: modelId, ...modelParameters } = run.model
 
     return {
