@@ -8,6 +8,7 @@ import { memo, type ComponentPropsWithoutRef } from 'react'
 import type { ExtraProps } from 'react-markdown'
 import { toast } from 'sonner'
 import { IconButton } from '../ui/Button'
+import MermaidRenderer from './MermaidRenderer'
 
 type PreProps = ComponentPropsWithoutRef<'pre'> & ExtraProps
 
@@ -35,6 +36,11 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
       title: extractHTMLTitleValue(codeBlock.content) ?? 'Code Block',
       version: 'v1',
     })
+  }
+
+  // Handle mermaid diagrams
+  if (codeBlock.language?.toLowerCase() === 'mermaid') {
+    return <MermaidRenderer content={codeBlock.content} />
   }
 
   return (

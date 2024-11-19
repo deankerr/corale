@@ -2,12 +2,12 @@
 
 import { MessageSearchResults } from '@/components/chat/panels/MessageSearchResults'
 import { Composer } from '@/components/composer/Composer'
-import { Panel, PanelBodyGrid, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
+import { Panel, PanelBody, PanelBodyGrid, PanelEmpty, PanelLoading } from '@/components/ui/Panel'
 import { useThread } from '@/lib/api/threads'
 import { useViewer } from '@/lib/api/users'
 import { ChatHeader } from './ChatHeader'
 import { ChatBackgroundPanel } from './panels/ChatBackgroundPanel'
-import { MessageFeed2 } from './panels/MessageFeed2'
+import { VirtualizedMessageFeed } from './panels/VirtualizedMessageFeed'
 
 export const Chat = ({ threadId }: { threadId: string }) => {
   const thread = useThread(threadId)
@@ -22,7 +22,9 @@ export const Chat = ({ threadId }: { threadId: string }) => {
       {/* > body */}
       <PanelBodyGrid>
         <ChatBackgroundPanel />
-        <MessageFeed2 threadId={threadId} />
+        <PanelBody>
+          <VirtualizedMessageFeed threadId={threadId} />
+        </PanelBody>
         <MessageSearchResults threadId={threadId} />
       </PanelBodyGrid>
 

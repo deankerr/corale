@@ -101,3 +101,11 @@ export const useUpdateMessage = () => {
 export const useDeleteMessage = () => {
   return useMutation(api.entities.threads.messages.remove)
 }
+
+export function getThreadMetadata({ kvMetadata }: Thread) {
+  return {
+    patternId: kvMetadata?.['esuite:pattern:xid'],
+    modelId: kvMetadata?.['esuite:model:id'],
+    modelName: kvMetadata?.['esuite:run:model:name'],
+  }
+}

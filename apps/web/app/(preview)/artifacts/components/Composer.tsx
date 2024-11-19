@@ -41,7 +41,7 @@ export function Composer({
   }
 
   return (
-    <div className={cn('bg-black-a1 w-full overflow-hidden rounded-md border pt-1 shadow-xl', className)}>
+    <div className={cn('bg-black-a1 w-full max-w-3xl overflow-hidden rounded-md border pt-1 shadow-xl', className)}>
       <TextArea
         placeholder="Where do you want to go today?"
         value={textValue}
@@ -52,6 +52,7 @@ export function Composer({
             handleRun()
           }
         }}
+        maxRows={20}
         autoFocus
       />
 

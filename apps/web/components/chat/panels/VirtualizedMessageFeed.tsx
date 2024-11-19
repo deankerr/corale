@@ -2,7 +2,6 @@
 
 import { Message } from '@/components/message/Message'
 import { Loader } from '@/components/ui/Loader'
-import { PanelBody } from '@/components/ui/Panel'
 import { AdminOnlyUi } from '@/components/util/AdminOnlyUi'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { twx } from '@/lib/utils'
@@ -14,7 +13,7 @@ export type MessageFeedContext = {
   status: 'LoadingFirstPage' | 'CanLoadMore' | 'LoadingMore' | 'Exhausted'
 }
 
-export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
+export const VirtualizedMessageFeed = ({ threadId }: { threadId: string }) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null)
   const isScrollingRef = useRef(false)
   const lastMessageData = useRef({ _id: '', size: 0 })
@@ -64,7 +63,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
   const handleAtBottomStateChange = useCallback((atBottom: boolean) => setIsAtBottom(atBottom), [])
 
   return (
-    <PanelBody>
+    <>
       <Virtuoso<MessageType, MessageFeedContext>
         ref={virtuosoRef}
         context={{ status }}
@@ -76,13 +75,9 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
         }}
         data={results}
         alignToBottom
-        followOutput="smooth"
+        followOutput={true}
         firstItemIndex={1_000_000 - prependedCount}
-        initialTopMostItemIndex={{
-          index: results.length - 1,
-          align: 'end',
-          behavior: 'smooth',
-        }}
+        initialTopMostItemIndex={results.length - 1}
         atTopStateChange={handleAtTopStateChange}
         atTopThreshold={1200}
         atBottomStateChange={handleAtBottomStateChange}
@@ -107,7 +102,7 @@ export const MessageFeed2 = ({ threadId }: { threadId: string }) => {
           {isAtTop ? 'atTop' : ''} {isAtBottom ? 'atBottom' : ''} {-prependedCount} {results.length}
         </div>
       </AdminOnlyUi>
-    </PanelBody>
+    </>
   )
 }
 
