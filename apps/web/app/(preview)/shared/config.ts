@@ -35,4 +35,6 @@ const nav = {
   ],
 }
 
-export const config = { nav }
+const artifactsVirtualFeed = true
+
+export const config = { nav, artifactsVirtualFeed }

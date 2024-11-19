@@ -8,7 +8,7 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 import { ChatMenu } from '../../_components/chat/ChatMenu'
 import { Composer } from '../../artifacts/components/Composer'
-import { MessageFeed } from '../../artifacts/components/MessageFeed'
+import { BasicMessageFeed } from '../../artifacts/components/MessageFeed'
 import { Page } from '../../shared/layout/Page'
 import { Panel, PanelContent, PanelFooter, PanelGroup, PanelHeader } from '../../shared/layout/Panel'
 
@@ -68,7 +68,7 @@ function ChatWithPanelsPage({ threadId }: { threadId: string }) {
         {/* Center Panel - Chat messages and composer */}
         <Panel width="auto">
           <PanelContent>
-            <MessageFeed messages={messages} />
+            <BasicMessageFeed messages={messages} />
           </PanelContent>
           <PanelFooter className="pb-3">
             <Composer onSubmit={handleSubmit} />
