@@ -98,7 +98,7 @@ export const ChatMenu = ({ thread }: { thread: Thread }) => {
             </DropdownMenu.Item>
           </EditThreadTitleDialog>
 
-          <DeleteThreadDialog threadId={thread._id}>
+          <DeleteThreadDialog threadId={thread._id} path="/artifacts">
             <DropdownMenu.Item color="red" onSelect={(e) => e.preventDefault()}>
               <Icons.Trash /> Delete
             </DropdownMenu.Item>

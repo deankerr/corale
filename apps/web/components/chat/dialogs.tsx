@@ -55,10 +55,12 @@ export const EditThreadTitleDialog = ({
 
 export const DeleteThreadDialog = ({
   threadId,
+  path = '/chats',
   children,
   ...props
 }: {
   threadId: string
+  path?: string
 } & React.ComponentProps<typeof AlertDialog.Root>) => {
   const sendDeleteThread = useDeleteThread()
   const router = useRouter()
@@ -82,7 +84,7 @@ export const DeleteThreadDialog = ({
               variant="solid"
               color="red"
               onClick={() => {
-                sendDeleteThread({ threadId }).then(() => router.push('/chats'))
+                sendDeleteThread({ threadId }).then(() => router.push(path))
               }}
             >
               Delete

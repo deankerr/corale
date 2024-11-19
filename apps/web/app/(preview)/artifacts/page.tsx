@@ -11,16 +11,27 @@ import { Composer } from './components/Composer'
 
 export default function Page() {
   const router = useRouter()
-  const createThread = useMutation(api.entities.threads.create)
-  const createRun = useMutation(api.entities.threads.runs.create)
   const [isCreatingThread, setIsCreatingThread] = useState(false)
 
-  const handleRunSubmit = async ({ modelId, text }: { modelId?: string; text: string }) => {
-    if (isCreatingThread || !modelId) return
+  const createThread = useMutation(api.entities.threads.create)
+  const createRun = useMutation(api.entities.threads.runs.create)
+
+  const handleSubmit = async ({ text, modelId, patternId }: { text: string; modelId?: string; patternId?: string }) => {
+    if (isCreatingThread || !text.trim()) return
     try {
       setIsCreatingThread(true)
       const threadId = await createThread({ messages: [{ role: 'user', text }] })
-      await createRun({ stream: true, threadId, model: { id: modelId } })
+
+      if (modelId || patternId) {
+        console.log('createRun', threadId, modelId, patternId)
+        await createRun({
+          stream: true,
+          threadId,
+          model: modelId && !patternId ? { id: modelId } : undefined,
+          patternId,
+        })
+      }
+
       router.push(`/artifacts/${threadId}`)
     } catch (err) {
       console.error(err)
@@ -35,7 +46,7 @@ export default function Page() {
       <PageLayout>
         <PageContent>
           <div className="m-auto w-full max-w-2xl">
-            <Composer onSubmit={handleRunSubmit} state={isCreatingThread ? 'pending' : 'ready'} />
+            <Composer onSubmit={handleSubmit} state={isCreatingThread ? 'pending' : 'ready'} />
           </div>
         </PageContent>
       </PageLayout>
