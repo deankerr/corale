@@ -52,6 +52,7 @@ export function Composer({
             handleRun()
           }
         }}
+        maxRows={20}
         autoFocus
       />
 
