@@ -77,7 +77,6 @@ export const VirtualizedMessageFeed = ({ threadId }: { threadId: string }) => {
         alignToBottom
         followOutput={true}
         firstItemIndex={1_000_000 - prependedCount}
-        initialTopMostItemIndex={results.length - 1}
         atTopStateChange={handleAtTopStateChange}
         atTopThreshold={1200}
         atBottomStateChange={handleAtBottomStateChange}
