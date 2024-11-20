@@ -28,34 +28,34 @@ export const MessageFooter = () => {
   if (!message.runId) return null
   if (!run) return <FooterShell />
 
+  const topProvider = run.providerMetadata?.provider_name as string | undefined
   const timeActive = run.timings.endedAt ? getDuration(run.timings.startedAt, run.timings.endedAt) : undefined
 
   const timeToFirstToken = run.timings.firstTokenAt
     ? getDuration(run.timings.startedAt, run.timings.firstTokenAt)
     : undefined
 
-  const topProvider = run.providerMetadata?.provider_name as string | undefined
-
+  const tokensPerSecond =
+    run.usage?.completionTokens && timeActive ? run.usage.completionTokens / timeActive : undefined
   return (
     <FooterShell>
-      <div className="grow">
-        {run.model.id} {message.kvMetadata?.['esuite:pattern:xid']}
+      <div className="flex grow items-center gap-1">
+        {message.kvMetadata?.['esuite:pattern:xid'] && <Icons.Robot />} {run.model.id}
       </div>
 
       {topProvider && <div>{topProvider}</div>}
-
-      <div>{run.usage?.finishReason}</div>
 
       {timeToFirstToken !== undefined && <div>{timeToFirstToken.toFixed(1)}s</div>}
 
       {timeActive !== undefined && <div>{timeActive.toFixed(1)}s</div>}
 
+      {tokensPerSecond !== undefined && <div>{tokensPerSecond.toFixed(1)} tok/s</div>}
       {run.usage && (
         <div>
           {run.usage.completionTokens} / {run.usage.promptTokens} tok
         </div>
       )}
-      {run.usage?.cost !== undefined && <div>${formatCost(run.usage.cost)} USD</div>}
+      {run.usage?.cost !== undefined && <div>${formatCost(run.usage.cost)}</div>}
 
       <div className="flex-center shrink-0">
         {run.status === 'queued' && <Loader type="ping" size={24} color="var(--gold-11)" />}

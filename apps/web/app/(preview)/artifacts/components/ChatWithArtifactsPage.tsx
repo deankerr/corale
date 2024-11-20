@@ -20,7 +20,7 @@ export function ChatWithArtifactsPage({ threadId }: { threadId: string }) {
   const createRun = useMutation(api.entities.threads.runs.create)
   const createMessage = useMutation(api.entities.threads.messages.create)
   const handleSubmit = async ({ text, modelId, patternId }: { text: string; modelId?: string; patternId?: string }) => {
-    if (!thread || !text.trim()) return
+    if (!thread) return
 
     if (modelId || patternId) {
       return await createRun({

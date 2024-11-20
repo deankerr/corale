@@ -40,6 +40,7 @@ export default function Page() {
               <th className="p-2">Provider</th>
               <th className="p-2">Finish</th>
               <th className="p-2">TTFT</th>
+              <th className="p-2">Tok/s</th>
               <th className="p-2">Time</th>
               <th className="p-2">Tok Out</th>
               <th className="p-2">Tok In</th>
@@ -55,6 +56,8 @@ export default function Page() {
               const timeToFirstToken = run.timings.firstTokenAt
                 ? getDuration(run.timings.startedAt, run.timings.firstTokenAt)
                 : undefined
+              const tokensPerSecond =
+                run.usage?.completionTokens && timeActive ? run.usage.completionTokens / timeActive : undefined
               const topProvider = run.providerMetadata?.provider_name as string | undefined
 
               return (
@@ -67,6 +70,9 @@ export default function Page() {
                   <td className="p-2">{run.usage?.finishReason ?? '-'}</td>
                   <td className="p-2 text-right">
                     {timeToFirstToken !== undefined ? `${timeToFirstToken.toFixed(1)}s` : '-'}
+                  </td>
+                  <td className="p-2 text-right">
+                    {tokensPerSecond !== undefined ? `${tokensPerSecond.toFixed(1)} tok/s` : '-'}
                   </td>
                   <td className="p-2 text-right">{timeActive !== undefined ? `${timeActive.toFixed(1)}s` : '-'}</td>
                   <td className="p-2 text-right">{run.usage ? `${run.usage.completionTokens}` : '-'}</td>
