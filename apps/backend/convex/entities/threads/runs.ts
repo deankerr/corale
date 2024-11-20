@@ -245,6 +245,11 @@ export const activate = internalMutation({
       messages = [...messages.slice(0, insertionIndex), dynamicMessage, ...messages.slice(insertionIndex)]
     }
 
+    // compatibility fix for certain providers if last message isn't from user
+    if (messages.at(-1)?.role !== 'user') {
+      messages.push({ role: 'user', content: '(continue)' })
+    }
+
     await run.patch({
       status: 'active',
       updatedAt: Date.now(),
@@ -259,6 +264,8 @@ export const activate = internalMutation({
         id: run.patternId,
         name: pattern?.name,
       },
+      message1: messages.at(-2),
+      message0: messages.at(-1),
       system,
     })
 

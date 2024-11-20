@@ -126,7 +126,7 @@ function mapResult(result: OpenAI.Chat.Completions.ChatCompletion): CompletionRe
 
   return {
     text: choice.message.content ?? '',
-    finishReason: choice.finish_reason,
+    finishReason: choice.finish_reason ?? 'unknown',
     usage: {
       promptTokens: result.usage?.prompt_tokens ?? 0,
       completionTokens: result.usage?.completion_tokens ?? 0,

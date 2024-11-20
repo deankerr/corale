@@ -28,7 +28,7 @@ export function ChatWithArtifactsPage({ threadId }: { threadId: string }) {
         threadId: thread._id,
         model: modelId && !patternId ? { id: modelId } : undefined,
         patternId,
-        appendMessages: [{ role: 'user', text }],
+        appendMessages: text ? [{ role: 'user', text }] : [],
       })
     }
 
