@@ -28,5 +28,6 @@
     "synchronousWatchDirectory": true,
     "excludeDirectories": ["**/node_modules/**/*"]
   },
-  "eslint.workingDirectories": ["./apps/backend", "./apps/web"]
+  "eslint.workingDirectories": ["./apps/backend", "./apps/web"],
+  "cSpell.words": ["corale", "nuqs", "openpanel", "sonner"]
 }
