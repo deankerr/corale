@@ -1,11 +1,5 @@
 {
   "extends": "@corale/config-typescript/react-app.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@ui/*": ["./src/*"]
-    }
-  },
   "include": ["src"],
   "exclude": ["node_modules"]
 }

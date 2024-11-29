@@ -1,0 +1,29 @@
+{
+  "name": "@corale/chat",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo --port 3334",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@corale/ui": "workspace:*",
+    "next": "14.2.18",
+    "next-themes": "^0.4.3",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@corale/config-typescript": "workspace:*",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
