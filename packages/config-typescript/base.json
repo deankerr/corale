@@ -22,7 +22,8 @@
 
     "paths": {
       "@/*": ["../../apps/web/*"],
-      "~/*": ["../../apps/backend/convex/*"]
+      "~/*": ["../../apps/backend/convex/*"],
+      "@ui/*": ["../../packages/ui/src/*"]
     }
   },
   "exclude": ["node_modules"]

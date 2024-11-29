@@ -2,9 +2,13 @@
   "name": "@corale/ui",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
-    "./components/*": "./src/components/*",
-    "./globals.css": "./src/globals.css"
+    "./components/*": "./src/components/*.tsx",
+    "./components/ui/*": "./src/components/ui/*.tsx",
+    "./icons/*": "./src/icons/*.tsx",
+    "./globals.css": "./src/globals.css",
+    "./tailwind.config": "./tailwind.config.ts"
   },
   "scripts": {
     "lint": "eslint .",
