@@ -1,6 +1,10 @@
 {
   "extends": "@corale/config-typescript/nextjs.json",
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"],
+      "@ui/*": ["../../packages/ui/src/*"]
+    },
     "plugins": [
       {
         "name": "next"

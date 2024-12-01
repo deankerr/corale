@@ -2,9 +2,22 @@
   "name": "@corale/chat-server",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "exports": {
-    "./api": "./convex/api.ts"
+    "./api": {
+      "types": "./convex/_generated/api.d.ts",
+      "import": "./convex/_generated/api.js"
+    },
+    "./dataModel": {
+      "types": "./convex/_generated/dataModel.d.ts",
+      "import": "./convex/_generated/dataModel.ts"
+    }
+  },
+  "imports": {
+    "#api": {
+      "types": "./convex/_generated/api.d.ts",
+      "import": "./convex/_generated/api.js"
+    },
+    "#common": "./convex/common.ts"
   },
   "scripts": {
     "dev": "convex dev",
@@ -13,6 +26,8 @@
     "lint": "tsc -p convex && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@openrouter/ai-sdk-provider": "^0.0.6",
+    "ai": "^3.4.20",
     "convex": "^1.17.0",
     "convex-helpers": "^0.1.65"
   },
