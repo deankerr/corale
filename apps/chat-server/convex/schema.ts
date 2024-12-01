@@ -1,14 +1,10 @@
-import { defineSchema, defineTable } from 'convex/server'
-import { v } from 'convex/values'
+import { defineSchema } from 'convex/server'
+import { messagesTable, threadsTable } from './chat/schemas'
 
 export default defineSchema(
   {
-    documents: defineTable({
-      fieldOne: v.string(),
-      fieldTwo: v.object({
-        subFieldOne: v.array(v.number()),
-      }),
-    }),
+    messages: messagesTable,
+    threads: threadsTable,
   },
   { schemaValidation: true },
 )

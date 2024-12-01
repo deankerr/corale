@@ -1,4 +1,5 @@
 import '@corale/ui/globals.css'
+import { ConvexClientProvider } from '@/components/convex-client-provider'
 import { ThemeProvider } from '@corale/ui/components/theme-provider'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+        <ConvexClientProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            {children}
+          </ThemeProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   )
