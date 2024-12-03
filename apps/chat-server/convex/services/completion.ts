@@ -10,13 +10,15 @@ export const completion = internalAction({
     input: v.object({
       messages: v.array(v.object(withSystemFields('messages', vMessagesTableSchema))),
       modelId: v.string(),
+      system: v.optional(v.string()),
     }),
     output: v.object({
       messageId: v.id('messages'),
     }),
   },
   handler: async (ctx, args) => {
-    const { messages, modelId } = args.input
+    console.log('completion', args)
+    const { messages, modelId, system } = args.input
 
     const completion = await generateText({
       model: openrouter(modelId),
@@ -24,6 +26,7 @@ export const completion = internalAction({
         role: m.role,
         content: m.text ?? '',
       })),
+      system,
     })
 
     await ctx.runMutation(api.chat.db.updateMessage, {

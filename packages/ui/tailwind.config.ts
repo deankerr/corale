@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   darkMode: ['class'],
-  content: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
+  content: ['src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -48,6 +48,12 @@ const config: Config = {
           'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
+        },
+        shiki: {
+          light: 'var(--shiki-light)',
+          'light-bg': 'var(--shiki-light-bg)',
+          dark: 'var(--shiki-dark)',
+          'dark-bg': 'var(--shiki-dark-bg)',
         },
       },
       borderRadius: {

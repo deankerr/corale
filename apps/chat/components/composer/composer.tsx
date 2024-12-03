@@ -3,12 +3,15 @@ import { Textarea } from '@corale/ui/components/ui/textarea'
 import { useState } from 'react'
 import { ComboBoxResponsive } from '../model-picker/model-picker'
 
-export const Composer = (props: { onSend?: (args: { text: string; model: string | null }) => Promise<void> }) => {
+export const Composer = (props: {
+  onSend?: (args: { text: string; model?: string }) => Promise<void>
+  defaultModel?: string
+}) => {
   const [text, setText] = useState('')
-  const [model, setModel] = useState<string | null>(null)
+  const [model, setModel] = useState<string | null>(props.defaultModel ?? null)
 
   const handleRun = () => {
-    props.onSend?.({ text, model })
+    props.onSend?.({ text, model: model || undefined })
     setText('')
   }
 
@@ -33,7 +36,7 @@ export const Composer = (props: { onSend?: (args: { text: string; model: string 
         {model ?? 'none'}
         <div className="mx-1 grow" />
         <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={() => props.onSend?.({ text, model: null })}>
+          <Button variant="secondary" onClick={() => props.onSend?.({ text, model: undefined })}>
             Add
           </Button>
           <Button onClick={handleRun} className="">

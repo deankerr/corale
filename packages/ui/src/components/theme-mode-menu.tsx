@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
 
-export function ModeToggle() {
+export function ThemeModeMenu() {
   const { setTheme } = useTheme()
 
   return (
