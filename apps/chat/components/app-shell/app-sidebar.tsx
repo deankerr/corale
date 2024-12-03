@@ -3,6 +3,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -12,6 +13,7 @@ import {
   SidebarRail,
 } from '@corale/ui/components/ui/sidebar'
 import { AppLogoIcon } from '@corale/ui/icons/AppLogoIcon'
+import { ThemeModeMenu } from '@ui/components/theme-mode-menu'
 import { MessageCircleIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
 import { NavThreads } from './nav-threads'
@@ -64,6 +66,9 @@ export const AppSidebar = () => {
         <NavThreads />
       </SidebarContent>
 
+      <SidebarFooter>
+        <ThemeModeMenu />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

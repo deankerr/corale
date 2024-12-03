@@ -21,11 +21,11 @@ type Item = {
 
 const models: Item[] = [
   {
-    value: 'anthropic/claude-3-5-haiku:beta',
+    value: 'anthropic/claude-3.5-haiku:beta',
     label: 'Claude 3.5 Haiku',
   },
   {
-    value: 'anthropic/claude-3-5-sonnet:beta',
+    value: 'anthropic/claude-3.5-sonnet:beta',
     label: 'Claude 3.5 Sonnet',
   },
   {

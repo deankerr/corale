@@ -39,7 +39,9 @@ export function Panel({
 
 export function PanelHeader({ children, className }: PanelSubComponentProps) {
   return (
-    <header className={cn('flex h-12 w-full shrink-0 items-center gap-2 border-b px-3', className)}>{children}</header>
+    <header className={cn('flex h-12 w-full shrink-0 items-center gap-2 border-b px-3 text-[15px]', className)}>
+      {children}
+    </header>
   )
 }
 
