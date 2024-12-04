@@ -57,8 +57,8 @@ export function ComboBoxResponsive(props: { model?: string | null; setModel?: (m
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[180px] justify-start">
-            {model ? <>{model.label}</> : <>Select model</>}
+          <Button variant="outline" className="w-[200px] justify-start">
+            {model ? <>{model.label}</> : <>Select model...</>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
@@ -71,8 +71,8 @@ export function ComboBoxResponsive(props: { model?: string | null; setModel?: (m
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[180px] justify-start">
-          {model ? <>{model.label}</> : <>Select model</>}
+        <Button variant="outline" className="w-[200px] justify-start">
+          {model ? <>{model.label}</> : <>Select model...</>}
         </Button>
       </DrawerTrigger>
       <DrawerContent>

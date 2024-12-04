@@ -4,13 +4,40 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
+    /* radix colors */
+    --rx-gold-1: 60deg 20% 99%;
+    --rx-gold-2: 53deg 44.4% 96.5%;
+    --rx-gold-3: 49deg 29.7% 92.7%;
+    --rx-gold-4: 44deg 26.3% 88.8%;
+    --rx-gold-5: 43deg 23.1% 84.7%;
+    --rx-gold-6: 41deg 24.3% 79.8%;
+    --rx-gold-7: 40deg 24.1% 73.1%;
+    --rx-gold-8: 37deg 23.9% 63.9%;
+    --rx-gold-9: 36deg 19.8% 49.4%;
+    --rx-gold-10: 37deg 19.7% 45.9%;
+    --rx-gold-11: 36deg 20.2% 36.9%;
+    --rx-gold-12: 38deg 15.7% 20%;
+
+    --rx-orange-1: 20deg 60% 99%;
+    --rx-orange-2: 33deg 100% 96.5%;
+    --rx-orange-3: 37deg 100% 92%;
+    --rx-orange-4: 34deg 100% 85.5%;
+    --rx-orange-5: 33deg 100% 80.2%;
+    --rx-orange-6: 30deg 100% 75.5%;
+    --rx-orange-7: 27deg 86.7% 70.6%;
+    --rx-orange-8: 25deg 79.9% 62.9%;
+    --rx-orange-9: 23deg 93.4% 52.5%;
+    --rx-orange-10: 24deg 100% 46.9%;
+    --rx-orange-11: 23deg 100% 40%;
+    --rx-orange-12: 16deg 50.4% 22.9%;
+
+    --background: 0 0% 98%; /* zinc-50 */
+    --foreground: 240 10% 3.9%; /* zinc-950 */
     --card: 0 0% 100%;
     --card-foreground: 20 14.3% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
-    --primary: 24.6 95% 53.1%;
+    --primary: var(--rx-orange-9);
     --primary-foreground: 60 9.1% 97.8%;
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
@@ -40,13 +67,39 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
+    --rx-gold-1: 60deg 2.9% 6.9%;
+    --rx-gold-2: 45deg 8% 9.8%;
+    --rx-gold-3: 48deg 7.5% 13.1%;
+    --rx-gold-4: 43deg 8.4% 16.3%;
+    --rx-gold-5: 42deg 9.8% 20%;
+    --rx-gold-6: 38deg 8.8% 24.5%;
+    --rx-gold-7: 39deg 9.1% 30.2%;
+    --rx-gold-8: 38deg 9.9% 37.5%;
+    --rx-gold-9: 36deg 19.8% 49.4%;
+    --rx-gold-10: 36deg 20.7% 54.5%;
+    --rx-gold-11: 35deg 29.7% 71%;
+    --rx-gold-12: 36deg 24.6% 88%;
+
+    --rx-orange-1: 27deg 24.3% 7.3%;
+    --rx-orange-2: 28deg 33.3% 8.8%;
+    --rx-orange-3: 29deg 64.5% 12.2%;
+    --rx-orange-4: 28deg 100% 13.7%;
+    --rx-orange-5: 28deg 100% 16.9%;
+    --rx-orange-6: 27deg 78.9% 22.4%;
+    --rx-orange-7: 25deg 62.6% 30.4%;
+    --rx-orange-8: 23deg 59.8% 40%;
+    --rx-orange-9: 23deg 93.4% 52.5%;
+    --rx-orange-10: 26deg 100% 56.1%;
+    --rx-orange-11: 26deg 100% 67.1%;
+    --rx-orange-12: 30deg 100% 88%;
+
+    --background: 240 10% 3.9%; /* zinc-950 */
+    --foreground: 240 5.9% 90%; /* zinc-200 */
     --card: 20 14.3% 4.1%;
     --card-foreground: 60 9.1% 97.8%;
     --popover: 20 14.3% 4.1%;
     --popover-foreground: 60 9.1% 97.8%;
-    --primary: 20.5 90.2% 48.2%;
+    --primary: var(--rx-orange-9);
     --primary-foreground: 60 9.1% 97.8%;
     --secondary: 12 6.5% 15.1%;
     --secondary-foreground: 60 9.1% 97.8%;
@@ -67,8 +120,8 @@
     --chart-5: 340 75% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 20.5 90.2% 48.2%;
-    --sidebar-primary-foreground: 60 9.1% 97.8%;
+    --sidebar-primary: var(--rx-orange-9);
+    --sidebar-primary-foreground: var(--rx-orange-12);
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;

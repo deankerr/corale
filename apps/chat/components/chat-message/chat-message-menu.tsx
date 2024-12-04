@@ -5,6 +5,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@ui/components/ui/dropdown-menu'
 import { useCopyToClipboard } from '@ui/hooks/use-copy-to-clipboard'
@@ -20,12 +22,14 @@ export const ChatMessageMenu = ({ message }: { message: Doc<'messages'> }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="ghost" size="icon">
           <MoreVerticalIcon />
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
+        <DropdownMenuLabel>Message #{message.sequence}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleCopy}>
           <CopyIcon className="" />
           Copy Message ID

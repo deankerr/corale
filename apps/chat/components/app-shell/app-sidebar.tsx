@@ -16,6 +16,7 @@ import { AppLogoIcon } from '@corale/ui/icons/AppLogoIcon'
 import { ThemeModeMenu } from '@ui/components/theme-mode-menu'
 import { MessageCircleIcon, SettingsIcon } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { NavThreads } from './nav-threads'
 
 const items = {
@@ -34,6 +35,8 @@ const items = {
 }
 
 export const AppSidebar = () => {
+  const pathname = usePathname()
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -53,7 +56,7 @@ export const AppSidebar = () => {
           <SidebarMenu>
             {items.content.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild isActive={pathname === item.href}>
                   <Link href={item.href}>
                     <item.icon className="size-4" />
                     <span>{item.label}</span>

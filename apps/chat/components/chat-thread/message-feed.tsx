@@ -10,7 +10,7 @@ export const MessageFeed = ({ threadId }: { threadId: Id<'threads'> }) => {
   return (
     <div className="space-y-2">
       {messages.toReversed().map((m) => (
-        <div key={m._id} className="mx-auto w-full max-w-5xl">
+        <div key={m._id} className="mx-auto w-full max-w-4xl">
           <ChatMessage message={m} />
         </div>
       ))}

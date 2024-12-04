@@ -5,11 +5,10 @@ import { Composer } from '@/components/composer/composer'
 import { Panel, PanelContent, PanelHeader } from '@/components/layout/panel'
 import { api } from '@corale/chat-server/api'
 import { Id } from '@corale/chat-server/dataModel'
-import { Button } from '@ui/components/ui/button'
 import { useMutation, useQuery } from 'convex/react'
 import { MessageCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TextareaAutosize } from '../textarea-autosize'
 import { MessageFeed } from './message-feed'
 
@@ -42,35 +41,33 @@ export const ChatThread = (props: { threadId: Id<'threads'> }) => {
     if (isNewThread) router.push(`/chat/${threadId}`)
   }
 
+  useEffect(() => {
+    if (thread?.run?.instructions) setInstructions(thread.run?.instructions)
+  }, [thread?.run?.instructions])
+
   return (
     <Panel>
       <PanelHeader className="justify-center shadow-sm">
-        <MessageCircleIcon className="size-4" /> {thread?.title}
+        <MessageCircleIcon className="size-4 shrink-0" />
+        <div className="min-w-0">
+          <div className="max-w-[60ch] truncate">{thread?.title}</div>
+        </div>
         {thread && <ChatThreadMenu thread={thread} />}
       </PanelHeader>
 
       <PanelContent>
-        <div className="mx-auto mb-3 w-full max-w-5xl">
-          <div className="grid grid-cols-[8rem_1fr_8rem]">
-            <div className="px-3 pt-2.5 text-center font-mono text-sm uppercase">Instructions</div>
-
-            <div className="flex flex-1 flex-col items-stretch overflow-hidden px-3 py-2">
-              <TextareaAutosize value={instructions} onChange={(e) => setInstructions(e.target.value)} />
-            </div>
-
-            <div className="px-3 pt-2">
-              <Button variant="outline" size="icon">
-                <MessageCircleIcon />
-              </Button>
-            </div>
+        {(isNewThread || thread) && (
+          <div className="mx-auto mb-3 w-full max-w-3xl">
+            <div className="text-muted-foreground mb-1 pl-1 font-mono text-xs uppercase">Instructions</div>
+            <TextareaAutosize value={instructions} onChange={(e) => setInstructions(e.target.value)} />
           </div>
-        </div>
+        )}
 
         {!isNewThread && <MessageFeed threadId={props.threadId} />}
       </PanelContent>
 
-      <div className="mx-auto w-full max-w-3xl p-3">
-        <Composer onSend={handleSend} />
+      <div className="mx-auto w-full min-w-0 max-w-3xl p-3">
+        <Composer onSend={handleSend} defaultModel={thread?.run?.modelId} />
       </div>
     </Panel>
   )

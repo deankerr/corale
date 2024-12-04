@@ -6,9 +6,10 @@
   "exports": {
     "./components/*": "./src/components/*.tsx",
     "./components/ui/*": "./src/components/ui/*.tsx",
-    "./icons/*": "./src/icons/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
+    "./icons/*": "./src/icons/*.tsx",
     "./lib/*": "./src/lib/*.ts",
+    "./loaders/*": "./src/components/loaders/*.tsx",
     "./globals.css": "./src/globals.css",
     "./tailwind.config": "./tailwind.config.ts"
   },
@@ -60,6 +61,7 @@
     "input-otp": "^1.4.1",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.4.3",
+    "react-day-picker": "^9.4.1",
     "react-hook-form": "^7.53.2",
     "react-markdown": "^9.0.1",
     "react-resizable-panels": "^2.1.7",
