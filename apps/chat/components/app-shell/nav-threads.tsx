@@ -19,6 +19,7 @@ import {
 } from '@corale/ui/components/ui/sidebar'
 import { useQuery } from 'convex/react'
 import { ArrowUpRight, Link, MoreHorizontal, StarOff, Trash2 } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 export const NavThreads = () => {
   const threads = useQuery(api.chat.db.listThreads, {})
@@ -45,13 +46,15 @@ export const NavThreadsMenu = ({
   }[]
 }) => {
   const { isMobile } = useSidebar()
+  const pathname = usePathname()
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Threads</SidebarGroupLabel>
       <SidebarMenu>
         {threads.map((item) => (
           <SidebarMenuItem key={item.label}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild isActive={pathname === item.url}>
               <a href={item.url} title={item.label}>
                 <span>{item.emoji}</span>
                 <span>{item.label}</span>

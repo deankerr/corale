@@ -1,7 +1,7 @@
 import { Button } from '@corale/ui/components/ui/button'
-import { Textarea } from '@corale/ui/components/ui/textarea'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ComboBoxResponsive } from '../model-picker/model-picker'
+import { TextareaAutosize } from '../textarea-autosize'
 
 export const Composer = (props: {
   onSend?: (args: { text: string; model?: string }) => Promise<void>
@@ -15,11 +15,17 @@ export const Composer = (props: {
     setText('')
   }
 
+  useEffect(() => {
+    if (props.defaultModel) setModel(props.defaultModel)
+  }, [props.defaultModel])
+
   return (
-    <div className="w-full overflow-hidden rounded-md border p-2 shadow-xl">
-      <Textarea
-        className="resize-none"
+    <div className="w-full overflow-hidden rounded-md border shadow-xl">
+      <TextareaAutosize
+        className="resize-none border-none"
+        borderWidth={0}
         placeholder="Where do you want to go today?"
+        rows={1}
         autoFocus
         value={text}
         onValueChange={setText}
@@ -31,9 +37,8 @@ export const Composer = (props: {
         }}
       />
 
-      <div className="flex pt-2">
+      <div className="flex p-2 pt-0">
         <ComboBoxResponsive model={model} setModel={setModel} />
-        {model ?? 'none'}
         <div className="mx-1 grow" />
         <div className="flex justify-end gap-2">
           <Button variant="secondary" onClick={() => props.onSend?.({ text, model: undefined })}>
