@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from 'react'
 
 interface UseAutosizeTextAreaProps {
   ref: React.RefObject<HTMLTextAreaElement>
@@ -25,7 +25,7 @@ export function useAutosizeTextArea({
       originalHeight.current = currentRef.scrollHeight - borderAdjustment
     }
 
-    currentRef.style.removeProperty("height")
+    currentRef.style.removeProperty('height')
     const scrollHeight = currentRef.scrollHeight
 
     // Make sure we don't go over maxHeight
