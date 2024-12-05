@@ -8,25 +8,46 @@ import { Id } from '@corale/chat-server/dataModel'
 import { Button } from '@ui/components/ui/button'
 import { cn } from '@ui/lib/utils'
 import { useMutation, useQuery } from 'convex/react'
-import { KeyboardIcon, MessageCircleIcon } from 'lucide-react'
+import { KeyboardIcon, MessageCircleIcon, SquareCodeIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { TextareaAutosize } from '../textarea-autosize'
 import { MessageFeed } from './message-feed'
 
-export const ChatThread = (props: { threadId: Id<'threads'> }) => {
-  const isNewThread = props.threadId === 'new'
-  const router = useRouter()
+type ChatContextValue = {
+  threadId: Id<'threads'>
+  title: string
+  modelId?: string
+  setModelId: (modelId: string) => void
+  instructions?: string
+  setInstructions: (instructions: string) => void
+  showComposer: boolean
+  setShowComposer: (showComposer: boolean) => void
+  handleSend: (args: { text: string; model?: string }) => Promise<void>
+}
 
-  const thread = useQuery(api.chat.db.getThread, isNewThread ? 'skip' : { threadId: props.threadId })
+const ChatContext = createContext<ChatContextValue | null>(null)
+
+function useChatContext() {
+  const context = useContext(ChatContext)
+  if (!context) {
+    throw new Error('useChatContext must be used within a ChatProvider')
+  }
+  return context
+}
+
+function ChatProvider({ threadId, children }: { threadId: Id<'threads'>; children?: React.ReactNode }) {
+  const thread = useQuery(api.chat.db.getThread, { threadId })
   const [instructions, setInstructions] = useState(thread?.run?.instructions)
+  const [modelId, setModelId] = useState(thread?.run?.modelId)
+  const [showComposer, setShowComposer] = useState(true)
 
   const createThread = useMutation(api.chat.db.createThread)
   const createMessage = useMutation(api.chat.db.createMessage)
   const runThread = useMutation(api.chat.db.runThread)
 
   const handleSend = async (args: { text: string; model?: string }) => {
-    const threadId = isNewThread ? await createThread({}) : props.threadId
+    // const threadId = isNewThread ? await createThread({}) : props.threadId
     const message = args.text ? { text: args.text, role: 'user' as const } : undefined
     const run = { modelId: args.model || undefined, instructions: instructions || undefined }
 
@@ -40,44 +61,91 @@ export const ChatThread = (props: { threadId: Id<'threads'> }) => {
       await runThread({ threadId, run })
     }
 
-    if (isNewThread) router.push(`/chat/${threadId}`)
+    // if (isNewThread) router.push(`/chat/${threadId}`)
   }
 
-  useEffect(() => {
-    if (thread?.run?.instructions) setInstructions(thread.run?.instructions)
-  }, [thread?.run?.instructions])
+  return (
+    <ChatContext.Provider
+      value={{
+        threadId,
+        title: thread?.title ?? 'No title',
+        modelId,
+        instructions,
+        setModelId,
+        setInstructions,
+        showComposer,
+        setShowComposer,
+        handleSend,
+      }}
+    >
+      {children}
+    </ChatContext.Provider>
+  )
+}
 
-  const [showComposer, setShowComposer] = useState(true)
+const ChatHeader = ({ children }: { children?: React.ReactNode }) => {
+  const { threadId, title } = useChatContext()
 
   return (
-    <Panel>
-      <PanelHeader className="justify-center shadow-sm">
+    <PanelHeader className="justify-between shadow-sm">
+      <div className="flex items-center gap-2">
         <MessageCircleIcon className="size-4 shrink-0" />
-        <div className="min-w-0">
-          <div className="max-w-[60ch] truncate">{thread?.title}</div>
-        </div>
-        {thread && <ChatThreadMenu thread={thread} />}
-        <Button variant="ghost" size="icon" onClick={() => setShowComposer(!showComposer)}>
-          <KeyboardIcon className={cn('size-4', !showComposer && 'brightness-50')} />
-        </Button>
-      </PanelHeader>
+        <SquareCodeIcon className="size-4 shrink-0" />
+      </div>
 
-      <PanelContent>
-        {(isNewThread || thread) && (
-          <div className="mx-auto mb-3 w-full max-w-3xl">
-            <div className="text-muted-foreground mb-1 pl-1 font-mono text-xs uppercase">Instructions</div>
-            <TextareaAutosize value={instructions} onChange={(e) => setInstructions(e.target.value)} />
-          </div>
-        )}
+      <div className="min-w-0">
+        <div className="max-w-[60ch] truncate">{title}</div>
+      </div>
 
-        {!isNewThread && <MessageFeed threadId={props.threadId} />}
-      </PanelContent>
+      <div className="flex items-center gap-2">
+        <ChatThreadMenu threadId={threadId} />
+        {children}
+      </div>
+    </PanelHeader>
+  )
+}
 
-      <PanelOverlayRegion>
-        <PanelOverlay side="bottom" isOpen={showComposer} className="max-w-3xl p-3">
-          <Composer onSend={handleSend} defaultModel={thread?.run?.modelId} />
-        </PanelOverlay>
-      </PanelOverlayRegion>
-    </Panel>
+const ChatInstructions = ({ value, onValueChange }: { value?: string; onValueChange: (value: string) => void }) => {
+  return (
+    <div className="mx-auto mb-3 w-full max-w-3xl">
+      <div className="text-muted-foreground mb-1 pl-1 font-mono text-xs uppercase">Instructions</div>
+      <TextareaAutosize value={value} onValueChange={onValueChange} />
+    </div>
+  )
+}
+
+const ChatContent = () => {
+  const { instructions, setInstructions, threadId } = useChatContext()
+
+  return (
+    <PanelContent>
+      {instructions && <ChatInstructions value={instructions} onValueChange={setInstructions} />}
+      <MessageFeed threadId={threadId} />
+    </PanelContent>
+  )
+}
+
+const ChatComposer = () => {
+  const { handleSend, modelId, showComposer } = useChatContext()
+
+  return (
+    <PanelOverlay side="bottom" isOpen={showComposer} className="max-w-3xl p-3">
+      <Composer onSend={handleSend} defaultModel={modelId} />
+    </PanelOverlay>
+  )
+}
+
+export const ChatThread = (props: { threadId: Id<'threads'> }) => {
+  return (
+    <ChatProvider threadId={props.threadId}>
+      <Panel>
+        <ChatHeader />
+        <ChatContent />
+
+        <PanelOverlayRegion>
+          <ChatComposer />
+        </PanelOverlayRegion>
+      </Panel>
+    </ChatProvider>
   )
 }

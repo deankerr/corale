@@ -1,5 +1,5 @@
 import { api } from '@corale/chat-server/api'
-import type { Doc } from '@corale/chat-server/dataModel'
+import type { Doc, Id } from '@corale/chat-server/dataModel'
 import { Button } from '@ui/components/ui/button'
 import {
   DropdownMenu,
@@ -11,10 +11,10 @@ import { useCopyToClipboard } from '@ui/hooks/use-copy-to-clipboard'
 import { useMutation } from 'convex/react'
 import { CopyIcon, MoreVerticalIcon, TrashIcon } from 'lucide-react'
 
-export const ChatThreadMenu = ({ thread }: { thread: Doc<'threads'> }) => {
+export const ChatThreadMenu = ({ threadId }: { threadId: Id<'threads'> }) => {
   const deleteThread = useMutation(api.chat.db.deleteThread)
   const { handleCopy } = useCopyToClipboard({
-    text: thread._id,
+    text: threadId,
   })
 
   return (
@@ -30,7 +30,7 @@ export const ChatThreadMenu = ({ thread }: { thread: Doc<'threads'> }) => {
           <CopyIcon className="" />
           Copy Thread ID
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={async () => await deleteThread({ threadId: thread._id })}>
+        <DropdownMenuItem onClick={async () => await deleteThread({ threadId })}>
           <TrashIcon className="" />
           Delete
         </DropdownMenuItem>

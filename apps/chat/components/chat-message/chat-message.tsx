@@ -8,17 +8,21 @@ import { ChatMessageMenu } from './chat-message-menu'
 
 export const ChatMessage = ({ message }: { message: Doc<'messages'> }) => {
   return (
-    <div className="grid grid-cols-[minmax(min-content,5rem)_1fr_minmax(min-content,5rem)]">
-      <div className="relative flex flex-col items-end pr-3.5">
-        <ChatMessageAvatar role={message.role} isPending={!message.text} isStreaming={false} />
-      </div>
+    <div>
+      <div className="grid grid-cols-[minmax(min-content,5rem)_1fr_minmax(min-content,5rem)]">
+        <div className="relative flex flex-col items-end pr-3.5">
+          <ChatMessageAvatar role={message.role} isPending={!message.text} isStreaming={false} />
+        </div>
 
-      <div className="flex flex-1 flex-col items-stretch overflow-hidden px-1 py-1 text-[15px]">
-        <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
-      </div>
+        <div className="flex flex-1 flex-col items-stretch overflow-hidden px-1 py-1 text-[15px]">
+          <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
+        </div>
 
-      <div className="px-1 pt-1">
-        <ChatMessageMenu message={message} />
+        <div className="px-1 pt-1">
+          <ChatMessageMenu message={message} />
+        </div>
+
+        <div className="border-muted col-start-2 rounded border p-1">stats</div>
       </div>
     </div>
   )
