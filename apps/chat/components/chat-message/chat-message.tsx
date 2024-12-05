@@ -8,12 +8,12 @@ import { ChatMessageMenu } from './chat-message-menu'
 
 export const ChatMessage = ({ message }: { message: Doc<'messages'> }) => {
   return (
-    <div className="grid grid-cols-[auto_1fr_auto]">
-      <div className="relative flex flex-col items-end px-3 pt-1">
+    <div className="grid grid-cols-[minmax(min-content,5rem)_1fr_minmax(min-content,5rem)]">
+      <div className="relative flex flex-col items-end pr-3.5">
         <ChatMessageAvatar role={message.role} isPending={!message.text} isStreaming={false} />
       </div>
 
-      <div className="flex flex-1 flex-col items-stretch overflow-hidden px-1 py-2 text-[15px]">
+      <div className="flex flex-1 flex-col items-stretch overflow-hidden px-1 py-1 text-[15px]">
         <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
       </div>
 
@@ -33,18 +33,18 @@ const ChatMessageAvatar = ({
   isPending: boolean
   isStreaming: boolean
 }) => {
-  let icon = <div className="size-7 rounded-full bg-current" />
-  let style = ''
+  let icon = <div className="size-7 rounded-full bg-gradient-to-tl from-orange-600 to-orange-400" />
+  let style = 'text-orange-500'
 
   if (role === 'assistant') {
-    style = 'text-[hsl(var(--rx-gold-9))]'
+    style = 'text-[hsl(var(--rx-gold-10))]'
     if (isPending) icon = <LoaderPing />
     else if (isStreaming) icon = <LoaderRipples />
     else icon = <AppLogoIcon className="size-7" />
   }
 
   return (
-    <div className={cn('flex flex-col items-center justify-center', style)}>
+    <div className={cn('flex flex-col items-center justify-center rounded-sm', style)}>
       <div className="grid size-12 place-content-center">{icon}</div>
       <div className="font-mono text-sm uppercase">{getRoleName(role)}</div>
     </div>

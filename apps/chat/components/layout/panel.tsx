@@ -1,6 +1,5 @@
 import { ScrollArea } from '@corale/ui/components/ui/scroll-area'
 import { cn } from '@corale/ui/lib/utils'
-import { type ReactNode } from 'react'
 
 const panelWidths = {
   sm: 'w-64',
@@ -12,7 +11,7 @@ const panelWidths = {
 } as const
 
 type PanelSubComponentProps = {
-  children?: ReactNode
+  children?: React.ReactNode
   className?: string
 }
 
@@ -22,14 +21,19 @@ export function Panel({
   width = 'auto',
   hidden = false,
 }: {
-  children?: ReactNode
+  children?: React.ReactNode
   className?: string
   width?: keyof typeof panelWidths
   hidden?: boolean
 }) {
   return (
     <div
-      className={cn('flex min-h-0 min-w-0 flex-col overflow-hidden', panelWidths[width], hidden && 'hidden', className)}
+      className={cn(
+        'relative flex min-h-0 min-w-0 flex-col overflow-hidden',
+        panelWidths[width],
+        hidden && 'hidden',
+        className,
+      )}
       hidden={hidden}
     >
       {children}
@@ -67,4 +71,48 @@ export function PanelGroup({ children, className }: PanelSubComponentProps) {
 
 export function PanelStack({ children, className }: PanelSubComponentProps) {
   return <div className={cn('flex h-full min-h-0 flex-col divide-y', className)}>{children}</div>
+}
+
+export function PanelOverlayRegion({ children }: { children: React.ReactNode }) {
+  return <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden">{children}</div>
+}
+
+export function PanelOverlay({
+  children,
+  className,
+  side = 'bottom',
+  isOpen,
+}: {
+  children: React.ReactNode
+  className?: string
+  side?: 'top' | 'right' | 'bottom' | 'left'
+  isOpen: boolean
+}) {
+  const baseStyles = {
+    top: 'top-0 -translate-y-full',
+    right: 'right-0 top-1/2 -translate-y-1/2 translate-x-full',
+    bottom: 'bottom-0 translate-y-full',
+    left: 'left-0 top-1/2 -translate-y-1/2 -translate-x-full',
+  }
+
+  const openStyles = {
+    top: 'translate-y-0',
+    right: 'translate-x-0',
+    bottom: 'translate-y-0',
+    left: 'translate-x-0',
+  }
+
+  return (
+    <div
+      className={cn(
+        'pointer-events-auto absolute left-0 right-0 mx-auto',
+        'transform transition-all duration-200 ease-in-out',
+        baseStyles[side],
+        isOpen && openStyles[side],
+        className,
+      )}
+    >
+      {children}
+    </div>
+  )
 }

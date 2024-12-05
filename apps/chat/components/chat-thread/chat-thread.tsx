@@ -2,11 +2,13 @@
 
 import { ChatThreadMenu } from '@/components/chat-thread-menu'
 import { Composer } from '@/components/composer/composer'
-import { Panel, PanelContent, PanelHeader } from '@/components/layout/panel'
+import { Panel, PanelContent, PanelHeader, PanelOverlay, PanelOverlayRegion } from '@/components/layout/panel'
 import { api } from '@corale/chat-server/api'
 import { Id } from '@corale/chat-server/dataModel'
+import { Button } from '@ui/components/ui/button'
+import { cn } from '@ui/lib/utils'
 import { useMutation, useQuery } from 'convex/react'
-import { MessageCircleIcon } from 'lucide-react'
+import { KeyboardIcon, MessageCircleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { TextareaAutosize } from '../textarea-autosize'
@@ -45,6 +47,8 @@ export const ChatThread = (props: { threadId: Id<'threads'> }) => {
     if (thread?.run?.instructions) setInstructions(thread.run?.instructions)
   }, [thread?.run?.instructions])
 
+  const [showComposer, setShowComposer] = useState(true)
+
   return (
     <Panel>
       <PanelHeader className="justify-center shadow-sm">
@@ -53,6 +57,9 @@ export const ChatThread = (props: { threadId: Id<'threads'> }) => {
           <div className="max-w-[60ch] truncate">{thread?.title}</div>
         </div>
         {thread && <ChatThreadMenu thread={thread} />}
+        <Button variant="ghost" size="icon" onClick={() => setShowComposer(!showComposer)}>
+          <KeyboardIcon className={cn('size-4', !showComposer && 'brightness-50')} />
+        </Button>
       </PanelHeader>
 
       <PanelContent>
@@ -66,9 +73,11 @@ export const ChatThread = (props: { threadId: Id<'threads'> }) => {
         {!isNewThread && <MessageFeed threadId={props.threadId} />}
       </PanelContent>
 
-      <div className="mx-auto w-full min-w-0 max-w-3xl p-3">
-        <Composer onSend={handleSend} defaultModel={thread?.run?.modelId} />
-      </div>
+      <PanelOverlayRegion>
+        <PanelOverlay side="bottom" isOpen={showComposer} className="max-w-3xl p-3">
+          <Composer onSend={handleSend} defaultModel={thread?.run?.modelId} />
+        </PanelOverlay>
+      </PanelOverlayRegion>
     </Panel>
   )
 }

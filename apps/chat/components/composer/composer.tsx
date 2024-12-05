@@ -20,13 +20,12 @@ export const Composer = (props: {
   }, [props.defaultModel])
 
   return (
-    <div className="w-full overflow-hidden rounded-md border shadow-xl">
+    <div className="bg-background w-full overflow-hidden rounded-md border shadow-xl">
       <TextareaAutosize
         className="resize-none border-none"
         borderWidth={0}
         placeholder="Where do you want to go today?"
         rows={1}
-        autoFocus
         value={text}
         onValueChange={setText}
         onKeyDown={(e) => {
