@@ -13,6 +13,7 @@ export const vCreateChatMessage = v.object({
   role: vChatMessageRoles,
   name: v.optional(v.string()),
   text: v.string(),
+  data: v.optional(v.record(v.string(), v.string())),
   userMetadata: v.optional(v.record(v.string(), v.string())),
 })
 
@@ -20,6 +21,7 @@ export const vUpdateMessage = v.object({
   role: v.optional(vChatMessageRoles),
   name: v.optional(v.string()),
   text: v.optional(v.string()),
+  data: v.optional(v.record(v.string(), v.string())),
   userMetadata: v.optional(v.record(v.string(), v.string())),
 })
 
@@ -27,6 +29,7 @@ export const vMessagesTableSchema = {
   role: vChatMessageRoles,
   name: v.optional(v.string()),
   text: v.optional(v.string()),
+  data: v.record(v.string(), v.string()),
 
   userMetadata: v.record(v.string(), v.string()),
 
