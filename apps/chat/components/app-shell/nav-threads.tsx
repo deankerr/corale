@@ -53,7 +53,7 @@ export const NavThreadsMenu = ({
       <SidebarGroupLabel>Threads</SidebarGroupLabel>
       <SidebarMenu>
         {threads.map((item) => (
-          <SidebarMenuItem key={item.label}>
+          <SidebarMenuItem key={item.url}>
             <SidebarMenuButton asChild isActive={pathname === item.url}>
               <a href={item.url} title={item.label}>
                 <span>{item.emoji}</span>

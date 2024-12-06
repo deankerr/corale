@@ -9,7 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from '@corale/ui/components/ui/command'
-import { Drawer, DrawerContent, DrawerTrigger } from '@corale/ui/components/ui/drawer'
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from '@corale/ui/components/ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '@corale/ui/components/ui/popover'
 import { useIsMobile } from '@corale/ui/hooks/use-is-mobile'
 import * as React from 'react'
@@ -75,7 +75,8 @@ export function ComboBoxResponsive(props: { model?: string | null; setModel?: (m
           {model ? <>{model.label}</> : <>Select model...</>}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent aria-describedby={undefined}>
+        <DrawerTitle className="sr-only">Select model</DrawerTitle>
         <div className="mt-4 border-t">
           <ModelList setOpen={setOpen} setSelectedModel={setSelectedModel} />
         </div>

@@ -4,10 +4,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./parsing/*": {
-      "types": "./src/parsing/*.ts",
-      "import": "./src/parsing/*.ts"
-    }
+    "./parsing/*": "./src/parsing/*.ts"
   },
   "devDependencies": {
     "@corale/config-typescript": "workspace:*",
