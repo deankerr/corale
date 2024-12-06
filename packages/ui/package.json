@@ -14,7 +14,6 @@
     "./tailwind.config": "./tailwind.config.ts"
   },
   "scripts": {
-    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "ui:add": "pnpx shadcn-ui@latest add"
   },
