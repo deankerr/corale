@@ -1,13 +1,15 @@
 import { Button } from '@corale/ui/components/ui/button'
 import { useEffect, useState } from 'react'
+import { useInputAtom } from '../chat-thread/store'
 import { ComboBoxResponsive } from '../model-picker/model-picker'
 import { TextareaAutosize } from '../textarea-autosize'
 
 export const Composer = (props: {
+  threadId: string
   onSend?: (args: { text: string; model?: string }) => Promise<void>
   defaultModel?: string
 }) => {
-  const [text, setText] = useState('')
+  const [text, setText] = useInputAtom(props.threadId, 'composer')
   const [model, setModel] = useState<string | null>(props.defaultModel ?? null)
 
   const handleRun = () => {

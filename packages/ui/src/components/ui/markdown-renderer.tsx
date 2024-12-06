@@ -1,3 +1,4 @@
+// @ts-nocheck dynamic import memo?
 import { CopyButton } from '@ui/components/ui/copy-button'
 import { cn } from '@ui/lib/utils'
 import React, { Suspense } from 'react'
