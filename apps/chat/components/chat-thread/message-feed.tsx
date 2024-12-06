@@ -8,9 +8,9 @@ export const MessageFeed = ({ threadId }: { threadId: Id<'threads'> }) => {
 
   if (!messages) return null
   return (
-    <div className="space-y-2">
+    <div className="divide-border/50 divide-y">
       {messages.toReversed().map((m) => (
-        <div key={m._id} className="mx-auto w-full max-w-4xl">
+        <div key={m._id} className="mx-auto w-full max-w-4xl py-3">
           <ChatMessage message={m} />
         </div>
       ))}

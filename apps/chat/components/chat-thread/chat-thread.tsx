@@ -126,7 +126,7 @@ const ChatInstructions = () => {
 
   return (
     <div className="mx-auto mb-3 w-full max-w-3xl">
-      <div className="text-muted-foreground mb-1 pl-1 font-mono text-xs uppercase">Instructions</div>
+      <div className="text-muted-foreground mb-1 pl-1 font-mono text-sm uppercase">Instructions</div>
       <TextareaAutosize value={value} onValueChange={setValue} />
     </div>
   )

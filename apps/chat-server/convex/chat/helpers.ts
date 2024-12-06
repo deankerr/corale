@@ -1,7 +1,7 @@
 import { internal } from '#api'
 import { asyncMap, type Id, type MutationCtx, type QueryCtx } from '#common'
 import type { AsObjectValidator, Infer } from 'convex/values'
-import { vCreateChatMessage, vThreadsTableSchema, vUpdateMessage } from './schemas'
+import { vCreateChatMessage, vThreadsTableSchema, vUpdateMessage, type vMessagesTableSchema } from './schemas'
 
 const threads = {
   async get(ctx: QueryCtx, threadId: Id<'threads'>) {
@@ -55,15 +55,16 @@ const threads = {
     })
   },
 
-  async createCompletionMessage(ctx: MutationCtx, args: { threadId: Id<'threads'> }) {
+  async createCompletionMessage(
+    ctx: MutationCtx,
+    args: Omit<Infer<AsObjectValidator<typeof vMessagesTableSchema>>, 'role' | 'sequence'>,
+  ) {
     const prevMessage = await threads.getLatestMessage(ctx, args.threadId)
     const sequence = prevMessage ? prevMessage.sequence + 1 : 0
 
     return await ctx.db.insert('messages', {
       ...args,
       role: 'assistant',
-      data: {},
-      userMetadata: {},
       sequence,
     })
   },
@@ -94,7 +95,13 @@ const threads = {
       .filter((q) => q.neq(q.field('text'), undefined))
       .take(20)
 
-    const outputMessageId = await threads.createCompletionMessage(ctx, { threadId: args.threadId })
+    const outputMessageId = await threads.createCompletionMessage(ctx, {
+      threadId: args.threadId,
+      data: {
+        modelId,
+      },
+      userMetadata: {},
+    })
 
     await ctx.scheduler.runAfter(0, internal.services.completion.completion, {
       input: { messages: messages.reverse(), modelId, system: instructions },
