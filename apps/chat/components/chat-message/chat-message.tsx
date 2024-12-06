@@ -8,25 +8,25 @@ import { ChatMessageMenu } from './chat-message-menu'
 
 export const ChatMessage = ({ message }: { message: Doc<'messages'> }) => {
   return (
-    <div>
-      <div className="grid grid-cols-[minmax(min-content,5rem)_1fr_minmax(min-content,5rem)]">
-        <div className="relative flex flex-col items-end pr-3.5">
-          <ChatMessageAvatar role={message.role} isPending={!message.text} isStreaming={false} />
-        </div>
+    <div className="flex w-full min-w-0">
+      <div className="relative flex w-20 flex-none flex-col items-center pt-0.5">
+        <ChatMessageAvatar role={message.role} isPending={!message.text} isStreaming={false} />
+      </div>
 
-        <div className="flex flex-1 flex-col items-stretch overflow-hidden px-1 py-1 text-[15px]">
-          <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
-        </div>
+      <div className="grid min-w-0 flex-1 px-1">
+        <div className="font-mono text-xs text-[hsl(var(--rx-gold-10))] empty:hidden">{message.data.modelId}</div>
+        <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
+      </div>
 
-        <div className="px-1 pt-1">
-          <ChatMessageMenu message={message} />
-        </div>
-
-        <div className="border-muted col-start-2 rounded border p-1">stats</div>
+      <div className="flex-none pl-1">
+        <ChatMessageMenu message={message} />
       </div>
     </div>
   )
 }
+
+const gold7 = 'hsl(40deg 24.1% 73.1%)'
+const gold11 = 'hsl(36deg 20.2% 36.9%)'
 
 const ChatMessageAvatar = ({
   role,
@@ -37,20 +37,22 @@ const ChatMessageAvatar = ({
   isPending: boolean
   isStreaming: boolean
 }) => {
-  let icon = <div className="size-7 rounded-full bg-gradient-to-tl from-orange-600 to-orange-400" />
+  let icon = (
+    <div className="w-full rounded-full bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-orange-300 to-orange-700" />
+  )
   let style = 'text-orange-500'
 
   if (role === 'assistant') {
-    style = 'text-[hsl(var(--rx-gold-10))]'
+    style = 'text-[hsl(var(--rx-gold-9))]'
     if (isPending) icon = <LoaderPing />
     else if (isStreaming) icon = <LoaderRipples />
-    else icon = <AppLogoIcon className="size-7" />
+    else icon = <AppLogoIcon className="w-full" gradientType="radial" stopColor1={gold7} stopColor2={gold11} />
   }
 
   return (
-    <div className={cn('flex flex-col items-center justify-center rounded-sm', style)}>
-      <div className="grid size-12 place-content-center">{icon}</div>
-      <div className="font-mono text-sm uppercase">{getRoleName(role)}</div>
+    <div className={cn('flex flex-col items-center justify-center space-y-1.5 rounded-sm', style)}>
+      <div className="flex size-10">{icon}</div>
+      <div className="font-mono text-sm font-semibold uppercase">{getRoleName(role)}</div>
     </div>
   )
 }
