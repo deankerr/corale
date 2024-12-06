@@ -18,6 +18,13 @@ const threads = {
     return await ctx.db.insert('threads', args)
   },
 
+  async update(
+    ctx: MutationCtx,
+    args: { threadId: Id<'threads'>; thread: Infer<AsObjectValidator<typeof vThreadsTableSchema>> },
+  ) {
+    return await ctx.db.patch(args.threadId, args.thread)
+  },
+
   async delete(ctx: MutationCtx, args: { threadId: Id<'threads'> }) {
     await ctx.db.delete(args.threadId)
     const messages = await ctx.db

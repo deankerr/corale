@@ -28,7 +28,7 @@ type ChatContextValue = {
 
 const ChatContext = createContext<ChatContextValue | null>(null)
 
-function useChatContext() {
+export function useChatContext() {
   const context = useContext(ChatContext)
   if (!context) {
     throw new Error('useChatContext must be used within a ChatProvider')
@@ -113,7 +113,7 @@ const ChatHeader = ({ children }: { children?: React.ReactNode }) => {
         <Button variant="ghost" size="icon" onClick={() => setShowComposer(!showComposer)}>
           <KeyboardIcon className={cn('size-4', !showComposer && 'brightness-50')} />
         </Button>
-        <ChatThreadMenu threadId={threadId} />
+        <ChatThreadMenu />
         {children}
       </div>
     </PanelHeader>
