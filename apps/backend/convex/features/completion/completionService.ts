@@ -18,7 +18,7 @@ export async function generateCompletion(
 ) {
   const provider = providers[completionProviderId](ctx)
 
-  if (stream && provider?.stream) {
+  if (stream && provider?.stream && !input.modelId.startsWith('openai/o1')) {
     return await provider.stream(input)
   }
 
