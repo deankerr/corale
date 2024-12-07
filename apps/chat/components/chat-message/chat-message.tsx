@@ -18,6 +18,12 @@ export const ChatMessage = ({ message }: { message: Doc<'messages'> }) => {
         <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
       </div>
 
+      <div className="min-w-[4ch] font-mono text-xs tabular-nums text-[hsl(var(--rx-gold-10))]">
+        <div className="font-mono text-xs">{message.sequence}</div>
+        <div className="font-mono text-xs">{message.branch}</div>
+        <div className="font-mono text-xs text-[hsl(var(--rx-gold-10))]">{message.branchSequence}</div>
+      </div>
+
       <div className="flex-none pl-1">
         <ChatMessageMenu message={message} />
       </div>

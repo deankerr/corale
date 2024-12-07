@@ -23,6 +23,16 @@ export const createThread = mutation({
   },
 })
 
+export const updateThread = mutation({
+  args: {
+    threadId: v.id('threads'),
+    thread: v.object(v.partial(vThreadsTableSchema)),
+  },
+  handler: async (ctx, args) => {
+    return await chat.threads.update(ctx, args)
+  },
+})
+
 export const deleteThread = mutation({
   args: {
     threadId: v.id('threads'),
@@ -74,10 +84,19 @@ export const runThread = mutation({
   args: {
     threadId: v.id('threads'),
     run: v.object(vRunsConfig),
+    atMessageId: v.optional(v.id('messages')),
   },
   handler: async (ctx, args) => {
     return await chat.threads.runCompletion(ctx, args)
   },
+})
+
+export const regenerate = mutation({
+  args: {
+    threadId: v.id('threads'),
+    messageId: v.id('messages'),
+  },
+  handler: async (ctx, args) => {},
 })
 
 // * list
