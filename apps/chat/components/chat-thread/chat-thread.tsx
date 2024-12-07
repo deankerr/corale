@@ -10,7 +10,7 @@ import { cn } from '@ui/lib/utils'
 import { useMutation, useQuery } from 'convex/react'
 import { KeyboardIcon, MessageCircleIcon, SquareCodeIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 import { TextareaAutosize } from '../textarea-autosize'
 import { MessageFeed } from './message-feed'
 import { clearInputAtom, readInputAtom, useInputAtom } from './store'
@@ -36,6 +36,41 @@ export function useChatContext() {
   return context
 }
 
+export function useChatSend(threadId: Id<'threads'>) {
+  const router = useRouter()
+  const createThread = useMutation(api.chat.db.createThread)
+  const createMessage = useMutation(api.chat.db.createMessage)
+  const runThread = useMutation(api.chat.db.runThread)
+
+  return useCallback(
+    async (args: { text: string; model?: string; branch?: string }) => {
+      const message = args.text ? { text: args.text, role: 'user' as const } : undefined
+      const run = args.model
+        ? { modelId: args.model || undefined, instructions: readInputAtom(threadId, 'instructions') }
+        : undefined
+
+      const sendThreadId = threadId === 'new' ? await createThread({ latestBranch: '0' }) : threadId
+
+      if (message) {
+        await createMessage({
+          threadId: sendThreadId,
+          message,
+
+          run,
+        })
+      } else if (run) {
+        await runThread({ threadId: sendThreadId, run })
+      }
+
+      if (threadId === 'new') {
+        clearInputAtom('new', 'instructions')
+        router.push(`/chat/${sendThreadId}`)
+      }
+    },
+    [createMessage, createThread, router, runThread, threadId],
+  )
+}
+
 type ChatProviderProps = {
   threadId: Id<'threads'>
   title: string
@@ -48,34 +83,7 @@ function ChatProvider({ children, ...props }: ChatProviderProps) {
   const [modelId, setModelId] = useState(props.initialModelId)
   const [showComposer, setShowComposer] = useState(true)
 
-  const createThread = useMutation(api.chat.db.createThread)
-  const createMessage = useMutation(api.chat.db.createMessage)
-  const runThread = useMutation(api.chat.db.runThread)
-  const router = useRouter()
-
-  const handleSend = async (args: { text: string; model?: string }) => {
-    const message = args.text ? { text: args.text, role: 'user' as const } : undefined
-    const run = args.model
-      ? { modelId: args.model || undefined, instructions: readInputAtom(props.threadId, 'instructions') }
-      : undefined
-
-    const threadId = props.threadId === 'new' ? await createThread({}) : props.threadId
-
-    if (message) {
-      await createMessage({
-        threadId,
-        message,
-        run,
-      })
-    } else if (run) {
-      await runThread({ threadId, run })
-    }
-
-    if (props.threadId === 'new') {
-      clearInputAtom('new', 'instructions')
-      router.push(`/chat/${threadId}`)
-    }
-  }
+  const handleSend = useChatSend(props.threadId)
 
   return (
     <ChatContext.Provider
@@ -96,7 +104,7 @@ function ChatProvider({ children, ...props }: ChatProviderProps) {
 }
 
 const ChatHeader = ({ children }: { children?: React.ReactNode }) => {
-  const { threadId, title, showComposer, setShowComposer } = useChatContext()
+  const { title, showComposer, setShowComposer } = useChatContext()
 
   return (
     <PanelHeader className="justify-between shadow-sm">

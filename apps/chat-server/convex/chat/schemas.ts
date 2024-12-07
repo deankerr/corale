@@ -15,6 +15,7 @@ export const vCreateChatMessage = v.object({
   text: v.string(),
   data: v.optional(v.record(v.string(), v.string())),
   userMetadata: v.optional(v.record(v.string(), v.string())),
+  branch: v.optional(v.string()),
 })
 
 export const vUpdateMessage = v.object({
@@ -34,10 +35,15 @@ export const vMessagesTableSchema = {
   userMetadata: v.record(v.string(), v.string()),
 
   sequence: v.number(),
+  branch: v.string(),
+  branchSequence: v.number(),
+
   threadId: v.id('threads'),
 }
 
-export const messagesTable = defineTable(vMessagesTableSchema).index('by_thread', ['threadId'])
+export const messagesTable = defineTable(vMessagesTableSchema)
+  .index('by_thread', ['threadId'])
+  .index('by_thread_branch', ['threadId', 'branch'])
 
 export const vRunsConfig = {
   modelId: v.optional(v.string()),
@@ -47,6 +53,7 @@ export const vRunsConfig = {
 export const vThreadsTableSchema = {
   title: v.optional(v.string()),
   run: v.optional(v.object(vRunsConfig)),
+  latestBranch: v.string(),
 }
 
 export const threadsTable = defineTable(vThreadsTableSchema)
