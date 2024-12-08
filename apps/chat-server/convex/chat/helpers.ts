@@ -1,9 +1,9 @@
 import { internal } from '#api'
-import { asyncMap, type Id, type MutationCtx, type QueryCtx } from '#common'
+import { asyncMap, type Doc, type Id, type MutationCtx, type QueryCtx } from '#common'
 import type { AsObjectValidator, Infer } from 'convex/values'
-import { vCreateChatMessage, vThreadsTableSchema, vUpdateMessage, type vMessagesTableSchema } from './schemas'
+import { vCreateChatMessage, vUpdateMessage, type vMessagesTableSchema, type vUpdateThread } from './schemas'
 
-const INITIAL_BRANCH = '0'
+const INITIAL_BRANCH = 'a'
 
 const threads = {
   async get(ctx: QueryCtx, threadId: Id<'threads'>) {
@@ -16,15 +16,15 @@ const threads = {
     return thread
   },
 
-  async create(ctx: MutationCtx, args: Omit<Infer<AsObjectValidator<typeof vThreadsTableSchema>>, 'latestBranch'>) {
-    return await ctx.db.insert('threads', { ...args, latestBranch: INITIAL_BRANCH })
+  async create(ctx: MutationCtx, args: Infer<typeof vUpdateThread>) {
+    return await ctx.db.insert('threads', { ...args, branches: [INITIAL_BRANCH] })
   },
 
   async update(
     ctx: MutationCtx,
     args: {
       threadId: Id<'threads'>
-      thread: Omit<Infer<AsObjectValidator<typeof vThreadsTableSchema>>, 'latestBranch'>
+      thread: Infer<typeof vUpdateThread>
     },
   ) {
     return await ctx.db.patch(args.threadId, args.thread)
@@ -50,8 +50,17 @@ const threads = {
   async getLatestMessage(ctx: QueryCtx, threadId: Id<'threads'>, branch = INITIAL_BRANCH) {
     return await ctx.db
       .query('messages')
-      .withIndex('by_thread_branch', (q) => q.eq('threadId', threadId).eq('branch', branch))
+      .withIndex('by_thread_branch_sequence', (q) => q.eq('threadId', threadId).eq('branch', branch))
       .order('desc')
+      .first()
+  },
+
+  async getMessageAt(ctx: QueryCtx, args: { threadId: Id<'threads'>; branch: string; sequence: number }) {
+    return await ctx.db
+      .query('messages')
+      .withIndex('by_thread_branch_sequence', (q) =>
+        q.eq('threadId', args.threadId).eq('branch', args.branch).eq('sequence', args.sequence),
+      )
       .first()
   },
 
@@ -103,26 +112,20 @@ const threads = {
     },
   ) {
     const thread = await threads.require(ctx, args.threadId)
-
-    const nextPosition = await getNextPosition(
-      ctx,
-      args.afterMessageId ? { messageId: args.afterMessageId } : { threadId: thread._id },
-    )
+    const fromMessage = args.afterMessageId
+      ? await ctx.db.get(args.afterMessageId)
+      : await threads.getLatestMessage(ctx, thread._id)
+    if (!fromMessage) throw new Error('no message to complete from')
 
     const modelId = args.run.modelId ?? thread.run?.modelId
     const instructions = args.run.instructions ?? thread.run?.instructions
 
     if (!modelId) return null
 
-    // conversation messages
-    const messages = await ctx.db
-      .query('messages')
-      .withIndex('by_thread_branch', (q) => q.eq('threadId', args.threadId).eq('branch', nextPosition.branches[0]))
-      .order('desc')
-      .filter((q) => q.neq(q.field('text'), undefined))
-      .take(20)
+    const messages = await getMessagesFrom(ctx, { message: fromMessage, limit: 20 })
 
     // completion message
+    const nextPosition = await getNextPosition(ctx, fromMessage)
     const outputMessageId = await ctx.db.insert('messages', {
       threadId: args.threadId,
       role: 'assistant',
@@ -146,46 +149,94 @@ const threads = {
   },
 }
 
-export const chat = { threads }
+export const chat = { threads, getMessagesFrom }
 
-async function getNextPosition(ctx: MutationCtx, args: { threadId: Id<'threads'> } | { messageId: Id<'messages'> }) {
-  const message =
-    'threadId' in args ? await threads.getLatestMessage(ctx, args.threadId) : await ctx.db.get(args.messageId)
-  if (!message) throw new Error('Message not found')
+async function getNextPosition(ctx: MutationCtx, message: Doc<'messages'>) {
+  const nextMessageInBranch = await threads.getMessageAt(ctx, {
+    threadId: message.threadId,
+    branch: message.branch,
+    sequence: message.sequence + 1,
+  })
 
-  const latestMessage = await ctx.db
-    .query('messages')
-    .withIndex('by_thread_branch', (q) => q.eq('threadId', message.threadId).eq('branch', message.branch))
-    .order('desc')
-    .first()
-
-  if (!latestMessage) throw new Error('Next message not found')
-
-  if (message._id === latestMessage._id) {
-    // is next message in current branch
-    console.log('next position: current branch', message.branch)
+  if (!nextMessageInBranch) {
+    // sequential message
     return {
-      branches: [message.branch],
       sequence: message.sequence + 1,
       branch: message.branch,
       branchSequence: message.branchSequence + 1,
     }
   }
 
-  // new branch
-  const thread = await ctx.db.get(message.threadId)
-  if (!thread) throw new Error('Thread not found')
+  // * create new branch
+  // find all existing branches from current
+  const thread = await threads.require(ctx, message.threadId)
+  console.log('create branch, current:', thread.branches)
+  // '0', '0-a', '0-b', '0-a-a', '0-a-b', '0-b-a', '0-a-b-a'
+  const siblingBranches = thread.branches
+    .filter((b) => b.startsWith(message.branch) && b.length === message.branch.length + 2)
+    .sort()
+  console.log('siblingBranches', siblingBranches)
+  // increment last branch or create first sub-branch
+  const latestBranchSegment = siblingBranches.at(-1)?.at(-1)
+  const nextBranch =
+    latestBranchSegment === undefined ? `${message.branch}-a` : `${message.branch}-${inc36(latestBranchSegment)}`
+  console.log('new branch', nextBranch)
 
-  const latestBranch = parseInt(thread.latestBranch)
-  const newBranch = latestBranch + 1
-
-  await ctx.db.patch(message.threadId, { latestBranch: newBranch.toString() })
-  console.log('next position: new branch', newBranch)
+  await ctx.db.patch(thread._id, { branches: [...thread.branches, nextBranch] })
 
   return {
-    branches: [message.branch],
     sequence: message.sequence + 1,
-    branch: newBranch.toString(),
+    branch: nextBranch,
     branchSequence: 0,
   }
+}
+
+function inc36(n: string) {
+  const num = parseInt(n, 36)
+  return (num + 1).toString(36)
+}
+
+function getBranchSegmentsToRoot(branch: string) {
+  // '0', '0-a', '0-b', '0-a-a', '0-a-b', '0-b-a', '0-a-b-a'
+  // eg: path to root from '0-a-b-a': 0-a-b-a, 0-a-b, 0-a, 0
+  const branches: string[] = []
+  let currentBranch = branch
+
+  // Add the current branch first
+  branches.push(currentBranch)
+
+  // Keep removing the last segment until we reach the root branch '0'
+  while (currentBranch !== INITIAL_BRANCH) {
+    currentBranch = currentBranch.split('-').slice(0, -1).join('-')
+    branches.push(currentBranch)
+  }
+
+  return branches
+}
+
+async function getMessagesFrom(ctx: QueryCtx, args: { message: Doc<'messages'>; limit: number }) {
+  const branches = getBranchSegmentsToRoot(args.message.branch)
+  let currentSeq = args.message.sequence
+
+  console.log(branches, currentSeq)
+
+  const messages: Doc<'messages'>[] = []
+
+  for (const branch of branches) {
+    if (currentSeq < 0 || messages.length >= args.limit) break
+    console.log('get', branch, currentSeq)
+
+    const msgs = await ctx.db
+      .query('messages')
+      .withIndex('by_thread_branch_sequence', (q) =>
+        q.eq('threadId', args.message.threadId).eq('branch', branch).lte('sequence', currentSeq),
+      )
+      .take(args.limit - messages.length)
+
+    currentSeq = (msgs[0].sequence ?? 0) - 1
+    messages.push(...msgs.reverse())
+  }
+
+  console.log('got', messages.length, 'messages')
+  return messages
 }

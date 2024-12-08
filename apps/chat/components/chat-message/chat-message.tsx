@@ -1,31 +1,42 @@
+import { api } from '@corale/chat-server/api'
 import type { Doc } from '@corale/chat-server/dataModel'
 import { MarkdownRenderer } from '@corale/ui/components/ui/markdown-renderer'
 import { LoaderPing } from '@ui/components/loaders/loader-ping'
 import { LoaderRipples } from '@ui/components/loaders/loader-ripples'
+import { Button } from '@ui/components/ui/button'
 import { AppLogoIcon } from '@ui/icons/AppLogoIcon'
 import { cn } from '@ui/lib/utils'
+import { useMutation } from 'convex/react'
+import { ParenthesesIcon } from 'lucide-react'
 import { ChatMessageMenu } from './chat-message-menu'
 
 export const ChatMessage = ({ message }: { message: Doc<'messages'> }) => {
+  const showMessagesFrom = useMutation(api.chat.db.showMessagesFrom)
+
   return (
     <div className="flex w-full min-w-0">
       <div className="relative flex w-20 flex-none flex-col items-center pt-0.5">
         <ChatMessageAvatar role={message.role} isPending={!message.text} isStreaming={false} />
       </div>
 
-      <div className="grid min-w-0 flex-1 px-1">
-        <div className="font-mono text-xs text-[hsl(var(--rx-gold-10))] empty:hidden">{message.data.modelId}</div>
-        <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
+      <div className="min-w-0 flex-1 px-1">
+        <div className="mb-1 font-mono text-xs text-[hsl(var(--rx-gold-7))]">
+          <span className="text-gray-400">
+            {message.sequence} {message.branch} {message.branchSequence}
+          </span>{' '}
+          {message.data.modelId}
+        </div>
+
+        <div className="grid">
+          <MarkdownRenderer>{message.text ?? ''}</MarkdownRenderer>
+        </div>
       </div>
 
-      <div className="min-w-[4ch] font-mono text-xs tabular-nums text-[hsl(var(--rx-gold-10))]">
-        <div className="font-mono text-xs">{message.sequence}</div>
-        <div className="font-mono text-xs">{message.branch}</div>
-        <div className="font-mono text-xs text-[hsl(var(--rx-gold-10))]">{message.branchSequence}</div>
-      </div>
-
-      <div className="flex-none pl-1">
+      <div className="grid flex-none pl-1">
         <ChatMessageMenu message={message} />
+        <Button variant="outline" size="icon" onClick={() => showMessagesFrom({ messageId: message._id })}>
+          <ParenthesesIcon />
+        </Button>
       </div>
     </div>
   )

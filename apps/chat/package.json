@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@corale/config-typescript": "workspace:*",
+    "@faker-js/faker": "^9.3.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

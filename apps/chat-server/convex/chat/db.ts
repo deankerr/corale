@@ -1,11 +1,11 @@
 import { asyncMap, mutation, query, v } from '#common'
 import { chat } from './helpers'
-import { vCreateChatMessage, vRunsConfig, vThreadsTableSchema, vUpdateMessage } from './schemas'
+import { vCreateChatMessage, vRunsConfig, vUpdateMessage, vUpdateThread } from './schemas'
 
 // * create
 export const createThread = mutation({
   args: {
-    ...vThreadsTableSchema,
+    ...vUpdateThread.fields,
     messages: v.optional(v.array(vCreateChatMessage)),
   },
   handler: async (ctx, { messages = [], ...args }) => {
@@ -26,7 +26,7 @@ export const createThread = mutation({
 export const updateThread = mutation({
   args: {
     threadId: v.id('threads'),
-    thread: v.object(v.partial(vThreadsTableSchema)),
+    thread: vUpdateThread,
   },
   handler: async (ctx, args) => {
     return await chat.threads.update(ctx, args)
@@ -46,18 +46,59 @@ export const createMessage = mutation({
   args: {
     threadId: v.id('threads'),
     message: vCreateChatMessage,
+    branch: v.optional(v.string()),
     run: v.optional(v.object(vRunsConfig)),
   },
   handler: async (ctx, args) => {
     console.log('createMessage', args)
 
-    const messageId = await chat.threads.createMessage(ctx, { ...args.message, threadId: args.threadId })
+    const messageId = await chat.threads.createMessage(ctx, {
+      ...args.message,
+      threadId: args.threadId,
+      branch: args.branch,
+    })
 
     if (args.run) {
-      await chat.threads.runCompletion(ctx, { threadId: args.threadId, run: args.run })
+      await chat.threads.runCompletion(ctx, { threadId: args.threadId, run: args.run, afterMessageId: messageId })
     }
 
     return messageId
+  },
+})
+
+// * appendMessage
+// required: threadId
+// (no args): append to end of initial branch
+// branch: append to end of branch
+// messageId (and/or branch+sequence ?):
+//   - if message is end of branch, append to branch as before
+//   - otherwise create a new branch
+export const appendMessage = mutation({
+  args: {
+    threadId: v.id('threads'),
+    message: vCreateChatMessage,
+    branch: v.optional(v.string()),
+  },
+
+  handler: async (ctx, args) => {
+    console.debug('appendMessage', args)
+
+    // ? awkward args syntax
+    return await chat.threads.createMessage(ctx, { ...args.message, threadId: args.threadId, branch: args.branch })
+  },
+})
+
+export const showMessagesFrom = mutation({
+  args: {
+    messageId: v.id('messages'),
+  },
+  handler: async (ctx, args) => {
+    const message = await ctx.db.get(args.messageId)
+    if (!message) return null
+
+    const messages = await chat.getMessagesFrom(ctx, { message, limit: 20 })
+
+    console.log('result:', messages)
   },
 })
 
@@ -84,19 +125,46 @@ export const runThread = mutation({
   args: {
     threadId: v.id('threads'),
     run: v.object(vRunsConfig),
+    branch: v.optional(v.string()),
     atMessageId: v.optional(v.id('messages')),
   },
   handler: async (ctx, args) => {
-    return await chat.threads.runCompletion(ctx, args)
+    const atMessageId = args.atMessageId ?? (await chat.threads.getLatestMessage(ctx, args.threadId, args.branch))?._id
+    return await chat.threads.runCompletion(ctx, { ...args, afterMessageId: atMessageId })
   },
 })
 
+// ? get all messages of a sequence, then deal with branches
 export const regenerate = mutation({
   args: {
-    threadId: v.id('threads'),
     messageId: v.id('messages'),
   },
-  handler: async (ctx, args) => {},
+  handler: async (ctx, args) => {
+    const message = await ctx.db.get(args.messageId)
+    if (!message) throw new Error('invalid message id')
+
+    // todo branch traversal
+    const prevMessage = await ctx.db
+      .query('messages')
+      .withIndex('by_thread_branch_sequence', (q) =>
+        q
+          .eq('threadId', message.threadId)
+          .eq('branch', message.branch)
+          .eq('sequence', message.sequence - 1),
+      )
+      .first()
+
+    if (!prevMessage) throw new Error('no prev message')
+
+    const thread = await chat.threads.require(ctx, message.threadId)
+    const modelId = message.data.modelId ?? thread.run?.modelId
+    if (!modelId) throw new Error('no model id')
+    return await chat.threads.runCompletion(ctx, {
+      threadId: thread._id,
+      run: { modelId, instructions: thread.run?.instructions },
+      afterMessageId: prevMessage._id,
+    })
+  },
 })
 
 // * list

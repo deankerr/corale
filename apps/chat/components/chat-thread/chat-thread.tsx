@@ -12,7 +12,7 @@ import { KeyboardIcon, MessageCircleIcon, SquareCodeIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useState } from 'react'
 import { TextareaAutosize } from '../textarea-autosize'
-import { MessageFeed } from './message-feed'
+import { MessageFeed, MessageFeedGrid } from './message-feed'
 import { clearInputAtom, readInputAtom, useInputAtom } from './store'
 
 type ChatContextValue = {
@@ -44,22 +44,23 @@ export function useChatSend(threadId: Id<'threads'>) {
 
   return useCallback(
     async (args: { text: string; model?: string; branch?: string }) => {
+      console.log('useChatSend', args)
       const message = args.text ? { text: args.text, role: 'user' as const } : undefined
       const run = args.model
         ? { modelId: args.model || undefined, instructions: readInputAtom(threadId, 'instructions') }
         : undefined
 
-      const sendThreadId = threadId === 'new' ? await createThread({ latestBranch: '0' }) : threadId
+      const sendThreadId = threadId === 'new' ? await createThread({}) : threadId
 
       if (message) {
         await createMessage({
           threadId: sendThreadId,
           message,
-
+          branch: args.branch,
           run,
         })
       } else if (run) {
-        await runThread({ threadId: sendThreadId, run })
+        await runThread({ threadId: sendThreadId, run, branch: args.branch })
       }
 
       if (threadId === 'new') {
@@ -81,7 +82,7 @@ type ChatProviderProps = {
 
 function ChatProvider({ children, ...props }: ChatProviderProps) {
   const [modelId, setModelId] = useState(props.initialModelId)
-  const [showComposer, setShowComposer] = useState(true)
+  const [showComposer, setShowComposer] = useState(false)
 
   const handleSend = useChatSend(props.threadId)
 
@@ -135,7 +136,7 @@ const ChatInstructions = () => {
   return (
     <div className="mx-auto mb-3 w-full max-w-3xl">
       <div className="text-muted-foreground mb-1 pl-1 font-mono text-sm uppercase">Instructions</div>
-      <TextareaAutosize value={value} onValueChange={setValue} />
+      <TextareaAutosize className="max-h-48" value={value} onValueChange={setValue} />
     </div>
   )
 }
@@ -146,7 +147,7 @@ const ChatContent = () => {
   return (
     <PanelContent>
       <ChatInstructions />
-      {threadId !== 'new' && <MessageFeed threadId={threadId} />}
+      {threadId !== 'new' && <MessageFeedGrid threadId={threadId} />}
       {showComposer && <div className="h-32" />}
     </PanelContent>
   )
