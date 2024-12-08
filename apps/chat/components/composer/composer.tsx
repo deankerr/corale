@@ -6,14 +6,15 @@ import { TextareaAutosize } from '../textarea-autosize'
 
 export const Composer = (props: {
   threadId: string
-  onSend?: (args: { text: string; model?: string }) => Promise<void>
+  onSend?: (args: { text: string; model?: string; branch?: string }) => Promise<void>
   defaultModel?: string
+  branch?: string
 }) => {
   const [text, setText] = useInputAtom(props.threadId, 'composer')
   const [model, setModel] = useState<string | null>(props.defaultModel ?? null)
 
   const handleRun = () => {
-    props.onSend?.({ text, model: model || undefined })
+    props.onSend?.({ text, model: model || undefined, branch: props.branch })
     setText('')
   }
 
@@ -40,6 +41,7 @@ export const Composer = (props: {
 
       <div className="flex p-2 pt-0">
         <ComboBoxResponsive model={model} setModel={setModel} />
+        <div className="flex items-center px-2 font-mono text-sm empty:hidden">{props.branch}</div>
         <div className="mx-1 grow" />
         <div className="flex justify-end gap-2">
           <Button variant="secondary" onClick={() => props.onSend?.({ text, model: undefined })}>

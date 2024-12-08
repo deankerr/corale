@@ -52,7 +52,7 @@ export function PanelHeader({ children, className }: PanelSubComponentProps) {
 export function PanelContent({ children, className }: PanelSubComponentProps) {
   return (
     <ScrollArea className="min-w-0 flex-1">
-      <div className={cn('flex min-w-0 flex-col p-3', className)}>{children}</div>
+      <div className={cn('grid min-w-0 flex-col items-stretch p-3', className)}>{children}</div>
     </ScrollArea>
   )
 }

@@ -15,7 +15,7 @@ export const TextareaAutosize = ({
 
   useAutosizeTextArea({
     ref: textAreaRef,
-    maxHeight: 260,
+    maxHeight: 240,
     borderWidth,
     dependencies: [props.value],
   })
