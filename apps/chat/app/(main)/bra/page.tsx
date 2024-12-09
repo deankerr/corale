@@ -3,7 +3,7 @@
 import { Panel, PanelContent, PanelHeader } from '@/components/layout/panel'
 import { faker } from '@faker-js/faker'
 import { Button } from '@ui/components/ui/button'
-import { useReducer, useState } from 'react'
+import { useReducer } from 'react'
 
 type Message = {
   id: string
@@ -21,8 +21,6 @@ type MessagesAction =
   | { type: 'ADD_MESSAGE'; message: Message }
   | { type: 'SELECT_MESSAGE'; messageId: string }
   | { type: 'CLEAR_SELECTION' }
-
-const defaultThread = 0
 
 function createMessage({
   depth,

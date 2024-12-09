@@ -12,6 +12,7 @@
     "@corale/chat-server": "workspace:*",
     "@corale/shared": "workspace:*",
     "@corale/ui": "workspace:*",
+    "@formkit/auto-animate": "^0.8.2",
     "convex": "^1.17.0",
     "jotai": "^2.10.1",
     "lucide-react": "^0.462.0",
