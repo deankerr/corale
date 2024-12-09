@@ -12,7 +12,7 @@ import { KeyboardIcon, MessageCircleIcon, SquareCodeIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useState } from 'react'
 import { TextareaAutosize } from '../textarea-autosize'
-import { MessageFeed, MessageFeedGrid } from './message-feed'
+import { MessageFeedGrid } from './message-feed'
 import { clearInputAtom, readInputAtom, useInputAtom } from './store'
 
 type ChatContextValue = {
