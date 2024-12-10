@@ -2,10 +2,11 @@
 
 import { Panel, PanelContent, PanelHeader } from '@/components/layout/panel'
 import { faker } from '@faker-js/faker'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Button } from '@ui/components/ui/button'
 import { Input } from '@ui/components/ui/input'
 import { cn } from '@ui/lib/utils'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { appendMessage, appendMessageTo, createTreeStore } from './thread'
 
 export default function Page() {
@@ -35,6 +36,8 @@ export default function Page() {
     )
   }
 
+  const [animateRef] = useAutoAnimate<HTMLDivElement>()
+
   return (
     <Panel>
       <PanelHeader>Tree</PanelHeader>
@@ -50,11 +53,11 @@ export default function Page() {
             Clear
           </Button>
         </div>
-        <div className="grid auto-cols-[200px] divide-x overflow-x-auto border">
+        <div className="grid auto-cols-[200px] divide-x overflow-x-auto border" ref={animateRef}>
           {branches.map((b) => {
             const gridColumn = (branches.findIndex((branch) => branch === b) ?? 0) + 1
             return (
-              <>
+              <Fragment key={b}>
                 <div
                   key={`${b}-label`}
                   className={cn(
@@ -90,7 +93,7 @@ export default function Page() {
                       {m.text}
                     </div>
                   ))}
-              </>
+              </Fragment>
             )
           })}
         </div>
