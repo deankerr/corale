@@ -233,7 +233,7 @@ async function getMessagesFrom(ctx: QueryCtx, args: { message: Doc<'messages'>; 
       )
       .take(args.limit - messages.length)
 
-    currentSeq = (msgs[0].sequence ?? 0) - 1
+    currentSeq = (msgs[0]?.sequence ?? 0) - 1
     messages.push(...msgs.reverse())
   }
 
