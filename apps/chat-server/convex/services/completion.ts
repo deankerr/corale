@@ -23,7 +23,7 @@ export const completion = internalAction({
     const completion = await generateText({
       model: openrouter(modelId),
       messages: messages.map((m) => ({
-        role: m.role,
+        role: m.role === 'tool' ? 'user' : m.role,
         content: m.text ?? '',
       })),
       system,
