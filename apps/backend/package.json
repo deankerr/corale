@@ -14,7 +14,7 @@
     "generate-api": "mkdir -p out && convex function-spec > out/fn-spec.json && convex-helpers ts-api-spec --input-file out/fn-spec.json --output-file ${OUTPUT_FILE:-out/convex-api}"
   },
   "devDependencies": {
-    "@edge-runtime/vm": "^4.0.3",
+    "@edge-runtime/vm": "^5.0.0",
     "@eslint/js": "^9.13.0",
     "@types/node": "^22.8.1",
     "convex-test": "^0.0.34",
@@ -27,13 +27,13 @@
     "vitest": "^2.1.4"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.70",
+    "@ai-sdk/openai": "^1.0.7",
     "@clerk/backend": "^1.15.1",
     "@corale/config-typescript": "workspace:*",
     "@fal-ai/client": "^1.0.2",
-    "ai": "^3.4.20",
+    "ai": "^4.0.13",
     "convex": "^1.17.0",
-    "convex-ents": "^0.12.0",
+    "convex-ents": "^0.13.0",
     "convex-helpers": "^0.1.64",
     "deep-object-diff": "^1.1.9",
     "fast-content-type-parse": "^2.0.0",

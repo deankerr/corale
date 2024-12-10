@@ -1,7 +1,7 @@
 import { v } from '#common'
 import { defineTable } from 'convex/server'
 
-export const vChatMessageRoles = v.literals('user', 'assistant', 'system', 'tool')
+export const vChatMessageRoles = v.literals('user', 'assistant', 'system')
 
 export const vChatMessage = v.object({
   role: vChatMessageRoles,
