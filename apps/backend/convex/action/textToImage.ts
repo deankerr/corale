@@ -110,9 +110,11 @@ const generateDimensions = async (args: { prompt: string }) => {
   const response = await generateObject({
     model,
     system:
-      'You will be given a prompt that has been entered by a user for image generation. Respond with a JSON object containing a recommended dimensions for the image, being square, portrait, or landscape. If it is unclear what the user is asking for, use your best judgement to choose the most appropriate dimensions.',
+      'Choose the most appropriate dimensions for an image generated from the prompt: square, portrait, or landscape, using square as a fallback if you are unsure. Respond with a JSON object.',
     schema: z.object({
-      dimensions: z.enum(['square', 'portrait', 'landscape']).describe('The recommended dimensions for the image.'),
+      dimensions: z
+        .enum(['square', 'portrait', 'landscape'])
+        .describe('Your choice of image dimensions: square, portrait, or landscape.'),
     }),
     messages: [
       {
@@ -122,7 +124,7 @@ const generateDimensions = async (args: { prompt: string }) => {
     ],
   })
 
-  const result = omit(response, ['rawResponse', 'toJsonResponse'])
+  const result = omit(response, ['request', 'response'])
   console.log(result)
 
   return defaultSizes.find((size) => size.name === result.object.dimensions)
