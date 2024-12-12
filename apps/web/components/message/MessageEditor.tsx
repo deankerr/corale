@@ -20,7 +20,7 @@ export const MessageEditor = () => {
     <>
       <TextareaAutosize
         name="content"
-        className="border-none bg-transparent p-0 font-mono"
+        className="bg-black-a3 max-h-[70vh] border-none p-2 font-mono"
         value={textValue}
         onValueChange={setTextValue}
         autoFocus

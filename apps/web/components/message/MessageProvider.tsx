@@ -10,12 +10,14 @@ type MessageContextType = {
   message: MessageType
   run?: Run | null
   isEditing: boolean
-  showJson: boolean
-  textStyle: 'markdown' | 'monospace'
-  viewerCanEdit: boolean
   setIsEditing: (value: boolean) => void
+  showJson: boolean
   setShowJson: (value: boolean) => void
+  textStyle: 'markdown' | 'monospace'
   setTextStyle: (value: 'markdown' | 'monospace') => void
+  viewerCanEdit: boolean
+  isMinimized: boolean
+  setIsMinimized: (value: boolean) => void
   updateMessage: (fields: EMessageUpdateFields) => Promise<void>
   deleteMessage: () => Promise<void>
 }
@@ -60,10 +62,29 @@ export function MessageProvider({ children, message }: { children: React.ReactNo
     }
   }, [messageId, sendDeleteMessage])
 
+  const isMinimized = message.kvMetadata?.['esuite:minimized'] === 'true'
+  const setIsMinimized = useCallback(
+    (value: boolean) => {
+      sendUpdateMessage({
+        messageId,
+        fields: {
+          kvMetadata: {
+            set: {
+              'esuite:minimized': String(value),
+            },
+          },
+        },
+      })
+    },
+    [messageId, sendUpdateMessage],
+  )
+
   const value = {
     message,
     run,
     isEditing,
+    isMinimized,
+    setIsMinimized,
     showJson,
     textStyle,
     viewerCanEdit,

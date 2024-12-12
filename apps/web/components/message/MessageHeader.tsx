@@ -19,6 +19,8 @@ export const MessageHeader = () => {
     viewerCanEdit,
     textStyle,
     setTextStyle,
+    isMinimized,
+    setIsMinimized,
   } = useMessageContext()
 
   const isHidden = message.channel === 'hidden'
@@ -96,6 +98,18 @@ export const MessageHeader = () => {
           onClick={() => setIsEditing(!isEditing)}
         >
           <Icons.Pencil size={18} />
+        </IconButton>
+      )}
+
+      {viewerCanEdit && (
+        <IconButton
+          variant="ghost"
+          color={isMinimized ? 'orange' : 'gray'}
+          size="1"
+          aria-label="Minimize"
+          onClick={() => setIsMinimized(!isMinimized)}
+        >
+          <Icons.ArrowsOutSimple size={18} />
         </IconButton>
       )}
 

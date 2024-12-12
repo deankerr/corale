@@ -264,6 +264,7 @@ export const activate = internalMutation({
         id: run.patternId,
         name: pattern?.name,
       },
+      messages: messages.length,
       message1: messages.at(-2),
       message0: messages.at(-1),
       system,

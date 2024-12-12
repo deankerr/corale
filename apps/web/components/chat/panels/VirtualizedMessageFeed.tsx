@@ -107,7 +107,7 @@ export const VirtualizedMessageFeed = ({ threadId }: { threadId: string }) => {
 
 const MemoizedMessage = memo(({ message }: { message: MessageType }) => {
   return (
-    <div className="mx-auto max-w-4xl py-2">
+    <div className="py-2">
       <Message message={message} />
     </div>
   )
@@ -136,4 +136,4 @@ const Footer: Components<any, any>['Footer'] = () => {
   return <div className="h-6"></div>
 }
 
-const List = twx.div`px-1 md:px-6`
+const List = twx.div`px-1 lg:max-w-[80%] mx-auto`

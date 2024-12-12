@@ -8,7 +8,7 @@ import { MessageEditor } from './MessageEditor'
 import { useMessageContext } from './MessageProvider'
 
 export const MessageBody = () => {
-  const { message, run, isEditing, showJson, textStyle } = useMessageContext()
+  const { message, run, isEditing, showJson, textStyle, isMinimized } = useMessageContext()
 
   const isHidden = message.channel === 'hidden'
   const isActive = run?.status === 'active'
@@ -17,29 +17,31 @@ export const MessageBody = () => {
   const text = message.text ?? textStream
 
   return (
-    <div className={cn('flex shrink-0 flex-col', isHidden && 'opacity-30')}>
-      {showJson ? <MessageJson message={message} /> : null}
+    <div className={cn('grid flex-1 shrink-0 overflow-hidden', isHidden && 'opacity-30')}>
+      <div className={cn((isMinimized || isHidden) && 'max-h-96 overflow-y-auto')}>
+        {showJson ? <MessageJson message={message} /> : null}
 
-      <div className="min-h-12 p-3">
-        {isEditing ? <MessageEditor /> : <MessageText textStyle={textStyle}>{text}</MessageText>}
+        <div className="min-h-12 p-3">
+          {isEditing ? <MessageEditor /> : <MessageText textStyle={textStyle}>{text}</MessageText>}
 
-        {isActive && !text && (
-          <div className="flex-start h-8">
-            <Loader type="dotPulse" size={32} />
-          </div>
-        )}
+          {isActive && !text && (
+            <div className="flex-start h-8">
+              <Loader type="dotPulse" size={32} />
+            </div>
+          )}
 
-        {!isActive && message.text === '' && (
-          <Code variant="ghost" color="gray">
-            (blank message)
-          </Code>
-        )}
+          {!isActive && message.text === '' && (
+            <Code variant="ghost" color="gray">
+              (blank message)
+            </Code>
+          )}
 
-        {run?.status === 'failed' && (
-          <Code variant="ghost" color="red">
-            Error: generation failed.
-          </Code>
-        )}
+          {run?.status === 'failed' && (
+            <Code variant="ghost" color="red">
+              Error: generation failed.
+            </Code>
+          )}
+        </div>
       </div>
     </div>
   )
