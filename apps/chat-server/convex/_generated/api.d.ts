@@ -19,6 +19,13 @@ import type * as chat_schemas from "../chat/schemas.js";
 import type * as common from "../common.js";
 import type * as init from "../init.js";
 import type * as services_completion from "../services/completion.js";
+import type * as types from "../types.js";
+import type * as v0_helpers_runs from "../v0/helpers/runs.js";
+import type * as v0_helpers_trees from "../v0/helpers/trees.js";
+import type * as v0_helpers_uid from "../v0/helpers/uid.js";
+import type * as v0_runs from "../v0/runs.js";
+import type * as v0_schemas from "../v0/schemas.js";
+import type * as v0_trees from "../v0/trees.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -35,6 +42,13 @@ declare const fullApi: ApiFromModules<{
   common: typeof common;
   init: typeof init;
   "services/completion": typeof services_completion;
+  types: typeof types;
+  "v0/helpers/runs": typeof v0_helpers_runs;
+  "v0/helpers/trees": typeof v0_helpers_trees;
+  "v0/helpers/uid": typeof v0_helpers_uid;
+  "v0/runs": typeof v0_runs;
+  "v0/schemas": typeof v0_schemas;
+  "v0/trees": typeof v0_trees;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

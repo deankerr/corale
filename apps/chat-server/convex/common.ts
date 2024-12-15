@@ -11,6 +11,7 @@ import {
 } from 'convex-helpers/validators'
 import { v as convexV } from 'convex/values'
 
+export { ConvexError } from 'convex/values'
 export { paginationOptsValidator } from 'convex/server'
 export { asyncMap, omit, pick, pruneNull } from 'convex-helpers'
 

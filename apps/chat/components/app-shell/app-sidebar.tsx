@@ -14,13 +14,18 @@ import {
 } from '@corale/ui/components/ui/sidebar'
 import { AppLogoIcon } from '@corale/ui/icons/AppLogoIcon'
 import { ThemeModeMenu } from '@ui/components/theme-mode-menu'
-import { MessageCircleIcon, SettingsIcon } from 'lucide-react'
+import { MessageCircleIcon, SettingsIcon, TreePalmIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { NavThreads } from './nav-threads'
 
 const items = {
   content: [
+    {
+      icon: TreePalmIcon,
+      label: 'Trees',
+      href: '/v0',
+    },
     {
       icon: MessageCircleIcon,
       label: 'Chat',

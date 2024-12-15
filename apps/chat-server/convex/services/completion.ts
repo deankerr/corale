@@ -1,5 +1,5 @@
 import { openrouter } from '@openrouter/ai-sdk-provider'
-import { api } from '#api'
+import { api, internal } from '#api'
 import { internalAction, v } from '#common'
 import { generateText } from 'ai'
 import { withSystemFields } from 'convex-helpers/validators'
@@ -36,4 +36,30 @@ export const completion = internalAction({
       },
     })
   },
+})
+
+type NodeCompletionArgs = Omit<Parameters<typeof generateText>[0], 'model'> & {
+  outputNodeId: string
+  modelId: string
+}
+
+export const nodeCompletion = internalAction(async (ctx, args: NodeCompletionArgs) => {
+  console.log('completion', args)
+
+  const completion = await generateText({
+    model: openrouter(args.modelId),
+    ...args,
+  })
+
+  await ctx.runMutation(internal.v0.runs.addMessageToNode, {
+    id: args.outputNodeId,
+    message: {
+      role: 'assistant',
+      name: '',
+      content: completion.text,
+      data: {},
+      userData: {},
+      createdAt: Date.now(),
+    },
+  })
 })

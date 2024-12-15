@@ -10,7 +10,8 @@
     "./dataModel": {
       "types": "./convex/_generated/dataModel.d.ts",
       "import": "./convex/_generated/dataModel.ts"
-    }
+    },
+    ".": "./convex/types.ts"
   },
   "imports": {
     "#api": {
@@ -29,7 +30,8 @@
     "@openrouter/ai-sdk-provider": "^0.0.6",
     "ai": "^4.0.13",
     "convex": "^1.17.0",
-    "convex-helpers": "^0.1.65"
+    "convex-helpers": "^0.1.65",
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.0",
