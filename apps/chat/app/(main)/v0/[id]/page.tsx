@@ -5,6 +5,7 @@ import { Panel, PanelContent, PanelHeader } from '@/components/layout/panel'
 import { TextareaAutosize } from '@/components/textarea-autosize'
 import type { Node, Tree, TreeBranch } from '@corale/chat-server'
 import { api } from '@corale/chat-server/api'
+import { MarkdownRenderer } from '@corale/ui/components/ui/markdown-renderer'
 import { Button } from '@ui/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/components/ui/tabs'
 import { cn } from '@ui/lib/utils'
@@ -57,12 +58,16 @@ export default function Page({ params }: { params: { id: string } }) {
           <TabsList>
             <TabsTrigger value="full">Full</TabsTrigger>
             <TabsTrigger value="totem">Totem</TabsTrigger>
+            <TabsTrigger value="choose">Choose</TabsTrigger>
           </TabsList>
           <TabsContent value="full">
             <TreeFull treeId={params.id} />
           </TabsContent>
           <TabsContent value="totem">
             <TreeTotem treeId={params.id} />
+          </TabsContent>
+          <TabsContent value="choose">
+            <TreeChoose treeId={params.id} />
           </TabsContent>
         </Tabs>
       </PanelContent>
@@ -295,18 +300,137 @@ const TreeFull = ({ treeId }: { treeId: string }) => {
   )
 }
 
+type DAGNode = Node & {
+  parent?: Node
+  children?: Set<DAGNode>
+}
+
+const TreeChoose = ({ treeId }: { treeId: string }) => {
+  const tree = useQuery(api.v0.trees.get, { treeId })
+  const nodes = useQuery(api.v0.trees.listAllNodes, { treeId })
+  const append = useMutation(api.v0.trees.append)
+  const branch = useMutation(api.v0.trees.branch)
+
+  const [instructionsValue, setInstructionsValue] = useState('')
+  const [selectedNodeId, setSelectedNodeId] = useState('')
+
+  const [selectedBranches, setSelectedBranches] = useState<TreeBranch[]>([{ id: 0, minSeq: 0 }])
+  const [streamNodeId, setStreamNodeId] = useState('')
+
+  if (!tree || !nodes) {
+    return <div>Tree not found</div>
+  }
+
+  const nodeBranchGroups = new Map<number, DAGNode[]>()
+  for (const node of nodes.toSorted((a, b) => a.seq - b.seq)) {
+    const group = nodeBranchGroups.get(node.branchId) ?? []
+    group.push(node)
+    nodeBranchGroups.set(node.branchId, group)
+  }
+
+  const nodesSeqGroups = new Map<number, Node[]>()
+  const branchPoints = new Map<number, string[]>()
+
+  for (const node of nodes.toReversed() ?? []) {
+    const group = nodesSeqGroups.get(node.seq) ?? []
+    group.push(node)
+    nodesSeqGroups.set(node.seq, group)
+  }
+
+  const nodesView = nodes
+    .toReversed()
+    .filter((n) => selectedBranches.some((b) => n.branchId === b.id))
+    .map((n) => ({ ...n, branch: tree.branches.find((b) => b.id === n.branchId) }))
+
+  return (
+    <>
+      <ChatInstructions value={instructionsValue} onValueChange={setInstructionsValue} />
+      <div className="whitespace-pre-wrap rounded border p-2 font-mono text-xs">
+        nodeBranchGroups
+        {JSON.stringify(
+          [...nodeBranchGroups].map(([key, nodes]) => [key, nodes.map((n) => n.id)]),
+          null,
+          2,
+        )}
+      </div>
+      Branch
+      <div className="mb-2 flex gap-2">
+        {tree.branches.map((b) => (
+          <div key={b.id} className="rounded border p-1">
+            {b.id} ({b.minSeq})
+          </div>
+        ))}
+      </div>
+      <div className="mb-2 flex flex-col gap-2">
+        {nodesView.map((node) => (
+          <div key={node.id}>
+            <MessageNode
+              node={node}
+              className={cn(selectedNodeId === node.id && 'outline-primary outline -outline-offset-1')}
+              onClick={() => {
+                if (selectedNodeId === node.id) setSelectedNodeId('')
+                else setSelectedNodeId(node.id)
+              }}
+            />
+
+            <div className="flex gap-1 py-1">
+              {(nodesSeqGroups.get(node.seq) ?? [])
+                .filter((n) => n.id === node.id || n.branchSeq === 0)
+                .map((n) => (
+                  <Button
+                    key={n.id}
+                    variant="secondary"
+                    size="sm"
+                    disabled={selectedBranches.some((b) => b.id === n.branchId)}
+                  >
+                    {n.branchId}
+                  </Button>
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mx-auto w-3/4">
+        <ChatComposer
+          inputId={tree.id}
+          onSend={async ({ text, mode }) => {
+            append({
+              treeId: tree.id,
+              message: {
+                role: 'user',
+                name: '',
+                content: text,
+                userData: {},
+              },
+              run:
+                mode === 'run'
+                  ? {
+                      instructions: instructionsValue,
+                    }
+                  : undefined,
+            }).catch(console.error)
+          }}
+        />
+      </div>
+      <pre className="whitespace-pre-wrap font-mono text-xs">{JSON.stringify(tree, null, 2)}</pre>
+      <pre className="whitespace-pre-wrap font-mono text-xs">{JSON.stringify(nodes, null, 2)}</pre>
+    </>
+  )
+}
+
 const MessageNode = ({ node, className, ...props }: { node: Node } & React.ComponentProps<'div'>) => {
   return (
     <div className={cn('w-full rounded border p-2', className)} {...props}>
       <div className="text-xs text-gray-500">
         {node.seq}:{node.branchId}:{node.branchSeq} {node.id}
       </div>
-      <div>
-        <span className="text-gray-500">{node.message?.role} </span>
-        <span className="text-gray-500">{node.message?.name} </span>
-        {node.message?.content}
-      </div>
-      {node.run && <div className="font-mono text-xs text-gray-500">{JSON.stringify(node.run, null, 2)}</div>}
+      {node.run && <div className="py-1 font-mono text-xs text-gray-500">{JSON.stringify(node.run, null, 2)}</div>}
+      {node.message && (
+        <div className="whitespace-pre-wrap">
+          <span className="text-gray-500">{node.message?.role} </span>
+          <MarkdownRenderer>{node.message.content ?? ''}</MarkdownRenderer>
+        </div>
+      )}
     </div>
   )
 }

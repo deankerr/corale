@@ -23,7 +23,7 @@ export const runs = {
       const branchNodes = await ctx.db
         .query('nodes')
         .withIndex('by_treeId_branchId_seq', (q) =>
-          q.eq('treeId', args.tree.id).eq('branchId', branch.id).lt('seq', seq),
+          q.eq('treeId', args.tree.id).eq('branchId', branch.id).lte('seq', seq),
         )
         .order('desc')
         .take(limit - conversationNodes.length)

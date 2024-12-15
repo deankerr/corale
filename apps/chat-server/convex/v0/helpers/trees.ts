@@ -1,4 +1,5 @@
-import { ConvexError, type Doc, type Id, type MutationCtx, type QueryCtx } from '#common'
+import { truncateString } from '@corale/shared/strings'
+import { asyncMap, ConvexError, type Doc, type Id, type MutationCtx, type QueryCtx } from '#common'
 import type { AsObjectValidator, Infer } from 'convex/values'
 import { type vNodeMessageData, type vNodeRunData } from '../schemas'
 import type { vAppendArgs } from '../trees'
@@ -51,10 +52,29 @@ function nodeDTO(node: Doc<'nodes'>): Node {
 }
 
 const nodes = {
-  async get(ctx: QueryCtx, args: { tree: Tree; branchId: number; seq?: number }) {
+  async get(ctx: QueryCtx, args: { treeId: string; branchId: number; seq: number }) {
     const node = await ctx.db
       .query('nodes')
-      .withIndex('by_treeId_branchId_seq', (q) => q.eq('treeId', args.tree.id).eq('branchId', args.branchId))
+      .withIndex('by_treeId_branchId_seq', (q) =>
+        q.eq('treeId', args.treeId).eq('branchId', args.branchId).eq('seq', args.seq),
+      )
+      .first()
+    return node ? nodeDTO(node) : null
+  },
+
+  async getFirst(ctx: QueryCtx, args: { treeId: string; branchId: number }) {
+    const node = await ctx.db
+      .query('nodes')
+      .withIndex('by_treeId_branchId_seq', (q) => q.eq('treeId', args.treeId).eq('branchId', args.branchId))
+      .order('asc')
+      .first()
+    return node ? nodeDTO(node) : null
+  },
+
+  async getLatest(ctx: QueryCtx, args: { treeId: string; branchId: number }) {
+    const node = await ctx.db
+      .query('nodes')
+      .withIndex('by_treeId_branchId_seq', (q) => q.eq('treeId', args.treeId).eq('branchId', args.branchId))
       .order('desc')
       .first()
     return node ? nodeDTO(node) : null
@@ -119,7 +139,12 @@ export const trees = {
       .query('trees')
       .withIndex('by_uid', (q) => q.eq('uid', treeId))
       .first()
-    return tree ? treeDTO(tree) : null
+
+    if (tree) {
+      await trees.utils.addTreeTile(ctx, tree)
+      return treeDTO(tree)
+    }
+    return tree
   },
 
   async require(ctx: QueryCtx, treeId: string): Promise<Tree> {
@@ -141,8 +166,8 @@ export const trees = {
   },
 
   async list(ctx: QueryCtx): Promise<Tree[]> {
-    const trees = await ctx.db.query('trees').order('desc').collect()
-    return trees.map(treeDTO)
+    const results = await ctx.db.query('trees').order('desc').collect()
+    return asyncMap(results, async (tree) => treeDTO(await trees.utils.addTreeTile(ctx, tree)))
   },
 
   async create(ctx: MutationCtx, args?: { label?: string }): Promise<string> {
@@ -160,7 +185,7 @@ export const trees = {
     // todo check valid branch
     const branch = tree.branches.find((b) => b.id === args.branchId) ?? { id: 0, minSeq: 0 }
 
-    const prevNode = await nodes.get(ctx, { tree, branchId: branch.id })
+    const prevNode = await nodes.getLatest(ctx, { treeId: tree.id, branchId: branch.id })
     const seq = prevNode ? prevNode.seq + 1 : branch.minSeq
     const branchSeq = prevNode ? prevNode.branchSeq + 1 : 0
 
@@ -201,9 +226,23 @@ export const trees = {
     }
 
     const tree_id = await trees.requireId(ctx, args.treeId)
-    await ctx.db.patch(tree_id, { branches: [...tree.branches, newBranch] })
+    // ? virtual 0 branch
+    await ctx.db.patch(tree_id, { branches: [...tree.branches.filter((b) => b.id !== 0), newBranch] })
 
     return newBranch.id
+  },
+
+  utils: {
+    async addTreeTile(ctx: QueryCtx, tree: Doc<'trees'>) {
+      if (!tree.label) {
+        const firstMessageContent = (await nodes.getFirst(ctx, { treeId: tree.uid, branchId: 0 }))?.message?.content
+        if (firstMessageContent) {
+          tree.label = truncateString(firstMessageContent)
+        }
+      }
+
+      return tree
+    },
   },
 }
 

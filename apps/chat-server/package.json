@@ -27,6 +27,7 @@
     "lint": "tsc -p convex && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@corale/shared": "workspace:*",
     "@openrouter/ai-sdk-provider": "^0.0.6",
     "ai": "^4.0.13",
     "convex": "^1.17.0",
