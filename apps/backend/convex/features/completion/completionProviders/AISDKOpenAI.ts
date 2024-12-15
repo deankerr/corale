@@ -1,10 +1,11 @@
 import { createOpenAI } from '@ai-sdk/openai'
+import { isImageURL, parseURLsFromString } from '@corale/shared/parsing/urls'
 import { internal } from '~/_generated/api'
 import type { ActionCtx } from '~/_generated/server'
 import { ENV } from '~/lib/env'
 import { hasDelimiter } from '~/lib/parse'
-import { generateText, streamText } from 'ai'
-import type { CompletionProvider, CompletionResult } from '../types'
+import { CoreMessage, generateText, streamText, type ImagePart } from 'ai'
+import type { CompletionInput, CompletionProvider, CompletionResult } from '../types'
 
 export function createAISDKOpenAIProvider(ctx: ActionCtx): CompletionProvider {
   const provider = createOpenAI({
@@ -25,7 +26,7 @@ export function createAISDKOpenAIProvider(ctx: ActionCtx): CompletionProvider {
       const result = await generateText({
         model: provider(modelId),
         system,
-        messages,
+        messages: messages.map(parseImageURLMessageContent),
         ...parameters,
       })
 
@@ -39,7 +40,7 @@ export function createAISDKOpenAIProvider(ctx: ActionCtx): CompletionProvider {
       const result = await streamText({
         model: provider(modelId),
         system,
-        messages,
+        messages: messages.map(parseImageURLMessageContent),
         ...parameters,
       })
 
@@ -70,5 +71,25 @@ async function mapAISDKResult(
     finishReason: await result.finishReason,
     usage: await result.usage,
     response: await result.response,
+  }
+}
+
+function parseImageURLMessageContent(message: CompletionInput['messages'][number]): CoreMessage {
+  if (message.role !== 'user') return message
+
+  const urls = parseURLsFromString(message.content)
+  const imageUrls = urls.filter(isImageURL)
+
+  if (imageUrls.length === 0) return message
+
+  const imageParts: ImagePart[] = imageUrls.map((url) => ({
+    type: 'image' as const,
+    image: url,
+  }))
+
+  return {
+    ...message,
+    role: 'user',
+    content: [{ type: 'text', text: message.content }, ...imageParts],
   }
 }
