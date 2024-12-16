@@ -5,12 +5,15 @@ import { Panel, PanelContent, PanelHeader } from '@/components/layout/panel'
 import { TextareaAutosize } from '@/components/textarea-autosize'
 import type { Node, Tree, TreeBranch } from '@corale/chat-server'
 import { api } from '@corale/chat-server/api'
+import { truncateString } from '@corale/shared/strings'
 import { MarkdownRenderer } from '@corale/ui/components/ui/markdown-renderer'
 import { Button } from '@ui/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/components/ui/tabs'
 import { cn } from '@ui/lib/utils'
 import { useMutation, useQuery } from 'convex/react'
 import { useState } from 'react'
+import { buildNodeGraph, type LinkedNode } from './node-graph'
+import { TreeFlow } from './tree-flow'
 
 const branchColors = [
   '',
@@ -38,7 +41,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const [instructionsValue, setInstructionsValue] = useState('')
   const [selectedNodeId, setSelectedNodeId] = useState('')
 
-  if (!tree) {
+  if (!tree || !nodes) {
     return <div>Tree not found</div>
   }
 
@@ -50,6 +53,8 @@ export default function Page({ params }: { params: { id: string } }) {
     nodesSeqGroups.set(node.seq, group)
   }
 
+  const nodeGraph = buildNodeGraph(tree, nodes)
+
   return (
     <Panel>
       <PanelHeader>{tree.label || `Tree ${tree.id}`}</PanelHeader>
@@ -59,6 +64,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <TabsTrigger value="full">Full</TabsTrigger>
             <TabsTrigger value="totem">Totem</TabsTrigger>
             <TabsTrigger value="choose">Choose</TabsTrigger>
+            <TabsTrigger value="flow">Flow</TabsTrigger>
           </TabsList>
           <TabsContent value="full">
             <TreeFull treeId={params.id} />
@@ -68,6 +74,9 @@ export default function Page({ params }: { params: { id: string } }) {
           </TabsContent>
           <TabsContent value="choose">
             <TreeChoose treeId={params.id} />
+          </TabsContent>
+          <TabsContent value="flow">
+            <TreeFlow nodeGraph={nodeGraph} />
           </TabsContent>
         </Tabs>
       </PanelContent>
@@ -341,6 +350,32 @@ const TreeChoose = ({ treeId }: { treeId: string }) => {
     .toReversed()
     .filter((n) => selectedBranches.some((b) => n.branchId === b.id))
     .map((n) => ({ ...n, branch: tree.branches.find((b) => b.id === n.branchId) }))
+
+  const nodeGraph = buildNodeGraph(tree, nodes)
+
+  const logNode = (node: LinkedNode) =>
+    `[${node.seq}:${node.branchId}] ${truncateString(node.message?.content ?? '', 16)}`
+  const getParent = (node: LinkedNode) => node.parent
+  const getToRoot = (node?: LinkedNode): LinkedNode[] => {
+    if (!node) return []
+    return [node, ...getToRoot(getParent(node))]
+  }
+
+  for (const leaf of [...nodeGraph.leafNodes.values()]) {
+    const path = getToRoot(leaf)
+    console.log(path.map((n) => logNode(n)))
+    console.log('')
+  }
+
+  for (const branch of nodeGraph.branchesMap.values()) {
+    console.log(
+      branch.id,
+      'children',
+      [...branch.children.values()].map((s) => s.id),
+      'siblings',
+      [...branch.siblings.values()].map((s) => s.id),
+    )
+  }
 
   return (
     <>
