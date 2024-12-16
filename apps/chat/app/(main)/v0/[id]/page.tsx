@@ -138,7 +138,7 @@ const ChatPanel = ({ tree, graph }: { tree: Tree; graph: NodeGraph }) => {
           />
         </div>
       ))}
-      <div className="fixed bottom-2 w-1/2">
+      <div className="absolute bottom-2 left-[50%] w-1/2 -translate-x-[50%]">
         <div>
           {currentBranchId} {selectedNode?.id} {selectedNodeIsLatest ? 'leaf' : ''}
         </div>

@@ -17,19 +17,21 @@ import { ThemeModeMenu } from '@ui/components/theme-mode-menu'
 import { MessageCircleIcon, SettingsIcon, TreePalmIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { NavThreads } from './nav-threads'
+import { NavThreads, NavTrees } from './nav-threads'
 
-const items = {
+const sections = {
   content: [
     {
       icon: TreePalmIcon,
       label: 'Trees',
       href: '/v0',
+      items: NavTrees,
     },
     {
       icon: MessageCircleIcon,
       label: 'Chat',
       href: '/chat',
+      items: NavThreads,
     },
     {
       icon: SettingsIcon,
@@ -56,22 +58,23 @@ export const AppSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarMenu>
-            {items.content.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild isActive={pathname === item.href}>
-                  <Link href={item.href}>
-                    <item.icon className="size-4" />
-                    <span>{item.label}</span>
+        {sections.content.map((section) => (
+          <SidebarGroup>
+            <SidebarGroupLabel>{section.label}</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === section.href}>
+                  <Link href={section.href}>
+                    <section.icon className="size-4" />
+                    <span>{section.label}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <NavThreads />
+
+              {'items' in section && section.items && <section.items />}
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter>

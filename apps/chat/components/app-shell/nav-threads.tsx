@@ -36,6 +36,21 @@ export const NavThreads = () => {
   )
 }
 
+export const NavTrees = () => {
+  const trees = useQuery(api.v0.trees.list, {})
+  if (!trees) return null
+
+  return (
+    <NavThreadsMenu
+      threads={trees.map((t) => ({
+        label: t.label ?? `Tree ${t.id}`,
+        url: `/v0/${t.id}`,
+        emoji: '🌴',
+      }))}
+    />
+  )
+}
+
 export const NavThreadsMenu = ({
   threads,
 }: {
@@ -49,8 +64,8 @@ export const NavThreadsMenu = ({
   const pathname = usePathname()
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Threads</SidebarGroupLabel>
+    <SidebarGroup className="p-0 group-data-[collapsible=icon]:hidden">
+      {/* <SidebarGroupLabel>Threads</SidebarGroupLabel> */}
       <SidebarMenu>
         {threads.map((item) => (
           <SidebarMenuItem key={item.url}>

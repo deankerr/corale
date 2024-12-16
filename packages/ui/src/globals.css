@@ -31,6 +31,19 @@
     --rx-orange-11: 23deg 100% 40%;
     --rx-orange-12: 16deg 50.4% 22.9%;
 
+    --rx-gray-1: 0deg 0% 98.8%;
+    --rx-gray-2: 0deg 0% 97.6%;
+    --rx-gray-3: 0deg 0% 94.1%;
+    --rx-gray-4: 0deg 0% 91%;
+    --rx-gray-5: 0deg 0% 87.8%;
+    --rx-gray-6: 0deg 0% 85.1%;
+    --rx-gray-7: 0deg 0% 80.8%;
+    --rx-gray-8: 0deg 0% 73.3%;
+    --rx-gray-9: 0deg 0% 55.3%;
+    --rx-gray-10: 0deg 0% 51.4%;
+    --rx-gray-11: 0deg 0% 39.2%;
+    --rx-gray-12: 0deg 0% 12.5%;
+
     --background: 0 0% 98%; /* zinc-50 */
     --foreground: 240 10% 3.9%; /* zinc-950 */
     --card: 0 0% 100%;
@@ -93,6 +106,32 @@
     --rx-orange-11: 26deg 100% 67.1%;
     --rx-orange-12: 30deg 100% 88%;
 
+    --rx-gray-1: 0deg 0% 6.7%;
+    --rx-gray-2: 0deg 0% 9.8%;
+    --rx-gray-3: 0deg 0% 13.3%;
+    --rx-gray-4: 0deg 0% 16.5%;
+    --rx-gray-5: 0deg 0% 19.2%;
+    --rx-gray-6: 0deg 0% 22.7%;
+    --rx-gray-7: 0deg 0% 28.2%;
+    --rx-gray-8: 0deg 0% 37.6%;
+    --rx-gray-9: 0deg 0% 43.1%;
+    --rx-gray-10: 0deg 0% 48.2%;
+    --rx-gray-11: 0deg 0% 70.6%;
+    --rx-gray-12: 0deg 0% 93.3%;
+
+    --rx-slate-1: 240deg 5.6% 7.1%;
+    --rx-slate-2: 220deg 5.9% 10%;
+    --rx-slate-3: 225deg 5.7% 13.7%;
+    --rx-slate-4: 210deg 7.1% 16.5%;
+    --rx-slate-5: 214deg 7.1% 19.4%;
+    --rx-slate-6: 213deg 7.7% 22.9%;
+    --rx-slate-7: 213deg 7.6% 28.4%;
+    --rx-slate-8: 212deg 7.7% 38.2%;
+    --rx-slate-9: 219deg 6.3% 43.9%;
+    --rx-slate-10: 222deg 5.2% 49.2%;
+    --rx-slate-11: 216deg 6.8% 71%;
+    --rx-slate-12: 220deg 9.1% 93.5%;
+
     --background: 240 10% 3.9%; /* zinc-950 */
     --foreground: 240 5.9% 90%; /* zinc-200 */
     --card: 20 14.3% 4.1%;
@@ -118,8 +157,9 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
+    /* --sidebar-background: 240 10% 3.9%; */
+    --sidebar-background: var(--rx-gray-1);
+    --sidebar-foreground: 240 5.9% 90%; /* zinc-200 */
     --sidebar-primary: var(--rx-orange-9);
     --sidebar-primary-foreground: var(--rx-orange-12);
     --sidebar-accent: 240 3.7% 15.9%;
@@ -134,6 +174,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply text-foreground font-sans antialiased;
   }
 }
