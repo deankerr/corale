@@ -94,7 +94,7 @@ const nodeTypes = {
       <BaseNode>
         <>
           <div className="text-muted-foreground font-mono text-xs">
-            {node.seq}:{node.branchId} {node.id}
+            {node.seq} {node.branchId}.{node.branchSeq} {node.id}
           </div>
           {message && (
             <div className="">
@@ -103,6 +103,13 @@ const nodeTypes = {
               </span>
               {message.content}
             </div>
+          )}
+
+          {node.children.length > 0 && (
+            <div className="font-mono text-xs">children: {node.children.map((n) => `${n.branchId} `)}</div>
+          )}
+          {node.siblings.length > 0 && (
+            <div className="font-mono text-xs">siblings: {node.siblings.map((n) => `${n.branchId} `)}</div>
           )}
 
           <Handle type="source" position={Position.Bottom} />
@@ -142,6 +149,7 @@ const LayoutFlow = ({ nodeGraph }: { nodeGraph: NodeGraph }) => {
       onEdgesChange={onEdgesChange}
       fitView
       nodeTypes={nodeTypes}
+      className="h-full"
     >
       <Background variant={BackgroundVariant.Dots} />
       <Panel position="top-right">
@@ -155,10 +163,8 @@ const LayoutFlow = ({ nodeGraph }: { nodeGraph: NodeGraph }) => {
 
 export const TreeFlow = ({ nodeGraph }: { nodeGraph: NodeGraph }) => {
   return (
-    <div className="h-[80vh]">
-      <ReactFlowProvider>
-        <LayoutFlow nodeGraph={nodeGraph} />
-      </ReactFlowProvider>
-    </div>
+    <ReactFlowProvider>
+      <LayoutFlow nodeGraph={nodeGraph} />
+    </ReactFlowProvider>
   )
 }

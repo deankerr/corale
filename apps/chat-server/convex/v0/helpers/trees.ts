@@ -219,7 +219,7 @@ export const trees = {
     const parentNode = await nodes.require(ctx, args.nodeId)
 
     const newBranch = {
-      id: tree.branches.length + 1,
+      id: tree.branches.length,
       parentId: parentNode.branchId,
       minSeq: parentNode.seq + 1,
       label: args.label,

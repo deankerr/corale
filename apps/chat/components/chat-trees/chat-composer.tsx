@@ -4,7 +4,7 @@ import { TextareaAutosize } from '../textarea-autosize'
 
 export const ChatComposer = (props: {
   inputId: string
-  onSend?: (args: { text: string; mode: 'run' | 'add' }) => Promise<void>
+  onSend?: (args: { text: string; mode: 'run' | 'add' }) => unknown
 }) => {
   const [text, setText] = useInputAtom(props.inputId, 'composer')
 

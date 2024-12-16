@@ -14,14 +14,16 @@ export default function Page() {
     <Panel>
       <PanelHeader>Trees</PanelHeader>
       <PanelContent>
-        <Button onClick={() => createTree({})}>Create Tree</Button>
+        <div>
+          <Button onClick={() => createTree({})}>Create Tree</Button>
 
-        <div className="flex flex-col gap-2 p-2">
-          {trees?.map((tree) => (
-            <div key={tree.id} className="mt-1">
-              <Link href={`/v0/${tree.id}`}>{tree.label || `Tree ${tree.id}`}</Link>
-            </div>
-          ))}
+          <div className="flex flex-col gap-2 p-2">
+            {trees?.map((tree) => (
+              <div key={tree.id} className="mt-1">
+                <Link href={`/v0/${tree.id}`}>{tree.label || `Tree ${tree.id}`}</Link>
+              </div>
+            ))}
+          </div>
         </div>
       </PanelContent>
     </Panel>
