@@ -34,7 +34,7 @@ export function PatternEditorPage({ patternId }: { patternId?: string }) {
     initialMessages: [],
     dynamicMessages: [],
     kvMetadata: {},
-    model: { id: 'anthropic/claude-3-haiku:beta' },
+    model: { id: 'anthropic/claude-3.5-haiku:beta' },
     _id: '' as any,
     _creationTime: 0,
     updatedAt: 0,
