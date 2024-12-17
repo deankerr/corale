@@ -32,6 +32,7 @@
     "@corale/config-typescript": "workspace:*",
     "@corale/shared": "workspace:*",
     "@fal-ai/client": "^1.0.2",
+    "@openrouter/ai-sdk-provider": "^0.0.6",
     "ai": "^4.0.13",
     "convex": "^1.17.0",
     "convex-ents": "^0.13.0",

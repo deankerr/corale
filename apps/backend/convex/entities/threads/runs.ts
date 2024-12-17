@@ -169,6 +169,12 @@ export const create = mutation({
       }),
     })
 
+    const kvMetadata = thread.kvMetadata ?? {}
+    kvMetadata['esuite:model:id'] = model.id
+    kvMetadata['esuite:pattern:xid'] = pattern?.xid as string
+
+    await thread.patch({ kvMetadata })
+
     await ctx.scheduler.runAfter(0, internal.entities.threads.runs.generate, {
       runId,
     })
