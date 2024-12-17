@@ -136,4 +136,4 @@ const Footer: Components<any, any>['Footer'] = () => {
   return <div className="h-6"></div>
 }
 
-const List = twx.div`px-1 lg:max-w-[80%] mx-auto`
+const List = twx.div`px-1 lg:max-w-[80%] w-full mx-auto`

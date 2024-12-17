@@ -53,7 +53,13 @@ export function ChatWithArtifactsPage({ threadId }: { threadId: string }) {
           )}
         </PageContent>
         <PageFooter className="[&>div]:max-w-3xl">
-          <Composer onSubmit={handleSubmit} patternId={currentPatternId} />
+          {thread && (
+            <Composer
+              onSubmit={handleSubmit}
+              patternId={currentPatternId}
+              defaultModelId={thread?.kvMetadata?.['esuite:model:id']}
+            />
+          )}
         </PageFooter>
       </PageLayout>
 

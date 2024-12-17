@@ -12,7 +12,7 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 
 export function Composer({
-  defaultModelId = 'anthropic/claude-3-5-haiku:beta',
+  defaultModelId = 'meta-llama/llama-3.3-70b-instruct',
   defaultTextValue = '',
   onSubmit,
   state = 'ready',

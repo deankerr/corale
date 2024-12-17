@@ -77,7 +77,9 @@ export const importModels = internalAction({
       }
     })
 
-    const notFound = existingModels.filter((m) => !processed.find((p) => p?.resourceKey === m.resourceKey))
+    const notFound = existingModels
+      .filter((m) => !processed.find((p) => p?.resourceKey === m.resourceKey))
+      .filter((m) => m.available)
     await asyncMap(notFound, async (model) => {
       // * mark as unavailable
       await ctx.runMutation(internal.entities.chatModels.internal.replace, {
@@ -236,6 +238,6 @@ const excludedModelIds = [
   'anthropic/claude-3.5-sonnet',
   'anthropic/claude-3.5-sonnet-20240620',
 
-  'anthropic/claude-3-5-haiku',
-  'anthropic/claude-3-5-haiku-20241022',
+  'anthropic/claude-3.5-haiku',
+  'anthropic/claude-3.5-haiku-20241022',
 ]
