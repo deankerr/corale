@@ -10,7 +10,7 @@ import {
 import { internalAction, internalMutation, mutation, query } from '../../functions'
 import { replaceTemplateTags } from '../../lib/parse'
 import type { QueryCtx } from '../../types'
-import { ConvexError, nullable, paginationOptsValidator, pick, v } from '../../values'
+import { ConvexError, nullable, paginationOptsValidator, v } from '../../values'
 import { generateXID } from '../helpers'
 import { createKvMetadata, updateKvMetadata } from '../kvMetadata'
 import { getPattern, getPatternWriterX, getPatternX } from '../patterns/db'
@@ -113,21 +113,21 @@ export const create = mutation({
 
     const pattern = args.patternId ? await getPatternWriterX(ctx, { patternId: args.patternId }) : null
 
-    // * merge pattern (if present) with run params
-    const patternParams = pattern ? pick(pattern, ['model', 'options', 'instructions', 'dynamicMessage']) : {}
-    const runParams = pick(args, [
-      'model',
-      'options',
-      'instructions',
-      'dynamicMessage',
+    // * merge pattern params with args
+    const runParams = {
+      model: args.model ?? pattern?.model,
+      options: {
+        ...pattern?.options,
+        ...args.options,
+      },
+      instructions: args.instructions ?? pattern?.instructions,
+      dynamicMessage: args.dynamicMessage ?? pattern?.dynamicMessage,
+      stream: args.stream,
+      additionalInstructions: args.additionalInstructions,
+      kvMetadata: args.kvMetadata,
+    }
 
-      'stream',
-      'additionalInstructions',
-      'kvMetadata',
-    ])
-    const params = { ...patternParams, ...runParams }
-
-    const model = params.model
+    const model = runParams.model
     if (!model) throw new ConvexError({ message: 'no model specified' })
 
     if (args.appendMessages) {
@@ -142,7 +142,7 @@ export const create = mutation({
 
     const runXID = generateXID()
     const runId = await ctx.table('runs').insert({
-      ...params,
+      ...runParams,
       model,
       status: 'queued',
       patternId: pattern?._id,
@@ -163,7 +163,7 @@ export const create = mutation({
       channel: args.options?.resultChannel,
       runId,
       kvMetadata: createKvMetadata({
-        'esuite:run:active': params.stream ? 'stream' : 'get',
+        'esuite:run:active': runParams.stream ? 'stream' : 'get',
         'esuite:model:id': model.id,
         'esuite:pattern:xid': pattern?.xid,
       }),
