@@ -12,7 +12,7 @@ import { getGeneration, getGenerationEdges, getGenerationWriterX } from './db'
 
 export const get = query({
   args: {
-    generationId: v.id('generations_v2'),
+    generationId: v.string(),
   },
   handler: async (ctx, { generationId }) => {
     const generation = await getGeneration(ctx, { generationId })
