@@ -383,6 +383,8 @@ export const complete = internalMutation({
       ],
     })
 
+    console.info('run complete:', formatLogMessage({ role: 'assistant', content: args.text }))
+
     try {
       await ensureThreadHasTitle(ctx, run.threadId)
     } catch (err) {
