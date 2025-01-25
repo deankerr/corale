@@ -2,7 +2,7 @@
   "name": "@corale/web",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3332",
+    "dev": "next dev --port 3333",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -20,7 +20,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
-    "turbo": "^2.3.3"
+    "turbo": "^2.3.4"
   },
   "packageManager": "pnpm@9.12.1",
   "pnpm": {
@@ -35,10 +35,10 @@
     }
   },
   "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "next": "14.2.18",
+    "@next/bundle-analyzer": "14.2.20",
     "eslint-config-next": "14.2.18",
-    "@next/bundle-analyzer": "14.2.20"
+    "next": "14.2.18",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }
