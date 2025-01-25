@@ -15,6 +15,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
     "ui:add": "pnpx shadcn-ui@latest add"
   },
   "dependencies": {
