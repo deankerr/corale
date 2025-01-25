@@ -5,12 +5,12 @@ import { useMessageFeedQuery } from '@/lib/api/messages'
 import { useThread } from '@/lib/api/threads'
 import { api } from '@corale/backend'
 import { useMutation } from 'convex/react'
-import { ChatMenu } from '../../_components/chat/ChatMenu'
 import { ArtifactPreviewSidePage } from '../../shared/ArtifactPage'
 import { config } from '../../shared/config'
 import { PageContent, PageFooter, PageHeader, PageLayout } from '../../shared/PageLayout'
 import { Composer } from '../components/Composer'
 import { BasicMessageFeed } from '../components/MessageFeed'
+import { ChatMenu } from './ChatMenu'
 
 export function ChatWithArtifactsPage({ threadId }: { threadId: string }) {
   const thread = useThread(threadId)

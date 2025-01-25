@@ -265,26 +265,31 @@ export const activate = internalMutation({
       },
     })
 
-    console.debug('run', {
+    const { id: modelId, ...rest } = run.model
+
+    const modelParameters = {
+      ...rest,
+      maxTokens: run.options?.maxCompletionTokens ?? rest.maxTokens,
+    }
+
+    console.info('run', {
       pattern: {
         id: run.patternId,
         name: pattern?.name,
       },
-      messages: messages.length,
-      message1: messages.at(-2),
-      message0: messages.at(-1),
-      system,
+      system: system ? truncateMiddle(system, 200) : undefined,
+      initialMessagesCount: initialMessages.length,
+      conversationMessagesCount: conversationMessages.length,
+      totalMessagesCount: messages.length,
+      messages: messages.map(formatLogMessage),
+      modelId,
+      modelParameters,
     })
-
-    const { id: modelId, ...modelParameters } = run.model
 
     return {
       stream: run.stream,
       modelId,
-      modelParameters: {
-        ...modelParameters,
-        maxTokens: run.options?.maxCompletionTokens ?? modelParameters.maxTokens,
-      },
+      modelParameters,
       system,
       messages,
       userId: run.userId,
@@ -434,3 +439,19 @@ export const updateProviderMetadata = internalMutation({
   },
   returns: v.null(),
 })
+
+function formatLogMessage(message: { role: string; content: string }) {
+  const role = message.role.charAt(0).toUpperCase()
+  const content = truncateMiddle(message.content, 100)
+  return `${role}: ${content}`
+}
+
+function truncateMiddle(str: string, maxLength: number): string {
+  if (str.length <= maxLength) return str
+
+  const charsToShow = maxLength - 3 // Account for ellipsis
+  const frontChars = Math.ceil(charsToShow / 2)
+  const backChars = Math.floor(charsToShow / 2)
+
+  return str.slice(0, frontChars) + '...' + str.slice(str.length - backChars)
+}

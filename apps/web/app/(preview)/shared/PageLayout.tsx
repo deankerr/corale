@@ -15,12 +15,24 @@ export function PageHeader({ children, className }: { children?: React.ReactNode
   )
 }
 
-export function PageContent({ children, className }: { children?: React.ReactNode; className?: string }) {
-  return (
-    <ScrollArea className="flex-1">
-      <div className={cn('flex-col-center h-full gap-3 p-3', className)}>{children}</div>
-    </ScrollArea>
-  )
+export function PageContent({
+  scrollArea,
+  children,
+  className,
+}: {
+  scrollArea?: boolean
+  children?: React.ReactNode
+  className?: string
+}) {
+  if (scrollArea) {
+    return (
+      <ScrollArea className="flex-1">
+        <div className={cn('flex-col-center h-full gap-3 p-3', className)}>{children}</div>
+      </ScrollArea>
+    )
+  }
+
+  return <div className={cn('flex-1 flex-col-start p-3', className)}>{children}</div>
 }
 
 export function PageFooter({ children, className }: { children?: React.ReactNode; className?: string }) {
