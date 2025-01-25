@@ -1,5 +1,5 @@
 import { Text } from '@radix-ui/themes'
-import { memo, type JSXElementConstructor } from 'react'
+import { memo, type JSXElementConstructor, type JSX } from 'react';
 import ReactMarkdown, { type Components, type ExtraProps } from 'react-markdown'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'

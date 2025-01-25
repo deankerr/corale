@@ -3,6 +3,118 @@
 import type * as LdrsType from 'ldrs'
 import { useEffect, useState } from 'react'
 
+declare module 'react' {
+  namespace JSX {
+    interface IntrinsicElements {
+      'l-bouncy': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-dot-wave': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-dot-stream': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-zoomies': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-line-wobble': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-mirage': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-orbit': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-grid': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-ring': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-ring-2': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-square': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-reuleaux': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-cardio': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-helix': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-dot-pulse': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-ping': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-pulsar': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-ripples': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-trio': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-wobble': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+      'l-quantum': {
+        size?: string | number
+        color?: string | number
+        speed?: string | number
+      }
+    }
+  }
+}
+
 const loaderComponents = {
   dotWave: 'l-dot-wave',
   dotStream: 'l-dot-stream',
@@ -24,7 +136,7 @@ const loaderComponents = {
   ping: 'l-ping',
   pulsar: 'l-pulsar',
   ripples: 'l-ripples',
-} satisfies Partial<Record<keyof typeof LdrsType, keyof JSX.IntrinsicElements>>
+} as const
 
 export function Loader({
   type,

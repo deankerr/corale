@@ -1,17 +1,15 @@
-"use client"
+'use client'
 
-import React, { useRef, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { ArrowUp, Paperclip, Square } from "lucide-react"
-import { omit } from "remeda"
+import { Button } from '@ui/components/ui/button'
+import { FilePreview } from '@ui/components/ui/file-preview'
+import { useAutosizeTextArea } from '@ui/hooks/use-autosize-textarea'
+import { cn } from '@ui/lib/utils'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowUp, Paperclip, Square } from 'lucide-react'
+import React, { useRef, useState } from 'react'
+import { omit } from 'remeda'
 
-import { cn } from "@ui/lib/utils"
-import { useAutosizeTextArea } from "@ui/hooks/use-autosize-textarea"
-import { Button } from "@ui/components/ui/button"
-import { FilePreview } from "@ui/components/ui/file-preview"
-
-interface MessageInputBaseProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface MessageInputBaseProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   value: string
   submitOnEnter?: boolean
   stop?: () => void
@@ -28,12 +26,10 @@ interface MessageInputWithAttachmentsProps extends MessageInputBaseProps {
   setFiles: React.Dispatch<React.SetStateAction<File[] | null>>
 }
 
-type MessageInputProps =
-  | MessageInputWithoutAttachmentProps
-  | MessageInputWithAttachmentsProps
+type MessageInputProps = MessageInputWithoutAttachmentProps | MessageInputWithAttachmentsProps
 
 export function MessageInput({
-  placeholder = "Ask AI...",
+  placeholder = 'Ask AI...',
   className,
   onKeyDown: onKeyDownProp,
   submitOnEnter = true,
@@ -95,7 +91,7 @@ export function MessageInput({
   }
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (submitOnEnter && event.key === "Enter" && !event.shiftKey) {
+    if (submitOnEnter && event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
       event.currentTarget.form?.requestSubmit()
     }
@@ -103,10 +99,9 @@ export function MessageInput({
     onKeyDownProp?.(event)
   }
 
-  const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
-  const showFileList =
-    props.allowAttachments && props.files && props.files.length > 0
+  const showFileList = props.allowAttachments && props.files && props.files.length > 0
 
   useAutosizeTextArea({
     ref: textAreaRef,
@@ -116,12 +111,7 @@ export function MessageInput({
   })
 
   return (
-    <div
-      className="relative flex w-full"
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
-    >
+    <div className="relative flex w-full" onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
       <textarea
         aria-label="Write your prompt here"
         placeholder={placeholder}
@@ -129,13 +119,13 @@ export function MessageInput({
         onPaste={onPaste}
         onKeyDown={onKeyDown}
         className={cn(
-          "w-full grow resize-none rounded-xl border border-input bg-background p-3 pr-24 text-sm ring-offset-background transition-[border] placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-          showFileList && "pb-16",
-          className
+          'border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:border-primary w-full grow resize-none rounded-xl border p-3 pr-24 text-sm transition-[border] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          showFileList && 'pb-16',
+          className,
         )}
         {...(props.allowAttachments
-          ? omit(props, ["allowAttachments", "files", "setFiles"])
-          : omit(props, ["allowAttachments"]))}
+          ? omit(props, ['allowAttachments', 'files', 'setFiles'])
+          : omit(props, ['allowAttachments']))}
       />
 
       {props.allowAttachments && (
@@ -151,9 +141,7 @@ export function MessageInput({
                       props.setFiles((files) => {
                         if (!files) return null
 
-                        const filtered = Array.from(files).filter(
-                          (f) => f !== file
-                        )
+                        const filtered = Array.from(files).filter((f) => f !== file)
                         if (filtered.length === 0) return null
                         return filtered
                       })
@@ -183,13 +171,7 @@ export function MessageInput({
           </Button>
         )}
         {isGenerating && stop ? (
-          <Button
-            type="button"
-            size="icon"
-            className="h-8 w-8"
-            aria-label="Stop generating"
-            onClick={stop}
-          >
+          <Button type="button" size="icon" className="h-8 w-8" aria-label="Stop generating" onClick={stop}>
             <Square className="h-3 w-3 animate-pulse" fill="currentColor" />
           </Button>
         ) : (
@@ -198,7 +180,7 @@ export function MessageInput({
             size="icon"
             className="h-8 w-8 transition-opacity"
             aria-label="Send message"
-            disabled={props.value === "" || isGenerating}
+            disabled={props.value === '' || isGenerating}
           >
             <ArrowUp className="h-5 w-5" />
           </Button>
@@ -209,7 +191,7 @@ export function MessageInput({
     </div>
   )
 }
-MessageInput.displayName = "MessageInput"
+MessageInput.displayName = 'MessageInput'
 
 interface FileUploadOverlayProps {
   isDragging: boolean
@@ -220,7 +202,7 @@ function FileUploadOverlay({ isDragging }: FileUploadOverlayProps) {
     <AnimatePresence>
       {isDragging && (
         <motion.div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center space-x-2 rounded-xl border border-dashed border-border bg-background text-sm text-muted-foreground"
+          className="border-border bg-background text-muted-foreground pointer-events-none absolute inset-0 flex items-center justify-center space-x-2 rounded-xl border border-dashed text-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -236,11 +218,11 @@ function FileUploadOverlay({ isDragging }: FileUploadOverlayProps) {
 }
 
 function showFileUploadDialog() {
-  const input = document.createElement("input")
+  const input = document.createElement('input')
 
-  input.type = "file"
+  input.type = 'file'
   input.multiple = true
-  input.accept = "*/*"
+  input.accept = '*/*'
   input.click()
 
   return new Promise<File[] | null>((resolve) => {

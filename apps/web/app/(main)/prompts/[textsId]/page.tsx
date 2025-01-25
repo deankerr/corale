@@ -1,4 +1,5 @@
-'use client'
+'use client';
+import { use } from "react";
 
 import { PromptEditor } from '@/components/prompts/PromptEditor'
 import { PanelEmpty, PanelLoading } from '@/components/ui/Panel'
@@ -9,7 +10,8 @@ import { useMutation } from 'convex/react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-export default function Page({ params }: { params: { textsId: string } }) {
+export default function Page(props: { params: Promise<{ textsId: string }> }) {
+  const params = use(props.params);
   const router = useRouter()
 
   const textsId = params.textsId as Id<'texts'>
