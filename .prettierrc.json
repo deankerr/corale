@@ -1,6 +1,6 @@
 {
   "semi": false,
-  "printWidth": 120,
+  "printWidth": 110,
   "singleQuote": true,
   "plugins": ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],

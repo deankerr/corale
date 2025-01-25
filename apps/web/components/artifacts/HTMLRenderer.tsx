@@ -20,7 +20,9 @@ function processHTMLText(htmlText: string) {
 
   // move script/style tags to body
   const headElements = Array.from(doc.head.children)
-  headElements.filter((el) => el.tagName === 'SCRIPT' || el.tagName === 'STYLE').forEach((el) => doc.body.prepend(el))
+  headElements
+    .filter((el) => el.tagName === 'SCRIPT' || el.tagName === 'STYLE')
+    .forEach((el) => doc.body.prepend(el))
 
   const body = doc.body.innerHTML
   return createHTMLRendererString(body)
@@ -43,7 +45,10 @@ export const HTMLRenderer = ({
     iframe.srcdoc = processedHTMLText
 
     const handleMessage = (event: MessageEvent) => {
-      if ((event.data.type === 'iframe-error' || event.data.type === 'iframe-promise-error') && onIFrameInternalError) {
+      if (
+        (event.data.type === 'iframe-error' || event.data.type === 'iframe-promise-error') &&
+        onIFrameInternalError
+      ) {
         onIFrameInternalError(event.data.error)
       }
     }

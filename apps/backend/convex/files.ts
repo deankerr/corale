@@ -69,7 +69,9 @@ export const startDeletionScan = internalMutation({
   args: {},
   handler: async (ctx) => {
     const scheduledDeletions = await ctx.table
-      .system('_scheduled_functions', 'by_creation_time', (q) => q.gte('_creationTime', Date.now() - deletionDelayTime))
+      .system('_scheduled_functions', 'by_creation_time', (q) =>
+        q.gte('_creationTime', Date.now() - deletionDelayTime),
+      )
       .order('desc')
       .filter((q) =>
         q.and(q.eq(q.field('name'), 'functions.js:scheduledDelete'), q.eq(q.field('state.kind'), 'pending')),

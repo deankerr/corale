@@ -77,7 +77,6 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
           </div>
         </Authenticated>
 
-
         <div className="grow" />
 
         <div className="grid h-12 shrink-0 grid-cols-[2.75rem_13.75rem] place-items-center">

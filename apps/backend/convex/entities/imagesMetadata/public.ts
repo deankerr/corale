@@ -13,7 +13,9 @@ export const add = mutation({
     const image = await getImageWriterX(ctx, { imageId })
     if (image.ownerId !== user._id) throw new ConvexError('unauthorized')
     if (fields.type !== 'message') throw new ConvexError('invalid metadata type')
-    return await ctx.table('images_metadata_v2').insert({ imageId: image._id, type: fields.type, data: fields })
+    return await ctx
+      .table('images_metadata_v2')
+      .insert({ imageId: image._id, type: fields.type, data: fields })
   },
   returns: v.string(),
 })
@@ -24,9 +26,9 @@ export const get = query({
   },
   handler: async (ctx, { imageId }) => {
     const image = await getImageX(ctx, { imageId })
-    const metadata = (await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))).map(
-      (metadata) => ({ ...metadata, xid: image.xid }),
-    )
+    const metadata = (
+      await ctx.table('images_metadata_v2', 'imageId', (q) => q.eq('imageId', image._id))
+    ).map((metadata) => ({ ...metadata, xid: image.xid }))
     return metadata
   },
   returns: v.array(ImagesMetadataReturn),

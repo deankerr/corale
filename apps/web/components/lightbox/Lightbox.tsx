@@ -31,9 +31,13 @@ function NextJsImage({ slide, offset, rect }: RenderSlideProps) {
 
   if (!isNextJsImage(slide)) return undefined
 
-  const width = !cover ? Math.round(Math.min(rect.width, (rect.height / slide.height) * slide.width)) : rect.width
+  const width = !cover
+    ? Math.round(Math.min(rect.width, (rect.height / slide.height) * slide.width))
+    : rect.width
 
-  const height = !cover ? Math.round(Math.min(rect.height, (rect.width / slide.width) * slide.height)) : rect.height
+  const height = !cover
+    ? Math.round(Math.min(rect.height, (rect.width / slide.width) * slide.height))
+    : rect.height
 
   return (
     <div style={{ position: 'relative', width, height }}>

@@ -15,7 +15,10 @@ export function TailwindBreakpointIndicator() {
     <ClientOnly>
       <div
         suppressHydrationWarning
-        className={cn('fixed bottom-0 right-0 z-[99999] bg-[#111111] text-[0.5rem] text-[#BBBBBB] opacity-30', content)}
+        className={cn(
+          'fixed bottom-0 right-0 z-[99999] bg-[#111111] text-[0.5rem] text-[#BBBBBB] opacity-30',
+          content,
+        )}
       >
         <span>{dimensions}</span>
       </div>

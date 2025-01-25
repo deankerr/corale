@@ -104,7 +104,11 @@ export function ResourceListSidebar({
         </SidebarMenu>
 
         <div className={cn('hidden', hasItems && 'block')}>
-          <SidebarInput placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <SidebarInput
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
       </SidebarHeader>
 

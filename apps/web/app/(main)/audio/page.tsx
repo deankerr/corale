@@ -37,7 +37,11 @@ export default function Page() {
           <div className="text-base font-medium">Generate Sound Effect</div>
           <Label>
             Prompt
-            <TextArea value={promptValue} onChange={(e) => setPromptValue(e.target.value)} disabled={isGenerating} />
+            <TextArea
+              value={promptValue}
+              onChange={(e) => setPromptValue(e.target.value)}
+              disabled={isGenerating}
+            />
           </Label>
 
           <div className="flex-end">

@@ -10,7 +10,8 @@ export function createGenerationMetadata(
 ): Extract<Doc<'images_metadata_v2'>['data'], { type: 'generation' }> {
   const input = generation.input as TextToImageInputs & { configId: string }
   const output = generation.output?.data as FalTextToImageResponse['data'] | undefined
-  if (!(input && output && generation.results)) throw new ConvexError('generation metadata missing required fields')
+  if (!(input && output && generation.results))
+    throw new ConvexError('generation metadata missing required fields')
 
   const model = getImageModel(input.modelId)
   const modelName = model?.name ?? 'unknown'

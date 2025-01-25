@@ -49,7 +49,10 @@ export default function Page() {
                 </div>
                 {event.data ? (
                   <pre className="flex-none overflow-x-auto whitespace-pre-wrap p-2 text-xs">
-                    {JSON.stringify({ before: event.data.before, after: event.data.after }, null, 2).slice(2, -2)}
+                    {JSON.stringify({ before: event.data.before, after: event.data.after }, null, 2).slice(
+                      2,
+                      -2,
+                    )}
                   </pre>
                 ) : null}
               </div>

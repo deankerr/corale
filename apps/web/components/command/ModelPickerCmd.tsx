@@ -66,7 +66,11 @@ export const ModelPickerCmd = ({
   )
 }
 
-const ModelItem = ({ model, className, ...props }: { model: ChatModel } & React.ComponentProps<typeof CmdK.Item>) => {
+const ModelItem = ({
+  model,
+  className,
+  ...props
+}: { model: ChatModel } & React.ComponentProps<typeof CmdK.Item>) => {
   const isFree = model.modelId.endsWith(':free')
   const { tokenInput, tokenOutput } = model.pricing
   return (

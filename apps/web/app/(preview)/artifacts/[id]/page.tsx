@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 import { ChatWithArtifactsPage } from '../components/ChatWithArtifactsPage'
 
 export async function generateMetadata(props: { params: Promise<{ id: string }> }): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL as string)
   const threadId = params.id
   const thread = threadId ? await convex.query(api.entities.threads.get, { threadId }) : null
@@ -16,6 +16,6 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
 }
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
+  const params = await props.params
   return <ChatWithArtifactsPage threadId={params.id} />
 }

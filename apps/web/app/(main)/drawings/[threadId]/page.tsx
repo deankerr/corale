@@ -9,10 +9,10 @@ import { Panel, PanelHeader, PanelLoading, PanelTitle } from '@/components/ui/Pa
 import { ScrollArea } from '@/components/ui/ScrollArea'
 import { useMessageFeedQuery } from '@/lib/api/messages'
 import { useThread } from '@/lib/api/threads'
-import { useMemo, use } from 'react';
+import { use, useMemo } from 'react'
 
 export default function Page(props: { params: Promise<{ threadId: string }> }) {
-  const params = use(props.params);
+  const params = use(props.params)
   const thread = useThread(params.threadId)
 
   const { results, loadMore, status } = useMessageFeedQuery(params.threadId)

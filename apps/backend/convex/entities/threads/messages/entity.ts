@@ -25,30 +25,39 @@ async function processMessageURLs(ctx: MutationCtx, message: Ent<'messages'>) {
 // * queries
 export async function getMessage(ctx: QueryCtx, { messageId }: { messageId: string }) {
   const docId = ctx.table('messages').normalizeId(messageId)
-  const message = docId ? await ctx.table('messages').get(docId) : await ctx.table('messages').get('xid', messageId)
+  const message = docId
+    ? await ctx.table('messages').get(docId)
+    : await ctx.table('messages').get('xid', messageId)
   return nullifyDeletedEnt(message)
 }
 
 export async function getMessageX(ctx: QueryCtx, { messageId }: { messageId: string }) {
   const message = await getMessage(ctx, { messageId })
-  if (!message || message.deletionTime) throw new ConvexError({ message: `Invalid message id`, id: messageId })
+  if (!message || message.deletionTime)
+    throw new ConvexError({ message: `Invalid message id`, id: messageId })
   return message
 }
 
 export async function getMessageWriter(ctx: MutationCtx, { messageId }: { messageId: string }) {
   const docId = ctx.table('messages').normalizeId(messageId)
-  const message = docId ? await ctx.table('messages').get(docId) : await ctx.table('messages').get('xid', messageId)
+  const message = docId
+    ? await ctx.table('messages').get(docId)
+    : await ctx.table('messages').get('xid', messageId)
   return nullifyDeletedEntWriter(message)
 }
 
 export async function getMessageWriterX(ctx: MutationCtx, { messageId }: { messageId: string }) {
   const message = await getMessageWriter(ctx, { messageId })
-  if (!message || message.deletionTime) throw new ConvexError({ message: `Invalid message id`, id: messageId })
+  if (!message || message.deletionTime)
+    throw new ConvexError({ message: `Invalid message id`, id: messageId })
   return message
 }
 
 // * mutations
-export async function createMessage(ctx: MutationCtx, fields: Infer<typeof MessageCreate> & { userId?: Id<'users'> }) {
+export async function createMessage(
+  ctx: MutationCtx,
+  fields: Infer<typeof MessageCreate> & { userId?: Id<'users'> },
+) {
   const thread = await getThreadX(ctx, { threadId: fields.threadId })
   const userId = fields.userId ?? ctx.viewerId ?? raise('No user ID provided')
 

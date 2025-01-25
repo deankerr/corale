@@ -57,7 +57,9 @@ export default function Page() {
                 ? getDuration(run.timings.startedAt, run.timings.firstTokenAt)
                 : undefined
               const tokensPerSecond =
-                run.usage?.completionTokens && timeActive ? run.usage.completionTokens / timeActive : undefined
+                run.usage?.completionTokens && timeActive
+                  ? run.usage.completionTokens / timeActive
+                  : undefined
               const topProvider = run.providerMetadata?.provider_name as string | undefined
 
               return (
@@ -74,10 +76,14 @@ export default function Page() {
                   <td className="p-2 text-right">
                     {tokensPerSecond !== undefined ? `${tokensPerSecond.toFixed(1)} tok/s` : '-'}
                   </td>
-                  <td className="p-2 text-right">{timeActive !== undefined ? `${timeActive.toFixed(1)}s` : '-'}</td>
+                  <td className="p-2 text-right">
+                    {timeActive !== undefined ? `${timeActive.toFixed(1)}s` : '-'}
+                  </td>
                   <td className="p-2 text-right">{run.usage ? `${run.usage.completionTokens}` : '-'}</td>
                   <td className="p-2 text-right">{run.usage ? `${run.usage.promptTokens}` : '-'}</td>
-                  <td className="p-2">{run.usage?.cost !== undefined ? `$${formatCost(run.usage.cost)}` : '-'}</td>
+                  <td className="p-2">
+                    {run.usage?.cost !== undefined ? `$${formatCost(run.usage.cost)}` : '-'}
+                  </td>
                   <td className="flex-center p-2">
                     {run.status === 'queued' && <Loader type="ping" size={24} color="var(--gold-11)" />}
                     {run.status === 'active' && <Loader type="ripples" size={24} color="var(--gold-11)" />}
@@ -93,7 +99,11 @@ export default function Page() {
         </table>
 
         <div className="flex-center w-full p-2">
-          <Button variant="surface" onClick={() => runs.loadMore(200)} disabled={runs.status !== 'CanLoadMore'}>
+          <Button
+            variant="surface"
+            onClick={() => runs.loadMore(200)}
+            disabled={runs.status !== 'CanLoadMore'}
+          >
             Load more
           </Button>
         </div>

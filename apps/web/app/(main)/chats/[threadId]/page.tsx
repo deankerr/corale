@@ -1,5 +1,4 @@
-'use client';
-import { use } from "react";
+'use client'
 
 import { htmlTextAtom } from '@/components/artifacts/atoms'
 import { HTMLRenderer } from '@/components/artifacts/HTMLRenderer'
@@ -8,9 +7,10 @@ import { IconButton } from '@/components/ui/Button'
 import { Panel, PanelHeader } from '@/components/ui/Panel'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useAtom } from 'jotai'
+import { use } from 'react'
 
 export default function Page(props: { params: Promise<{ threadId: string }> }) {
-  const params = use(props.params);
+  const params = use(props.params)
   const [htmlText, setHtmlText] = useAtom(htmlTextAtom)
 
   return (

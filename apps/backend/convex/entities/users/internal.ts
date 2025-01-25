@@ -8,7 +8,8 @@ export const getByTokenIdentifier = internalQuery({
   args: {
     tokenIdentifier: v.string(),
   },
-  handler: async (ctx, { tokenIdentifier }) => await ctx.table('users').get('tokenIdentifier', tokenIdentifier),
+  handler: async (ctx, { tokenIdentifier }) =>
+    await ctx.table('users').get('tokenIdentifier', tokenIdentifier),
 })
 
 export const getViewerWithApiKey = internalQuery({

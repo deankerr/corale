@@ -123,7 +123,13 @@ export const GenerateForm = ({
                 <SelectItem key={model.modelId} value={model.modelId}>
                   <div className="flex gap-2">
                     <div className="h-16 w-16 shrink-0">
-                      <Image src={model.coverImage} alt={model.name} fill className="object-cover" sizes="4rem" />
+                      <Image
+                        src={model.coverImage}
+                        alt={model.name}
+                        fill
+                        className="object-cover"
+                        sizes="4rem"
+                      />
                     </div>
 
                     <div className="grow">
@@ -181,7 +187,12 @@ export const GenerateForm = ({
 
         <div>
           <Label>Dimensions</Label>
-          <RadioCards.Root columns="3" gap="2" value={dimensions} onValueChange={(v) => setState({ dimensions: v })}>
+          <RadioCards.Root
+            columns="3"
+            gap="2"
+            value={dimensions}
+            onValueChange={(v) => setState({ dimensions: v })}
+          >
             <RadioCards.Item
               value="portrait"
               className="flex-col gap-1"

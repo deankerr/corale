@@ -31,7 +31,9 @@ export const InfiniteScroll = ({
     (element: HTMLElement | null) => {
       let safeThreshold = threshold
       if (threshold < 0 || threshold > 1) {
-        console.warn('threshold should be between 0 and 1. You are exceed the range. will use default value: 1')
+        console.warn(
+          'threshold should be between 0 and 1. You are exceed the range. will use default value: 1',
+        )
         safeThreshold = 1
       }
       // When isLoading is true, this callback will do nothing.

@@ -1,12 +1,12 @@
-'use client';
-import { use } from "react";
+'use client'
 
 import { GenerationCard } from '@/components/generations/GenerationCard'
 import { useGeneration } from '@/lib/api/generations'
 import type { Id } from '@corale/backend/convex/types'
+import { use } from 'react'
 
 export default function Page(props: { params: Promise<{ generationId: Id<'generations_v2'> }> }) {
-  const params = use(props.params);
+  const params = use(props.params)
   const generation = useGeneration(params.generationId)
 
   return generation ? (

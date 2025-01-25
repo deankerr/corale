@@ -1,6 +1,10 @@
 import { SVGProps } from 'react'
 
-export const Gemma = ({ size = '1em', style, ...rest }: SVGProps<SVGSVGElement> & { size?: string | number }) => {
+export const Gemma = ({
+  size = '1em',
+  style,
+  ...rest
+}: SVGProps<SVGSVGElement> & { size?: string | number }) => {
   return (
     <svg
       fill="currentColor"

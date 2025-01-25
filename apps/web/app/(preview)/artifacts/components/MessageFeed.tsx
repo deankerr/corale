@@ -8,7 +8,9 @@ export const BasicMessageFeed = ({ messages }: { messages: ReturnType<typeof use
         <Message message={message} key={message._id} />
       ))}
 
-      {messages.status === 'LoadingFirstPage' && <div className="flex-col-center h-full w-full">Loading...</div>}
+      {messages.status === 'LoadingFirstPage' && (
+        <div className="flex-col-center h-full w-full">Loading...</div>
+      )}
     </div>
   )
 }

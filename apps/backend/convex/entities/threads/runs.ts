@@ -211,7 +211,9 @@ export const activate = internalMutation({
         })
       } else {
         // * reschedule run to try again based on position
-        await ctx.scheduler.runAfter(runQueueDelayBase * position, internal.entities.threads.runs.generate, { runId })
+        await ctx.scheduler.runAfter(runQueueDelayBase * position, internal.entities.threads.runs.generate, {
+          runId,
+        })
       }
       return null
     }
@@ -234,7 +236,11 @@ export const activate = internalMutation({
       )
       .order('desc')
       .filter((q) =>
-        q.and(q.eq(q.field('deletionTime'), undefined), q.neq(q.field('text'), undefined), q.neq(q.field('text'), '')),
+        q.and(
+          q.eq(q.field('deletionTime'), undefined),
+          q.neq(q.field('text'), undefined),
+          q.neq(q.field('text'), ''),
+        ),
       )
       .take(run.options?.maxMessages ?? maxConversationMessages)
       .map(formatNamePrefixMessage)
@@ -306,7 +312,15 @@ export type RunActivationData = {
   userId: Id<'users'>
 } | null
 
-function formatNamePrefixMessage({ role, name, text = '' }: { role: MessageRoles; name?: string; text?: string }) {
+function formatNamePrefixMessage({
+  role,
+  name,
+  text = '',
+}: {
+  role: MessageRoles
+  name?: string
+  text?: string
+}) {
   return {
     role,
     content: name && role !== 'system' ? `${name}: ${text}` : text,

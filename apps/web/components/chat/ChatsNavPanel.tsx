@@ -44,7 +44,9 @@ export const ChatsNavPanel = () => {
       all: true,
     })
     .map(({ obj, score }) => ({ ...obj, _fuzzysort: score }))
-  const notMatched = threads.filter((thread) => sortResults.find((result) => result._id === thread._id) === undefined)
+  const notMatched = threads.filter(
+    (thread) => sortResults.find((result) => result._id === thread._id) === undefined,
+  )
   const threadsSorted = [...sortResults, ...notMatched]
 
   return (

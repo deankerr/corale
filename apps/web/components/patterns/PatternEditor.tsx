@@ -110,7 +110,10 @@ function PatternEditor({ pattern, isNew = false }: { pattern: Pattern; isNew?: b
 
                   <div>
                     <Label>Name</Label>
-                    <TextField value={patternState.name} onValueChange={(value) => updateField('name', value)} />
+                    <TextField
+                      value={patternState.name}
+                      onValueChange={(value) => updateField('name', value)}
+                    />
                   </div>
                 </div>
               </div>
@@ -159,7 +162,11 @@ function PatternEditor({ pattern, isNew = false }: { pattern: Pattern; isNew?: b
               </div>
 
               <div className="flex justify-end gap-2 p-4">
-                <Button variant="soft" color="red" onClick={() => deletePattern({ patternId: patternState.xid })}>
+                <Button
+                  variant="soft"
+                  color="red"
+                  onClick={() => deletePattern({ patternId: patternState.xid })}
+                >
                   Delete
                 </Button>
               </div>

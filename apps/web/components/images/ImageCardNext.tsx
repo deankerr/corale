@@ -30,7 +30,11 @@ export const ImageCardNext = ({
 
   const isSaved = image.collectionIds.length > 0
   return (
-    <div key={image.xid} style={{ aspectRatio: image.width / image.height }} className="overflow-hidden rounded-lg">
+    <div
+      key={image.xid}
+      style={{ aspectRatio: image.width / image.height }}
+      className="overflow-hidden rounded-lg"
+    >
       <NextImage
         alt=""
         key={image.xid}
@@ -48,7 +52,12 @@ export const ImageCardNext = ({
 
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <IconButton aria-label="Options menu" variant="ghost" highContrast className="absolute right-1 top-1">
+          <IconButton
+            aria-label="Options menu"
+            variant="ghost"
+            highContrast
+            className="absolute right-1 top-1"
+          >
             <DotsThreeFillY width={28} height={28} />
           </IconButton>
         </DropdownMenu.Trigger>

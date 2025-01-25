@@ -16,7 +16,15 @@ export default function Page() {
   const createThread = useMutation(api.entities.threads.create)
   const createRun = useMutation(api.entities.threads.runs.create)
 
-  const handleSubmit = async ({ text, modelId, patternId }: { text: string; modelId?: string; patternId?: string }) => {
+  const handleSubmit = async ({
+    text,
+    modelId,
+    patternId,
+  }: {
+    text: string
+    modelId?: string
+    patternId?: string
+  }) => {
     if (isCreatingThread || !text.trim()) return
     try {
       setIsCreatingThread(true)

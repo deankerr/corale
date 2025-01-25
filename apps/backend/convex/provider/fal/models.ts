@@ -43,7 +43,8 @@ const data = [
   },
   {
     modelId: 'fal-ai/aura-flow',
-    coverImage: 'https://v2.fal.media/files/ca17a9704d9f4d6eb1ff0c1c9526e897_b1abc7da53e949698e9c8186963f80c4.png',
+    coverImage:
+      'https://v2.fal.media/files/ca17a9704d9f4d6eb1ff0c1c9526e897_b1abc7da53e949698e9c8186963f80c4.png',
     name: 'AuraFlow',
     description: 'Fully open flow-based text to image model.',
     creatorName: 'fal.ai',
