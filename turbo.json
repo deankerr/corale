@@ -3,20 +3,31 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["CLERK_SECRET_KEY", "CONVEX_DEPLOY_KEY", "SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT", "ANALYZE"],
+      "env": [
+        "NODE_ENV",
+        "APP_HOSTNAME",
+        "CONVEX_ENVIRONMENT",
+        "CLERK_JWT_ISSUER_DOMAIN",
+        "CLERK_SECRET_KEY",
+        "CONVEX_DEPLOY_KEY",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "ANALYZE"
+      ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^build", "^typecheck"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^build", "^lint"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^build", "^test"]
     },
     "analyze": {
-      "dependsOn": ["^analyze"]
+      "dependsOn": ["^build", "^analyze"]
     },
     "dev": {
       "persistent": true,

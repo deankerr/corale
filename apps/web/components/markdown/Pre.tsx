@@ -45,7 +45,10 @@ export const Pre = memo(function Pre({ node, className, ...props }: PreProps) {
 
   return (
     <pre
-      className={cn('bg-black-a3 text-gray-11 mb-4 mt-2 overflow-hidden rounded-lg border font-mono', className)}
+      className={cn(
+        'bg-black-a3 text-gray-11 mb-4 mt-2 overflow-hidden rounded-lg border font-mono',
+        className,
+      )}
       {...props}
     >
       {isCodeBlock && (

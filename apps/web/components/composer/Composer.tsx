@@ -24,7 +24,9 @@ export const Composer = memo(({ threadId }: { threadId: string }) => {
   const actions = useThreadActions(thread?._id ?? '', 'chats')
   const loading = actions.state !== 'ready'
 
-  const [modelId, setModelId] = useState(getModelKey(thread?.kvMetadata ?? {}) ?? 'meta-llama/llama-3.1-70b-instruct')
+  const [modelId, setModelId] = useState(
+    getModelKey(thread?.kvMetadata ?? {}) ?? 'meta-llama/llama-3.1-70b-instruct',
+  )
   const [textValue, setTextValue] = useState('')
   const [patternId, setPatternId] = useState(thread?.kvMetadata?.['esuite:pattern:xid'] ?? '')
   const [maxCompletionTokens, setMaxCompletionTokens] = useState(4096)

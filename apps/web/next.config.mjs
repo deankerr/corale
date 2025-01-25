@@ -26,7 +26,7 @@ const nextConfig = {
     optimizePackageImports: ['@phosphor-icons/react'],
   },
 
-  transpilePackages: ['@corale/backend', '@corale/shared'],
+  transpilePackages: ['@corale/backend', '@corale/shared', '@corale/ui'],
 
   // handled in CI
   typescript: {
@@ -35,6 +35,10 @@ const nextConfig = {
 
   eslint: {
     ignoreDuringBuilds: true,
+  },
+
+  devIndicators: {
+    appIsrStatus: false,
   },
 }
 
@@ -50,7 +54,6 @@ const configWithSentry = withSentryConfig(nextConfig, {
     enabled: true,
   },
   tunnelRoute: '/monitoring',
-  hideSourceMaps: true,
   disableLogger: true,
   automaticVercelMonitors: true,
 })

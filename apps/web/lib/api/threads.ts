@@ -18,7 +18,9 @@ export const useThreads = (enabled: boolean = true) => {
   const threads = useCachedQuery(api.entities.threads.listMy, enabled ? {} : 'skip')
   if (!threads) return threads
 
-  const favourites = threads.filter((thread) => thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
+  const favourites = threads
+    .filter((thread) => thread.favourite)
+    .sort((a, b) => b.updatedAtTime - a.updatedAtTime)
   const rest = threads.filter((thread) => !thread.favourite).sort((a, b) => b.updatedAtTime - a.updatedAtTime)
 
   return [...favourites, ...rest]

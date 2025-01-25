@@ -1,6 +1,10 @@
 import { SVGProps } from 'react'
 
-export const Yi = ({ size = '1em', style, ...rest }: SVGProps<SVGSVGElement> & { size?: string | number }) => {
+export const Yi = ({
+  size = '1em',
+  style,
+  ...rest
+}: SVGProps<SVGSVGElement> & { size?: string | number }) => {
   return (
     <svg
       fill="currentColor"

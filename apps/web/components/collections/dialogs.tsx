@@ -130,7 +130,9 @@ export const DeleteCollectionDialog = ({
 
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>Delete Collection</AlertDialog.Title>
-        <AlertDialog.Description size="2">Are you sure? This collection will be gone forever.</AlertDialog.Description>
+        <AlertDialog.Description size="2">
+          Are you sure? This collection will be gone forever.
+        </AlertDialog.Description>
 
         <div className="flex-end mt-4 gap-2">
           <AlertDialog.Cancel>

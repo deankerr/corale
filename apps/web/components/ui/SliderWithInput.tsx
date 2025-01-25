@@ -34,7 +34,9 @@ export const SliderWithInput = ({
         {...props}
         defaultValue={defaultValue !== undefined ? [defaultValue] : undefined}
         value={value !== undefined ? [value] : undefined}
-        onValueChange={(values) => (values[0] !== undefined && onValueChange ? onValueChange(values[0]) : undefined)}
+        onValueChange={(values) =>
+          values[0] !== undefined && onValueChange ? onValueChange(values[0]) : undefined
+        }
         min={min}
         max={max}
         step={step}

@@ -100,7 +100,10 @@ export const GenerationCard = ({
           ))}
 
         {generation.errors?.map((error, index) => (
-          <pre key={index} className="border-red-7 bg-red-4 text-red-12 h-fit text-wrap rounded border p-2 text-xs">
+          <pre
+            key={index}
+            className="border-red-7 bg-red-4 text-red-12 h-fit text-wrap rounded border p-2 text-xs"
+          >
             {typeof error === 'string' ? error : JSON.stringify(error, null, 2)}
           </pre>
         ))}

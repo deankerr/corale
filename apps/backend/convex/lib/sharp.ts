@@ -103,7 +103,10 @@ export async function createBlurData(input: ArrayBuffer | Blob) {
 export async function resizeToWebp(input: ArrayBuffer | Blob, width: number) {
   const inputArrayBuffer = input instanceof Blob ? await input.arrayBuffer() : input
 
-  const { data, info } = await sharp(inputArrayBuffer).webp().resize({ width }).toBuffer({ resolveWithObject: true })
+  const { data, info } = await sharp(inputArrayBuffer)
+    .webp()
+    .resize({ width })
+    .toBuffer({ resolveWithObject: true })
 
   return { data, info }
 }

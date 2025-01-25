@@ -1,3 +1,4 @@
+import { environment } from '@/lib/utils'
 import * as React from 'react'
 
 // see https://shadcnui-expansions.typeart.cc/docs/infinite-scroll
@@ -23,14 +24,16 @@ export const InfiniteScroll = ({
   reverse,
   children,
 }: InfiniteScrollProps) => {
-  const observer = React.useRef<IntersectionObserver>()
+  const observer = React.useRef<IntersectionObserver>(undefined)
   // This callback ref will be called when it is dispatched to an element or detached from an element,
   // or when the callback function changes.
   const observerRef = React.useCallback(
     (element: HTMLElement | null) => {
       let safeThreshold = threshold
       if (threshold < 0 || threshold > 1) {
-        console.warn('threshold should be between 0 and 1. You are exceed the range. will use default value: 1')
+        console.warn(
+          'threshold should be between 0 and 1. You are exceed the range. will use default value: 1',
+        )
         safeThreshold = 1
       }
       // When isLoading is true, this callback will do nothing.
@@ -61,13 +64,13 @@ export const InfiniteScroll = ({
     <>
       {flattenChildren.map((child, index) => {
         if (!React.isValidElement(child)) {
-          process.env.NODE_ENV === 'development' && console.warn('You should use a valid element with InfiniteScroll')
+          if (environment === 'dev') console.warn('You should use a valid element with InfiniteScroll')
           return child
         }
 
         const isObserveTarget = reverse ? index === 0 : index === flattenChildren.length - 1
         const ref = isObserveTarget ? observerRef : null
-        // @ts-ignore ignore ref type
+        // @ts-expect-error ignore ref type
         return React.cloneElement(child, { ref })
       })}
     </>

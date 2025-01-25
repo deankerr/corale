@@ -66,7 +66,7 @@ export default function MermaidRenderer({ content }: { content: string }) {
         if (svgElement) {
           svgElement.style.display = 'block'
           svgElement.style.margin = '0 auto'
-          
+
           // Set max dimensions while preserving aspect ratio
           svgElement.style.maxWidth = '100%'
           svgElement.style.maxHeight = '800px' // Cap maximum height

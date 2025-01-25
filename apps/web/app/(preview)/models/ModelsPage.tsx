@@ -107,7 +107,10 @@ export const ModelsPage = () => {
                 <TableHead className="cursor-pointer select-none" onClick={() => handleSort('name')}>
                   Name {getSortIndicator('name')}
                 </TableHead>
-                <TableHead className="cursor-pointer select-none text-right" onClick={() => handleSort('created')}>
+                <TableHead
+                  className="cursor-pointer select-none text-right"
+                  onClick={() => handleSort('created')}
+                >
                   Released {getSortIndicator('created')}
                 </TableHead>
                 <TableHead
@@ -122,10 +125,16 @@ export const ModelsPage = () => {
                 >
                   Max Output {getSortIndicator('maxOutputTokens')}
                 </TableHead>
-                <TableHead className="cursor-pointer select-none text-right" onClick={() => handleSort('tokenInput')}>
+                <TableHead
+                  className="cursor-pointer select-none text-right"
+                  onClick={() => handleSort('tokenInput')}
+                >
                   $ M/Tokens Input {getSortIndicator('tokenInput')}
                 </TableHead>
-                <TableHead className="cursor-pointer select-none text-right" onClick={() => handleSort('tokenOutput')}>
+                <TableHead
+                  className="cursor-pointer select-none text-right"
+                  onClick={() => handleSort('tokenOutput')}
+                >
                   $ M/Tokens Output {getSortIndicator('tokenOutput')}
                 </TableHead>
               </TableRow>

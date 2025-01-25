@@ -28,7 +28,9 @@ export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
   if (!firstLoadedMessageTime.current && results[0]) {
     firstLoadedMessageTime.current = results[0]._creationTime
   }
-  const prependedCount = results.filter((message) => message._creationTime < firstLoadedMessageTime.current).length
+  const prependedCount = results.filter(
+    (message) => message._creationTime < firstLoadedMessageTime.current,
+  ).length
 
   if (!threadId || threadId === 'new') {
     if (messages.status === 'LoadingFirstPage') {

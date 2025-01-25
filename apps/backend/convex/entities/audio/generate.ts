@@ -12,7 +12,9 @@ const SoundEffectInputFields = {
   prompt_influence: v.optional(v.number()),
 }
 
-async function generateSoundEffect(input: Infer<AsObjectValidator<typeof SoundEffectInputFields>>): Promise<Blob> {
+async function generateSoundEffect(
+  input: Infer<AsObjectValidator<typeof SoundEffectInputFields>>,
+): Promise<Blob> {
   const blob = await ky
     .post(`https://api.elevenlabs.io/v1/sound-generation`, {
       headers: {

@@ -39,7 +39,7 @@ const mono = JetBrains_Mono({
   variable: '--font-mono',
 })
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

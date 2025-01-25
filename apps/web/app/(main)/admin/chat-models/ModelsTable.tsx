@@ -5,7 +5,11 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { Table } from '@radix-ui/themes'
 import { useState } from 'react'
 
-export const ModelsTable = ({ models, className, ...props }: { models: ChatModel[] } & React.ComponentProps<'div'>) => {
+export const ModelsTable = ({
+  models,
+  className,
+  ...props
+}: { models: ChatModel[] } & React.ComponentProps<'div'>) => {
   const [sort, setSort] = useState<'score' | 'cost'>('score')
 
   const models2 = models.map((model) => ({
@@ -44,7 +48,9 @@ export const ModelsTable = ({ models, className, ...props }: { models: ChatModel
               className={cn('cursor-pointer', sort === 'cost' && 'underline underline-offset-2')}
             >
               cost M/token
-              <Icons.CaretUpDown className={cn('inline size-4', sort === 'cost' ? 'text-accent-11' : 'text-gray-11')} />
+              <Icons.CaretUpDown
+                className={cn('inline size-4', sort === 'cost' ? 'text-accent-11' : 'text-gray-11')}
+              />
             </Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell justify="end">tokens/$</Table.ColumnHeaderCell>
           </Table.Row>
@@ -63,7 +69,9 @@ export const ModelsTable = ({ models, className, ...props }: { models: ChatModel
               <Table.Cell maxWidth="360px">{model.name}</Table.Cell>
               <Table.Cell maxWidth="360px">{model.provider}</Table.Cell>
               <Table.Cell justify="end">{model.internalScore}</Table.Cell>
-              <Table.Cell>{model.tags.join(', ') || <span className="text-gray-10 italic">none</span>}</Table.Cell>
+              <Table.Cell>
+                {model.tags.join(', ') || <span className="text-gray-10 italic">none</span>}
+              </Table.Cell>
               <Table.Cell>{model.creatorName}</Table.Cell>
               <Table.Cell className="font-mono text-xs">{JSON.stringify(model.pricing)}</Table.Cell>
               <Table.Cell justify="end" className="font-mono">
@@ -72,7 +80,9 @@ export const ModelsTable = ({ models, className, ...props }: { models: ChatModel
               <Table.Cell justify="end" className="font-mono">
                 {model.costPerMToken.tokenInput + model.costPerMToken.tokenOutput > 0
                   ? new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(
-                      Math.round(1000000 / (model.costPerMToken.tokenInput + model.costPerMToken.tokenOutput)),
+                      Math.round(
+                        1000000 / (model.costPerMToken.tokenInput + model.costPerMToken.tokenOutput),
+                      ),
                     )
                   : 'N/A'}
               </Table.Cell>

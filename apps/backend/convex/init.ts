@@ -18,7 +18,8 @@ export const dev_iterateBatchDelete = internalMutation({
     numItems: v.number(),
   },
   handler: async (ctx, { cursor, numItems }) => {
-    if (process.env.CONVEX_ENVIRONMENT !== 'development') throw new Error('CONVEX_ENVIRONMENT is not development')
+    if (process.env.CONVEX_ENVIRONMENT !== 'development')
+      throw new Error('CONVEX_ENVIRONMENT is not development')
 
     const { page, isDone, continueCursor } = await ctx.table.system('_storage').paginate({ cursor, numItems })
     for (const file of page) {
@@ -35,7 +36,8 @@ export const dev_deleteAllFiles = internalAction({
     batchSize: v.optional(v.number()),
   },
   handler: async (ctx, { cursor = null, batchSize = 100 }) => {
-    if (process.env.CONVEX_ENVIRONMENT !== 'development') throw new Error('CONVEX_ENVIRONMENT is not development')
+    if (process.env.CONVEX_ENVIRONMENT !== 'development')
+      throw new Error('CONVEX_ENVIRONMENT is not development')
 
     let isDone = false
     while (!isDone) {

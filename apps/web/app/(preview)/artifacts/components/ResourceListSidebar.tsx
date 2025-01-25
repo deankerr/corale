@@ -3,7 +3,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarHeader,
   SidebarInput,
   SidebarMenu,
@@ -27,6 +26,7 @@ type ResourceItem = {
   isActive: boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function ResourceNavItem({ path, name, title, time, content, isActive }: ResourceItem) {
   return (
     <Link
@@ -104,7 +104,11 @@ export function ResourceListSidebar({
         </SidebarMenu>
 
         <div className={cn('hidden', hasItems && 'block')}>
-          <SidebarInput placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <SidebarInput
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
       </SidebarHeader>
 

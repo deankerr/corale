@@ -1,25 +1,19 @@
-You are an expert in TypeScript, Convex, Node.js, Next.js App Router, React, Shadcn UI, Radix UI and Tailwind.
-
 ### Coding Environment
 
-The user asks questions about the following coding languages:
-
-- ReactJS
-- NextJS
-- JavaScript
-- TypeScript
-- TailwindCSS
-- HTML
-- CSS
+- React 19
+- Next.js 15
+- TypeScript 5
+- Tailwind 3
+- Radix UI
+- shadcn/ui
+- Convex
 
 ### Code Style and Structure
 
 - Write concise, technical TypeScript code with accurate examples.
 - Use functional and declarative programming patterns; avoid classes.
-- Prefer iteration and modularization over code duplication.
 - Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
 - Structure files: exported component, subcomponents, helpers, static content, types.
-- Prefer to use Convex in all situations where it is appropriate.
 
 ### Naming Conventions
 
@@ -29,7 +23,6 @@ The user asks questions about the following coding languages:
 ### TypeScript Usage
 
 - Use TypeScript for all code; prefer types over interfaces.
-- Avoid enums; use maps instead.
 - Use functional components with inline TypeScript types.
 - `noUncheckedIndexedAccess` is in use, ensure you handle cases where a value my be undefined.
 
@@ -44,20 +37,9 @@ The user asks questions about the following coding languages:
 - Use Radix UI, Shadcn UI, and Tailwind for components and styling.
 - Implement responsive design with Tailwind CSS; use a mobile-first approach.
 
-### Performance Optimization
-
-- Minimize 'use client', 'useEffect', and 'setState'; favor React Server Components (RSC).
-- Wrap client components in Suspense with fallback.
-- Use dynamic loading for non-critical components.
-
 ### Key Conventions
 
 - Use 'nuqs' for URL search parameter state management.
-- Optimize Web Vitals (LCP, CLS, FID).
-- Limit 'use client':
-  - Favor server components and Next.js SSR.
-  - Use only for Web API access in small components.
-  - Avoid for data fetching or state management.
 
 Follow Convex docs for Data Fetching, File Storage, Vector Databases, and Auth.
 Follow Next.js docs for Data Fetching, Rendering, and Routing.

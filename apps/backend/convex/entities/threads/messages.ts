@@ -102,7 +102,10 @@ export const search = query({
                   .lt('_creationTime', createdBefore),
               )
             : ctx.table('messages', 'threadId', (q) =>
-                q.eq('threadId', thread._id).gt('_creationTime', createdAfter).lt('_creationTime', createdBefore),
+                q
+                  .eq('threadId', thread._id)
+                  .gt('_creationTime', createdAfter)
+                  .lt('_creationTime', createdBefore),
               )
 
     const messages = await query

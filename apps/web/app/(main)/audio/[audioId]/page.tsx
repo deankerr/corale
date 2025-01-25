@@ -5,6 +5,7 @@ import { SkeletonPulse } from '@/components/ui/Skeleton'
 import { useAudio } from '@/lib/api/audio'
 import { Card } from '@radix-ui/themes'
 import dynamic from 'next/dynamic'
+import { use } from 'react'
 
 const AudioPlayer = dynamic(() => import('@/components/audio/AudioPlayer'), {
   loading: () => (
@@ -14,7 +15,8 @@ const AudioPlayer = dynamic(() => import('@/components/audio/AudioPlayer'), {
   ),
 })
 
-export default function Page({ params }: { params: { audioId: string } }) {
+export default function Page(props: { params: Promise<{ audioId: string }> }) {
+  const params = use(props.params)
   const audio = useAudio(params.audioId)
 
   return (

@@ -27,7 +27,12 @@ export const MessageEditor = () => {
       />
       <div className="flex-between gap-2 border-t pt-3">
         <div className="flex-between gap-2">
-          <Select.Root size={{ initial: '3', sm: '2' }} name="role" value={roleValue} onValueChange={setRoleValue}>
+          <Select.Root
+            size={{ initial: '3', sm: '2' }}
+            name="role"
+            value={roleValue}
+            onValueChange={setRoleValue}
+          >
             <Select.Trigger className="flex w-40 font-mono" />
             <Select.Content>
               <Select.Group>

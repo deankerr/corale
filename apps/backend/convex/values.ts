@@ -13,4 +13,11 @@ export {
   brandedString,
 } from 'convex-helpers/validators'
 
-export { asObjectValidator, ConvexError, v, type Value, type Infer, type AsObjectValidator } from 'convex/values'
+export {
+  asObjectValidator,
+  ConvexError,
+  v,
+  type Value,
+  type Infer,
+  type AsObjectValidator,
+} from 'convex/values'
