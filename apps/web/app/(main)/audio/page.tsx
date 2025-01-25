@@ -26,7 +26,7 @@ export default function Page() {
         console.error(err)
         toast.error('An error occurred.')
       })
-      .then((xid) => setPromptValue(''))
+      .then(() => setPromptValue(''))
       .finally(() => setIsGenerating(false))
   }
 

@@ -1,12 +1,12 @@
 'use client'
 
 import { ClientOnly } from '@/components/util/ClientOnly'
-import { cn } from '@/lib/utils'
+import { cn, environment } from '@/lib/utils'
 import { useWindowSize } from '@react-hookz/web'
 
 export function TailwindBreakpointIndicator() {
   const { width, height } = useWindowSize()
-  if (process.env.NODE_ENV !== 'development') return null
+  if (environment !== 'dev') return null
   const content =
     "before:content-['xs'] sm:before:content-['sm'] md:before:content-['md'] lg:before:content-['lg'] xl:before:content-['xl'] 2xl:before:content-['2xl']"
   const dimensions = width && height ? `⋅${width}x${height}` : null
