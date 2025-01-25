@@ -1,6 +1,6 @@
 'use client'
 
-import { RunButton } from '@/app/(beta)/_features/chat/RunButton'
+import { RunButton } from '@/app/(preview)/artifacts/components/RunButton'
 import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { Button, IconButton } from '@/components/ui/Button'

@@ -63,7 +63,7 @@ export function ArtifactPage({ params }: { params: { id: string } }) {
   return <ArtifactRendererPage {...artifact} />
 }
 
-export function ArtifactRendererPage({ content, language, title, onClose }: Artifact & { onClose?: () => void }) {
+function ArtifactRendererPage({ content, language, title, onClose }: Artifact & { onClose?: () => void }) {
   const LanguageIcon = getLanguageIcon(language)
 
   return (

@@ -32,7 +32,7 @@ export function PageContent({
     )
   }
 
-  return <div className={cn('flex-1 p-3', className)}>{children}</div>
+  return <div className={cn('flex-1 flex-col-start p-3', className)}>{children}</div>
 }
 
 export function PageFooter({ children, className }: { children?: React.ReactNode; className?: string }) {

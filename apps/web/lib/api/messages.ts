@@ -38,28 +38,3 @@ export const useMessageFeedQuery = (threadId: string, initialNumItems = 25) => {
 
   return { ...messages, results, prependedCount }
 }
-
-export function useMessageFeed(threadId: string, initialNumItems = 25) {
-  const messages = usePaginatedQuery(
-    api.entities.threads.messages.list,
-    { threadId },
-    {
-      initialNumItems,
-    },
-  )
-  const results = useMemo(() => messages.results.toReversed(), [messages.results])
-
-  const firstLoadedMessageTime = useRef(0)
-  if (!firstLoadedMessageTime.current && results[0]) {
-    firstLoadedMessageTime.current = results[0]._creationTime
-  }
-  const prependedCount = results.filter((message) => message._creationTime < firstLoadedMessageTime.current).length
-
-  if (!threadId || threadId === 'new') {
-    if (messages.status === 'LoadingFirstPage') {
-      messages.status = 'Exhausted' as any
-    }
-  }
-
-  return { ...messages, results, prependedCount }
-}
