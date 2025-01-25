@@ -9,7 +9,7 @@ const nav = {
     },
     {
       title: 'Patterns',
-      icon: Icons.Robot,
+      icon: Icons.Drone,
       path: '/patterns',
     },
     {
@@ -31,6 +31,11 @@ const nav = {
       title: 'Collections',
       icon: Icons.FolderStar,
       path: '/collections',
+    },
+    {
+      title: 'Prompts',
+      icon: Icons.NotePencil,
+      path: '/prompts',
     },
   ],
 }

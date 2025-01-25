@@ -46,7 +46,7 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
             </NavItem>
 
             <NavItem href={'/patterns'}>
-              <Icons.Robot size={20} className="text-accent-11 place-self-center" />
+              <Icons.Drone size={20} className="text-accent-11 place-self-center" />
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Patterns</div>
             </NavItem>
 
@@ -55,9 +55,14 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
               <div className="line-clamp-2 select-none overflow-hidden pr-3">Artifacts</div>
             </NavItem>
 
+            <NavItem href={'/models'}>
+              <Icons.Cube size={20} className="text-accent-11 place-self-center" />
+              <div className="line-clamp-2 select-none overflow-hidden pr-3">Models</div>
+            </NavItem>
+
             <NavItem href={'/generations'}>
-              <Icons.Images size={20} className="text-accent-11 place-self-center" />
-              <div className="line-clamp-2 select-none overflow-hidden pr-3">Generate</div>
+              <Icons.Sparkle size={20} className="text-accent-11 place-self-center" />
+              <div className="line-clamp-2 select-none overflow-hidden pr-3">Generations</div>
             </NavItem>
 
             <NavItem href={'/collections'}>
@@ -72,14 +77,6 @@ export const Navigation = ({ className, children, ...props }: React.ComponentPro
           </div>
         </Authenticated>
 
-        <AdminOnlyUi>
-          <div className="space-y-1 py-2">
-            <NavItem href={'/xsb'}>
-              <Icons.GitBranch size={20} className="text-accent-11 place-self-center" />
-              <div className="line-clamp-2 select-none overflow-hidden pr-3">(XSB)</div>
-            </NavItem>
-          </div>
-        </AdminOnlyUi>
 
         <div className="grow" />
 
