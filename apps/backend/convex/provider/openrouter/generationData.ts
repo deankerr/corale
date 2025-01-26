@@ -49,7 +49,6 @@ export const retrieve = internalAction({
 
       const parsed = OpenRouterMetadata.safeParse(providerMetadata)
       if (!parsed.success) {
-        console.error('failed to parse openrouter metadata', providerMetadata, parsed.error.flatten())
         throw new ConvexError({
           message: 'failed to parse openrouter metadata',
           issues: parsed.error.issues.map((issue) => issue.message),

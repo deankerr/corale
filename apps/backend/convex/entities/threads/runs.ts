@@ -279,6 +279,8 @@ export const activate = internalMutation({
     }
 
     console.info('run', {
+      modelId,
+      modelParameters,
       pattern: {
         id: run.patternId,
         name: pattern?.name,
@@ -288,8 +290,6 @@ export const activate = internalMutation({
       conversationMessagesCount: conversationMessages.length,
       totalMessagesCount: messages.length,
       messages: messages.map(formatLogMessage),
-      modelId,
-      modelParameters,
     })
 
     return {

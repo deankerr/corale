@@ -25,7 +25,6 @@ export function createAISDKOpenAIProvider(ctx: ActionCtx): CompletionProvider {
     id: 'ai-sdk-openai',
 
     get: async ({ system, modelId, messages, parameters }) => {
-      console.log('ai-sdk-openai get', modelId)
       const result = await generateText({
         model: provider(modelId),
         system,
@@ -37,7 +36,6 @@ export function createAISDKOpenAIProvider(ctx: ActionCtx): CompletionProvider {
     },
 
     stream: async ({ system, modelId, messages, parameters, textId }) => {
-      console.log('ai-sdk-openai stream', modelId)
       if (!textId) console.warn('No textId provided for stream, incremental results will not be available')
 
       const result = await streamText({
