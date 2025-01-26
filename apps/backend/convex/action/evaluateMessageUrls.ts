@@ -1,5 +1,6 @@
 import { v } from 'convex/values'
 import fastContentTypeParse from 'fast-content-type-parse'
+import { HTTPError } from 'ky'
 import { nanoid } from 'nanoid/non-secure'
 import { internal } from '../_generated/api'
 import { internalAction } from '../functions'
@@ -11,7 +12,6 @@ export const run = internalAction({
     ownerId: v.id('users'),
   },
   handler: async (ctx, args): Promise<void> => {
-    console.debug('evaluate', args.urls)
     const urlData = await Promise.all(args.urls.map(fetchContentTypeData))
 
     const imageUrls = urlData.filter((data) => data.type.startsWith('image')).map((data) => data.url)
@@ -49,7 +49,12 @@ async function fetchContentTypeData(url: URL | string) {
       parameters,
     }
   } catch (error) {
-    console.error(`Error fetching content info for ${url.toString()}:`, error)
+    if (error instanceof HTTPError) {
+      console.warn(`Unable to fetch content info for ${url.toString()}: ${error.message}`)
+    } else {
+      console.warn(`Error fetching content info for ${url.toString()}:`, error)
+    }
+
     return {
       url: url.toString(),
       type: 'unknown',
