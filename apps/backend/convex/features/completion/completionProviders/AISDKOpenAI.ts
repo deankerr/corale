@@ -4,10 +4,13 @@ import { internal } from '~/_generated/api'
 import type { ActionCtx } from '~/_generated/server'
 import { ENV } from '~/lib/env'
 import { hasDelimiter } from '~/lib/parse'
+import { polyfillStructuredClone } from '~/lib/polyfill/structuredClone'
 import { CoreMessage, generateText, streamText, type ImagePart } from 'ai'
 import type { CompletionInput, CompletionProvider, CompletionResult } from '../types'
 
 export function createAISDKOpenAIProvider(ctx: ActionCtx): CompletionProvider {
+  polyfillStructuredClone()
+
   const provider = createOpenAI({
     baseURL: 'https://openrouter.ai/api/v1',
     apiKey: ENV.OPENROUTER_API_KEY,
