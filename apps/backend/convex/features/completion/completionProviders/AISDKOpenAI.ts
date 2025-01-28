@@ -79,7 +79,8 @@ function parseImageURLMessageContent(message: CompletionInput['messages'][number
   if (message.role !== 'user') return message
 
   const urls = parseURLsFromString(message.content)
-  const imageUrls = urls.filter(isImageURL)
+  // exclude animated gifs
+  const imageUrls = urls.filter(isImageURL).filter((url) => !url.pathname.toLowerCase().endsWith('.gif'))
 
   if (imageUrls.length === 0) return message
 
