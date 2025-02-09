@@ -31,3 +31,5 @@ export const imageModelConfig = {
     ],
   },
 }
+
+export const defaultChatModelId = 'meta-llama/llama-3.1-70b-instruct'

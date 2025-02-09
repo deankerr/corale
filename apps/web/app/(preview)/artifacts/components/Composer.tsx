@@ -5,6 +5,7 @@ import { ModelPickerCmd } from '@/components/command/ModelPickerCmd'
 import { ModelLogo } from '@/components/icons/ModelLogo'
 import { Button, IconButton } from '@/components/ui/Button'
 import { TextArea } from '@/components/ui/TextArea'
+import { defaultChatModelId } from '@/config/config'
 import { useChatModel } from '@/lib/api/models'
 import { usePattern } from '@/lib/api/patterns'
 import { cn } from '@/lib/utils'
@@ -12,7 +13,7 @@ import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 
 export function Composer({
-  defaultModelId = 'meta-llama/llama-3.3-70b-instruct',
+  defaultModelId = defaultChatModelId,
   defaultTextValue = '',
   onSubmit,
   state = 'ready',
