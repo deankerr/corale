@@ -102,7 +102,6 @@ import type * as lib_clerk from "../lib/clerk.js";
 import type * as lib_env from "../lib/env.js";
 import type * as lib_fetch from "../lib/fetch.js";
 import type * as lib_parse from "../lib/parse.js";
-import type * as lib_polyfill_structuredClone from "../lib/polyfill/structuredClone.js";
 import type * as lib_sharp from "../lib/sharp.js";
 import type * as lib_utils from "../lib/utils.js";
 import type * as migrations from "../migrations.js";
@@ -212,7 +211,6 @@ declare const fullApi: ApiFromModules<{
   "lib/env": typeof lib_env;
   "lib/fetch": typeof lib_fetch;
   "lib/parse": typeof lib_parse;
-  "lib/polyfill/structuredClone": typeof lib_polyfill_structuredClone;
   "lib/sharp": typeof lib_sharp;
   "lib/utils": typeof lib_utils;
   migrations: typeof migrations;
