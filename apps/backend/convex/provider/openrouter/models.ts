@@ -115,7 +115,12 @@ function processModelRecord(record: unknown): ModelDoc | null {
   }
 
   // * snip "self-moderated" name text
-  const name = data.name.replace(/ \(self-moderated\)$/, '')
+  let name = data.name.replace(/ \(self-moderated\)$/, '')
+
+  // * allow moderated version of anthropic/claude-3.5-sonnet
+  if (data.id === 'anthropic/claude-3.5-sonnet') {
+    name += ' (moderated)'
+  }
 
   const { creatorName } = getCreatorModelNames(name)
 
@@ -235,7 +240,6 @@ const excludedModelIds = [
   'anthropic/claude-3-opus',
   'anthropic/claude-3-sonnet',
 
-  'anthropic/claude-3.5-sonnet',
   'anthropic/claude-3.5-sonnet-20240620',
 
   'anthropic/claude-3.5-haiku',
