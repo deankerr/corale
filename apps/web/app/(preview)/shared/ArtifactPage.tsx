@@ -11,10 +11,12 @@ import { parseCodeBlocks } from '@corale/shared/parsing/code'
 import { extractHTMLTitleValue, isCompleteDocument } from '@corale/shared/parsing/html'
 import * as Icons from '@phosphor-icons/react/dist/ssr'
 import { useAtom } from 'jotai'
+import { use } from 'react'
 import { PageContent, PageHeader, PageLayout } from './PageLayout'
 
-export function ArtifactPage({ params }: { params: { id: string } }) {
-  const message = useMessageById(params.id)
+export function ArtifactPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
+  const message = useMessageById(id)
 
   if (message === undefined) {
     return (
