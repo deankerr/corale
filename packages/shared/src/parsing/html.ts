@@ -64,7 +64,19 @@ export function extractHTMLDocumentMetadata(doc: Document) {
  * Creates a complete HTML document from partial HTML with optional error tracking
  */
 export function createHTMLRendererString(body: string): string {
-  const iframeHTMLCSPContent = `default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' https:; font-src 'self' https://fonts.gstatic.com; connect-src 'none'; frame-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`
+  const iframeHTMLCSPContent = `default-src 'self'; 
+script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com 'unsafe-inline'; 
+style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline'; 
+img-src 'self' https:; 
+font-src 'self' https://fonts.gstatic.com; 
+connect-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com; 
+media-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com; 
+frame-src 'none'; 
+object-src 'none'; 
+worker-src 'none'; 
+base-uri 'self'; 
+form-action 'self'; 
+upgrade-insecure-requests;`
 
   const errorTrackingScript = `
     <script>
