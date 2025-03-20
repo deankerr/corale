@@ -105,27 +105,32 @@ const getSize = (size: string, modelId: string) => {
 }
 
 const generateDimensions = async (args: { prompt: string }) => {
-  const model = createAIProvider({ id: 'anthropic/claude-3-haiku:beta' })
+  try {
+    const model = createAIProvider({ id: 'anthropic/claude-3-haiku:beta' })
 
-  const response = await generateObject({
-    model,
-    system:
-      'Choose the most appropriate dimensions for an image generated from the prompt: square, portrait, or landscape, using square as a fallback if you are unsure. Respond with a JSON object.',
-    schema: z.object({
-      dimensions: z
-        .enum(['square', 'portrait', 'landscape'])
-        .describe('Your choice of image dimensions: square, portrait, or landscape.'),
-    }),
-    messages: [
-      {
-        role: 'user',
-        content: args.prompt,
-      },
-    ],
-  })
+    const response = await generateObject({
+      model,
+      system:
+        'Choose the most appropriate dimensions for an image generated from the prompt: square, portrait, or landscape, using square as a fallback if you are unsure. Respond with a JSON object.',
+      schema: z.object({
+        dimensions: z
+          .enum(['square', 'portrait', 'landscape'])
+          .describe('Your choice of image dimensions: square, portrait, or landscape.'),
+      }),
+      messages: [
+        {
+          role: 'user',
+          content: args.prompt,
+        },
+      ],
+    })
 
-  const result = omit(response, ['request', 'response'])
-  console.log(result)
+    const result = omit(response, ['request', 'response'])
+    console.log(result)
 
-  return defaultSizes.find((size) => size.name === result.object.dimensions)
+    return defaultSizes.find((size) => size.name === result.object.dimensions)
+  } catch (err) {
+    console.error(err)
+    return 'square'
+  }
 }
