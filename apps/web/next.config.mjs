@@ -33,13 +33,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
+  // handled in CI
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  devIndicators: {
-    appIsrStatus: false,
-  },
+  allowedDevOrigins: ['bleak-scala.ts.net', '*.bleak-scala.ts.net'],
 }
 
 const configWithSentry = withSentryConfig(nextConfig, {
@@ -48,7 +47,7 @@ const configWithSentry = withSentryConfig(nextConfig, {
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
-  silent: !process.env.CI,
+  silent: process.env.CI,
   widenClientFileUpload: true,
   reactComponentAnnotation: {
     enabled: true,
