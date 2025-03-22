@@ -15,7 +15,6 @@ concurrency:
 env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-  TURBO_REMOTE_ONLY: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   setup:
