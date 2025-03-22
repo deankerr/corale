@@ -33,13 +33,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
+  // handled in CI
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  devIndicators: {
-    appIsrStatus: false,
-  },
+  allowedDevOrigins: ['bleak-scala.ts.net', '*.bleak-scala.ts.net'],
 }
 
 const configWithSentry = withSentryConfig(nextConfig, {
