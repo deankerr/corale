@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "convex dev",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint convex/",
+    "lint": "eslint --cache convex/",
     "test": "vitest",
     "test:once": "vitest run",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",

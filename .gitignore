@@ -42,5 +42,9 @@ next-env.d.ts
 
 # turborepo
 .turbo
+profile.json
+
+# eslint
+.eslintcache 
 
 .logs

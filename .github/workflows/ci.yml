@@ -1,6 +1,11 @@
 name: CI
 
-on: push
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
 
 # Cancel in-progress runs on new pushes
 concurrency:
@@ -12,41 +17,167 @@ env:
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
-  check:
-    name: Check
-    timeout-minutes: 15
+  setup:
+    name: Setup
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.value }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
+      - name: Generate cache key
+        id: cache-key
+        run: echo "value=${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.12.1
+          version: 9.15.9
+          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run prettier
-        run: pnpm format
+      - name: Build
+        run: pnpm build
+
+      - name: Create node_modules artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: node_modules
+          path: '**/node_modules'
+          retention-days: 1
+
+      - name: Create turbo artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: turbo-cache
+          path: .turbo
+          retention-days: 1
+
+  typecheck:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: .
+
+      - name: Download turbo cache
+        uses: actions/download-artifact@v4
+        with:
+          name: turbo-cache
+          path: .turbo
 
       - name: Type check
         run: pnpm typecheck
 
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: .
+
+      - name: Download turbo cache
+        uses: actions/download-artifact@v4
+        with:
+          name: turbo-cache
+          path: .turbo
+
       - name: Lint
         run: pnpm lint
 
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node_modules
+          path: .
+
+      - name: Download turbo cache
+        uses: actions/download-artifact@v4
+        with:
+          name: turbo-cache
+          path: .turbo
+
       - name: Test
+        id: test-run
         run: pnpm test:once
         env:
           NODE_ENV: test
+          VITEST_LOG_LEVEL: info
+
+      - name: Upload test results
+        if: always() && steps.test-run.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-results
+          path: apps/backend/vitest-result.json
+          retention-days: 7

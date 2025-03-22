@@ -75,6 +75,7 @@ import type * as entities_threads_runs_entity from "../entities/threads/runs/ent
 import type * as entities_threads_runs_generate from "../entities/threads/runs/generate.js";
 import type * as entities_threads_runs_models from "../entities/threads/runs/models.js";
 import type * as entities_threads_runs from "../entities/threads/runs.js";
+import type * as entities_threads_svg from "../entities/threads/svg.js";
 import type * as entities_threads from "../entities/threads.js";
 import type * as entities_types from "../entities/types.js";
 import type * as entities_users_db from "../entities/users/db.js";
@@ -184,6 +185,7 @@ declare const fullApi: ApiFromModules<{
   "entities/threads/runs/generate": typeof entities_threads_runs_generate;
   "entities/threads/runs/models": typeof entities_threads_runs_models;
   "entities/threads/runs": typeof entities_threads_runs;
+  "entities/threads/svg": typeof entities_threads_svg;
   "entities/threads": typeof entities_threads;
   "entities/types": typeof entities_types;
   "entities/users/db": typeof entities_users_db;
