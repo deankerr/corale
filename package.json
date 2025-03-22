@@ -3,14 +3,19 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:affected": "turbo build --filter=[HEAD^1]",
     "dev": "turbo dev",
     "start": "turbo start",
     "format": "pnpm prettier --write .",
     "lint": "turbo lint",
+    "lint:affected": "turbo lint --filter=[HEAD^1]",
     "test": "turbo test",
+    "test:affected": "turbo test --filter=[HEAD^1]",
     "test:once": "turbo test --filter=@corale/backend -- run",
     "analyze": "turbo analyze",
     "typecheck": "turbo typecheck",
+    "typecheck:affected": "turbo typecheck --filter=[HEAD^1]",
+    "profile": "TURBO_LOG_VERBOSITY=trace turbo build --profile=profile.json",
     "convex-deploy": "pnpm --filter backend convex-deploy",
     "generate-api": "pnpm --filter backend generate-api",
     "format:check": "prettier --check .",
@@ -22,5 +27,5 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "turbo": "^2.4.4"
   },
-  "packageManager": "pnpm@9.12.1"
+  "packageManager": "pnpm@9.15.9"
 }
