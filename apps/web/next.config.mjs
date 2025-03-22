@@ -47,7 +47,7 @@ const configWithSentry = withSentryConfig(nextConfig, {
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
-  silent: process.env.CI,
+  silent: !process.env.CI,
   widenClientFileUpload: true,
   reactComponentAnnotation: {
     enabled: true,
