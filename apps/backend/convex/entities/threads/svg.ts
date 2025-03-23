@@ -33,7 +33,7 @@ export const serveSvg = httpAction(async (ctx, request) => {
 
 function parseUrlToMessageId(url: string): string | null {
   const filename = parseFilename(url, { strict: false })
-  return filename ? filename.split('.')[0] : null
+  return filename ? (filename.split('.')[0] ?? null) : null
 }
 
 function extractSvgContent(text: string): string | null {
