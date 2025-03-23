@@ -33,6 +33,11 @@
       "dependsOn": ["^build", "^test"],
       "outputs": ["coverage/**"]
     },
+    "test:watch": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
     "analyze": {
       "dependsOn": ["^build", "^analyze"]
     },

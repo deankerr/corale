@@ -11,7 +11,7 @@
     "lint:affected": "turbo lint --filter=[HEAD^1]",
     "test": "turbo test",
     "test:affected": "turbo test --filter=[HEAD^1]",
-    "test:once": "turbo test --filter=@corale/backend -- run",
+    "test:watch": "turbo test:watch",
     "analyze": "turbo analyze",
     "typecheck": "turbo typecheck",
     "typecheck:affected": "turbo typecheck --filter=[HEAD^1]",

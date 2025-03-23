@@ -5,10 +5,9 @@
     "dev": "convex dev",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --cache convex/",
-    "test": "vitest",
-    "test:once": "vitest run",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
-    "test:coverage": "vitest run --coverage --coverage.reporter=text",
     "convex-init": "pnpx convex run init",
     "convex-deploy": "convex deploy",
     "generate-api": "mkdir -p out && convex function-spec > out/fn-spec.json && convex-helpers ts-api-spec --input-file out/fn-spec.json --output-file ${OUTPUT_FILE:-out/convex-api}"

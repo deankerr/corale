@@ -58,7 +58,7 @@ jobs:
 
       - name: Test
         id: test-run
-        run: pnpm test:once
+        run: pnpm test
         env:
           NODE_ENV: test
           VITEST_LOG_LEVEL: info
