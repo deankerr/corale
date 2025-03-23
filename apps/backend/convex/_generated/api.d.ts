@@ -69,6 +69,7 @@ import type * as entities_threads_actions from "../entities/threads/actions.js";
 import type * as entities_threads_entity from "../entities/threads/entity.js";
 import type * as entities_threads_messages_entity from "../entities/threads/messages/entity.js";
 import type * as entities_threads_messages_models from "../entities/threads/messages/models.js";
+import type * as entities_threads_messages_svg from "../entities/threads/messages/svg.js";
 import type * as entities_threads_messages from "../entities/threads/messages.js";
 import type * as entities_threads_models from "../entities/threads/models.js";
 import type * as entities_threads_runs_entity from "../entities/threads/runs/entity.js";
@@ -178,6 +179,7 @@ declare const fullApi: ApiFromModules<{
   "entities/threads/entity": typeof entities_threads_entity;
   "entities/threads/messages/entity": typeof entities_threads_messages_entity;
   "entities/threads/messages/models": typeof entities_threads_messages_models;
+  "entities/threads/messages/svg": typeof entities_threads_messages_svg;
   "entities/threads/messages": typeof entities_threads_messages;
   "entities/threads/models": typeof entities_threads_models;
   "entities/threads/runs/entity": typeof entities_threads_runs_entity;

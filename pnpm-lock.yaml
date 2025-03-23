@@ -389,6 +389,10 @@ importers:
   packages/config-typescript: {}
 
   packages/shared:
+    dependencies:
+      vitest:
+        specifier: ^3.0.9
+        version: 3.0.9(@edge-runtime/vm@5.0.0)(@types/debug@4.1.12)(@types/node@22.13.11)(jiti@1.21.7)(terser@5.39.0)(yaml@2.7.0)
     devDependencies:
       '@corale/config-typescript':
         specifier: workspace:*

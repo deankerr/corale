@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/tsconfig.json", "**/.env.local"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -9,22 +10,33 @@
         "CONVEX_ENVIRONMENT",
         "CLERK_JWT_ISSUER_DOMAIN",
         "CLERK_SECRET_KEY",
-        "CONVEX_DEPLOY_KEY",
+        "CLERK_WEBHOOK_SECRET",
+        "ELEVENLABS_API_KEY",
+        "FAL_KEY",
+        "OPENROUTER_API_KEY",
         "SENTRY_AUTH_TOKEN",
         "SENTRY_ORG",
         "SENTRY_PROJECT",
         "ANALYZE"
       ],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "out/**"]
     },
     "typecheck": {
-      "dependsOn": ["^build", "^typecheck"]
+      "dependsOn": ["^build", "^typecheck"],
+      "outputs": ["*.tsbuildinfo"]
     },
     "lint": {
-      "dependsOn": ["^build", "^lint"]
+      "dependsOn": ["^build", "^lint"],
+      "outputs": [".eslintcache", ".next/cache/eslint/**"]
     },
     "test": {
-      "dependsOn": ["^build", "^test"]
+      "dependsOn": ["^build", "^test"],
+      "outputs": ["coverage/**"]
+    },
+    "test:watch": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
     },
     "analyze": {
       "dependsOn": ["^build", "^analyze"]
@@ -32,6 +44,24 @@
     "dev": {
       "persistent": true,
       "cache": false
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "env": [
+        "NODE_ENV",
+        "APP_HOSTNAME",
+        "CONVEX_ENVIRONMENT",
+        "CLERK_JWT_ISSUER_DOMAIN",
+        "CLERK_SECRET_KEY",
+        "CLERK_WEBHOOK_SECRET",
+        "ELEVENLABS_API_KEY",
+        "FAL_KEY",
+        "OPENROUTER_API_KEY",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "ANALYZE"
+      ]
     }
   }
 }

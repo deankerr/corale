@@ -9,5 +9,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       '~/': new URL('./convex/', import.meta.url).pathname,
     },
+    reporters: process.env.GITHUB_ACTIONS ? ['verbose', 'github-actions'] : 'verbose',
+    outputFile: process.env.GITHUB_ACTIONS ? 'vitest-result.json' : undefined,
   },
 }))

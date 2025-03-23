@@ -1,6 +1,11 @@
 name: CI
 
-on: push
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
 
 # Cancel in-progress runs on new pushes
 concurrency:
@@ -12,33 +17,38 @@ env:
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
-  check:
-    name: Check
-    timeout-minutes: 15
+  ci:
+    name: CI
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
+      - name: Cache Turbo build output
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.12.1
+          version: 9.15.9
+          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Run prettier
-        run: pnpm format
+        run: pnpm install --frozen-lockfile
 
       - name: Type check
         run: pnpm typecheck
@@ -47,6 +57,16 @@ jobs:
         run: pnpm lint
 
       - name: Test
-        run: pnpm test:once
+        id: test-run
+        run: pnpm test
         env:
           NODE_ENV: test
+          VITEST_LOG_LEVEL: info
+
+      - name: Upload test results
+        if: always() && steps.test-run.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-results
+          path: apps/backend/vitest-result.json
+          retention-days: 7
