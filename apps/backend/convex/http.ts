@@ -1,6 +1,6 @@
 import { httpRouter } from 'convex/server'
 import { serve, serveUrl } from './entities/images/serve'
-import { serveSvg } from './entities/threads/svg'
+import { serveSvg } from './entities/threads/messages/svg'
 import { handleWebhook } from './lib/clerk'
 
 const http = httpRouter()

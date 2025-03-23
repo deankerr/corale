@@ -3,6 +3,12 @@
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import { withSentryConfig } from '@sentry/nextjs'
 
+export function getConvexSiteUrl() {
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL
+  if (!convexUrl) throw new Error('NEXT_PUBLIC_CONVEX_URL is undefined')
+  return convexUrl.replace('.cloud', '.site')
+}
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -18,6 +24,15 @@ const nextConfig = {
         source: '/drawing/:id',
         destination: '/artifact/:id',
         permanent: true,
+      },
+    ]
+  },
+
+  rewrites: async () => {
+    return [
+      {
+        source: '/svg/:id',
+        destination: getConvexSiteUrl() + '/svg/:id',
       },
     ]
   },
