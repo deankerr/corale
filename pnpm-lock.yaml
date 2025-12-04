@@ -238,10 +238,10 @@ importers:
         specifier: ^2.4.1
         version: 2.4.1(react@19.2.1)
       react:
-        specifier: ^19.2.1
+        specifier: 19.2.1
         version: 19.2.1
       react-dom:
-        specifier: ^19.2.1
+        specifier: 19.2.1
         version: 19.2.1(react@19.2.1)
       react-error-boundary:
         specifier: ^5.0.0
@@ -320,13 +320,13 @@ importers:
         specifier: ^22.13.11
         version: 22.13.11
       '@types/react':
-        specifier: ^19.2.1
+        specifier: 19.2.1
         version: 19.2.1
       '@types/react-dom':
-        specifier: ^19.2.1
+        specifier: 19.2.1
         version: 19.2.1(@types/react@19.2.1)
       eslint-config-next:
-        specifier: ^15.4.8
+        specifier: 15.4.8
         version: 15.4.8(eslint@9.23.0(jiti@1.21.7))(typescript@5.8.2)
       import-in-the-middle:
         specifier: ^1.13.1
@@ -6656,7 +6656,7 @@ snapshots:
       '@babel/traverse': 7.26.10
       '@babel/types': 7.26.10
       convert-source-map: 2.0.0
-      debug: 4.4.0
+      debug: 4.4.3
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -7591,7 +7591,7 @@ snapshots:
       '@types/shimmer': 1.2.0
       import-in-the-middle: 1.13.1
       require-in-the-middle: 7.5.2
-      semver: 7.7.1
+      semver: 7.7.3
       shimmer: 1.2.1
     transitivePeerDependencies:
       - supports-color
@@ -9942,7 +9942,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.4.0
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 
@@ -11478,7 +11478,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.4.0
+      debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
 

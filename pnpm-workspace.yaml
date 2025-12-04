@@ -1,3 +1,8 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@clerk/shared'
+  - '@vercel/speed-insights'
+  - unrs-resolver
