@@ -47,7 +47,7 @@
     "ldrs": "^1.1.2",
     "mermaid": "^11.5.0",
     "nanoid": "^5.1.5",
-    "next": "15.2.3",
+    "next": "15.4.8",
     "nuqs": "^2.4.1",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
