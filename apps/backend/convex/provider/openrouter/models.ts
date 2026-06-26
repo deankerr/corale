@@ -163,6 +163,7 @@ function getCreatorModelNames(name: string) {
 
 function toPerMillionTokens(value: string): number {
   if (!value || value === '0') return 0
+  if (value === '-1') return -1
   const perToken = parseFloat(value)
   const perMillionTokens = perToken * 1000000
   return Math.round(perMillionTokens * 10000) / 10000 // Round to 4 decimal places
@@ -181,10 +182,10 @@ const orModelSchema = z.object({
   description: z.string(),
   created: z.number(),
   pricing: z.object({
-    prompt: z.string(),
-    completion: z.string(),
-    image: z.string(),
-    request: z.string(),
+    prompt: z.string().default('0'),
+    completion: z.string().default('0'),
+    image: z.string().default('0'),
+    request: z.string().default('0'),
   }),
   context_length: z.number(),
   architecture: z.object({
